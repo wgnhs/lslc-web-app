@@ -1,0 +1,170 @@
+{
+ "displayFieldName": "SampleId",
+ "fieldAliases": {
+  "OBJECTID": "OBJECTID",
+  "SampleId": "SampleId",
+  "SectionId": "SectionId",
+  "WgnhsId": "WgnhsId",
+  "State": "State",
+  "Township": "Township",
+  "Range": "Range",
+  "Direction": "Direction",
+  "Section_": "Section_",
+  "Quarter": "Quarter",
+  "QuarterQuarter": "QuarterQuarter",
+  "County": "County",
+  "LocNote": "LocNote",
+  "RockType": "RockType",
+  "Notes": "Notes",
+  "NotebookPage": "NotebookPage",
+  "Chemistry": "Chemistry",
+  "ThinSection": "ThinSection",
+  "ThinSectionCount": "ThinSectionCount",
+  "NotebookId": "NotebookId",
+  "HandSample": "HandSample"
+ },
+ "fields": [
+  {
+   "name": "OBJECTID",
+   "type": "esriFieldTypeOID",
+   "alias": "OBJECTID"
+  },
+  {
+   "name": "SampleId",
+   "type": "esriFieldTypeInteger",
+   "alias": "SampleId"
+  },
+  {
+   "name": "SectionId",
+   "type": "esriFieldTypeInteger",
+   "alias": "SectionId"
+  },
+  {
+   "name": "WgnhsId",
+   "type": "esriFieldTypeInteger",
+   "alias": "WgnhsId"
+  },
+  {
+   "name": "State",
+   "type": "esriFieldTypeString",
+   "alias": "State",
+   "length": 255
+  },
+  {
+   "name": "Township",
+   "type": "esriFieldTypeInteger",
+   "alias": "Township"
+  },
+  {
+   "name": "Range",
+   "type": "esriFieldTypeInteger",
+   "alias": "Range"
+  },
+  {
+   "name": "Direction",
+   "type": "esriFieldTypeString",
+   "alias": "Direction",
+   "length": 255
+  },
+  {
+   "name": "Section_",
+   "type": "esriFieldTypeInteger",
+   "alias": "Section_"
+  },
+  {
+   "name": "Quarter",
+   "type": "esriFieldTypeString",
+   "alias": "Quarter",
+   "length": 255
+  },
+  {
+   "name": "QuarterQuarter",
+   "type": "esriFieldTypeString",
+   "alias": "QuarterQuarter",
+   "length": 255
+  },
+  {
+   "name": "County",
+   "type": "esriFieldTypeString",
+   "alias": "County",
+   "length": 255
+  },
+  {
+   "name": "LocNote",
+   "type": "esriFieldTypeString",
+   "alias": "LocNote",
+   "length": 255
+  },
+  {
+   "name": "RockType",
+   "type": "esriFieldTypeString",
+   "alias": "RockType",
+   "length": 255
+  },
+  {
+   "name": "Notes",
+   "type": "esriFieldTypeString",
+   "alias": "Notes",
+   "length": 255
+  },
+  {
+   "name": "NotebookPage",
+   "type": "esriFieldTypeString",
+   "alias": "NotebookPage",
+   "length": 255
+  },
+  {
+   "name": "Chemistry",
+   "type": "esriFieldTypeString",
+   "alias": "Chemistry",
+   "length": 255
+  },
+  {
+   "name": "ThinSection",
+   "type": "esriFieldTypeInteger",
+   "alias": "ThinSection"
+  },
+     {
+   "name": "ThinSectionCount",
+   "type": "esriFieldTypeInteger",
+   "alias": "ThinSectionCount"
+  },
+  {
+   "name": "NotebookId",
+   "type": "esriFieldTypeInteger",
+   "alias": "NotebookId"
+  },
+  {
+   "name": "HandSample",
+   "type": "esriFieldTypeInteger",
+   "alias": "HandSample"
+  }
+ ],
+ "features": [
+  {
+   "attributes": {
+    "OBJECTID": 1478,
+    "SampleId": 2759,
+    "SectionId": 2959,
+    "WgnhsId": 26700030,
+    "State": "Wisconsin",
+    "Township": 45,
+    "Range": 1,
+    "Direction": "W",
+    "Section_": 11,
+    "Quarter": "SE",
+    "QuarterQuarter": "NE",
+    "County": "Iron",
+    "LocNote": "Penokee Range",
+    "RockType": "Greenstone",
+    "Notes": null,
+    "NotebookPage": "44",
+    "Chemistry": null,
+    "ThinSection": 2759,
+    "ThinSectionCount": 1,
+    "NotebookId": 31,
+    "HandSample": 2759
+   }
+  }
+ ]
+}

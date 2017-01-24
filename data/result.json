@@ -1,0 +1,370 @@
+{"samples":[
+    {
+    "type": "Sample", 
+    "link":"recordView.html",
+    "sampleID": 12,
+    "rockType": "amygdaloidal greenstone with siderite and iron oxide",
+    "collector": "Van Hise",
+    "WGNHSID": 1235897,
+    "location":{"state": "Minnesota",
+                "township":"44N", 
+              "range": "33W", 
+              "section": 4, 
+              "quarterSection": "NE",
+              "quarterQuarterSection": "NW", 
+              "locationNote": "Lake Vermillion"
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[12], 
+    "notebookID": 1, 
+    "page": 77,
+    "notes": "notes about this particular sample (sample 12)... notes notes notes notes notes notes notes notes notes"
+
+    }, 
+    {
+    "type": "Sample",
+    "sampleID": 123,
+    "rockType": "chert",
+    "collector": "Van Hise", 
+        "WGNHSID": null
+
+    }, 
+        {
+    "type": "Sample",
+    "sampleID": 613,
+    "rockType": "granite",
+    "collector": "Van Hise"
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 112,
+    "rockType": "granite",
+    "collector": "Van Hise",
+    "WGNHSID": 677859,
+    "location":{"township":"12N", 
+              "range": "12W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 23
+
+    }, 
+     {
+    "type": "Sample", 
+    "sampleID": 132,
+    "rockType": "Banded jasper",
+    "collector": "Van Hise",
+    "WGNHSID": 677859,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 29
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 127,
+    "rockType": "jasper",
+    "collector": "Van Hise",
+    "WGNHSID": 6778859,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 67
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 128,
+    "rockType": "Band of red schistose rock in greenstone",
+    "collector": "Van Hise",
+    "WGNHSID": 6797859,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 2, 
+     "page": 65
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 129,
+    "rockType": "granite",
+    "collector": "Van Hise",
+    "WGNHSID": 674659,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 2, 
+     "page": 23
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 155,
+    "rockType": "conglomerate",
+    "collector": "Van Hise",
+    "WGNHSID": 677859,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 2, 
+     "page": 26
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 152,
+    "rockType": "jasper",
+    "collector": "Van Hise",
+    "WGNHSID": 67754,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 1, 
+     "page": 13
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 142,
+    "rockType": "granite",
+    "collector": "Van Hise",
+    "WGNHSID": 6778589,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 17
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 146,
+    "rockType": "Black feldspathic slate",
+    "collector": "Van Hise",
+    "WGNHSID": 6778589,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 18
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 147,
+    "rockType": "basalt",
+    "collector": "Van Hise",
+    "WGNHSID": 6778589,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 5
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 148,
+    "rockType": "basalt",
+    "collector": "Van Hise",
+    "WGNHSID": 6778589,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[1553, 336], 
+    "notebookID": 4, 
+     "page": 28
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 149,
+    "rockType": "granite",
+    "collector": "Van Hise",
+    "WGNHSID": 6778589,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 29
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 150,
+    "rockType": "jasper",
+    "collector": "Van Hise",
+    "WGNHSID": 6778589,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 24
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 170,
+    "rockType": "pumice",
+    "collector": "Van Hise",
+    "WGNHSID": 6778589,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 20
+
+    },
+    {
+    "type": "Sample", 
+    "sampleID": 171,
+    "rockType": "pumice",
+    "collector": "Van Hise",
+    "WGNHSID": 6778589,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 12
+
+    }, 
+    {
+    "type": "Sample", 
+    "sampleID": 172,
+    "rockType": "pumice",
+    "collector": "Van Hise",
+    "WGNHSID": 6778589,
+    "location":{"township":"12N", 
+              "range": "15W", 
+              "section": 9, 
+              "quarterSection": null,
+              "quarterQuarterSection": null
+             }, 
+    "handSampleAvailable": false,
+    "thinSections":[], 
+    "notebookID": 4, 
+     "page": 18
+
+    }
+], 
+ "thinSections":[
+     {
+         "type": "ThinSection", 
+         "rockType": "chert", 
+         "thinSectionID": 12, 
+         "sampleID": 12,
+         "image400PPL": "image12ppl_400.png",
+         "image400XPL": "image12xpl_400.png",
+         "image6000PPL": "image12ppl.png",
+         "image6000XPL": "image12xpl.png"
+     }, 
+     {
+         "type": "ThinSection", 
+         "rockType": "chert", 
+         "thinSectionID": 7578899, 
+         "sampleID": 123,
+         "image400PPL": "image123ppl_400.png",
+         "image400XPL": "image123xpl_400.png",
+         "image6000PPL": "image123ppl.png",
+         "image6000XPL": "image123xpl.png"
+     }    
+ ], 
+ "lithologicalDescriptions": [
+     
+     {"type": "Lithological Description",
+         "sampleID": 12, 
+      "book": "IV", 
+      "page": 195, 
+      "rockType": "Olivine Gabbro", 
+      "notes": "No slide number given."
+     }, 
+     {"type": "Lithological Description",
+        "sampleID": 123, 
+      "book": "IV", 
+      "page": 131, 
+      "rockType": "Quartzite", 
+      "notes": null
+     }
+     
+     
+     
+ ]
+}

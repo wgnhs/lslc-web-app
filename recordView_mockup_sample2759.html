@@ -1,0 +1,352 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+   <HEAD>
+      <TITLE>Sample Record Mockup: Sample 2759</TITLE>
+       <meta charset="UTF-8">
+       
+        <LINK href="generalStyle.css" rel='stylesheet'/>
+       
+       <!--Google font-->
+       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+       
+       
+
+       <!-- Leaflet -->
+            <!-- online -->
+            <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+           <!-- local -->  
+            <script src="lib/leaflet.js"></script>
+
+            <link rel="stylesheet" href="lib/leaflet.css" />
+       <!-- Zoomify Leaflet -->
+            <script type="text/javascript" src="lib/zoomify_layer.js"></script>
+            <!--<script type="text/javascript" src="script/zoomify_layer.js"></script>-->
+       
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+       
+       
+       <LINK href="recordStyle.css" rel='stylesheet'/> 
+       <LINK href="modalStyle.css" rel='stylesheet'/>
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+   </HEAD>
+   <BODY>
+       <div id="modalBackground" class="modalBackground">
+           <div id="modal-content"></div>
+       </div>       
+      
+   
+       
+    <div id="wrapper">
+      <h3>Sample Record</h3>
+            
+        
+            <div id="sampleRecord"></div>
+       
+        
+      <!--  <div id="rightPanel"></div>-->
+        
+      <!-- add a project footer... -->
+        <div id='footer'>
+           <p> Lake Superior Legacy Collection <br/>
+            Wisconsin Geological and Natural History Survey <br/>
+            University of Wisconsin Extention 
+           </p>
+        </div>
+
+   
+    </div><!--end wrapper div-->    
+    <script type="text/javascript">
+       
+      //  var results = $.getJSON('data/result.json')
+        
+   //     $('#sampleRecord').load('data/result.json');
+        
+        var ind = 6;
+        var samID = 2759;
+        
+        var sampleProperties = {
+                           /*"SampleId":
+                                    {"label": "Sample ID",
+                                    "class": "attributeLabel"
+                                    },*/
+                                "SampleId": "Sample ID",
+                                "rockType": "Rock Type", 
+                                "collector": "Collector", 
+                                "WGNHSID": "WGNHS ID"
+                               }
+        
+        $.getJSON('data/esriResult_sample2759.json', function(data){
+            console.log("data:", data);
+            
+        //based on the samID variable, find the object within the features array that matches that sample ID...
+            var selectedSample = jQuery.grep(data.features, function(object, index){
+                console.log("object.attributes.SampleId:", object.attributes.SampleId);
+                var thisSampleId = object.attributes.SampleId;
+                console.log("thisSampleId", thisSampleId);
+                return(thisSampleId === samID);
+            });
+            console.log("selectedSample[0]:", selectedSample[0].attributes);
+         /*   var selectedLithDesc = jQuery.grep(data.lithologicalDescriptions, function(object, index){
+                return(object.attributes.SampleId === samID);
+            });
+            console.log(selectedLithDesc)
+          */  
+        //pass the sample object to a function to populate the page html... 
+           
+            //populateReport(data.samples[ind]);
+            
+            //build the sections and divs to contain report information...
+            buildReport(
+                        selectedSample[0].attributes//, 
+                      //  selectedLithDesc[0]
+                       );
+           
+            //populate sections of the report with information...
+        //    addThinSections(selectedSample[0].attributes);
+            addFieldNotes(selectedSample[0].attributes);
+          //  addLithDesc(selectedLithDesc[0]);
+            addLocation(selectedSample[0].attributes);
+            addNotes(selectedSample[0].attributes);
+            addCollection(selectedSample[0].attributes);
+        })
+            //for debugging json load errors
+           // .done(function(){console.log('success', arguments);})
+           // .fail(function(){console.log('failure', arguments);})
+        
+        ; //end getJSON
+       
+        
+        
+        function populateReport(sample, lithDesc){
+            console.log(sample.SampleId);
+            
+            var report='';
+            
+            //the first item on the page will be the sample id //next the rock type 
+            report+="<h2>Sample #"+sample.SampleId+"</h2>"+"<p style='font-size:14pt;'>"+sample.rockType+"</p>";
+            //$("#sampleRecord").append("<h3>Sample #"+sample.SampleId+"</h3>"+"<p>"+sample.rockType+"</p>");
+          
+                       
+            
+            //the next section will be titled Thin Sections and will show 400px wide images of the thin sections
+           report+="<h3>Thin Sections</h3>";
+            //$("#sampleRecord").append("<h4>Thin Sections</h4>"); 
+            if (sample.thinSections.length>0){
+                for (i in sample.thinSections)
+           /*         var thinSectionContainer = $('div');
+                    thinSectionContainer.html("<div class='thinSection' title='click to view'><p>Thin section #"+sample.thinSections[i]+"</p><img src='images/400pxwide/"+sample.thinSections[i]+"ppl_400.jpg' alt='plane-polar image'/><img src='images/400pxwide/"+sample.thinSections[i]+"xpl_400.jpg' alt='cross-polar image'/></div>");
+                    
+                    //associate the thin section id with this div using .data()
+                    thinSectionContainer.data({"thinID": sample.thinSections[i]})
+                    
+                    //append to the report.
+                    report+= thinSectionContainer;
+                */    
+                    report+="<div class='thinSectionContainer'><div class='thinSection' title='click to view'><p>Thin section #"+sample.thinSections[i]+"</p><img src='images/400pxwide/"+sample.thinSections[i]+"ppl_400.jpg' alt='plane-polar image'/><img src='images/400pxwide/"+sample.thinSections[i]+"xpl_400.jpg' alt='cross-polar image'/></div></div>";
+                    //$("#sampleRecord").append("<p>"+sample.thinSections[i]+"</p>");
+            } else {
+                report+="<p>none</p>";
+                //$("#sampleRecord").append("<p>none</p>");
+            }
+            //the next section "Location Found" will include a small inset map showing the location polygon. Next to the map will be all location data
+            report+="<h3>Location</h3>";
+            report+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
+            report+="<div class='detailsDiv'>";
+            for (prop in sample.location){
+                console.log(prop);
+                report+="<p><span class='green'>"+prop+":</span> "+sample.location[prop]+"</p>";
+            }
+            report+="</div>";
+            //next, the "field Notes" section will include a thumbnail image of the notebook along with all information about the notebook and a link to UW DIgital Collections. This is based on the notebook number field and page field of the sample, as well as the notebook json.  
+            report+="<h3>Field Notes</h3>";
+            if (sample.notebookID > 0){
+                report+="<img style='height: 200px;' src='images/notebooks/ExampleNotebook"+sample.notebookID+".jpg' alt='notebook cover'/>";
+                report+="<div class='detailsDiv'><a href='http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=turn&entity=EcoNatRes.IrvingBook05.p0001&id=EcoNatRes.IrvingBook05&isize=M' target=_blank>American/Canadian National Boundary: Thunder Bay to Saganaga Lake: 6751-6862</a><p>Ronald Deur Irving</p><p>1883</p><p>Page "+sample.page+"</p></div>"
+            } else {
+                report+="<p>none</p>";
+            }
+            
+             //next section will be lith. description 
+            report+="<h3>Lithological Descriptions</h3>";
+            if(lithDesc){
+                report+="<img style='height: 200px;' src='images/notebooks/lithologicalDesc1.jpg' alt='lithological descriptions book cover' />"
+                report+="<div class='detailsDiv'><p>"+lithDesc.rockType+"</p></div>"
+            } else {
+                report+="<p>none</p>";
+            }
+            
+            //finally, a notes section 
+            report+="<h3>Notes</h3>";
+            if (sample.notes){
+                report+="<p>"+sample.notes+"</p>";
+            }
+            
+            //next, the "Collections" section will include information on where the physical samples are held 
+            report+="<h3>Collections</h3>";
+            if (sample.handSampleAvailable === true){
+                report+="<p>A hand sample is available at _________.</p>"
+            } else {
+                report+="<p>A hand sample is not available.</p>"
+            }
+            if(sample.thinSections.length>0){
+                report+="<p>Thin section is available from the Wisconsin Geological and Natural History Survey.</p>"
+            } else {
+                report+="<p>Thin sections are not available.</p>"
+            }
+           
+            //set the html of the sampleRecord div to the var report
+            //console.log(report);
+            document.getElementById("sampleRecord").innerHTML = report;
+        }
+        
+       
+        //this function adds a skeleton of divs
+        function buildReport(sample, lithDesc){
+            console.log("build report for sample ID ",sample.SampleId); 
+            
+            var SampleIdh2 = $('<h2></h2>').html("Sample #"+sample.SampleId); 
+            
+            var rockTypep = $('<p></p>').text(sample.rockType);
+            rockTypep.css("font-size","14pt");
+        //THIN SECTIONS
+            //div to hold all of the thin section results: 
+            var thinSections = $('<div></div>'); 
+            thinSections.attr("id", "thinSections");
+            thinSections.append($('<h3></h3>').html('Thin Sections'));
+        //LOCATION 
+            var location = $('<div></div>'); 
+            location.attr("id", "location");
+            location.append($('<h3></h3>').html('Location'));
+        //FIELD NOTES
+            var fieldNotes = $('<div></div>'); 
+            fieldNotes.attr("id", "fieldNotes");
+            fieldNotes.append($('<h3></h3>').html('Field Notes'));
+            
+        //LITH DESCRIPTIONS
+            var lithologicalDesc = $('<div></div>'); 
+            lithologicalDesc.attr("id", "lithologicalDesc");
+            lithologicalDesc.append($('<h3></h3>').html('Lithological Descriptions'));
+            
+            console.log("lith desc", lithDesc);
+        //NOTES
+            var sampleNotes = $('<div></div>'); 
+            sampleNotes.attr("id", "sampleNotes");
+            sampleNotes.append($('<h3></h3>').html('Sample Notes'));
+            
+        //COLLECTIONS
+            var collections = $('<div></div>'); 
+            collections.attr("id", "collections");
+            collections.append($('<h3></h3>').html('Collections'));
+            
+            
+            //append all elements to the sample record div. 
+            //minimize the .append() calls to maximize performance. 
+            $('#sampleRecord').append(SampleIdh2, rockTypep, thinSections, location, fieldNotes, lithologicalDesc, sampleNotes, collections);
+            
+        } //end buildReport 
+        
+        function addThinSections(sample){
+            
+            //populate the thin section results:
+            if (sample.thinSections.length>0){
+                for (i in sample.thinSections){
+                    
+                    console.log("thin section", sample.thinSections[i]);
+                    
+                    //a container at block-level
+                    var thinSectionContainer = $('<div></div>');
+                    thinSectionContainer.addClass('thinSectionContainer');
+                    
+                    var thinSec = $('<div></div>').html("<p>Thin section #"+sample.thinSections[i]+"</p><img src='images/400pxwide/"+sample.thinSections[i]+"ppl_400.jpg' alt='plane-polar image'/><img src='images/400pxwide/"+sample.thinSections[i]+"xpl_400.jpg' alt='cross-polar image'/>");
+                    thinSec.addClass('thinSection');
+                    thinSec.attr('title','click to view');
+                    thinSec.data({'thinID':sample.thinSections[i]});
+                    
+                    //add the thin section area into its block-level container
+                    thinSectionContainer.append(thinSec);
+                    //add the block-level container into the overall div of all thin sections. this is later appended to the record. 
+                    $('#thinSections').append(thinSectionContainer);
+                    
+                } } else {
+                console.log("none");
+                $('#thinSections').append('<p>none.</p>');
+                //$("#sampleRecord").append("<p>none</p>");
+            }
+            
+             $(".thinSection").on('click', function(){
+                console.log("view thin section #", $(this).data('thinID'));
+                
+                modal.thinSectionViewer($(this).data('thinID'));
+            })
+            
+            
+        } //end addThinSections function
+        
+        function addFieldNotes(sample){
+            var notebookreport = ''; 
+            if (sample.NotebookId > 0){
+                notebookreport+="<a href='http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=turn&entity=EcoNatRes.IrvingBook05.p0001&id=EcoNatRes.IrvingBook05&isize=M' target=_blank><img style='height: 200px;' src='images/notebooks/ExampleNotebook"+sample.NotebookId+".jpg' alt='notebook cover'/></a>";
+                notebookreport+="<div class='detailsDiv'><p>Page "+sample.NotebookPage+"</p><a href='http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=turn&entity=EcoNatRes.IrvingBook05.p0001&id=EcoNatRes.IrvingBook05&isize=M' target=_blank>American/Canadian National Boundary: Thunder Bay to Saganaga Lake: 6751-6862</a><p>Ronald Deur Irving</p><p>1883</p></div>"
+            } else {
+                notebookreport+="<p>none</p>";
+            }
+            
+            //append to the appropriate div
+            $('#fieldNotes').append(notebookreport);
+        }
+        
+        function addLithDesc(lithDesc){
+            var lith = '';
+            if(lithDesc){
+                lith+="<a href='http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=article&did=EcoNatRes.LithDescIV.i0001&id=EcoNatRes.LithDescIV&isize=M' target=_blank><img style='height: 200px;' src='images/notebooks/lithologicalDesc1.jpg' alt='lithological descriptions book cover' /></a>"
+                lith+="<div class='detailsDiv'><p>"+lithDesc.rockType+"</p><a href='http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=article&did=EcoNatRes.LithDescIV.i0001&id=EcoNatRes.LithDescIV&isize=M' target=_blank>United States Geological Survey: lithological descriptions Book IV (1884-1885)</a><p>Charles Van Hise</p><p>1884</p></div>"
+            } else {
+                lith+="<p>none</p>";
+            }
+            
+            //append to the appropriate div
+            $('#lithologicalDesc').append(lith);
+            
+        }
+        
+        function addLocation(sample){
+            
+            var loc = ''
+            loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
+            loc+="<div class='detailsDiv'>";
+            for (prop in sample.location){
+                //console.log("prop:", prop);
+                loc+="<p><span class='green'>"+prop+":</span> "+sample.location[prop]+"</p>";
+            }
+            loc+="</div>"; //end details div
+            $('#location').append(loc);
+        }
+        
+        function addNotes(sample){
+            if (sample.notes){
+                $('#sampleNotes').append('<p>'+sample.notes+'</p>');
+            } else {
+                $('#sampleNotes').append('<p>none</p>');
+            }
+        }
+        
+        function addCollection(){
+            
+            $('#collections').append('<p>Information about where to find the physical samples, if available...</p>');
+        }
+        
+   </script>   
+        <script src="modal.js"></script>
+   </BODY>
+</HTML>

@@ -1,0 +1,150 @@
+body, html, #wrapper{
+    height:100%;
+}
+h2{
+   /* padding-right: 7px;*/
+    margin: 0 7px 7px 0;
+}
+
+
+#map{
+   /* width: 66%;*/
+
+    height: calc(66vh);
+  /*  display: inline-block;*/
+  
+}
+
+
+/*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
+
+
+
+#leftPanel{
+    width:24.5%;
+    float: left;
+    
+}
+#rightPanel{
+    width:75%;
+    float: right;
+    display: inline-block;
+    
+}
+
+@media only screen and (max-width: 800px) {
+  /* Tablet view and smaller: one column layout*/
+    #rightPanel{
+        display: block; 
+        float: left;
+        width: 100%;
+        overflow: scroll;
+       margin-top: 10px;
+    }
+    #leftPanel{
+        width: 100%;
+    }
+    #largeChevron{
+        display: none;
+    }
+    
+} /*end media query*/
+
+@media only screen and (min-width: 1500px) {
+   /*solution for making the body fixed-width when the window is wide (canceled)*/
+    body {
+        /*width: 1500px;*/
+        margin: auto;
+    }   
+    
+    /*would prefer instead to allow the map to continue to expand...*/
+}
+
+
+/*=============== Filters ===============*/
+.block{
+    display: block;
+}
+
+#filters {
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.filter{
+    
+    display: inline-block;
+    vertical-align: top;
+    margin: 5px 8px 0 0;
+}
+
+.searchBox{
+    display: block;
+}
+
+input {
+   /* width: 200px;*/
+    clear: left;
+}
+
+#largeChevron{
+    position: absolute; 
+    top: 15px; 
+    right:0;
+}
+/*------------------------ Results List ----------------------*/
+#resultsPanel{
+    clear: both;
+}
+
+#viewOptions{
+    padding: 5px 0 10px 0;
+}
+.switchView{
+    display: inline-block;
+    padding: 0 5px 0 0;
+}
+
+.switchView img {
+    margin-right: 3px;
+}
+.switchView p{
+    vertical-align: top;
+}
+.switchView a {
+    text-decoration: none;
+}
+
+
+#resultsPanel ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#resultsPanel li {
+    padding-left: 5px;
+    padding-bottom: 10px;
+    position: relative;
+    border-top: thin solid lightgrey;
+    
+}
+#resultsPanel li:hover{
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+
+#resultsPanel ul p, h3{
+    padding: 0 24px 0 0;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+}
+.sampleChevron{
+    position:absolute; 
+    top:50%; 
+    right: 0px; 
+    transform: translateY(-50%);
+}

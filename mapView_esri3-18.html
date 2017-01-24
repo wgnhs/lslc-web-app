@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+   <HEAD>
+      <TITLE>LSLC Map View</TITLE>
+       <meta charset="UTF-8">
+       
+       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+       
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- Leaflet-->
+       <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+       <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+       
+       <!--ESRI 4.0--> 
+     <!--  <link rel="stylesheet" href="https://js.arcgis.com/4.0/esri/css/main.css">
+       <script src="https://js.arcgis.com/4.0/"></script> -->
+       
+       <!--ESRI 3.18-->
+       <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
+       <script src="https://js.arcgis.com/3.18/"></script>
+
+       <script src="main.js" ></script>
+      
+        <LINK href="generalStyle.css" rel='stylesheet'/>
+        <LINK href="mapViewStyle.css" rel='stylesheet'/>
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+   </HEAD>
+   <BODY>
+       <div id="modalBackground" class="modalBackground">
+           <div class="modal-content">
+            <span id="closemodal" class="close">x</span>
+                <div id="infoBox">
+                
+                    <p>Information about thin sections... <br/> info info info</p>
+                </div>
+              
+           </div>
+       </div><!--close modal div-->
+       <div id="wrapper">
+            <div id="header">
+                <h1>Sample Search</h1>
+                <p>Select map sections or apply other filters.</p>
+            </div>
+            
+           <div id="leftPanel">
+               <div id="filters">
+                   <h2>Filters</h2>
+                    <div class='filter'>
+                       <p><span class="bold">Sample availability</span></p>
+                       <label class='block'><input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />Hand sample available</label>
+                       <label class='block'><input type="checkbox" name="thinSectionAvailability" id="thinSectionCheckbox" />Thin section available</label>
+                   </div>
+                    <div class='filter'>
+                       <label><p><span class="bold">Rock Type </span></p>
+                       <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" /></label>
+                   </div>
+                  
+                   
+                   
+                   
+               </div><!--end filters div-->
+
+                
+           </div><!--end left Panel div-->
+           
+           <div id="rightPanel">
+               
+               <div id="mapfilters">
+                   <div class='filter'>
+                       <p><span class="bold">Search by area </span></p>
+                            <div id="mapInteractionButtons">
+                                <img  class="button" id="mapSelectionButton" src="images/mapSelection.png" alt="select on map" title="select area on map"/> 
+                                <img class="button" id="mapClearButton" src="images/clearMapSelection2.png" alt="clear map selection" title="clear map selection" /> 
+                            </div>
+                   </div>
+                   <div class='filter'>
+                       <label><p><span class="bold">County</span></p>
+                       <input class="searchBox" type="search" name="countySearch" id="countySearch" placeholder="'Ashland'" /></label>
+                    </div>
+                   <div class='filter'>
+                       <label><p><span class="bold">State</span></p>
+                       <input class="searchBox" type="search" name="stateSearch" id="stateSearch" placeholder="'Wisconsin'" /></label>
+                    </div>
+               </div>
+               
+               <div id="map"></div>
+            </div><!--end right Panel div-->   
+           
+           <div id="resultsPanel">
+               <div id="resultsHeader">
+                   <h2 class="inline">Results</h2><p>(<span id="resultCount">0</span> samples found)</p>
+                   <!--
+                   <div id="viewOptions">
+                       <div class='switchView button'>
+                            <img  src="images/tableIcon_gw.png" alt="view as table" />
+                           <p>view as table</p>
+                           
+                       </div>
+                       <div class='switchView button'>
+                            <a href='galleryView.html' target='_blank'>
+                                <img src="images/galleryIcon_gw.png" alt="view as gallery" />
+                                <p>view as gallery</p>
+                              
+                           </a>
+                       </div>
+                   </div>--><!--end viewOptions div-->
+                   
+                   
+               </div>
+
+               <ul id="resultsUL"></ul>
+               <div id="resultsFeatureTable"></div>
+           </div>
+               
+           
+       </div><!-- end wrapper div-->
+       
+       <!-- Esri map-->
+       <script type="text/javascript">
+           
+            
+           
+           require([
+               //ALSO INCLUDE THESE IN THE FUNCTION PARAMETERS BELOW!
+             //  "esri/tasks/Locator",
+               "esri/map",
+             //  "esri/views/MapView", 
+           //    "esri/InfoTemplate", //causes script error?
+               "esri/layers/FeatureLayer",
+               "esri/dijit/FeatureTable",
+               "esri/symbols/SimpleFillSymbol",
+           //    "esri/PopupTemplate",   
+           //    "esri/tasks/IdentifyTask",
+            //   "esri/tasks/IdentifyParameters", //causes scripterror?
+               "esri/tasks/query",
+               "esri/tasks/QueryTask",
+               "esri/toolbars/draw", 
+             //  "esri/Color",
+            //    "esri/layers/ArcGISDynamicMapServiceLayer",
+             //  "esri/layers/VectorTileLayer",
+                "dojo/dom", 
+               "dojo/on",
+               "dojo/_base/array",
+               "dojo/parser",   //I don't know what this does. 
+               "dojo/domReady!" 
+               
+            ], function (Map, FeatureLayer, FeatureTable, SimpleFillSymbol, Query, QueryTask, Draw, dom, on, arrayUtil, parser){
+               //console.log("a: ",Map, "b: ",MapView, "c: ",FeatureLayer, "d: ",VectorTileLayer);
+               parser.parse();
+               
+               /********* MAP **********/   
+               var map = new Map('map', {
+                  basemap: 'topo', 
+                  center: [-90, 47],
+                   zoom: 7, 
+                   sliderPosition: "top-right"
+               });
+               
+               map.on("load", initMapButtons);
+               
+               var selectionTool; 
+               
+               /********* POLYGON STYLES **********/
+               //polygon selection style 
+                var selectedSymbol = new SimpleFillSymbol({
+                        "type": 'esriSFS',
+                        "style":'esriSFSSolid', 
+                        "color": [24,132,111, 191], //rgba 0-255 //green 
+                        "outline": {
+                          "type": "esriSLS", 
+                          "style": "esriSLSSolid",
+                          "color": [24,132,111,255], //rgba 0-255 //green 
+                          "width": 1
+                        }
+                  });
+               
+               
+               /********* LAYERS **********/
+               //add vector tile layer (Modern Antique)
+               //   var vectorTiles = new VectorTileLayer('https://www.arcgis.com/sharing/rest/content/items/996d9e7a3aac4514bb692ce7a990f1c1/resources/styles/root.json');
+               
+               //add feature layer through Esri API. I can style. 
+               var fl = new FeatureLayer('http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0', {mode: FeatureLayer.MODE_ONDEMAND, outFields: ["*"]});
+               
+            
+               fl.setSelectionSymbol(selectedSymbol); //var selectedSymbol is an object declared above 
+               
+               fl.on("selection-complete", reportSelectedSections);
+               map.addLayer(fl);
+               
+               $("#mapSelectionButton").on( "click", function(){
+                  // console.log("clicked map selection button");
+                   selectionTool.activate(Draw.EXTENT);
+                   
+               });
+               
+               $("#mapClearButton").on("click", function () {
+                   //console.log("clear map selection");
+                    fl.clearSelection();
+                   
+                   
+                   //FAKE LINK!! CLEAR THE RESULTS LIST! 
+                    console.log("reset list"); 
+                    $("#resultsUL").html('');
+                    $("#resultCount").html('0');
+                });
+               
+               
+               function initMapButtons(event){
+                    //  console.log("init map buttons.");
+                    // console.log("event.map", event.map);
+                    selectionTool = new Draw(event.map); 
+                    var selectQuery = new Query();
+                    
+                    on(selectionTool, "DrawEnd", function(geometry){
+                      selectionTool.deactivate();
+                       selectQuery.geometry = geometry;
+                       fl.selectFeatures(selectQuery, fl.SELECTION_NEW);
+                       
+                    });
+                  
+               }
+               
+               //called by "selection-complete" 
+               function reportSelectedSections(event){
+                   
+                   //DRAW THE RESULTS LIST (fake link)
+                   getResults();
+                   
+                   //console.log("features", event.features);
+                   var selectedSections= [];
+                   $(event.features).each(function(ind){
+                       var obj = event.features[ind];
+                       var code = obj.attributes.State+" T"+obj.attributes.TWP+obj.attributes.TownDir+" R"+obj.attributes.RNG+obj.attributes.RangeDir+" Sec"+obj.attributes.SEC;
+                       var sectionId = obj.attributes.UID;
+                       selectedSections.push(sectionId);
+                       
+                   }); 
+                   console.log("selected sections: ", selectedSections);
+               } //end reportSelectedSections function
+              
+           
+               
+           }); //end map-constructing function beginning with require...
+        
+       </script>
+       
+       <script src="resultsList.js"></script>
+    
+   </BODY>
+</HTML>

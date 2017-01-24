@@ -1,0 +1,79 @@
+
+/* outline divs */
+/*#sampleRecord div {
+    border-color: black;
+    border-width: thin;
+    border-style: dashed;
+}*/
+
+#sampleRecord a {
+    color: #18846f;
+}
+
+.green {
+    color: #18846f;
+}
+
+#leftPanel{
+    width:66.3%;
+    float: left;
+}
+#rightPanel{
+    width:33%;
+    float: right;
+    display: inline-block;
+    
+}
+
+
+#footer{
+    padding-top: 10px;
+    clear: both;
+    text-align: center;
+    font-size: 10pt;
+}
+.detailsDiv{
+    display: inline-block; 
+    vertical-align: top;
+}
+
+.attributeLabel{ /*first column in the sample record table*/
+    font-weight: 600;
+    text-align: right;
+    padding-right: 10px;
+}
+
+#sampleRecord h2, h3{
+    margin:8px 0 3px 0;
+}
+
+
+#sampleRecord p {
+    display: block;
+    margin: 3px 0;
+}
+
+#sampleRecord img{
+    padding-right: 8px;
+    height: 200px;
+}
+
+#sampleRecord .thinSectionContainer{
+    display: block;
+}
+#sampleRecord .thinSection{
+    display: inline-block;
+}
+#sampleRecord .thinSection:hover {
+    cursor: pointer;
+    background-color: #e6e6e6;
+}
+
+#sampleRecord .thinSection img{
+    width: 300px;
+}
+
+/* if we are already on a sample page, don't show the sample link. */
+#sampleLink {
+    display: none;
+}
