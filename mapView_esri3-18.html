@@ -61,7 +61,23 @@
                        <label><p><span class="bold">Rock Type </span></p>
                        <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" /></label>
                    </div>
-                  
+                  <div id="mapfilters">
+                       <div class='filter'>
+                           <p><span class="bold">Search by area </span></p>
+                                <div id="mapInteractionButtons">
+                                    <img  class="button" id="mapSelectionButton" src="images/mapSelection.png" alt="select on map" title="select area on map"/> 
+                                    <img class="button" id="mapClearButton" src="images/clearMapSelection2.png" alt="clear map selection" title="clear map selection" /> 
+                                </div>
+                       </div>
+                       <div class='filter'>
+                           <label><p><span class="bold">County</span></p>
+                           <input class="searchBox" type="search" name="countySearch" id="countySearch" placeholder="'Ashland'" /></label>
+                        </div>
+                       <div class='filter'>
+                           <label><p><span class="bold">State</span></p>
+                           <input class="searchBox" type="search" name="stateSearch" id="stateSearch" placeholder="'Wisconsin'" /></label>
+                        </div>
+                    </div>
                    
                    
                    
@@ -72,23 +88,7 @@
            
            <div id="rightPanel">
                
-               <div id="mapfilters">
-                   <div class='filter'>
-                       <p><span class="bold">Search by area </span></p>
-                            <div id="mapInteractionButtons">
-                                <img  class="button" id="mapSelectionButton" src="images/mapSelection.png" alt="select on map" title="select area on map"/> 
-                                <img class="button" id="mapClearButton" src="images/clearMapSelection2.png" alt="clear map selection" title="clear map selection" /> 
-                            </div>
-                   </div>
-                   <div class='filter'>
-                       <label><p><span class="bold">County</span></p>
-                       <input class="searchBox" type="search" name="countySearch" id="countySearch" placeholder="'Ashland'" /></label>
-                    </div>
-                   <div class='filter'>
-                       <label><p><span class="bold">State</span></p>
-                       <input class="searchBox" type="search" name="stateSearch" id="stateSearch" placeholder="'Wisconsin'" /></label>
-                    </div>
-               </div>
+               
                
                <div id="map"></div>
             </div><!--end right Panel div-->   
