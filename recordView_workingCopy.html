@@ -66,7 +66,7 @@
        
         var samID = 2759;
 
-        //The parts of the report webpage are referred to as 'divisions' in this code. 
+        //The parts of the record webpage are referred to as 'divisions' in this code. 
         //The buildReport function will iterate through this array.
         //this creates the skeleton of the webpage.
         var reportDivisions = [
@@ -257,13 +257,15 @@
             "thinSections": [{"thinSectionId":2759, "thinImgppl": "", "thinImgxpl": "", "thinThumbppl":"images\400pxwide\2793ppl_400pxwide.jpg", "thinThumbxpl": "images\400pxwide\2793xpl_400pxwide.jpg"}], 
             
             "mapSectionId": 2959,
-            "state": "Wisconsin",
-            "township":"45N",
-            "range":"01W",
-            "PLSSsection": "11",
-            "quarterSection": "SE",
-            "quarterQuarterSection": "NE",
-            "locationNote": "Penokee Range", 
+            "location" : {
+                "state": "Wisconsin",
+                "township":"45N",
+                "range":"01W",
+                "PLSSsection": "11",
+                "quarterSection": "SE",
+                "quarterQuarterSection": "NE",
+                "locationNote": "Penokee Range" 
+            },
             
             "fieldNotebookId":0,
             "fieldPage": 44,
@@ -308,15 +310,7 @@
             
             //build the sections and divs to contain report information...
             buildReport(sample);
-           
-         
-            //populate sections of the report with information...
-        //    addThinSections(selectedSample[0].attributes);
-       //     addFieldNotes(selectedSample[0].attributes);
-          //  addLithDesc(selectedLithDesc[0]);
-        //    addLocation(selectedSample[0].attributes);
-         //   addNotes(selectedSample[0].attributes);
-        //    addCollection(selectedSample[0].attributes);
+                               
         })
             //for debugging json load errors
            // .done(function(){console.log('success', arguments);})
@@ -328,8 +322,8 @@
         function buildReport(sample){
             console.log("build report for sample ",sample); 
             
+            //add sample number and rock type at the top. 
             var sampleIDh2 = $('<h2></h2>').html("Sample #"+sampleRecordData.sampleId); 
-            
             var rockTypep = $('<p></p>').text(sampleRecordData.rockType);
             rockTypep.css("font-size","14pt");
             
@@ -346,25 +340,20 @@
                 newdiv.attr("id", rd.divisionId);
                 newdiv.append($('<h3></h3>').html(rd.divisionTitle));
                 //append it to the html page. 
-                $('#sampleRecord').append(newdiv);
-                
-  /*              if (rd.divisionId !== "thinSections"){
-    //                populateReportDivision(newdiv, rd.attributes, sample);
-                    // console.log(rd.attributes);
-                } else {
-                    console.log("add thin sections.");
-                    addThinSections(sample);
-                }
-    */           
+                $('#sampleRecord').append(newdiv);           
                 
             }
             
             //populate the various fields in the report, using the values in the sampleRecordData object (global variable)
+            addLocation();
             addFieldNotes();
+            addLithDesc();
+            addNotes();
+            addCollection();
             
         } //end buildReport 
         
-        function populateReportDivision(newdiv, attributes, sample){
+ /*       function populateReportDivision(newdiv, attributes, sample){
         //   receives an array of objects. Each object pertains to one variable. 
             console.log("new div:", newdiv);
             for (i=0; i<attributes.length; i++){
@@ -378,6 +367,7 @@
             
             
         }
+*/
         
        function addThinSections(sample){
             console.log("sample",sample);
@@ -416,7 +406,22 @@
             
         } //end addThinSections function
         
-         function addFieldNotes(){
+         
+             
+        function addLocation(){
+            
+            var loc = ''
+            loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
+            loc+="<div class='detailsDiv'>";
+            for (prop in sampleRecordData.location){
+                //console.log("prop:", prop);
+                loc+="<p><span class='green'>"+prop+":</span> "+sampleRecordData.location[prop]+"</p>";
+            }
+            loc+="</div>"; //end details div
+            $('#location').append(loc);
+        }
+   
+        function addFieldNotes(){
             var fieldNotebookreport = ''; 
             if (sampleRecordData.fieldNotebookId > 0){
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.fieldNotebookThumb+"' alt='notebook cover'/></a>";
@@ -430,46 +435,32 @@
             $('#fieldNotes').append(fieldNotebookreport);
         }
         
- /*       function addLithDesc(lithDesc){
+        function addLithDesc(){
             var lith = '';
-            if(lithDesc){
-                lith+="<a href='http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=article&did=EcoNatRes.LithDescIV.i0001&id=EcoNatRes.LithDescIV&isize=M' target=_blank><img style='height: 200px;' src='images/notebooks/lithologicalDesc1.jpg' alt='lithological descriptions book cover' /></a>"
-                lith+="<div class='detailsDiv'><p>"+lithDesc.rockType+"</p><a href='http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=article&did=EcoNatRes.LithDescIV.i0001&id=EcoNatRes.LithDescIV&isize=M' target=_blank>United States Geological Survey: lithological descriptions Book IV (1884-1885)</a><p>Charles Van Hise</p><p>1884</p></div>"
+            if(sampleRecordData.lithNotebookId != null){
+                lith += "<a href='"+sampleRecordData.lithNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.lithNotebookThumb+"' alt='notebook cover'/></a>";
+                lith+="<div class='detailsDiv'><p>Page "+sampleRecordData.lithPage+"</p> <a href='"+sampleRecordData.lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithNotebookTitle+"</a><p>"+sampleRecordData.lithAuthor+"</p><p>"+sampleRecordData.lithDate+"</p></div>";
             } else {
                 lith+="<p>none</p>";
             }
             
             //append to the appropriate div
-            $('#lithologicalDesc').append(lith);
+            $('#lithDesc').append(lith);
             
         }
         
-        function addLocation(sample){
-            
-            var loc = ''
-            loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
-            loc+="<div class='detailsDiv'>";
-            for (prop in sample.location){
-                //console.log("prop:", prop);
-                loc+="<p><span class='green'>"+prop+":</span> "+sample.location[prop]+"</p>";
-            }
-            loc+="</div>"; //end details div
-            $('#location').append(loc);
-        }
-        
-        function addNotes(sample){
-            if (sample.notes){
-                $('#sampleNotes').append('<p>'+sample.notes+'</p>');
+        function addNotes(){
+            if (sampleRecordData.sampleNotes){
+                $('#sampleNotes').append('<p>'+sampleRecordData.sampleNotes+'</p>');
             } else {
                 $('#sampleNotes').append('<p>none</p>');
             }
         }
         
         function addCollection(){
-            
-            $('#collections').append('<p>Information about where to find the physical samples, if available...</p>');
+            $('#availableSamples').append('<p>Information about where to find the physical samples, if available...</p>');
         }
-  */      
+        
    </script>   
         <script src="modal.js"></script>
    </BODY>
