@@ -1,12 +1,11 @@
 var resultCount = document.getElementById("resultCount");
 var sample;
 
-function getResults (){
+//accepts data from the dojo query 
+function listResults (data){
    
     
-//data/result.json originally.   replaced data.samples with data.features  
-$.getJSON('data/esriSampleResult.json', function (data) {
-    console.log("getJSON. data.features is: ", data.features);
+    console.log("data.features is: ", data.features);
     
     //data.features is an array of objects. 
     
@@ -16,7 +15,7 @@ $.getJSON('data/esriSampleResult.json', function (data) {
         //create a li element 
         var listItem = $('<li>');
         //populate it with sample information. 
-        $(listItem).html("<div class='resultSample'><p>hand sample #" + sample.HandSample + "</p><h3>" + sample.RockType + "</h3><img class='sampleChevron' src='images/chevron_right_gw.png' alt=''></div>");
+        $(listItem).html("<div class='resultSample'><p>sample #" + sample.SampleId + "</p><h3>" + sample.RockType + "</h3><img class='sampleChevron' src='images/chevron_right_gw.png' alt=''></div>");
 
         
         //store sample data with the element
@@ -41,15 +40,15 @@ $.getJSON('data/esriSampleResult.json', function (data) {
     });
     
     
-}) //end getJSON
 }; //end getResults function
     
 function onSampleClick(item){
-    //this function is called when a list item in resultsUL is clicked. 
+    //this function is called when any list item in resultsUL is clicked. 
     
-    console.log("clicked on a sample in the results table");
+   //why does this sometimes console log twice?
     console.log("You selected sample ", $(item).data('SampleId'), ". sample data is: ", $(item).data());
-    if ($(item).data('sampleID') === 12){
-        window.open("recordView_ver2.html", "_blank");
+    
+    if ($(item).data('SampleId') === 12){
+        window.open("recordView_mockup.html", "_blank");
     }
 }
