@@ -124,9 +124,7 @@
        
        <!-- Esri map-->
        <script type="text/javascript">
-           
-            
-           
+         
            require([
                //ALSO INCLUDE THESE IN THE FUNCTION PARAMETERS BELOW!
              //  "esri/tasks/Locator",
@@ -163,9 +161,11 @@
                    sliderPosition: "top-right"
                });
                
+               var selectionTool;
+               
                map.on("load", initMapButtons);
                
-               var selectionTool; 
+                
                
                /********* POLYGON STYLES **********/
                //polygon selection style 
@@ -184,9 +184,9 @@
                
                /********* LAYERS **********/
                //add vector tile layer (Modern Antique)
-               //   var vectorTiles = new VectorTileLayer('https://www.arcgis.com/sharing/rest/content/items/996d9e7a3aac4514bb692ce7a990f1c1/resources/styles/root.json');
+                //  var vectorTiles = new VectorTileLayer('https://www.arcgis.com/sharing/rest/content/items/996d9e7a3aac4514bb692ce7a990f1c1/resources/styles/root.json');
                
-               //add feature layer through Esri API. I can style. 
+               //add map sections feature layer through Esri API. I can style. 
                var fl = new FeatureLayer('http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0', {mode: FeatureLayer.MODE_ONDEMAND, outFields: ["*"]});
                
             
@@ -195,8 +195,14 @@
                fl.on("selection-complete", reportSelectedSections);
                map.addLayer(fl);
                
+               //add feature layer for the samples table 
+               
+               
+               
+               /********** SELECTION/CLEAR FUNCTIONALITY **********/
+               
                $("#mapSelectionButton").on( "click", function(){
-                  // console.log("clicked map selection button");
+                   console.log("clicked map selection button");
                    selectionTool.activate(Draw.EXTENT);
                    
                });
@@ -206,23 +212,30 @@
                     fl.clearSelection();
                    
                    
-                   //FAKE LINK!! CLEAR THE RESULTS LIST! 
-                    console.log("reset list"); 
+                   //FAKE LINK!! 
+                   //CLEAR THE RESULTS LIST! 
+                  console.log("reset list"); 
                     $("#resultsUL").html('');
                     $("#resultCount").html('0');
+                        
                 });
                
                
+               //called on map load
                function initMapButtons(event){
-                    //  console.log("init map buttons.");
+                    console.log("init map buttons.");
                     // console.log("event.map", event.map);
+                   
+                   //selectionTool is a global variable
                     selectionTool = new Draw(event.map); 
-                    var selectQuery = new Query();
+                    var mapSelection = new Query();
                     
+                   //when the selection tool has finished drawing a box, 
+                   // create a new selection in the feature layer (fl) 
                     on(selectionTool, "DrawEnd", function(geometry){
                       selectionTool.deactivate();
-                       selectQuery.geometry = geometry;
-                       fl.selectFeatures(selectQuery, fl.SELECTION_NEW);
+                       mapSelection.geometry = geometry;
+                       fl.selectFeatures(mapSelection, fl.SELECTION_NEW);
                        
                     });
                   
@@ -231,23 +244,56 @@
                //called by "selection-complete" 
                function reportSelectedSections(event){
                    
-                   //DRAW THE RESULTS LIST (fake link)
-                   getResults();
-                   
-                   //console.log("features", event.features);
+                //console.log("features", event.features);
                    var selectedSections= [];
                    $(event.features).each(function(ind){
                        var obj = event.features[ind];
-                       var code = obj.attributes.State+" T"+obj.attributes.TWP+obj.attributes.TownDir+" R"+obj.attributes.RNG+obj.attributes.RangeDir+" Sec"+obj.attributes.SEC;
+                       
+                       //concatenation of state, township, range, and section number
+                //       var code = obj.attributes.State+" T"+obj.attributes.TWP+obj.attributes.TownDir+" R"+obj.attributes.RNG+obj.attributes.RangeDir+" Sec"+obj.attributes.SEC;
                        var sectionId = obj.attributes.UID;
+                       
+                       //push to the array
                        selectedSections.push(sectionId);
                        
                    }); 
                    console.log("selected sections: ", selectedSections);
+                   queryTable(selectedSections);
+                   
+                   
                } //end reportSelectedSections function
               
-           
                
+               function queryTable(selectedSections){
+                 
+                   var query = new Query(); 
+                   query.outFields = ["*"];
+                   query.returnGeometry = false;
+                   query.where = "SectionId IN ("+selectedSections+")"; 
+                       
+                   //url to samples table
+                   var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
+                   
+                   queryTask.execute(
+                                    query, 
+                                     function(queryResult){
+                                         
+                                         queryCallback(queryResult);}
+                                    
+                                    );
+                   
+                  // queryTask.executeForIds(query, queryCallback);
+               }
+               
+               function queryCallback(queryResult){
+                   console.log(queryResult);
+                   var queryFeatures = queryResult.features;
+                   
+                   
+                   listResults(queryResult);
+               }
+               
+           
            }); //end map-constructing function beginning with require...
         
        </script>

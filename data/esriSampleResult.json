@@ -135,6 +135,30 @@
   }
  ],
  "features": [
+{
+   "attributes": {
+    "OBJECTID": 1467,
+    "SampleId": 12,
+    "SectionId": 3171,
+    "WgnhsId": 26700010,
+    "State": "Wisconsin",
+    "Township": 45,
+    "Range": 1,
+    "Direction": "E",
+    "Section_": 19,
+    "Quarter": null,
+    "QuarterQuarter": null,
+    "County": "Iron",
+    "LocNote": "Penokee Range",
+    "RockType": "rock type",
+    "Notes": null,
+    "NotebookPage": "31",
+    "Chemistry": null,
+    "ThinSection": 2748,
+    "NotebookId": 31,
+    "HandSample": 12
+   }
+  },
   
   {
    "attributes": {
