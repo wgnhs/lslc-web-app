@@ -69,13 +69,15 @@
         //The parts of the record webpage are referred to as 'divisions' in this code. 
         //The buildReport function will iterate through this array.
         //this creates the skeleton of the webpage.
+        //unclear whether an attributes list for each diuvision here would be useful for anything, They are not in use right now. 
         var reportDivisions = [
-            {"divisionTitle":"Thin Sections", "divisionId":"thinSections", "attributes": [
+            {"divisionTitle":"Thin Sections", "divisionId":"thinSections"
+           /*  , "attributes": [
                     {   "attrSource":"ThinSectionCount",
                         "attrLabel":"Number of Thin Sections: ",
                         "attrVar":"thinSectionCount"
                     }
-                /*    , 
+                    , 
                     {
                         "attrSource":"", 
                         "attrLabel":"",
@@ -88,9 +90,10 @@
                         "attrTag":"img",
                         "attrVar": "thinImgxpl"
                     }
-                */
-            ]}, 
-            {"divisionTitle":"Location", "divisionId":"location", "attributes": [
+                ]*/
+            }, 
+            {"divisionTitle":"Location", "divisionId":"location" 
+             /*,"attributes": [
                     {
                         "attrSource":"SectionId",
                         "attrLabel":"PLSS Section", 
@@ -147,8 +150,10 @@
                         "attrLabel":"Location Notes:", 
                         "attrVar": "locationNote"
                     }
-            ]}, 
-            {"divisionTitle":"Field Notes", "divisionId":"fieldNotes", "attributes":[
+            ] */
+            }, 
+            {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"
+             /*, "attributes":[
                     {
                         "attrSource":"", 
                         "attrLabel":"", 
@@ -186,8 +191,10 @@
                     }
                 
                 
-            ]}, 
-            {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc", "attributes":[
+            ]*/
+            }, 
+            {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc"
+             /*, "attributes":[
                     {
                         "attrSource":"", 
                         "attrLabel":"Page", 
@@ -226,8 +233,10 @@
                     }
                 
                 
-            ]}, 
-            {"divisionTitle":"Sample Notes","divisionId":"sampleNotes", "attributes":[
+            ]*/
+            }, 
+            {"divisionTitle":"Sample Notes","divisionId":"sampleNotes"
+             /*, "attributes":[
                 
                 {
                         "attrSource":"Notes", 
@@ -236,8 +245,10 @@
                     }
                 
                 
-            ]},
-            {"divisionTitle":"Available Samples","divisionId":"availableSamples", "attributes":[
+            ]*/
+            },
+            {"divisionTitle":"Available Samples","divisionId":"availableSamples"
+             /*, "attributes":[
                     {
                         "attrSource":"WgnhsId", 
                         "attrLabel":"WGNHS ID", 
@@ -245,7 +256,8 @@
                     }
                 
                 
-            ]}  
+            ]*/
+            }  
         ]; 
         
         //this object will hold all of the data for the record.
@@ -254,7 +266,7 @@
             "sampleId":00,
             "rockType":"undefined",
             "thinSectionCount":1, 
-            "thinSections": [{"thinSectionId":2759, "thinImgppl": "", "thinImgxpl": "", "thinThumbppl":"images\400pxwide\2793ppl_400pxwide.jpg", "thinThumbxpl": "images\400pxwide\2793xpl_400pxwide.jpg"}], 
+            "thinSections": [{"thinSectionId":2759, "thinImgppl": "", "thinImgxpl": "", "thinThumbppl":"images/400pxwide/2793ppl_400pxwide.jpg", "thinThumbxpl": "images/400pxwide/2793xpl_400pxwide.jpg"}], 
             
             "mapSectionId": 2959,
             "location" : {
@@ -345,46 +357,33 @@
             }
             
             //populate the various fields in the report, using the values in the sampleRecordData object (global variable)
+            addThinSections();
             addLocation();
             addFieldNotes();
             addLithDesc();
             addNotes();
-            addCollection();
+            addAvailableSamples();
             
         } //end buildReport 
         
- /*       function populateReportDivision(newdiv, attributes, sample){
-        //   receives an array of objects. Each object pertains to one variable. 
-            console.log("new div:", newdiv);
-            for (i=0; i<attributes.length; i++){
-                //for each attribute...
-        //console.log("attributes[i] is",attributes[i]);
-                var attr = attributes[i];
-                var entry = '';
-                entry +=   "<p>"+attr.attrLabel+" "+sample[attr.attrSource]+"</p>";
-                $(newdiv).append(entry);
-            }
-            
-            
-        }
-*/
+ 
         
-       function addThinSections(sample){
-            console.log("sample",sample);
+       function addThinSections(){
+            
             //populate the thin section results:
-       /*     if (sample.thinSections.length>0){
-                for (i in sample.thinSections){
+            if (sampleRecordData.thinSectionCount>0){
+                for (i in sampleRecordData.thinSections){
                     
-                    console.log("thin section", sample.thinSections[i]);
+                    console.log("thin section", sampleRecordData.thinSections[i]);
                     
-                    //a container at block-level
+                   //a container at block-level
                     var thinSectionContainer = $('<div></div>');
                     thinSectionContainer.addClass('thinSectionContainer');
                     
-                    var thinSec = $('<div></div>').html("<p>Thin section #"+sample.thinSections[i]+"</p><img src='images/400pxwide/"+sample.thinSections[i]+"ppl_400.jpg' alt='plane-polar image'/><img src='images/400pxwide/"+sample.thinSections[i]+"xpl_400.jpg' alt='cross-polar image'/>");
+                    var thinSec = $('<div></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p><img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar image'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar image'/>");
                     thinSec.addClass('thinSection');
                     thinSec.attr('title','click to view');
-                    thinSec.data({'thinID':sample.thinSections[i]});
+                    thinSec.data({'thinID':sampleRecordData.thinSections[i].thinSectionId});
                     
                     //add the thin section area into its block-level container
                     thinSectionContainer.append(thinSec);
@@ -392,9 +391,9 @@
                     $('#thinSections').append(thinSectionContainer);
                     
                 } } else {
-                console.log("none");
-                $('#thinSections').append('<p>none.</p>');
-                //$("#sampleRecord").append("<p>none</p>");
+                console.log("thin section count is zero");
+                $('#thinSections').append('<p>none</p>');
+                
             }
             
              $(".thinSection").on('click', function(){
@@ -402,7 +401,7 @@
                 
                 modal.thinSectionViewer($(this).data('thinID'));
             })
-       */     
+            
             
         } //end addThinSections function
         
@@ -457,7 +456,7 @@
             }
         }
         
-        function addCollection(){
+        function addAvailableSamples(){
             $('#availableSamples').append('<p>Information about where to find the physical samples, if available...</p>');
         }
         
