@@ -1,3 +1,5 @@
+//initial comment for filter branch
+
 function queryCallback(queryResult){
    console.log(queryResult);
    var queryFeatures = queryResult.features;
