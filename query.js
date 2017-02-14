@@ -1,8 +1,8 @@
 //initial comment for filter branch
 
 function queryCallback(queryResult){
-   console.log(queryResult);
-   var queryFeatures = queryResult.features;
+   //console.log(queryResult);
+   //var queryFeatures = queryResult.features;
    
    
    listResults(queryResult);
@@ -14,6 +14,29 @@ function queryTable(selectedSections, Query, QueryTask){
    query.outFields = ["*"];
    query.returnGeometry = false;
    query.where = "SectionId IN ("+selectedSections+")"; 
+       
+   //url to samples table
+   var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
+   
+   queryTask.execute(
+                    query, 
+                     function(queryResult){
+                         
+                         queryCallback(queryResult);}
+                    
+                    );
+   
+  // queryTask.executeForIds(query, queryCallback);
+}
+
+function queryTable2(searchKey, Query, QueryTask){
+
+	console.log(searchKey)
+     
+   var query = new Query(); 
+   query.outFields = ["*"];
+   query.returnGeometry = false;
+   query.where = "RockType LIKE %"+searchKey+"%"; 
        
    //url to samples table
    var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
@@ -74,6 +97,18 @@ function utilizeButtons(selectionTool, Draw, fl){
     });
 
 }
+
+function initSearchBar(Query, QueryTask){
+	var rockTypeSearchBar = document.getElementById('rockTypeSearch')
+	rockTypeSearchBar.onkeyup = function(){
+    	var rockTypeSearchKey = rockTypeSearchBar.value
+    	queryTable2(rockTypeSearchKey, Query, QueryTask)
+	}
+}
+
+
+
+ 
 
 
 
