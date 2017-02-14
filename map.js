@@ -104,7 +104,7 @@ function reportSelectedSections(event){
 } //end reportSelectedSections function
 
 
-initSearchBar(Query, QueryTask);
+initSearchBars(Query, QueryTask);
 
 // function initSearchBar(){
 //   var rockTypeSearchBar = document.getElementById('rockTypeSearch')

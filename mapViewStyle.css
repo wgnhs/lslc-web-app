@@ -92,6 +92,12 @@ input {
     top: 15px; 
     right:0;
 }
+
+#filterFeedback{
+    display: block;
+    height: 50px;
+    width: 100%;
+}
 /*------------------------ Results List ----------------------*/
 #resultsPanel{
     clear: both;

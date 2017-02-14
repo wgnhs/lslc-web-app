@@ -1,4 +1,6 @@
 //initial comment for filter branch
+var rockSearch = false
+var countySearch = false
 
 function queryCallback(queryResult){
    //console.log(queryResult);
@@ -29,28 +31,6 @@ function queryTable(selectedSections, Query, QueryTask){
   // queryTask.executeForIds(query, queryCallback);
 }
 
-function queryTable2(searchKey, Query, QueryTask){
-
-	console.log(searchKey)
-     
-   var query = new Query(); 
-   query.outFields = ["*"];
-   query.returnGeometry = false;
-   query.where = "RockType LIKE %"+searchKey+"%"; 
-       
-   //url to samples table
-   var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
-   
-   queryTask.execute(
-                    query, 
-                     function(queryResult){
-                         
-                         queryCallback(queryResult);}
-                    
-                    );
-   
-  // queryTask.executeForIds(query, queryCallback);
-}
 
 function initMapButtons(event, selectionTool, Draw, Query, on, fl){
     
@@ -98,12 +78,105 @@ function utilizeButtons(selectionTool, Draw, fl){
 
 }
 
-function initSearchBar(Query, QueryTask){
-	var rockTypeSearchBar = document.getElementById('rockTypeSearch')
+//function utilizes the search bars; called from map.js
+function initSearchBars(Query, QueryTask){
+
+	//declares empty strings for search keys
+	var rockTypeSearchKey = "" 
+	var countySearchKey = ""
+
+	//
+	var rockTypeSearchBar = document.getElementById('rockTypeSearch') //gets search bar element
+	//function called everytime key is lifted in searchbar
 	rockTypeSearchBar.onkeyup = function(){
-    	var rockTypeSearchKey = rockTypeSearchBar.value
-    	queryTable2(rockTypeSearchKey, Query, QueryTask)
+		rockSearch = true //indicates that there is a rock filter applicable
+    	rockTypeSearchKey = rockTypeSearchBar.value //pulls string from searchbar
+
+    	//adds feedback indicator
+    	$("#rockSearchOn").remove();
+    	$("#filterFeedback").append($("<div id='rockSearchOn' class='feedbackBar'></div>"))
+    	$("#rockSearchOn").append($("<p>" + rockTypeSearchKey + "</p>"))
+    	queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask)
 	}
+
+	var countySearchBar = document.getElementById('countySearch') //gets search bar element
+	//function called everytime key is lifted in searchbar
+	countySearchBar.onkeyup = function(){
+		countySearch = true //indicates that there is a county filter applicable
+    	countySearchKey = countySearchBar.value //pulls string from searchbar
+
+    	//adds feedback indicator
+    	$("#countySearchOn").remove();
+    	$("#filterFeedback").append($("<div id='countySearchOn' class='feedbackBar'></div>"))
+    	$("#countySearchOn").append($("<p>" + countySearchKey + "</p>"))
+    	queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask)
+	}
+
+	
+
+
+}
+
+
+function queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask){
+
+	//creates two booleans -- checks to see whether the boxes are checked or not 
+	var thinSectionChecked = document.getElementById("thinSectionCheckbox").checked
+	var handSampleChecked = document.getElementById("handSampleCheckbox").checked
+    
+    //same lines from QueryTable() 
+   	var query = new Query(); 
+   	query.outFields = ["*"];
+   	query.returnGeometry = false;
+   	query.where = "" // assigns empty string to where statement
+
+   	//checks to see whether or not rock type has a filter; applies it if so
+   	if (rockSearch){	
+   		query.where = "RockType LIKE %"+rockTypeSearchKey+"%";
+   	}
+
+   	//checks to see whether or not county has a filter; applies it if so
+   	if (countySearch){
+   		//if there's an existing filter applied, adds AND to combine
+   		if (query.where != ""){
+   			query.where = query.where + " AND "
+   		}
+   		query.where = query.where + "County LIKE %"+countySearchKey+"%";
+   	}
+
+   	//checks to see whether or not thin section box is checked; applies it if so
+   	if (thinSectionChecked){
+   		//if there's an existing filter applied, adds AND to combine
+   		if (query.where != ""){
+   			query.where = query.where + " AND "
+   		}
+   		query.where = query.where + "ThinsectionCount > 0";
+   	}
+
+   	//checks to see whether or not thin section box is checked; applies it if so
+   	if (handSampleChecked){
+   		//if there's an existing filter applied, adds AND to combine
+   		if (query.where != ""){
+   			query.where = query.where + " AND "
+   		}
+   		query.where = query.where + "HandSampleCount > 0";
+   	}
+
+
+   	console.log(query.where) 
+      
+   //url to samples table
+   	// var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
+   
+   	// queryTask.execute(
+    //                  query, 
+    //                   function(queryResult){
+                         
+    //                       queryCallback(queryResult);}
+                    
+    //                  );
+   
+  // queryTask.executeForIds(query, queryCallback);
 }
 
 
