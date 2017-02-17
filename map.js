@@ -1,4 +1,4 @@
-         
+
 require([
    //ALSO INCLUDE THESE IN THE FUNCTION PARAMETERS BELOW!
  //  "esri/tasks/Locator",
@@ -23,7 +23,7 @@ require([
    "dojo/parser",   //I don't know what this does. 
    "dojo/domReady!" 
    
-], function (Map, FeatureLayer, FeatureTable, SimpleFillSymbol, Query, QueryTask, Draw, dom, on, arrayUtil, parser){
+], function (Map, FeatureLayer, FeatureTable, SimpleFillSymbol, Query, QueryTask, Draw, dom, on, arrayUtil, parser, rockTypeSearchKey){
    // console.log("a: ",Map, "b: ",MapView, "c: ",FeatureLayer, "d: ",VectorTileLayer);
    parser.parse();
    
@@ -44,6 +44,8 @@ require([
    	initMapButtons(e, selectionTool, Draw, Query, on, fl); //calls from query.js
 
    });
+
+   
    
     
    
@@ -102,6 +104,13 @@ function reportSelectedSections(event){
 } //end reportSelectedSections function
 
 
+initSearchBars(Query, QueryTask);
+
+// function initSearchBar(){
+//   var rockTypeSearchBar = document.getElementById('rockTypeSearch')
+//   console.log(rockTypeSearchBar.value)
+//   var rockTypeSearchKey = rockTypeSearchBar.value
+// }
 
 
 
@@ -109,4 +118,6 @@ function reportSelectedSections(event){
    
 
 }); //end map-constructing function beginning with require...
+
+
         
