@@ -162,4 +162,8 @@ function utilizeButtons(selectionTool, Draw, fl){
     });
 
 } //end function utilizeButtons
+
+function highlightMap(){
+    console.log("highlight the map sections");
+}
         

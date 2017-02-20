@@ -1,6 +1,6 @@
-//initial comment for filter branch
-var rockSearch = false
-var countySearch = false
+//global vars for tracking whether there is a filter active. 
+var rockSearch = false;
+var countySearch = false;
 
 require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask){
     
@@ -10,49 +10,49 @@ require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask)
 //function utilizes the search bars; called from map.js
 function initSearchBars(){
 
-		//creates two booleans -- checks to see whether the boxes are checked or not 
-	var thinSectionChecked = document.getElementById("thinSectionCheckbox").checked
-	var handSampleChecked = document.getElementById("handSampleCheckbox").checked
+    //creates two booleans -- checks to see whether the boxes are checked or not 
+	var thinSectionChecked = document.getElementById("thinSectionCheckbox").checked;
+	var handSampleChecked = document.getElementById("handSampleCheckbox").checked;
 
 	//declares empty strings for search keys
-	var rockTypeSearchKey = "" 
-	var countySearchKey = ""
+	var rockTypeSearchKey = ""; 
+	var countySearchKey = "";
 
-	//function called everytime key is lifted in searchbar
+	//function called on input change
 	$("#rockTypeSearch").on("input", function(){
-		rockSearch = true //indicates that there is a rock filter applicable
-    	rockTypeSearchKey = rockTypeSearchBar.value //pulls string from searchbar
+		rockSearch = true; //indicates that there is a rock filter applicable
+    	rockTypeSearchKey = $("#rockTypeSearch").val(); //pulls string from searchbar
 
     	//adds feedback indicator
     	$("#rockSearchOn").remove();
-    	$("#filterFeedback").append($("<div id='rockSearchOn' class='feedbackBar'></div>"))
-    	$("#rockSearchOn").append($("<p>" + rockTypeSearchKey + "</p>"))
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
+    	$("#filterFeedback").append($("<div id='rockSearchOn' class='feedbackBar'></div>"));
+    	$("#rockSearchOn").append($("<p>" + rockTypeSearchKey + "</p>"));
+    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	});
 
 	
 	//function called everytime key is lifted in searchbar
 	$("#countySearch").on("input", function(){
-		countySearch = true //indicates that there is a county filter applicable
-    	countySearchKey = countySearchBar.value //pulls string from searchbar
+		countySearch = true; //indicates that there is a county filter applicable
+    	countySearchKey = $("#countySearch").val(); //pulls string from searchbar
 
     	//adds feedback indicator
     	$("#countySearchOn").remove();
-    	$("#filterFeedback").append($("<div id='countySearchOn' class='feedbackBar'></div>"))
-    	$("#countySearchOn").append($("<p>" + countySearchKey + "</p>"))
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
+    	$("#filterFeedback").append($("<div id='countySearchOn' class='feedbackBar'></div>"));
+    	$("#countySearchOn").append($("<p>" + countySearchKey + "</p>"));
+    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	});
 
 	thinSectionCheckbox.onchange = function() {
 
-		if (thinSectionChecked) { thinSectionChecked = false } else { thinSectionChecked = true }
-		queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
+		if (thinSectionChecked) { thinSectionChecked = false } else { thinSectionChecked = true };
+		queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	}
 
 	handSampleCheckbox.onchange = function() {
 
-		if (handSampleChecked) { handSampleChecked = false } else { handSampleChecked = true }
-		queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
+		if (handSampleChecked) { handSampleChecked = false } else { handSampleChecked = true };
+		queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	}
 
 	
@@ -70,7 +70,7 @@ function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChe
    	if (handSampleChecked) { var handSampleString = "HandSampleCount > 0"} else { var handSampleString = ""}
 
    	//combines search strings into an array
-   	var sqlArray = [rockTypeString, countySearchString, thinSectionString, handSampleString]
+   	var sqlArray = [rockTypeString, countySearchString, thinSectionString, handSampleString];
 
 	
     
@@ -83,94 +83,70 @@ function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChe
    	
    	//iterates through sqlArray
    	for (i = 0; i < sqlArray.length; i++) {
-   		//testing for a value before and after, if so, adds AND inbtween them
-   		if (query.where != "" && sqlArray[i] != "") {query.where +=  " AND " }
-   		query.where += sqlArray[i] //adds the sql querry to the string 
-   	}
+   		//testing for a value before and after, if so, adds AND in between them
+   		if (query.where != "" && sqlArray[i] != "") {query.where +=  " AND " };
+   		query.where += sqlArray[i]; //adds the sql query to the string 
+   	};
 
-   	
+   	console.log("query.where is:", query.where);
 
-   	console.log(query.where)
-
-   	
-
-
-      
+        
    //url to samples table
-  //  	var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
-   
-  //  	queryTask.execute(
-  //                    query, 
-  //                     function(queryResult){
-                         
-  //                         queryCallback(queryResult);}
-                    
-  //                    );
-   
+    var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
+
+    queryTask.execute( query, function(queryResult){queryCallback(queryResult);}  );
+
   // queryTask.executeForIds(query, queryCallback);
 
   //calls remove filters
-   	removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
+   	removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 }
 
 function removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked){
-	
+    
 	//onclick function called when someone clicks on a feedback div
 	$("#rockSearchOn").click(function() {
-
+        console.log("remove rockType filter.");
+        
    		//removes feedback div; sets the search key to remove statement from SQL Query
    		$("#rockSearchOn").remove();
-   		rockSearch = false 
-    	rockTypeSearchKey = "" 
+        //change global var
+   		rockSearch = false ;
+    	rockTypeSearchKey = "";
 
     	//resets the SQL Query
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked)
+        //BROKEN!
+    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 
    	})
 
 	//onclick function called when someone clicks on a feedback div
    	$("#countySearchOn").click(function() {
-   		
+   		console.log("remove county filter.");
    		//removes feedback div; sets the search key to remove statement from SQL Query
    		$("#countySearchOn").remove();
-   		countySearch = false 
-    	countySearchKey = "" 
+        //change global var 
+   		countySearch = false; 
+        //reset query var
+    	countySearchKey = ""; 
 
-    	//resets the SQL Query
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked)
+    	//re-call the SQL Query
+        //BROKEN!
+    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 
-   	})
+   	});
+  
 }
 
 
-function queryTable(selectedSections){
-     
-   var query = new Query(); 
-   query.outFields = ["*"];
-   query.returnGeometry = false;
-   query.where = "SectionId IN ("+selectedSections+")"; 
-       
-   //url to samples table
-   var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
-   
-   queryTask.execute(
-                    query, 
-                     function(queryResult){
-                         
-                         queryCallback(queryResult);}
-                    
-                    );
-   
-  // queryTask.executeForIds(query, queryCallback);
-}
 
-
-function queryCallback(queryResult){
-   console.log("query result:", queryResult);
+function queryCallback(samplesResult){
+   console.log("query result:", samplesResult);
    //var queryFeatures = queryResult.features;
    
    
-   listResults(queryResult);
-}
+   listResults(samplesResult);
+    highlightMap();
+} //end function queryCallback. 
     
 }); //end require.
