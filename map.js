@@ -98,7 +98,7 @@ require([
     } //end reportSelectedSections function
 
 
-initSearchBars(Query, QueryTask);
+//initSearchBars(Query, QueryTask);
 
 // function initSearchBar(){
 //   var rockTypeSearchBar = document.getElementById('rockTypeSearch')

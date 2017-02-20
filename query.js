@@ -1,34 +1,14 @@
 //initial comment for filter branch
 var rockSearch = false
 var countySearch = false
-var rockTypeSearchBar = document.getElementById('rockTypeSearch') //gets search bar element
 
-
-function queryTable(selectedSections, Query, QueryTask){
-     
-   var query = new Query(); 
-   query.outFields = ["*"];
-   query.returnGeometry = false;
-   query.where = "SectionId IN ("+selectedSections+")"; 
-       
-   //url to samples table
-   var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
-   
-   queryTask.execute(
-                    query, 
-                     function(queryResult){
-                         
-                         queryCallback(queryResult);}
-                    
-                    );
-   
-  // queryTask.executeForIds(query, queryCallback);
-}
-
-
+require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask){
+    
+    //call the initialize function. 
+    initSearchBars();
 
 //function utilizes the search bars; called from map.js
-function initSearchBars(Query, QueryTask){
+function initSearchBars(){
 
 		//creates two booleans -- checks to see whether the boxes are checked or not 
 	var thinSectionChecked = document.getElementById("thinSectionCheckbox").checked
@@ -39,7 +19,7 @@ function initSearchBars(Query, QueryTask){
 	var countySearchKey = ""
 
 	//function called everytime key is lifted in searchbar
-	rockTypeSearchBar.onkeyup = function(){
+	$("#rockTypeSearch").on("input", function(){
 		rockSearch = true //indicates that there is a rock filter applicable
     	rockTypeSearchKey = rockTypeSearchBar.value //pulls string from searchbar
 
@@ -47,12 +27,12 @@ function initSearchBars(Query, QueryTask){
     	$("#rockSearchOn").remove();
     	$("#filterFeedback").append($("<div id='rockSearchOn' class='feedbackBar'></div>"))
     	$("#rockSearchOn").append($("<p>" + rockTypeSearchKey + "</p>"))
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked)
-	}
+    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
+	});
 
-	var countySearchBar = document.getElementById('countySearch') //gets search bar element
+	
 	//function called everytime key is lifted in searchbar
-	countySearchBar.onkeyup = function(){
+	$("#countySearch").on("input", function(){
 		countySearch = true //indicates that there is a county filter applicable
     	countySearchKey = countySearchBar.value //pulls string from searchbar
 
@@ -60,19 +40,19 @@ function initSearchBars(Query, QueryTask){
     	$("#countySearchOn").remove();
     	$("#filterFeedback").append($("<div id='countySearchOn' class='feedbackBar'></div>"))
     	$("#countySearchOn").append($("<p>" + countySearchKey + "</p>"))
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked)
-	}
+    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
+	});
 
 	thinSectionCheckbox.onchange = function() {
 
 		if (thinSectionChecked) { thinSectionChecked = false } else { thinSectionChecked = true }
-		queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked)
+		queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
 	}
 
 	handSampleCheckbox.onchange = function() {
 
 		if (handSampleChecked) { handSampleChecked = false } else { handSampleChecked = true }
-		queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked)
+		queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
 	}
 
 	
@@ -81,11 +61,11 @@ function initSearchBars(Query, QueryTask){
 } //end initSearchBars function
 
 
-function queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked){
+function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked){
 
 	//checks each possible SQL statement, creates SQL statement if applicable, or defines a blank string
-	if (rockSearch) { var rockTypeString = "RockType LIKE '%"+rockTypeSearchKey+"%'"} else { var rockTypeString = ""}
-   	if (countySearch) { var countySearchString = "County LIKE '%"+countySearchKey+"%'"} else { var countySearchString = ""}
+	if (rockSearch) { var rockTypeString = "Upper(RockType) LIKE '%"+rockTypeSearchKey.toUpperCase()+"%'"} else { var rockTypeString = ""}
+   	if (countySearch) { var countySearchString = "Upper(County) LIKE '%"+countySearchKey.toUpperCase()+"%'"} else { var countySearchString = ""}
    	if (thinSectionChecked) { var thinSectionString = "ThinsectionCount > 0"} else { var thinSectionString = ""}
    	if (handSampleChecked) { var handSampleString = "HandSampleCount > 0"} else { var handSampleString = ""}
 
@@ -130,10 +110,10 @@ function queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTa
   // queryTask.executeForIds(query, queryCallback);
 
   //calls remove filters
-   	removeFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked)
+   	removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked)
 }
 
-function removeFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked){
+function removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked){
 	
 	//onclick function called when someone clicks on a feedback div
 	$("#rockSearchOn").click(function() {
@@ -163,10 +143,34 @@ function removeFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thi
 }
 
 
+function queryTable(selectedSections){
+     
+   var query = new Query(); 
+   query.outFields = ["*"];
+   query.returnGeometry = false;
+   query.where = "SectionId IN ("+selectedSections+")"; 
+       
+   //url to samples table
+   var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
+   
+   queryTask.execute(
+                    query, 
+                     function(queryResult){
+                         
+                         queryCallback(queryResult);}
+                    
+                    );
+   
+  // queryTask.executeForIds(query, queryCallback);
+}
+
+
 function queryCallback(queryResult){
-   //console.log(queryResult);
+   console.log("query result:", queryResult);
    //var queryFeatures = queryResult.features;
    
    
    listResults(queryResult);
 }
+    
+}); //end require.
