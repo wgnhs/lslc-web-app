@@ -2,7 +2,7 @@
 var rockSearch = false;
 var countySearch = false;
 
-require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask){
+require(["esri/tasks/query", "esri/tasks/QueryTask", "esri/tasks/StatisticDefinition"], function(Query, QueryTask, StatisticDefinition){
     
     //call the initialize function. 
     initSearchBars();
@@ -79,6 +79,12 @@ function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChe
    	query.outFields = ["*"];
    	query.returnGeometry = false;
    	query.where = "" // assigns empty string to where statement
+    
+     //same lines from QueryTable() 
+   	var sectionsQuery = new Query(); 
+   	sectionsQuery.outFields = ["SectionId"];
+   	sectionsQuery.returnGeometry = false;
+   	sectionsQuery.where = "" // assigns empty string to where statement
 
    	
    	//iterates through sqlArray
@@ -86,15 +92,28 @@ function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChe
    		//testing for a value before and after, if so, adds AND in between them
    		if (query.where != "" && sqlArray[i] != "") {query.where +=  " AND " };
    		query.where += sqlArray[i]; //adds the sql query to the string 
+        
    	};
-
-   	console.log("query.where is:", query.where);
-
+    
+   	//console.log("query.where is:", query.where);
+    //set the sections query to the same where as the normal query. 
+    sectionsQuery.where = query.where;
         
    //url to samples table
     var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
 
-    queryTask.execute( query, function(queryResult){queryCallback(queryResult);}  );
+    queryTask.execute( query, function(samplesResult){listResults(samplesResult);;}  );
+    queryTask.execute( sectionsQuery, function(sectionsQueryResult){
+       // console.log("sections query result:", sectionqueryResult.features);
+        var highlightMapSections = []; 
+        //iterate through  
+        for (f in sectionsQueryResult.features){
+           // console.log("f attributes sectionId", sectionqueryResult.features[f].attributes.SectionId);
+            highlightMapSections.push(sectionsQueryResult.features[f].attributes.SectionId);
+        }
+        
+        highlightMap(highlightMapSections);
+    });
 
   // queryTask.executeForIds(query, queryCallback);
 
@@ -138,15 +157,5 @@ function removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, h
   
 }
 
-
-
-function queryCallback(samplesResult){
-   console.log("query result:", samplesResult);
-   //var queryFeatures = queryResult.features;
-   
-   
-   listResults(samplesResult);
-    highlightMap();
-} //end function queryCallback. 
     
 }); //end require.

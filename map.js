@@ -163,7 +163,7 @@ function utilizeButtons(selectionTool, Draw, fl){
 
 } //end function utilizeButtons
 
-function highlightMap(){
-    console.log("highlight the map sections");
+function highlightMap(array){
+    console.log("highlight the map sections", array);
 }
         

@@ -4,14 +4,15 @@ var sample;
 //accepts data from the dojo query 
 function listResults (data){
    
+    //Clear the results list before re-populating. 
+    console.log("clear results.");
+    $("#resultsUL").html('');
+    $("#resultsCount").html('0');
     
     console.log("data.features is: ", data.features);
     //data.features is an array of objects. 
     
-    //Clear the results list before re-populating
-    console.log("clear results.");
-    $("#resultsUL").html('');
-    $("#resultsCount").html('0');
+    
     
     for (index in data.features) {
         sample = data.features[index].attributes;
