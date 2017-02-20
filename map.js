@@ -1,4 +1,3 @@
-
 require([
    //ALSO INCLUDE THESE IN THE FUNCTION PARAMETERS BELOW!
  //  "esri/tasks/Locator",
@@ -74,37 +73,32 @@ require([
 
    fl.setSelectionSymbol(selectedSymbol); //var selectedSymbol is an object declared above 
    
-   
-   
-  
+    map.addLayer(fl);
+    
    fl.on("selection-complete", reportSelectedSections);
-   map.addLayer(fl);
+  
+    function reportSelectedSections(event){
+
+    //console.log("features", event.features);
+       var selectedSections= [];
+       $(event.features).each(function(ind){
+           
+           
+           var sectionId = event.features[ind].attributes.UID;
+
+           //push to the array
+           selectedSections.push(sectionId);
+
+       }); 
+       console.log("selected sections: ", selectedSections);
+
+       queryTable(selectedSections, Query, QueryTask); //calls from query.js
 
 
-function reportSelectedSections(event){
-       
-//console.log("features", event.features);
-   var selectedSections= [];
-   $(event.features).each(function(ind){
-       var obj = event.features[ind];
-       
-       //concatenation of state, township, range, and section number
-//       var code = obj.attributes.State+" T"+obj.attributes.TWP+obj.attributes.TownDir+" R"+obj.attributes.RNG+obj.attributes.RangeDir+" Sec"+obj.attributes.SEC;
-       var sectionId = obj.attributes.UID;
-       
-       //push to the array
-       selectedSections.push(sectionId);
-       
-   }); 
-   console.log("selected sections: ", selectedSections);
-
-   queryTable(selectedSections, Query, QueryTask); //calls from query.js
-   
-   
-} //end reportSelectedSections function
+    } //end reportSelectedSections function
 
 
-initSearchBars(Query, QueryTask);
+//initSearchBars(Query, QueryTask);
 
 // function initSearchBar(){
 //   var rockTypeSearchBar = document.getElementById('rockTypeSearch')
@@ -113,11 +107,63 @@ initSearchBars(Query, QueryTask);
 // }
 
 
-
-   
-   
-
 }); //end map-constructing function beginning with require...
 
 
+
+function initMapButtons(event, selectionTool, Draw, Query, on, fl){
+    
+   //selectionTool is a global variable
+    selectionTool = new Draw(event.map); 
+    
+    //will probably take this out. 
+    var mapSelection = new Query();
+
+   //when the selection tool has finished drawing a box, 
+   // create a new selection in the feature layer (fl) 
+    on(selectionTool, "DrawEnd", function(geometry){
+    	console.log('ran')
+      selectionTool.deactivate();
+        
+        
+  /*     //we will not be highlighting map sections based on geometry. We need our highlight to be based on all results from the samples table. 
+        mapSelection.geometry = geometry;
+       fl.selectFeatures(mapSelection, fl.SELECTION_NEW);*/
+
+       
+    });
+
+  utilizeButtons(selectionTool, Draw, fl); //calls funtion that has jquery onclick functions
+} 
+
+/********** SELECTION/CLEAR FUNCTIONALITY **********/
+function utilizeButtons(selectionTool, Draw, fl){
+
+   $("#mapSelectionButton").on( "click", function(){
+
+	
+       console.log(selectionTool)
+       selectionTool.activate(Draw.EXTENT);
+       
+   });
+   
+   $("#mapClearButton").on("click", function () {
+       console.log("clear map sections from SQL query. (not yet implemented.)");
+        fl.clearSelection();
+       
+       
+       //FAKE LINK!! 
+       //CLEAR THE RESULTS LIST! 
+  /*    console.log("reset list"); 
+        $("#resultsUL").html('');
+        $("#resultCount").html('0');
+    */    
+            
+    });
+
+} //end function utilizeButtons
+
+function highlightMap(array){
+    console.log("highlight the map sections", array);
+}
         
