@@ -3,13 +3,6 @@ var rockSearch = false
 var countySearch = false
 var rockTypeSearchBar = document.getElementById('rockTypeSearch') //gets search bar element
 
-function queryCallback(queryResult){
-   //console.log(queryResult);
-   //var queryFeatures = queryResult.features;
-   
-   
-   listResults(queryResult);
-}
 
 function queryTable(selectedSections, Query, QueryTask){
      
@@ -85,7 +78,7 @@ function initSearchBars(Query, QueryTask){
 	
 
 
-}
+} //end initSearchBars function
 
 
 function queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked){
@@ -167,4 +160,13 @@ function removeFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thi
     	queryTableForFilters(rockTypeSearchKey, countySearchKey, Query, QueryTask, thinSectionChecked, handSampleChecked)
 
    	})
+}
+
+
+function queryCallback(queryResult){
+   //console.log(queryResult);
+   //var queryFeatures = queryResult.features;
+   
+   
+   listResults(queryResult);
 }
