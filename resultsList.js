@@ -6,8 +6,12 @@ function listResults (data){
    
     
     console.log("data.features is: ", data.features);
-    
     //data.features is an array of objects. 
+    
+    //Clear the results list before re-populating
+    console.log("clear results.");
+    $("#resultsUL").html('');
+    $("#resultsCount").html('0');
     
     for (index in data.features) {
         sample = data.features[index].attributes;
@@ -32,15 +36,16 @@ function listResults (data){
     //set results counter statement: 
     resultCount.innerHTML = data.features.length;
     
-    //WORKS
-    //delegated event handler for click event on li elements in resultsUL
-    $("#resultsUL").on("click", 'li', function () {
-        onSampleClick(this);
-       // console.log("You selected sample ",$(this).data('sampleID'),". sample data is: ",$(this).data() );
-    });
-    
+       
     
 }; //end getResults function
+
+
+ //delegated event handler for click event on li elements in resultsUL
+    $("#resultsUL").on("click", 'li', function () {
+        onSampleClick(this);
+       
+    });
     
 function onSampleClick(item){
     //this function is called when any list item in resultsUL is clicked. 
