@@ -78,13 +78,13 @@ function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChe
    	var query = new Query(); 
    	query.outFields = ["*"];
    	query.returnGeometry = false;
-   	query.where = "" // assigns empty string to where statement
+   	query.where = ""; // assigns empty string to where statement
     
      //same lines from QueryTable() 
    	var sectionsQuery = new Query(); 
    	sectionsQuery.outFields = ["SectionId"];
    	sectionsQuery.returnGeometry = false;
-   	sectionsQuery.where = "" // assigns empty string to where statement
+   	sectionsQuery.where = ""; // assigns empty string to where statement
 
    	
    	//iterates through sqlArray
@@ -102,7 +102,7 @@ function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChe
    //url to samples table
     var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
 
-    queryTask.execute( query, function(samplesResult){listResults(samplesResult);;}  );
+    queryTask.execute( query, function(samplesResult){listResults(samplesResult);}  );
     queryTask.execute( sectionsQuery, function(sectionsQueryResult){
        // console.log("sections query result:", sectionqueryResult.features);
         var highlightMapSections = []; 
