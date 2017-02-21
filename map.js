@@ -24,7 +24,7 @@ require([
    
 ], function (Map, FeatureLayer, FeatureTable, SimpleFillSymbol, Query, QueryTask, Draw, dom, on, arrayUtil, parser, rockTypeSearchKey){
    // console.log("a: ",Map, "b: ",MapView, "c: ",FeatureLayer, "d: ",VectorTileLayer);
-   parser.parse();
+   parser.parse(); //I don't know what this does. 
    
    // /********* MAP **********/   
    var map = new Map('map', {
@@ -37,10 +37,10 @@ require([
    //defines selection tool as global variable
    var selectionTool;
 
-   //pases on-load event to ananymous function
+   //passes on-load event to anonymous function
    map.on("load", function(e){
 
-   	initMapButtons(e, selectionTool, Draw, Query, on, fl); //function is in map.js
+   	initMapButtons(e, selectionTool, Draw, Query, QueryTask, on, fl); //function is in map.js
 
    });
 
@@ -89,12 +89,12 @@ require([
 
 
 
-function initMapButtons(event, selectionTool, Draw, Query, on, fl){
+function initMapButtons(event, selectionTool, Draw, Query, QueryTask, on, fl){
     
     //selectionTool is a global variable
     selectionTool = new Draw(event.map); 
     
-    
+    //set up event listener for DrawEnd
     //when the selection tool has finished drawing a box, 
     // create a new selection in the feature layer (fl) 
     on(selectionTool, "DrawEnd", function(geometry){
@@ -107,6 +107,7 @@ function initMapButtons(event, selectionTool, Draw, Query, on, fl){
         
         //create a new selection using the query
         var mapSelection = fl.selectFeatures(mapFilter, fl.SELECTION_NEW);
+        //console.log(mapSelection);
         //assign the selection's results array to a variable.
         var mapSelectionResults = mapSelection.results[0][0];
         
@@ -116,7 +117,8 @@ function initMapButtons(event, selectionTool, Draw, Query, on, fl){
             var selectedSectionId = mapSelectionResults[j].attributes.UID;
             selectedSections.push(selectedSectionId);
         }
-        console.log("filter based on these sections:", selectedSections);
+      //  console.log("filter based on these sections:", selectedSections);
+        filterForSections(Query, QueryTask, selectedSections);
        
     });
 
@@ -140,6 +142,8 @@ function utilizeButtons(selectionTool, Draw, fl){
     });
 
 } //end function utilizeButtons
+
+
 
 function highlightMap(array){
     console.log("highlight the map sections", array);
