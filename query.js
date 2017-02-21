@@ -1,8 +1,30 @@
+//global var for all filters 
+var filters = {
+   "mapSections":{
+       "field":"", 
+       //active: false, 
+       "input":[], 
+       "SQL":["field", " IN ", "input"]
+   },
+    "rockType":{
+       "field":"RockType", 
+      // active: false, 
+       "input":"ch", 
+       "SQL":["Upper(", "field", ") LIKE '%", "input", "%'"]
+    },
+    "handSamples":{},
+    "thinSections":{}, 
+    "county":{}
+};
+
+if(filters.mapSections.input){console.log("input length", filters.mapSections.input.length);};
+
+
 //global vars for tracking whether there is a filter active. 
 var rockSearch = false;
 var countySearch = false;
 
-require(["esri/tasks/query", "esri/tasks/QueryTask", "esri/tasks/StatisticDefinition"], function(Query, QueryTask, StatisticDefinition){
+require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask){
     
     //call the initialize function. 
     initSearchBars();
@@ -25,8 +47,8 @@ function initSearchBars(){
 
     	//adds feedback indicator
     	$("#rockSearchOn").remove();
-    	$("#filterFeedback").append($("<div id='rockSearchOn' class='feedbackBar'></div>"));
-    	$("#rockSearchOn").append($("<p>" + rockTypeSearchKey + "</p>"));
+    	$("#filterFeedback").append($("<span id='rockSearchOn' class='feedbackBar'>rock:&nbsp" + rockTypeSearchKey + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+    	//$("#rockSearchOn").append($("<span>rock:&nbsp" + rockTypeSearchKey + "</span>"));
     	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	});
 
@@ -38,8 +60,8 @@ function initSearchBars(){
 
     	//adds feedback indicator
     	$("#countySearchOn").remove();
-    	$("#filterFeedback").append($("<div id='countySearchOn' class='feedbackBar'></div>"));
-    	$("#countySearchOn").append($("<p>" + countySearchKey + "</p>"));
+    	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar'>county:&nbsp" + countySearchKey +"<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+    	//$("#countySearchOn").append($("<span>county:&nbsp" + countySearchKey + "</span>"));
     	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	});
 
@@ -96,7 +118,7 @@ function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChe
    	};
     
    	//console.log("query.where is:", query.where);
-    //set the sections query to the same where as the normal query. 
+    //set the sections query where clause to the same where as the normal query. 
     sectionsQuery.where = query.where;
         
    //url to samples table
@@ -135,7 +157,8 @@ function removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, h
 
     	//resets the SQL Query
         //BROKEN!
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+        alert("this function is not implemented.");
+    	//queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 
    	})
 

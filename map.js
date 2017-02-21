@@ -71,7 +71,7 @@ require([
    var fl = new FeatureLayer('http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0', {mode: FeatureLayer.MODE_ONDEMAND, outFields: ["*"]});
    
     //don't want this symbol applied to sections when they have been selected for the map filter. 
-  // fl.setSelectionSymbol(highlightSymbol); //var selectedSymbol is an object declared above 
+   fl.setSelectionSymbol(highlightSymbol); //var selectedSymbol is an object declared above 
    
     map.addLayer(fl);
     
@@ -91,23 +91,23 @@ require([
 
 function initMapButtons(event, selectionTool, Draw, Query, on, fl){
     
-   //selectionTool is a global variable
+    //selectionTool is a global variable
     selectionTool = new Draw(event.map); 
     
     
-    var mapFilter = new Query();
-
-   //when the selection tool has finished drawing a box, 
-   // create a new selection in the feature layer (fl) 
+    //when the selection tool has finished drawing a box, 
+    // create a new selection in the feature layer (fl) 
     on(selectionTool, "DrawEnd", function(geometry){
     	console.log('draw end.');
         selectionTool.deactivate();
         
+        //construct a new query using the DrawEnd geometry. 
+        var mapFilter = new Query();
         mapFilter.geometry = geometry;
         
-       //we will not be highlighting map sections based on geometry. We need our highlight to be based on all results from the samples table. 
-       var mapSelection = fl.selectFeatures(mapFilter, fl.SELECTION_NEW);
-       // console.log("map selection results", mapSelection.results[0][0]);
+        //create a new selection using the query
+        var mapSelection = fl.selectFeatures(mapFilter, fl.SELECTION_NEW);
+        //assign the selection's results array to a variable.
         var mapSelectionResults = mapSelection.results[0][0];
         
         var selectedSections= [];
@@ -143,5 +143,10 @@ function utilizeButtons(selectionTool, Draw, fl){
 
 function highlightMap(array){
     console.log("highlight the map sections", array);
+    //set the symbol to the variable highlightSymbol (an object defined above)
+    
+    
+    //zoom to the extent of the filter results. 
+    
 }
         
