@@ -5,11 +5,11 @@ var sample;
 function listResults (data){
    
     //Clear the results list before re-populating. 
-    console.log("clear results.");
+   // console.log("clear results.");
     $("#resultsUL").html('');
     $("#resultsCount").html('0');
     
-    console.log("data.features is: ", data.features);
+   // console.log("data.features is: ", data.features);
     //data.features is an array of objects. 
     
     
@@ -54,7 +54,10 @@ function onSampleClick(item){
    //why does this sometimes console log twice?
     console.log("You selected sample ", $(item).data('SampleId'), ". sample data is: ", $(item).data());
     
-    if ($(item).data('SampleId') === 12){
+  /*  if ($(item).data('SampleId') === 12){
         window.open("recordView_mockup.html", "_blank");
     }
+    */
+     window.open("recordView_workingCopy.html", "_blank");
+    
 }

@@ -24,7 +24,7 @@ require([
    
 ], function (Map, FeatureLayer, FeatureTable, SimpleFillSymbol, Query, QueryTask, Draw, dom, on, arrayUtil, parser, rockTypeSearchKey){
    // console.log("a: ",Map, "b: ",MapView, "c: ",FeatureLayer, "d: ",VectorTileLayer);
-   parser.parse();
+   parser.parse(); //I don't know what this does. 
    
    // /********* MAP **********/   
    var map = new Map('map', {
@@ -37,10 +37,10 @@ require([
    //defines selection tool as global variable
    var selectionTool;
 
-   //pases on-load event to ananymous function
+   //passes on-load event to anonymous function
    map.on("load", function(e){
 
-   	initMapButtons(e, selectionTool, Draw, Query, on, fl); //calls from query.js
+   	initMapButtons(e, selectionTool, Draw, Query, QueryTask, on, fl); //function is in map.js
 
    });
 
@@ -50,7 +50,7 @@ require([
    
    // /********* POLYGON STYLES **********/
    //polygon selection style 
-    var selectedSymbol = new SimpleFillSymbol({
+    var highlightSymbol = new SimpleFillSymbol({
             "type": 'esriSFS',
             "style":'esriSFSSolid', 
             "color": [24,132,111, 191], //rgba 0-255 //green 
@@ -70,34 +70,12 @@ require([
    //add map sections feature layer through Esri API. I can style. 
    var fl = new FeatureLayer('http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0', {mode: FeatureLayer.MODE_ONDEMAND, outFields: ["*"]});
    
-
-   fl.setSelectionSymbol(selectedSymbol); //var selectedSymbol is an object declared above 
+    //don't want this symbol applied to sections when they have been selected for the map filter. 
+   fl.setSelectionSymbol(highlightSymbol); //var selectedSymbol is an object declared above 
    
     map.addLayer(fl);
     
-   fl.on("selection-complete", reportSelectedSections);
-  
-    function reportSelectedSections(event){
-
-    //console.log("features", event.features);
-       var selectedSections= [];
-       $(event.features).each(function(ind){
-           
-           
-           var sectionId = event.features[ind].attributes.UID;
-
-           //push to the array
-           selectedSections.push(sectionId);
-
-       }); 
-       console.log("selected sections: ", selectedSections);
-
-       queryTable(selectedSections, Query, QueryTask); //calls from query.js
-
-
-    } //end reportSelectedSections function
-
-
+ 
 //initSearchBars(Query, QueryTask);
 
 // function initSearchBar(){
@@ -111,25 +89,36 @@ require([
 
 
 
-function initMapButtons(event, selectionTool, Draw, Query, on, fl){
+function initMapButtons(event, selectionTool, Draw, Query, QueryTask, on, fl){
     
-   //selectionTool is a global variable
+    //selectionTool is a global variable
     selectionTool = new Draw(event.map); 
     
-    //will probably take this out. 
-    var mapSelection = new Query();
-
-   //when the selection tool has finished drawing a box, 
-   // create a new selection in the feature layer (fl) 
+    //set up event listener for DrawEnd
+    //when the selection tool has finished drawing a box, 
+    // create a new selection in the feature layer (fl) 
     on(selectionTool, "DrawEnd", function(geometry){
-    	console.log('ran')
-      selectionTool.deactivate();
+    	console.log('draw end.');
+        selectionTool.deactivate();
         
+        //construct a new query using the DrawEnd geometry. 
+        var mapFilter = new Query();
+        mapFilter.geometry = geometry;
         
-  /*     //we will not be highlighting map sections based on geometry. We need our highlight to be based on all results from the samples table. 
-        mapSelection.geometry = geometry;
-       fl.selectFeatures(mapSelection, fl.SELECTION_NEW);*/
-
+        //create a new selection using the query
+        var mapSelection = fl.selectFeatures(mapFilter, fl.SELECTION_NEW);
+        //console.log(mapSelection);
+        //assign the selection's results array to a variable.
+        var mapSelectionResults = mapSelection.results[0][0];
+        
+        var selectedSections= [];
+        for (j in mapSelectionResults){
+            //isolate the section's UID attribute and push it to the selectedSections array. 
+            var selectedSectionId = mapSelectionResults[j].attributes.UID;
+            selectedSections.push(selectedSectionId);
+        }
+      //  console.log("filter based on these sections:", selectedSections);
+        filterForSections(Query, QueryTask, selectedSections);
        
     });
 
@@ -139,31 +128,29 @@ function initMapButtons(event, selectionTool, Draw, Query, on, fl){
 /********** SELECTION/CLEAR FUNCTIONALITY **********/
 function utilizeButtons(selectionTool, Draw, fl){
 
-   $("#mapSelectionButton").on( "click", function(){
+   $("#mapFilterButton").on( "click", function(){
 
-	
-       console.log(selectionTool)
+       //console.log(selectionTool);
        selectionTool.activate(Draw.EXTENT);
        
    });
    
    $("#mapClearButton").on("click", function () {
        console.log("clear map sections from SQL query. (not yet implemented.)");
-        fl.clearSelection();
-       
-       
-       //FAKE LINK!! 
-       //CLEAR THE RESULTS LIST! 
-  /*    console.log("reset list"); 
-        $("#resultsUL").html('');
-        $("#resultCount").html('0');
-    */    
-            
+       // fl.clearSelection();
+         
     });
 
 } //end function utilizeButtons
 
+
+
 function highlightMap(array){
     console.log("highlight the map sections", array);
+    //set the symbol to the variable highlightSymbol (an object defined above)
+    
+    
+    //zoom to the extent of the filter results. 
+    
 }
         
