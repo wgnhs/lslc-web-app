@@ -164,6 +164,26 @@ function utilizeButtons(selectionTool, Draw, fl){
 } //end function utilizeButtons
 
 function highlightMap(array){
-    console.log("highlight the map sections", array);
+
+  var sortedArray = array.sort(function(a,b){return a-b});
+
+
+  for (i = 0; i > sortedArray.length; i++){
+    var value = sortedAarray[i
+     
+
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
         
