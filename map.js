@@ -146,24 +146,20 @@ function utilizeButtons(selectionTool, Draw, fl){
 
 
 function highlightMap(array){
-<<<<<<< HEAD
 
   var sortedArray = array.sort(function(a,b){return a-b});
 
+  var filteredSections = []
 
-  for (i = 0; i > sortedArray.length; i++){
-    var value = sortedAarray[i
-     
-
+  for (i = 0; i < sortedArray.length; i++){
+    if (sortedArray[i] != sortedArray[i-1]) {
+      console.log('ran')
+      filteredSections.push(sortedArray[i])
+    }
   }
-=======
-    console.log("highlight the map sections", array);
-    //set the symbol to the variable highlightSymbol (an object defined above)
-    
-    
-    //zoom to the extent of the filter results. 
-    
->>>>>>> master
+
+  console.log(filteredSections)
+
 }
 
 
