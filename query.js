@@ -1,22 +1,50 @@
+//global var for all filters 
+var filters = {
+    "mapSectionsInput": [], "rockTypeInput": "", "countyInput": "", "handSampleAvailabilityInput":"", "thinSectionAvailabilityInput":""
+    
+    /*
+   "mapSections":{
+       "field":"", 
+       //active: false, 
+       "input":[], 
+       "SQL":[filters.mapSections.field, " IN ", filters.mapSections.input]
+   },
+    "rockType":{
+       "field":"RockType", 
+      // active: false, 
+       "input":"ch", 
+       "SQL":["Upper(", "field", ") LIKE '%", "input", "%'"]
+    },
+    "handSamples":{},
+    "thinSections":{}, 
+    "county":{}
+    */
+};
+
+
 //global vars for tracking whether there is a filter active. 
 var rockSearch = false;
 var countySearch = false;
-
-require(["esri/tasks/query", "esri/tasks/QueryTask", "esri/tasks/StatisticDefinition"], function(Query, QueryTask, StatisticDefinition){
-    
-    //call the initialize function. 
-    initSearchBars();
-
-//function utilizes the search bars; called from map.js
-function initSearchBars(){
-
-    //creates two booleans -- checks to see whether the boxes are checked or not 
+ //creates two booleans -- checks to see whether the boxes are checked or not 
 	var thinSectionChecked = document.getElementById("thinSectionCheckbox").checked;
 	var handSampleChecked = document.getElementById("handSampleCheckbox").checked;
 
 	//declares empty strings for search keys
 	var rockTypeSearchKey = ""; 
 	var countySearchKey = "";
+
+require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask){
+    
+    //call the initialize function. 
+    initSearchBars(Query, QueryTask);
+}); //end require.
+
+//function utilizes the search bars
+function initSearchBars(Query, QueryTask){
+    
+    
+
+   
 
 	//function called on input change
 	$("#rockTypeSearch").on("input", function(){
@@ -25,9 +53,9 @@ function initSearchBars(){
 
     	//adds feedback indicator
     	$("#rockSearchOn").remove();
-    	$("#filterFeedback").append($("<div id='rockSearchOn' class='feedbackBar'></div>"));
-    	$("#rockSearchOn").append($("<p>" + rockTypeSearchKey + "</p>"));
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+    	$("#filterFeedback").append($("<span id='rockSearchOn' class='feedbackBar'>rock:&nbsp" + rockTypeSearchKey + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+    	//$("#rockSearchOn").append($("<span>rock:&nbsp" + rockTypeSearchKey + "</span>"));
+    	queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	});
 
 	
@@ -38,21 +66,21 @@ function initSearchBars(){
 
     	//adds feedback indicator
     	$("#countySearchOn").remove();
-    	$("#filterFeedback").append($("<div id='countySearchOn' class='feedbackBar'></div>"));
-    	$("#countySearchOn").append($("<p>" + countySearchKey + "</p>"));
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+    	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar'>county:&nbsp" + countySearchKey +"<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+    	//$("#countySearchOn").append($("<span>county:&nbsp" + countySearchKey + "</span>"));
+    	queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	});
 
 	thinSectionCheckbox.onchange = function() {
 
 		if (thinSectionChecked) { thinSectionChecked = false } else { thinSectionChecked = true };
-		queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+		queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	}
 
 	handSampleCheckbox.onchange = function() {
 
 		if (handSampleChecked) { handSampleChecked = false } else { handSampleChecked = true };
-		queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+		queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 	}
 
 	
@@ -61,16 +89,18 @@ function initSearchBars(){
 } //end initSearchBars function
 
 
-function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked){
+    
+function queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked){
 
 	//checks each possible SQL statement, creates SQL statement if applicable, or defines a blank string
-	if (rockSearch) { var rockTypeString = "Upper(RockType) LIKE '%"+rockTypeSearchKey.toUpperCase()+"%'"} else { var rockTypeString = ""}
-   	if (countySearch) { var countySearchString = "Upper(County) LIKE '%"+countySearchKey.toUpperCase()+"%'"} else { var countySearchString = ""}
-   	if (thinSectionChecked) { var thinSectionString = "ThinsectionCount > 0"} else { var thinSectionString = ""}
-   	if (handSampleChecked) { var handSampleString = "HandSampleCount > 0"} else { var handSampleString = ""}
+	if (rockSearch) { var rockTypeString = "Upper(RockType) LIKE '%"+rockTypeSearchKey.toUpperCase()+"%'";} else { var rockTypeString = "";}
+   	if (countySearch) { var countySearchString = "Upper(County) LIKE '%"+countySearchKey.toUpperCase()+"%'";} else { var countySearchString = "";}
+   	if (thinSectionChecked) { var thinSectionString = "ThinsectionCount > 0";} else { var thinSectionString = "";}
+   	if (handSampleChecked) { var handSampleString = "HandSampleCount > 0"} else { var handSampleString = "";};
+    if (filters.mapSectionsInput.length > 0) {var mapSectionsString = "SectionId IN ("+filters.mapSectionsInput+")";} else {var mapSectionsString = '';};
 
    	//combines search strings into an array
-   	var sqlArray = [rockTypeString, countySearchString, thinSectionString, handSampleString];
+   	var sqlArray = [rockTypeString, countySearchString, thinSectionString, handSampleString, mapSectionsString];
 
 	
     
@@ -95,8 +125,8 @@ function queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChe
         
    	};
     
-   	//console.log("query.where is:", query.where);
-    //set the sections query to the same where as the normal query. 
+   	console.log("query.where is:", query.where);
+    //set the sections query where clause to the same where as the normal query. 
     sectionsQuery.where = query.where;
         
    //url to samples table
@@ -135,7 +165,8 @@ function removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, h
 
     	//resets the SQL Query
         //BROKEN!
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+        //alert("this function is not implemented.");
+    	//queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 
    	})
 
@@ -151,11 +182,18 @@ function removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, h
 
     	//re-call the SQL Query
         //BROKEN!
-    	queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+    	//queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
 
    	});
   
 }
 
     
-}); //end require.
+
+
+function filterForSections(Query, QueryTask, array){
+    console.log("filter for sections.", array);
+    
+    filters.mapSectionsInput = array; 
+    queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+}
