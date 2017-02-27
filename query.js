@@ -14,7 +14,7 @@ require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask)
     setFilters(Query, QueryTask);
     //call the initialize function. 
     initSearchBars(Query, QueryTask);
-    removeFilters();
+    removeFilters(Query, QueryTask);
 }); //end require.
 
 function setFilters(Query, QueryTask) {
@@ -97,7 +97,11 @@ function queryTableForFilters(Query, QueryTask){
     	$("#rockSearchOn").remove();
     	$("#filterFeedback").append($("<span id='rockSearchOn' class='feedbackBar' data='rockTypeInput'>rock:&nbsp" + filters.rockTypeInput + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
         } else {$("#rockSearchOn").remove();}; 
-    if (filters.countyInput) {newsqlArray.push("Upper(County) LIKE '%"+filters.countyInput.toUpperCase()+"%'");}; 
+    if (filters.countyInput) {
+        newsqlArray.push("Upper(County) LIKE '%"+filters.countyInput.toUpperCase()+"%'");
+        $("#countySearchOn").remove();
+    	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar' data = 'countyInput'>county:&nbsp" + filters.countyInput +"<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+        } else {$("#countySearchOn").remove();}; 
     if (filters.handSampleAvailabilityInput) {newsqlArray.push("HandSampleCount > 0");}; 
     if (filters.thinSectionAvailabilityInput) {newsqlArray.push("ThinsectionCount > 0");}; 
     if (filters.mapSectionsInput) {newsqlArray.push("SectionId IN ("+filters.mapSectionsInput+")");}; 
@@ -158,14 +162,20 @@ function queryTableForFilters(Query, QueryTask){
     }
 }
 
-function removeFilters(){
+function removeFilters(Query, QueryTask){
     
 	//when the user clicks on a filter indicator... 
     $("#filterFeedback").on("click", "span", function(){
-        console.log("this", this.getAttribute('data'));
+      
         console.log("clear", filters[this.getAttribute('data')]);
+        //reset the filters variable. 
         filters[this.getAttribute('data')] = null;
         
+        this.remove();
+        //reset the value in the box
+        if (this.getAttribute('data') == 'rockTypeInput'){console.log("clear rock type."); $("#rockTypeSearch").val('')};
+        if (this.getAttribute('data') == 'countyInput'){console.log("clear county"); $("#countySearch").val('')};
+        setFilters(Query, QueryTask);
     });
     
   
