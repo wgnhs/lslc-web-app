@@ -136,8 +136,11 @@ function utilizeButtons(selectionTool, Draw, fl){
    });
    
    $("#mapClearButton").on("click", function () {
-       console.log("clear map sections from SQL query. (not yet implemented.)");
-       // fl.clearSelection();
+       console.log("clear map sections from SQL query.");
+       //set filter. 
+       filters.mapSectionsInput = null;
+       //clear map. 
+        fl.clearSelection();
          
     });
 
