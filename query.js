@@ -133,7 +133,7 @@ function queryTableForFilters(Query, QueryTask){
 
    	
    	//iterates through newsqlArray
-
+    //THIS IS UNNECESSARY if we always search for everything when no filters are applied. 
     for (i = 0; i < newsqlArray.length; i++) {
    		//testing for a value before and after, if so, adds AND in between them
    		if (query.where != "" && newsqlArray[i] != "") {query.where +=  " AND " };
