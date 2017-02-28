@@ -6,6 +6,7 @@ var filters = {
     
     "mapSectionsInput": null, "rockTypeInput": "", "countyInput": "", "handSampleAvailabilityInput": null, "thinSectionAvailabilityInput": null
   
+    
 };
 
 
@@ -85,20 +86,29 @@ function queryTableForFilters(Query, QueryTask){
    
     var newsqlArray = [];
     
+    //delete all filter indicators. They will be replaced. 
+    $("#filterFeedback").html('');
     
     if (filters.rockTypeInput) {
-        newsqlArray.push("Upper(RockType) LIKE '%"+filters.rockTypeInput.toUpperCase()+"%'");
+        newsqlArray.push("Upper(RockType) LIKE '%"+filters.rockTypeInput+"%'");
         //adds feedback indicator
-    	$("#rockSearchOn").remove();
+    	//$("#rockSearchOn").remove();
     	$("#filterFeedback").append($("<span id='rockSearchOn' class='feedbackBar' data='rockTypeInput'>rock:&nbsp" + filters.rockTypeInput + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
-        } else {$("#rockSearchOn").remove();}; 
+        }; 
     if (filters.countyInput) {
         newsqlArray.push("Upper(County) LIKE '%"+filters.countyInput.toUpperCase()+"%'");
-        $("#countySearchOn").remove();
+       // $("#countySearchOn").remove();
     	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar' data = 'countyInput'>county:&nbsp" + filters.countyInput +"<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
-        } else {$("#countySearchOn").remove();}; 
-    if (filters.handSampleAvailabilityInput) {newsqlArray.push("HandSampleCount > 0");}; 
-    if (filters.thinSectionAvailabilityInput) {newsqlArray.push("ThinsectionCount > 0");}; 
+        }; 
+    if (filters.handSampleAvailabilityInput) {
+        newsqlArray.push("HandSampleCount > 0");
+       // $("#handSampleOn").remove();
+    	$("#filterFeedback").append($("<span id='handSampleOn' class='feedbackBar' data='handSampleAvailabilityInput'>Hand&nbspSample:&nbsp" + filters.handSampleAvailabilityInput + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+        }; 
+    if (filters.thinSectionAvailabilityInput) {
+        newsqlArray.push("ThinsectionCount > 0");
+        $("#filterFeedback").append($("<span id='thinSectionOn' class='feedbackBar' data='thinSectionAvailabilityInput'>Thin&nbspSection:&nbsp" + filters.handSampleAvailabilityInput + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+        }; 
     if (filters.mapSectionsInput) {newsqlArray.push("SectionId IN ("+filters.mapSectionsInput+")");}; 
     
     //console.log ("new SQL array:", newsqlArray);
