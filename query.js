@@ -147,7 +147,7 @@ function queryTableForFilters(Query, QueryTask){
     
    //only try to send queryTask if there is something to search on.
     if (query.where.length > 0){
-    
+        if (query.where === "1=1"){ console.log("Narrow the results by applying filters above.");}
    	           
    //url to samples table
     var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
