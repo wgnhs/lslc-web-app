@@ -20,7 +20,7 @@ function listResults (data){
         //create a li element 
         var listItem = $('<li>');
         //populate it with sample information. 
-        $(listItem).html("<div class='resultSample'><p>sample #" + sample.SampleId + "</p><h3>" + sample.RockType + "</h3><img class='sampleChevron' src='images/chevron_right_gw.png' alt=''></div>");
+        $(listItem).html("<div class='resultSample'><p>#" + sample.SampleId + "</p><h3>" + sample.RockType + "</h3><img class='sampleChevron' src='images/chevron_right_gw.png' alt=''></div>");
 
         
         //store sample data with the element

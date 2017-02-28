@@ -1,7 +1,7 @@
 //global var for all filters 
 var filters = {
-    //all initial values in this filters object should be falsey. 
-    //an empty string is falsey. 
+    //all initial values in this filters object should be falsy. 
+    //an empty string is falsy. 
     //an empty array is not falsy, so the map sections input must be set to null when cleared. 
     
     "mapSectionsInput": null, "rockTypeInput": "", "countyInput": "", "handSampleAvailabilityInput": null, "thinSectionAvailabilityInput": null
@@ -11,13 +11,13 @@ var filters = {
 
 require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask){
     
-    setFilters(Query, QueryTask);
-    //call the initialize function. 
+    resetFilters(Query, QueryTask);
+    //call the initialize function. This sets an event listener for inputs. 
     initSearchBars(Query, QueryTask);
     removeFilters(Query, QueryTask);
 }); //end require.
 
-function setFilters(Query, QueryTask) {
+function resetFilters(Query, QueryTask) {
         filters.rockTypeInput = $("#rockTypeSearch").val();
         filters.countyInput = $("#countySearch").val(); 
         filters.thinSectionAvailabilityInput =  document.getElementById("thinSectionCheckbox").checked;
@@ -32,7 +32,7 @@ function initSearchBars(Query, QueryTask){
     
     
     $("#filters").on("input", "input", function(){
-        setFilters(Query, QueryTask);
+        resetFilters(Query, QueryTask);
 
     }); //close #filters.on input function
    
@@ -82,12 +82,7 @@ function initSearchBars(Query, QueryTask){
 
     
 function queryTableForFilters(Query, QueryTask){
-
-/*	for (a in filters){
-          // console.log(filters[a]);
-            if(filters[a]){console.log(filters[a], " is true.");} else {console.log(filters[a], " is false.");}
-    }
-*/    
+   
     var newsqlArray = [];
     
     
@@ -106,7 +101,7 @@ function queryTableForFilters(Query, QueryTask){
     if (filters.thinSectionAvailabilityInput) {newsqlArray.push("ThinsectionCount > 0");}; 
     if (filters.mapSectionsInput) {newsqlArray.push("SectionId IN ("+filters.mapSectionsInput+")");}; 
     
-    console.log ("new SQL array:", newsqlArray);
+    //console.log ("new SQL array:", newsqlArray);
     
     
     //same lines from QueryTable() 
@@ -175,7 +170,7 @@ function removeFilters(Query, QueryTask){
         //reset the value in the box
         if (this.getAttribute('data') == 'rockTypeInput'){console.log("clear rock type."); $("#rockTypeSearch").val('')};
         if (this.getAttribute('data') == 'countyInput'){console.log("clear county"); $("#countySearch").val('')};
-        setFilters(Query, QueryTask);
+        resetFilters(Query, QueryTask);
     });
     
   
