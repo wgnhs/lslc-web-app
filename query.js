@@ -37,48 +37,7 @@ function initSearchBars(Query, QueryTask){
         resetFilters(Query, QueryTask);
 
     }); //close #filters.on input function
-   
-
-/*	//function called on input change
-	$("#rockTypeSearch").on("input", function(){
-		rockSearch = true; //indicates that there is a rock filter applicable
-    	rockTypeSearchKey = $("#rockTypeSearch").val(); //pulls string from searchbar
-
-    	//adds feedback indicator
-    	$("#rockSearchOn").remove();
-    	$("#filterFeedback").append($("<span id='rockSearchOn' class='feedbackBar'>rock:&nbsp" + rockTypeSearchKey + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
-    	//$("#rockSearchOn").append($("<span>rock:&nbsp" + rockTypeSearchKey + "</span>"));
-    	queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
-	});
-
-	
-	//function called everytime key is lifted in searchbar
-	$("#countySearch").on("input", function(){
-		countySearch = true; //indicates that there is a county filter applicable
-    	countySearchKey = $("#countySearch").val(); //pulls string from searchbar
-
-    	//adds feedback indicator
-    	$("#countySearchOn").remove();
-    	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar'>county:&nbsp" + countySearchKey +"<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
-    	//$("#countySearchOn").append($("<span>county:&nbsp" + countySearchKey + "</span>"));
-    	queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
-	});
-
-	thinSectionCheckbox.onchange = function() {
-
-		if (thinSectionChecked) { thinSectionChecked = false } else { thinSectionChecked = true };
-		queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
-	}
-
-	handSampleCheckbox.onchange = function() {
-
-		if (handSampleChecked) { handSampleChecked = false } else { handSampleChecked = true };
-		queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
-	}
-
-	
-*/
-
+ 
 } //end initSearchBars function
 
 
