@@ -1,52 +1,45 @@
 //global var for all filters 
 var filters = {
-    "mapSectionsInput": [], "rockTypeInput": "", "countyInput": "", "handSampleAvailabilityInput":"", "thinSectionAvailabilityInput":""
+    //all initial values in this filters object should be falsy. 
+    //an empty string is falsy. 
+    //an empty array is not falsy, so the map sections input must be set to null when cleared. 
     
-    /*
-   "mapSections":{
-       "field":"", 
-       //active: false, 
-       "input":[], 
-       "SQL":[filters.mapSections.field, " IN ", filters.mapSections.input]
-   },
-    "rockType":{
-       "field":"RockType", 
-      // active: false, 
-       "input":"ch", 
-       "SQL":["Upper(", "field", ") LIKE '%", "input", "%'"]
-    },
-    "handSamples":{},
-    "thinSections":{}, 
-    "county":{}
-    */
+    "mapSectionsInput": null, "rockTypeInput": "", "countyInput": "", "handSampleAvailabilityInput": null, "thinSectionAvailabilityInput": null, "stateInput": null
+  
+    
 };
 
 
-//global vars for tracking whether there is a filter active. 
-var rockSearch = false;
-var countySearch = false;
- //creates two booleans -- checks to see whether the boxes are checked or not 
-	var thinSectionChecked = document.getElementById("thinSectionCheckbox").checked;
-	var handSampleChecked = document.getElementById("handSampleCheckbox").checked;
-
-	//declares empty strings for search keys
-	var rockTypeSearchKey = ""; 
-	var countySearchKey = "";
-
 require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask){
     
-    //call the initialize function. 
+    resetFilters(Query, QueryTask);
+    //call the initialize function. This sets an event listener for inputs. 
     initSearchBars(Query, QueryTask);
+    removeFilters(Query, QueryTask);
 }); //end require.
+
+function resetFilters(Query, QueryTask) {
+        filters.rockTypeInput = $("#rockTypeSearch").val();
+        filters.countyInput = $("#countySearch").val(); 
+        filters.stateInput = $("#stateSearch").val();
+        filters.thinSectionAvailabilityInput =  document.getElementById("thinSectionCheckbox").checked;
+        filters.handSampleAvailabilityInput = document.getElementById("handSampleCheckbox").checked;
+        
+        console.log("filters set:", filters);
+        queryTableForFilters(Query, QueryTask);
+}
 
 //function utilizes the search bars
 function initSearchBars(Query, QueryTask){
     
     
+    $("#filters").on("input", "input", function(){
+        resetFilters(Query, QueryTask);
 
+    }); //close #filters.on input function
    
 
-	//function called on input change
+/*	//function called on input change
 	$("#rockTypeSearch").on("input", function(){
 		rockSearch = true; //indicates that there is a rock filter applicable
     	rockTypeSearchKey = $("#rockTypeSearch").val(); //pulls string from searchbar
@@ -84,25 +77,47 @@ function initSearchBars(Query, QueryTask){
 	}
 
 	
-
+*/
 
 } //end initSearchBars function
 
 
     
-function queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked){
-
-	//checks each possible SQL statement, creates SQL statement if applicable, or defines a blank string
-	if (rockSearch) { var rockTypeString = "Upper(RockType) LIKE '%"+rockTypeSearchKey.toUpperCase()+"%'";} else { var rockTypeString = "";}
-   	if (countySearch) { var countySearchString = "Upper(County) LIKE '%"+countySearchKey.toUpperCase()+"%'";} else { var countySearchString = "";}
-   	if (thinSectionChecked) { var thinSectionString = "ThinsectionCount > 0";} else { var thinSectionString = "";}
-   	if (handSampleChecked) { var handSampleString = "HandSampleCount > 0"} else { var handSampleString = "";};
-    if (filters.mapSectionsInput.length > 0) {var mapSectionsString = "SectionId IN ("+filters.mapSectionsInput+")";} else {var mapSectionsString = '';};
-
-   	//combines search strings into an array
-   	var sqlArray = [rockTypeString, countySearchString, thinSectionString, handSampleString, mapSectionsString];
-
-	
+function queryTableForFilters(Query, QueryTask){
+   
+    var newsqlArray = ["1=1"];
+    
+    //delete all filter indicators. They will be replaced. 
+    $("#filterFeedback").html('');
+    
+    if (filters.rockTypeInput) {
+        newsqlArray.push("Upper(RockType) LIKE Upper('%"+filters.rockTypeInput+"%')");
+        //adds feedback indicator
+    	//$("#rockSearchOn").remove();
+    	$("#filterFeedback").append($("<span id='rockSearchOn' class='feedbackBar' data='rockTypeInput'>rock:&nbsp" + filters.rockTypeInput + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+        }; 
+    if (filters.countyInput) {
+        newsqlArray.push("Upper(County) LIKE Upper('%"+filters.countyInput+"%')");
+       // $("#countySearchOn").remove();
+    	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar' data = 'countyInput'>county:&nbsp" + filters.countyInput +"<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+        }; 
+    if (filters.handSampleAvailabilityInput) {
+        newsqlArray.push("HandSampleCount > 0");
+       // $("#handSampleOn").remove();
+    	$("#filterFeedback").append($("<span id='handSampleOn' class='feedbackBar' data='handSampleAvailabilityInput'>Hand&nbspsample:&nbsp" + filters.handSampleAvailabilityInput + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+        }; 
+    if (filters.thinSectionAvailabilityInput) {
+        newsqlArray.push("ThinsectionCount > 0");
+        $("#filterFeedback").append($("<span id='thinSectionOn' class='feedbackBar' data='thinSectionAvailabilityInput'>Thin&nbspsection:&nbsp" + filters.thinSectionAvailabilityInput + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+        }; 
+    if (filters.mapSectionsInput) {newsqlArray.push("SectionId IN ("+filters.mapSectionsInput+")");}; 
+    if (filters.stateInput){
+        newsqlArray.push("Upper(State) LIKE Upper('%"+filters.stateInput+"%')");
+        $("#filterFeedback").append($("<span id='stateOn' class='feedbackBar' data='stateInput'>state:&nbsp" + filters.stateInput + "<img src='images/close.png' style = 'height: 21px; margin-bottom: -5px;'/></span>"));
+        };
+    
+    //console.log ("new SQL array:", newsqlArray);
+    
     
     //same lines from QueryTable() 
    	var query = new Query(); 
@@ -117,18 +132,23 @@ function queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchK
    	sectionsQuery.where = ""; // assigns empty string to where statement
 
    	
-   	//iterates through sqlArray
-   	for (i = 0; i < sqlArray.length; i++) {
+   	//iterates through newsqlArray
+    //THIS IS UNNECESSARY if we always search for everything when no filters are applied. 
+    for (i = 0; i < newsqlArray.length; i++) {
    		//testing for a value before and after, if so, adds AND in between them
-   		if (query.where != "" && sqlArray[i] != "") {query.where +=  " AND " };
-   		query.where += sqlArray[i]; //adds the sql query to the string 
+   		if (query.where != "" && newsqlArray[i] != "") {query.where +=  " AND " };
+   		query.where += newsqlArray[i]; //adds the sql query to the string 
         
    	};
     
-   	console.log("query.where is:", query.where);
-    //set the sections query where clause to the same where as the normal query. 
+    console.log("query.where is:", query.where);
+     //set the sections query where clause to the same where as the normal query. 
     sectionsQuery.where = query.where;
-        
+    
+   //only try to send queryTask if there is something to search on.
+    if (query.where.length > 0){
+        if (query.where === "1=1"){ console.log("Narrow the results by applying filters above.");}
+   	           
    //url to samples table
     var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
 
@@ -148,52 +168,42 @@ function queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchK
   // queryTask.executeForIds(query, queryCallback);
 
   //calls remove filters
-   	removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+   //	removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+    } else {
+        //if query.where is empty, query for everything! 
+        console.log("query is empty.");
+        
+    }
 }
 
-function removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked){
+function removeFilters(Query, QueryTask){
     
-	//onclick function called when someone clicks on a feedback div
-	$("#rockSearchOn").click(function() {
-        console.log("remove rockType filter.");
+	//when the user clicks on a filter indicator... 
+    $("#filterFeedback").on("click", "span", function(){
+      
+        console.log("clear", filters[this.getAttribute('data')]);
+        //reset the filters variable. 
+        filters[this.getAttribute('data')] = null;
         
-   		//removes feedback div; sets the search key to remove statement from SQL Query
-   		$("#rockSearchOn").remove();
-        //change global var
-   		rockSearch = false ;
-    	rockTypeSearchKey = "";
-
-    	//resets the SQL Query
-        //BROKEN!
-        //alert("this function is not implemented.");
-    	//queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
-
-   	})
-
-	//onclick function called when someone clicks on a feedback div
-   	$("#countySearchOn").click(function() {
-   		console.log("remove county filter.");
-   		//removes feedback div; sets the search key to remove statement from SQL Query
-   		$("#countySearchOn").remove();
-        //change global var 
-   		countySearch = false; 
-        //reset query var
-    	countySearchKey = ""; 
-
-    	//re-call the SQL Query
-        //BROKEN!
-    	//queryTableForFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
-
-   	});
+        this.remove();
+        //reset the value in the input / searchbar
+        if (this.getAttribute('data') == 'rockTypeInput'){console.log("clear rock type."); $("#rockTypeSearch").val('');};
+        if (this.getAttribute('data') == 'countyInput'){console.log("clear county"); $("#countySearch").val('');};
+        if (this.getAttribute('data') == 'stateInput'){console.log("clear state"); $("#stateSearch").val('');};
+        if (this.getAttribute('data') == 'handSampleAvailabilityInput'){console.log("clear handsample"); document.getElementById("handSampleCheckbox").checked = false;};
+        if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){console.log("clear thin section"); document.getElementById("thinSectionCheckbox").checked = false;};
+        
+        //resetFilters will call QueryTable. 
+        resetFilters(Query, QueryTask);
+    });
+    
   
 }
-
-    
 
 
 function filterForSections(Query, QueryTask, array){
     console.log("filter for sections.", array);
     
     filters.mapSectionsInput = array; 
-    queryTableForFilters(Query, QueryTask, rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
+    queryTableForFilters(Query, QueryTask);
 }

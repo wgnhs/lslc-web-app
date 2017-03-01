@@ -5,7 +5,7 @@ require([
  //  "esri/views/MapView", 
 //    "esri/InfoTemplate", //causes script error?
    "esri/layers/FeatureLayer",
-   "esri/dijit/FeatureTable",
+  // "esri/dijit/FeatureTable",
    "esri/symbols/SimpleFillSymbol",
 //    "esri/PopupTemplate",   
 //    "esri/tasks/IdentifyTask",
@@ -22,7 +22,7 @@ require([
    "dojo/parser",   //I don't know what this does. 
    "dojo/domReady!" 
    
-], function (Map, FeatureLayer, FeatureTable, SimpleFillSymbol, Query, QueryTask, Draw, dom, on, arrayUtil, parser, rockTypeSearchKey){
+], function (Map, FeatureLayer, SimpleFillSymbol, Query, QueryTask, Draw, dom, on, arrayUtil, parser, rockTypeSearchKey){
    // console.log("a: ",Map, "b: ",MapView, "c: ",FeatureLayer, "d: ",VectorTileLayer);
    parser.parse(); //I don't know what this does. 
    
@@ -122,11 +122,11 @@ function initMapButtons(event, selectionTool, Draw, Query, QueryTask, on, fl){
        
     });
 
-  utilizeButtons(selectionTool, Draw, fl); //calls funtion that has jquery onclick functions
+  utilizeButtons(Query, QueryTask, selectionTool, Draw, fl); //calls funtion that has jquery onclick functions
 } 
 
 /********** SELECTION/CLEAR FUNCTIONALITY **********/
-function utilizeButtons(selectionTool, Draw, fl){
+function utilizeButtons(Query, QueryTask, selectionTool, Draw, fl){
 
    $("#mapFilterButton").on( "click", function(){
 
@@ -136,8 +136,12 @@ function utilizeButtons(selectionTool, Draw, fl){
    });
    
    $("#mapClearButton").on("click", function () {
-       console.log("clear map sections from SQL query. (not yet implemented.)");
-       // fl.clearSelection();
+       console.log("clear map sections from SQL query.");
+       //set filter. 
+       filters.mapSectionsInput = null;
+       //clear map. 
+        fl.clearSelection();
+       resetFilters(Query, QueryTask);
          
     });
 
