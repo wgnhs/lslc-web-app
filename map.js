@@ -153,10 +153,11 @@ function highlightMap(array){
 
   for (i = 0; i < sortedArray.length; i++){
     if (sortedArray[i] != sortedArray[i-1]) {
-      console.log('ran')
       filteredSections.push(sortedArray[i])
     }
   }
+
+  //end result: 2D array with [[section_ids,,,,],[counts,,,,]]
 
   console.log(filteredSections)
 
