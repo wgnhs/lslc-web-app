@@ -121,7 +121,7 @@ function queryTableForFilters(Query, QueryTask){
             highlightMapSections.push(sectionsQueryResult.features[f].attributes.SectionId);
         }
         
-        highlightMap(highlightMapSections);
+        highlightMap(highlightMapSections, Query);
     });
 
   // queryTask.executeForIds(query, queryCallback);
