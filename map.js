@@ -41,11 +41,11 @@ require([
    //passes on-load event to anonymous function
    map.on("load", function(e){
 
-   	initMapButtons(e, selectionTool, Draw, Query, QueryTask, on, fl); //function is in map.js
-    resetFilters(Query, QueryTask);
+   	initMapButtons(e); //function is in map.js
+    resetFilters();
     //call the initialize function. This sets an event listener for inputs. 
-    initSearchBars(Query, QueryTask);
-    removeFilters(Query, QueryTask);
+    initSearchBars();
+    removeFilters();
 
    });
 
@@ -81,7 +81,7 @@ require([
     map.addLayer(fl);
     
  
-//initSearchBars(Query, QueryTask);
+//initSearchBars();
 
 // function initSearchBar(){
 //   var rockTypeSearchBar = document.getElementById('rockTypeSearch')
@@ -89,7 +89,7 @@ require([
 //   var rockTypeSearchKey = rockTypeSearchBar.value
 // }
 
-function initMapButtons(event, selectionTool, Draw, Query, QueryTask, on, fl){
+function initMapButtons(event){
     
     //selectionTool is a global variable
     selectionTool = new Draw(event.map); 
@@ -118,16 +118,16 @@ function initMapButtons(event, selectionTool, Draw, Query, QueryTask, on, fl){
             selectedSections.push(selectedSectionId);
         }
       //  console.log("filter based on these sections:", selectedSections);
-        filterForSections(Query, QueryTask, selectedSections, fl);
+        filterForSections(selectedSections, fl);
        
     });
 
-  utilizeButtons(Query, QueryTask, selectionTool, Draw, fl); //calls funtion that has jquery onclick functions
+  utilizeButtons(); //calls funtion that has jquery onclick functions
 } 
 
     
 /********** SELECTION/CLEAR FUNCTIONALITY **********/
-function utilizeButtons(Query, QueryTask, selectionTool, Draw, fl){
+function utilizeButtons(){
 
    $("#mapFilterButton").on( "click", function(){
 
@@ -142,7 +142,7 @@ function utilizeButtons(Query, QueryTask, selectionTool, Draw, fl){
        filters.mapSectionsInput = null;
        //clear map. 
         fl.clearSelection();
-       resetFilters(Query, QueryTask);
+       resetFilters();
          
     });
 
@@ -151,7 +151,7 @@ function utilizeButtons(Query, QueryTask, selectionTool, Draw, fl){
     
    
     
-function resetFilters(Query, QueryTask) {
+function resetFilters() {
         filters.rockTypeInput = $("#rockTypeSearch").val();
         filters.countyInput = $("#countySearch").val(); 
         filters.stateInput = $("#stateSearch").val();
@@ -159,15 +159,15 @@ function resetFilters(Query, QueryTask) {
         filters.handSampleAvailabilityInput = document.getElementById("handSampleCheckbox").checked;
         
         console.log("filters set:", filters);
-        queryTableForFilters(Query, QueryTask);
+        queryTableForFilters();
 }
 
 //function utilizes the search bars
-function initSearchBars(Query, QueryTask){
+function initSearchBars(){
     
     
     $("#filters").on("input", "input", function(){
-        resetFilters(Query, QueryTask);
+        resetFilters();
 
     }); //close #filters.on input function
  
@@ -175,7 +175,7 @@ function initSearchBars(Query, QueryTask){
 
 
     
-function queryTableForFilters(Query, QueryTask){
+function queryTableForFilters(){
    
     var newsqlArray = ["1=1"];
     
@@ -268,7 +268,7 @@ function queryTableForFilters(Query, QueryTask){
     }
 }
 
-function removeFilters(Query, QueryTask){
+function removeFilters(){
     
 	//when the user clicks on a filter indicator... 
     $("#filterFeedback").on("click", "span", function(){
@@ -286,18 +286,18 @@ function removeFilters(Query, QueryTask){
         if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){console.log("clear thin section"); document.getElementById("thinSectionCheckbox").checked = false;};
         
         //resetFilters will call QueryTable. 
-        resetFilters(Query, QueryTask);
+        resetFilters();
     });
     
   
 }
 
 
-function filterForSections(Query, QueryTask, array){
+function filterForSections(array){
     console.log("filter for sections.", array);
     
     filters.mapSectionsInput = array; 
-    queryTableForFilters(Query, QueryTask);
+    queryTableForFilters();
 }
     
 function highlightMap(array, Query, fl){
