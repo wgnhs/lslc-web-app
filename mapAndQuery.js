@@ -1,4 +1,5 @@
-//global var for all filters 
+//global var for all filters
+console.log("new") 
 var filters = {
     //all initial values in this filters object should be falsy. 
     //an empty string is falsy. 
@@ -304,16 +305,40 @@ function queryTableForFilters(){
 function highlightMap(array, fl){
     console.log("highlight the map sections", array);
     //set the symbol to the variable highlightSymbol (an object defined above)
+
+    //filters out redundant section ids 
+    var sortedArray = array.sort(function(a,b){return a-b});
+    var filteredSections = []
+
+    for (i = 0; i < sortedArray.length; i++){
+      if (sortedArray[i] != sortedArray[i-1]) {
+        filteredSections.push(sortedArray[i])
+      }
+    }
+
     
    
 
         var mapHighlight = new Query();
-        mapHighlight.where = ('UID IN ('+array+')');
+        mapHighlight.where = ('UID IN ('+filteredSections+')');
 
         fl.selectFeatures(mapHighlight, fl.SELECTION_NEW); 
-        //zoom to the extent of the filter results. 
+        //zoom to the extent of the filter results.
+
+        //CHOROPLETH
+        var choroplethStructureArray = [];
+        for (i = 0; i < sortedArray.length; i++){
+          if (sortedArray[i] != sortedArray[i-1]){
+            choroplethStructureArray.push([sortedArray[i], 1]);
+          } else {
+            choroplethStructureArray[choroplethStructureArray.length-1][1]++;
+          }
+        }
+
+        console.log("CSA---->", choroplethStructureArray) 
+        
  
     
-} 
+}
 
 }); //end map-constructing function beginning with require...
