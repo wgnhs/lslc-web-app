@@ -1,3 +1,12 @@
+//global var for all filters 
+var filters = {
+    //all initial values in this filters object should be falsy. 
+    //an empty string is falsy. 
+    //an empty array is not falsy, so the map sections input must be set to null when cleared. 
+    
+    "mapSectionsInput": null, "rockTypeInput": "", "countyInput": "", "handSampleAvailabilityInput": null, "thinSectionAvailabilityInput": null, "stateInput": null 
+};
+
 
 require([
    //ALSO INCLUDE THESE IN THE FUNCTION PARAMETERS BELOW!
@@ -23,7 +32,7 @@ require([
    "dojo/parser",   //I don't know what this does. 
    "dojo/domReady!" 
    
-], function (Map, FeatureLayer, SimpleFillSymbol, Query, QueryTask, Draw, dom, on, arrayUtil, parser, rockTypeSearchKey){
+], function (Map, FeatureLayer, SimpleFillSymbol, Query, QueryTask, Draw, dom, on, arrayUtil, parser){
    // console.log("a: ",Map, "b: ",MapView, "c: ",FeatureLayer, "d: ",VectorTileLayer);
    parser.parse(); //I don't know what this does. 
    
@@ -40,12 +49,15 @@ require([
 
    //passes on-load event to anonymous function
    map.on("load", function(e){
+        
+        //event listener for map selection and clear buttons
+        initMapButtons(e); 
+        //This sets an event listener for inputs. 
+        initSearchBars();
+        //initialize a listener for filter removal through a click on a filter indicator
+        removeFilters();
 
-   	initMapButtons(e); //function is in map.js
-    resetFilters();
-    //call the initialize function. This sets an event listener for inputs. 
-    initSearchBars();
-    removeFilters();
+        resetFilters();   
 
    });
 
@@ -81,14 +93,7 @@ require([
     map.addLayer(fl);
     
  
-//initSearchBars();
-
-// function initSearchBar(){
-//   var rockTypeSearchBar = document.getElementById('rockTypeSearch')
-//   console.log(rockTypeSearchBar.value)
-//   var rockTypeSearchKey = rockTypeSearchBar.value
-// }
-
+/* +++++++++++++++++ Set up event listeners (once on load) +++++++++++++++++ */
 function initMapButtons(event){
     
     //selectionTool is a global variable
@@ -124,13 +129,11 @@ function initMapButtons(event){
 
   utilizeButtons(); //calls funtion that has jquery onclick functions
 } 
-
     
-/********** SELECTION/CLEAR FUNCTIONALITY **********/
 function utilizeButtons(){
-
+    // LISTENERS FOR MAP SELECTION/CLEAR FUNCTIONALITY
+    
    $("#mapFilterButton").on( "click", function(){
-
        //console.log(selectionTool);
        selectionTool.activate(Draw.EXTENT);
        
@@ -148,8 +151,42 @@ function utilizeButtons(){
 
 } //end function utilizeButtons
 
+function initSearchBars(){
+    //event listener for a filter input 
     
-   
+    $("#filters").on("input", "input", function(){
+        resetFilters();
+
+    }); //close #filters.on input function
+ 
+} //end initSearchBars function
+
+function removeFilters(){
+    
+	//when the user clicks on a filter indicator... 
+    $("#filterFeedback").on("click", "span", function(){
+      
+        console.log("clear", filters[this.getAttribute('data')]);
+        //reset the filters variable. 
+        filters[this.getAttribute('data')] = null;
+        
+        this.remove();
+        //reset the value in the input / searchbar
+        if (this.getAttribute('data') == 'rockTypeInput'){console.log("clear rock type."); $("#rockTypeSearch").val('');};
+        if (this.getAttribute('data') == 'countyInput'){console.log("clear county"); $("#countySearch").val('');};
+        if (this.getAttribute('data') == 'stateInput'){console.log("clear state"); $("#stateSearch").val('');};
+        if (this.getAttribute('data') == 'handSampleAvailabilityInput'){console.log("clear handsample"); document.getElementById("handSampleCheckbox").checked = false;};
+        if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){console.log("clear thin section"); document.getElementById("thinSectionCheckbox").checked = false;};
+        
+        //resetFilters will call QueryTable. 
+        resetFilters();
+    });
+    
+  
+}
+    
+ /* +++++++++++++++++ END Set up event listeners (once on load) +++++++++++++++++ */   
+ 
     
 function resetFilters() {
         filters.rockTypeInput = $("#rockTypeSearch").val();
@@ -161,17 +198,6 @@ function resetFilters() {
         console.log("filters set:", filters);
         queryTableForFilters();
 }
-
-//function utilizes the search bars
-function initSearchBars(){
-    
-    
-    $("#filters").on("input", "input", function(){
-        resetFilters();
-
-    }); //close #filters.on input function
- 
-} //end initSearchBars function
 
 
     
@@ -259,8 +285,6 @@ function queryTableForFilters(){
 
   // queryTask.executeForIds(query, queryCallback);
 
-  //calls remove filters
-   //	removeFilters(rockTypeSearchKey, countySearchKey, thinSectionChecked, handSampleChecked);
     } else {
         //if query.where is empty, query for everything! 
         console.log("query is empty.");
@@ -268,29 +292,7 @@ function queryTableForFilters(){
     }
 }
 
-function removeFilters(){
-    
-	//when the user clicks on a filter indicator... 
-    $("#filterFeedback").on("click", "span", function(){
-      
-        console.log("clear", filters[this.getAttribute('data')]);
-        //reset the filters variable. 
-        filters[this.getAttribute('data')] = null;
-        
-        this.remove();
-        //reset the value in the input / searchbar
-        if (this.getAttribute('data') == 'rockTypeInput'){console.log("clear rock type."); $("#rockTypeSearch").val('');};
-        if (this.getAttribute('data') == 'countyInput'){console.log("clear county"); $("#countySearch").val('');};
-        if (this.getAttribute('data') == 'stateInput'){console.log("clear state"); $("#stateSearch").val('');};
-        if (this.getAttribute('data') == 'handSampleAvailabilityInput'){console.log("clear handsample"); document.getElementById("handSampleCheckbox").checked = false;};
-        if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){console.log("clear thin section"); document.getElementById("thinSectionCheckbox").checked = false;};
-        
-        //resetFilters will call QueryTable. 
-        resetFilters();
-    });
-    
-  
-}
+
 
 
 function filterForSections(array){
