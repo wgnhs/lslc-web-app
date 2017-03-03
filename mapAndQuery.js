@@ -198,8 +198,16 @@ function resetFilters() {
         console.log("filters set:", filters);
         queryTableForFilters();
 }
+    
 
-
+function filterForSections(array){
+    //this happens on draw end.  
+    console.log("filter for sections.", array);
+    
+    filters.mapSectionsInput = array; 
+    queryTableForFilters();
+}
+    
     
 function queryTableForFilters(){
    
@@ -280,7 +288,7 @@ function queryTableForFilters(){
             highlightMapSections.push(sectionsQueryResult.features[f].attributes.SectionId);
         }
         
-        highlightMap(highlightMapSections, Query, fl);
+        highlightMap(highlightMapSections, fl);
     });
 
   // queryTask.executeForIds(query, queryCallback);
@@ -292,17 +300,8 @@ function queryTableForFilters(){
     }
 }
 
-
-
-
-function filterForSections(array){
-    console.log("filter for sections.", array);
     
-    filters.mapSectionsInput = array; 
-    queryTableForFilters();
-}
-    
-function highlightMap(array, Query, fl){
+function highlightMap(array, fl){
     console.log("highlight the map sections", array);
     //set the symbol to the variable highlightSymbol (an object defined above)
     
