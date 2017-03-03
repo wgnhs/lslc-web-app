@@ -207,3 +207,4 @@ function filterForSections(Query, QueryTask, array){
     filters.mapSectionsInput = array; 
     queryTableForFilters(Query, QueryTask);
 }
+
