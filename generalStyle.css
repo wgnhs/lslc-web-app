@@ -83,6 +83,14 @@ h1{
     cursor: pointer;
 }
 
+#footer{
+    padding-top: 10px;
+    clear: both;
+    text-align: center;
+    font-size: 10pt;
+    padding-bottom: 10px;
+}
+
 /*============= Media Queries ===============*/
 
 @media only screen and (max-width : 800px) {
