@@ -1,5 +1,8 @@
 //global var for all filters
-console.log("new") 
+console.log("new")
+var poop = [2,3,4,5,6]
+console.log(20/1.5)
+console.log(4/4, 4/2, 4/(4/3))  
 var filters = {
     //all initial values in this filters object should be falsy. 
     //an empty string is falsy. 
@@ -325,8 +328,9 @@ function highlightMap(array, fl){
         fl.selectFeatures(mapHighlight, fl.SELECTION_NEW); 
         //zoom to the extent of the filter results.
 
-        //CHOROPLETH
+        //CHOROPLETH-----------------------------------------
         var choroplethStructureArray = [];
+        //populates 2D array with [[sectionID, # of records in it],,]
         for (i = 0; i < sortedArray.length; i++){
           if (sortedArray[i] != sortedArray[i-1]){
             choroplethStructureArray.push([sortedArray[i], 1]);
@@ -335,7 +339,56 @@ function highlightMap(array, fl){
           }
         }
 
-        console.log("CSA---->", choroplethStructureArray) 
+        //creates array with just the # of records; later used to find class breaks
+        var classBreaksFinderArray = [];
+        for (i = 0; i < choroplethStructureArray.length; i++){
+          classBreaksFinderArray.push(choroplethStructureArray[i][1]);
+        }
+
+        //sorts the array containing # of samples; sorts and filteres ot redundant values
+        var sortedClassFinderArray = classBreaksFinderArray.sort(function(a,b){return a-b});
+        var filteredValuesArray = [];
+        for (i = 0; i < sortedClassFinderArray.length; i++){
+          if (sortedClassFinderArray[i] != sortedClassFinderArray[i-1]) {
+            filteredValuesArray.push(sortedClassFinderArray[i])
+          }
+        }
+
+        //sets up 4 class break values using jerry-rigged equal interval -- maybe switch and import D3?
+        var break0 = filteredValuesArray[0];
+        var break1 = filteredValuesArray[Math.round((filteredValuesArray.length / 4) - 1)];
+        var break2 = filteredValuesArray[Math.round((filteredValuesArray.length / 2) - 1)];
+        var break3 = filteredValuesArray[Math.round((filteredValuesArray.length / (4/3)) - 1)];
+        var breakTop = filteredValuesArray[filteredValuesArray.length - 1];
+
+        //defines arrays to be populated with section ids in each class
+        var class1Array = [];
+        var class2Array = [];
+        var class3Array = [];
+        var class4Array = [];
+
+        //populates each class array by checking how many samples they each have, evaluating via breaks
+        //makes use of the 2D choroplethStructureArray
+        for (i = 0; i < choroplethStructureArray.length; i++){
+          if (choroplethStructureArray[i][1] <= break1){
+            class1Array.push(choroplethStructureArray[i][0]);
+          } else if (choroplethStructureArray[i][1] <= break2) {
+            class2Array.push(choroplethStructureArray[i][0]);
+          } else if (choroplethStructureArray[i][1] <= break3) {
+            class3Array.push(choroplethStructureArray[i][0]);
+          } else {
+            class4Array.push(choroplethStructureArray[i][0]);
+          }; 
+        } 
+
+        //tests out how the choropleth system is working
+        console.log(filteredValuesArray)
+        console.log(break0,break1,break2,break3,breakTop)
+        console.log(choroplethStructureArray)
+        console.log(class1Array)
+        console.log(class2Array)
+        console.log(class3Array)
+        console.log(class4Array)
         
  
     
