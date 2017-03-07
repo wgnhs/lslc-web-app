@@ -51,13 +51,14 @@ function listResults (data){
 function onSampleClick(item){
     //this function is called when any list item in resultsUL is clicked. 
     
+    var clickedId = $(item).data('SampleId');
    //why does this sometimes console log twice?
-    console.log("You selected sample ", $(item).data('SampleId'), ". sample data is: ", $(item).data());
+    console.log("You selected sample ", clickedId, ". sample data is: ", $(item).data());
     
-  /*  if ($(item).data('SampleId') === 12){
-        window.open("recordView_mockup.html", "_blank");
-    }
-    */
-     window.open("recordView_workingCopy.html", "_blank");
+//    if ($(item).data('SampleId') === 15){
+        window.open("recordView_workingCopy.html?sample="+clickedId, "_blank");
+   // }
+    
+    
     
 }
