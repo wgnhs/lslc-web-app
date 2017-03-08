@@ -1,8 +1,5 @@
 //global var for all filters
-console.log("new")
-var poop = [2,3,4,5,6]
-console.log(20/1.5)
-console.log(4/4, 4/2, 4/(4/3))  
+
 var filters = {
     //all initial values in this filters object should be falsy. 
     //an empty string is falsy. 
@@ -346,6 +343,7 @@ function highlightMap(array, fl){
         }
 
         //sorts the array containing # of samples; sorts and filteres ot redundant values
+        //gives us unique count numbers
         var sortedClassFinderArray = classBreaksFinderArray.sort(function(a,b){return a-b});
         var filteredValuesArray = [];
         for (i = 0; i < sortedClassFinderArray.length; i++){
@@ -382,13 +380,14 @@ function highlightMap(array, fl){
         } 
 
         //tests out how the choropleth system is working
-        console.log(filteredValuesArray)
-        console.log(break0,break1,break2,break3,breakTop)
-        console.log(choroplethStructureArray)
-        console.log(class1Array)
-        console.log(class2Array)
-        console.log(class3Array)
-        console.log(class4Array)
+        console.log("filtered values array -->", filteredValuesArray)
+        console.log("class breaks -->", break0,break1,break2,break3,breakTop)
+        console.log("class 1 array:", class1Array)
+        console.log("class 2 array:", class2Array)
+        console.log("class 3 array:", class3Array)
+        console.log("class 4 array:", class4Array)
+
+        //create new Feature Layer with each of these
         
  
     
