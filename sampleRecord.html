@@ -64,7 +64,7 @@
        
     <script type="text/javascript">
        
-        console.log("window location:",window.location.href);
+        console.log("window location:",window.location.hash.replace("#", ""));
         
         var samID = 2759;
 
@@ -302,45 +302,49 @@
             
         }; 
         
-        //will need to retrieve data from five tables and place it into an internal data object.
-        $.getJSON('data/esriResult_sample2759.json', function(data){
-            console.log("data:", data);
-            
-        // from the SAMPLES TABLE...    
-        //based on the samID variable, find the object within the features array that matches that sample ID...
-            var selectedSample = jQuery.grep(data.features, function(object, index){
-                console.log("object.attributes.SampleId:", object.attributes.SampleId);
-                var thisSampleId = object.attributes.SampleId;
-                console.log("thisSampleId", thisSampleId);
-                return(thisSampleId === samID);
-            });
-            var sample = selectedSample[0].attributes;
-            console.log("selectedSample[0]:", sample);
-            
-            //re-assign the sampleRecordData values as the actual data values. 
-            sampleRecordData.sampleId = sample.SampleId;
-            sampleRecordData.rockType = sample.RockType;
-            sampleRecordData.fieldNotebookId = sample.NotebookId;
-            
-            //build the sections and divs to contain report information...
-            buildReport(sample);
-                               
-        })
-            //for debugging json load errors
-           // .done(function(){console.log('success', arguments);})
-           // .fail(function(){console.log('failure', arguments);})
+        //call after loading the window? after loading the body?
+        retrieveData();
         
-        ; //end getJSON
+        function retrieveData(){
+            //will need to retrieve data from five tables and place it into an internal data object.
+            $.getJSON('data/esriResult_sample2759.json', function(data){
+                console.log("data:", data);
+
+            // from the SAMPLES TABLE...    
+            //based on the samID variable, find the object within the features array that matches that sample ID...
+                var selectedSample = jQuery.grep(data.features, function(object, index){
+                    console.log("object.attributes.SampleId:", object.attributes.SampleId);
+                    var thisSampleId = object.attributes.SampleId;
+                    console.log("thisSampleId", thisSampleId);
+                    return(thisSampleId === samID);
+                });
+                var sample = selectedSample[0].attributes;
+                console.log("selectedSample[0]:", sample);
+
+                //re-assign the sampleRecordData values as the actual data values. 
+                sampleRecordData.sampleId = sample.SampleId;
+                sampleRecordData.rockType = sample.RockType;
+                sampleRecordData.fieldNotebookId = sample.NotebookId;
+
+                //build the sections and divs to contain report information...
+                buildReport(sample);
+
+            })
+                //for debugging json load errors
+                // .done(function(){console.log('success', arguments);})
+                // .fail(function(){console.log('failure', arguments);})
+            ; //end getJSON
+            
+        } //end retrieveData function
        
                
         function buildReport(sample){
-            console.log("build report for sample ",sample); 
+            //console.log("build report for sample ",sample); 
             
             //add sample number and rock type at the top. 
             var sampleIDh2 = $('<h2></h2>').html("Sample #"+sampleRecordData.sampleId); 
             var rockTypep = $('<p></p>').text(sampleRecordData.rockType);
             rockTypep.css("font-size","14pt");
-            
             $('#sampleRecord').append(sampleIDh2, rockTypep);
             
             //iterate through the reportDivisions array above, 
@@ -376,7 +380,7 @@
             if (sampleRecordData.thinSectionCount>0){
                 for (i in sampleRecordData.thinSections){
                     
-                    console.log("thin section", sampleRecordData.thinSections[i]);
+                   //console.log("thin section", sampleRecordData.thinSections[i]);
                     
                    //a container at block-level
                     var thinSectionContainer = $('<div></div>');

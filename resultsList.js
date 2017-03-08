@@ -56,7 +56,7 @@ function onSampleClick(item){
     console.log("You selected sample ", clickedId, ". sample data is: ", $(item).data());
     
 //    if ($(item).data('SampleId') === 15){
-        window.open("sampleRecord.html?sample="+clickedId, "_blank");
+        window.open("sampleRecord.html#"+clickedId, "_blank");
    // }
     
     
