@@ -1,4 +1,5 @@
-//global var for all filters 
+//global var for all filters
+
 var filters = {
     //all initial values in this filters object should be falsy. 
     //an empty string is falsy. 
@@ -304,16 +305,92 @@ function queryTableForFilters(){
 function highlightMap(array, fl){
     console.log("highlight the map sections", array);
     //set the symbol to the variable highlightSymbol (an object defined above)
+
+    //filters out redundant section ids 
+    var sortedArray = array.sort(function(a,b){return a-b});
+    var filteredSections = []
+
+    for (i = 0; i < sortedArray.length; i++){
+      if (sortedArray[i] != sortedArray[i-1]) {
+        filteredSections.push(sortedArray[i])
+      }
+    }
+
     
    
 
         var mapHighlight = new Query();
-        mapHighlight.where = ('UID IN ('+array+')');
+        mapHighlight.where = ('UID IN ('+filteredSections+')');
 
         fl.selectFeatures(mapHighlight, fl.SELECTION_NEW); 
-        //zoom to the extent of the filter results. 
+        //zoom to the extent of the filter results.
+
+        //CHOROPLETH-----------------------------------------
+        var choroplethStructureArray = [];
+        //populates 2D array with [[sectionID, # of records in it],,]
+        for (i = 0; i < sortedArray.length; i++){
+          if (sortedArray[i] != sortedArray[i-1]){
+            choroplethStructureArray.push([sortedArray[i], 1]);
+          } else {
+            choroplethStructureArray[choroplethStructureArray.length-1][1]++;
+          }
+        }
+
+        //creates array with just the # of records; later used to find class breaks
+        var classBreaksFinderArray = [];
+        for (i = 0; i < choroplethStructureArray.length; i++){
+          classBreaksFinderArray.push(choroplethStructureArray[i][1]);
+        }
+
+        //sorts the array containing # of samples; sorts and filteres ot redundant values
+        //gives us unique count numbers
+        var sortedClassFinderArray = classBreaksFinderArray.sort(function(a,b){return a-b});
+        var filteredValuesArray = [];
+        for (i = 0; i < sortedClassFinderArray.length; i++){
+          if (sortedClassFinderArray[i] != sortedClassFinderArray[i-1]) {
+            filteredValuesArray.push(sortedClassFinderArray[i])
+          }
+        }
+
+        //sets up 4 class break values using jerry-rigged equal interval -- maybe switch and import D3?
+        var break0 = filteredValuesArray[0];
+        var break1 = filteredValuesArray[Math.round((filteredValuesArray.length / 4) - 1)];
+        var break2 = filteredValuesArray[Math.round((filteredValuesArray.length / 2) - 1)];
+        var break3 = filteredValuesArray[Math.round((filteredValuesArray.length / (4/3)) - 1)];
+        var breakTop = filteredValuesArray[filteredValuesArray.length - 1];
+
+        //defines arrays to be populated with section ids in each class
+        var class1Array = [];
+        var class2Array = [];
+        var class3Array = [];
+        var class4Array = [];
+
+        //populates each class array by checking how many samples they each have, evaluating via breaks
+        //makes use of the 2D choroplethStructureArray
+        for (i = 0; i < choroplethStructureArray.length; i++){
+          if (choroplethStructureArray[i][1] <= break1){
+            class1Array.push(choroplethStructureArray[i][0]);
+          } else if (choroplethStructureArray[i][1] <= break2) {
+            class2Array.push(choroplethStructureArray[i][0]);
+          } else if (choroplethStructureArray[i][1] <= break3) {
+            class3Array.push(choroplethStructureArray[i][0]);
+          } else {
+            class4Array.push(choroplethStructureArray[i][0]);
+          }; 
+        } 
+
+        //tests out how the choropleth system is working
+        console.log("filtered values array -->", filteredValuesArray)
+        console.log("class breaks -->", break0,break1,break2,break3,breakTop)
+        console.log("class 1 array:", class1Array)
+        console.log("class 2 array:", class2Array)
+        console.log("class 3 array:", class3Array)
+        console.log("class 4 array:", class4Array)
+
+        //create new Feature Layer with each of these
+        
  
     
-} 
+}
 
 }); //end map-constructing function beginning with require...
