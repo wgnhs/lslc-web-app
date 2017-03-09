@@ -3,13 +3,13 @@ var modal = (function(){
     /* Functions for closing the modal */
     window.onclick = function(event) {
         if (event.target == modalBackground) {
-            console.log("clicked modalBackground.");
+      //      console.log("clicked modalBackground.");
             modal.close();
         }
     }
     /*for the closemodal button*/
      $('#modalBackground').on('click', '#closemodal', function() {
-            console.log("clicked closebutton.");
+         //   console.log("clicked closebutton.");
             modal.close();   
     });
     
@@ -55,7 +55,7 @@ var modal = (function(){
     };
     
     var thinSectionViewer = function(id){
-        console.log("show thin section viewer for ID", id);
+     //   console.log("show thin section viewer for ID", id);
         modalContent = "<span id='closemodal' class='close'>x</span>"; 
         
        
