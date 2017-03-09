@@ -170,10 +170,18 @@
                 sampleQuery.where = "SampleID = "+sampleRecordData.sampleId;
                 
                 var sampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
-                sampleTableQuery.execute(sampleQuery, function(sampleTableResult){console.log("sample table result features[0] attributes:", sampleTableResult.features[0].attributes);});
+                sampleTableQuery.execute(sampleQuery, function(sampleTableResult){
+                    if(sampleTableResult.features[0]){
+                        console.log("sample table info:", sampleTableResult.features[0].attributes);
+                    } else {console.log("no result from the samples table.");}
+                });
                 
                 var thinSectionTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/4");
-                thinSectionTableQuery.execute(sampleQuery, function(thinTableResult){console.log("thin section info", thinTableResult.features[0].attributes);})
+                thinSectionTableQuery.execute(sampleQuery, function(thinTableResult){
+                    if(thinTableResult.features[0]){
+                        console.log("thin section info", thinTableResult.features[0].attributes);
+                    }
+                });
                 
             }); //end require
             
