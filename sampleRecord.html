@@ -49,7 +49,7 @@
         
             
         <div id="searchArea">
-            <label>Search by sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button>
+            <label>Search by sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <p>or </p><a href="mapView_esri3-18.html" target="_blank">filter samples</a>
        </div>
         
        <h3>Sample Record</h3>
@@ -68,7 +68,7 @@
        
     <script type="text/javascript">
         //global variable to store the current sample number. 
-        var samID;
+        
         
              //The parts of the record webpage are referred to as 'divisions' in this code. 
         //The buildReport function will iterate through this array.
@@ -146,9 +146,9 @@
         function resetSampleNumber(number){
             console.log("reset with number ", number);
             //reset the global variable: 
-            samID = number;
+            sampleRecordData.sampleId = number;
             //reset the search input value: 
-            $("#sampleSearch").val(samID);
+            $("#sampleSearch").val(number);
             
             retrieveData();
         }
@@ -156,11 +156,14 @@
        
         
         function retrieveData(){
-            //will need to retrieve data from five tables and place it into an internal data object.
-            sampleRecordData.sampleId = samID;
+            //will need to retrieve data from five tables and place it into the internal data object (global variable sampleRecordData).
             
             
+            //if the sample id is successfully found, 
             buildReport();
+            
+            //if the sample id is not successfully found, return an error message. 
+            
         } //end retrieveData function
            
         function buildReport(){
@@ -196,7 +199,7 @@
         } //end buildReport 
         
         function addSampleNumber(){
-            if(samID){
+            if(sampleRecordData.sampleId){
                 var sampleIDh2 = $('<h2></h2>').html("Sample #"+sampleRecordData.sampleId); 
                 $("#sampleNumber").append(sampleIDh2);
                 
