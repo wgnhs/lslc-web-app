@@ -46,11 +46,15 @@
        </div>       
   
     <div id="wrapper">
-        <h3>Sample Record</h3>
-            
         
+            
+        <div id="searchArea">
+            <label>Search by sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button>
+       </div>
+        
+       <h3>Sample Record</h3>
         <div id="sampleRecord"></div>
- 
+        
         <!-- add a project footer... -->
         <div id='footer'>
            <p> Lake Superior Legacy Collection <br/>
@@ -63,210 +67,28 @@
     </div><!--end wrapper div-->    
        
     <script type="text/javascript">
-       
-        console.log("window location:",window.location.hash.replace("#", ""));
+        //global variable to store the current sample number. 
+        var samID;
         
-        var samID = 2759;
-
-        //The parts of the record webpage are referred to as 'divisions' in this code. 
+             //The parts of the record webpage are referred to as 'divisions' in this code. 
         //The buildReport function will iterate through this array.
         //this creates the skeleton of the webpage.
-        //unclear whether an attributes list for each diuvision here would be useful for anything, They are not in use right now. 
+        //unclear whether an attributes list for each division here would be useful for anything, They are not in use right now. 
         var reportDivisions = [
-            {"divisionTitle":"Thin Sections", "divisionId":"thinSections"
-           /*  , "attributes": [
-                    {   "attrSource":"ThinSectionCount",
-                        "attrLabel":"Number of Thin Sections: ",
-                        "attrVar":"thinSectionCount"
-                    }
-                    , 
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"",
-                        "attrTag":"img",
-                        "attrVar": "thinImgppl"
-                    }, 
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrTag":"img",
-                        "attrVar": "thinImgxpl"
-                    }
-                ]*/
-            }, 
-            {"divisionTitle":"Location", "divisionId":"location" 
-             /*,"attributes": [
-                    {
-                        "attrSource":"SectionId",
-                        "attrLabel":"PLSS Section", 
-                        "attrVar": "mapSectionId"
-                    }, 
-                    {
-                        "attrSource":"Township",
-                        "attrLabel":"Township", 
-                        "attrVar": "township"
-
-                    },
-                    {
-                        "attrSource":"Range",
-                        "attrLabel":"Range", 
-                        "attrVar": "range"
-
-                    },
-                    {
-                        "attrSource":"Direction",
-                        "attrLabel":"", 
-                        "attrVar": "rangeDirection"
-
-                    },
-                    {
-                        "attrSource":"Section_",
-                        "attrLabel":"Section", 
-                        "attrVar": "PLSSsection"
-
-                    },
-                    {
-                        "attrSource":"Quarter",
-                        "attrLabel":"Quarter-section", 
-                        "attrVar": "quarterSection"
-
-                    },
-                    {
-                        "attrSource":"QuarterQuarter",
-                        "attrLabel":"Quarter-quarter-section", 
-                        "attrVar": "quarterQuarterSection"
-
-                    },
-                    {
-                        "attrSource":"State", 
-                        "attrLabel":"State:", 
-                        "attrVar": "state"
-                    },
-                    {
-                        "attrSource":"County", 
-                        "attrLabel":"County:", 
-                        "attrVar": "county"
-                    }, 
-                    {
-                        "attrSource":"LocNote", 
-                        "attrLabel":"Location Notes:", 
-                        "attrVar": "locationNote"
-                    }
-            ] */
-            }, 
-            {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"
-             /*, "attributes":[
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrVar":"fieldNotebookThumb"
-                    },    
-                    {
-                        "attrSource":"NotebookPage", 
-                        "attrLabel":"Page", 
-                        "attrVar":"fieldPage"
-                    }, 
-                    {
-                        "attrSource":"NotebookId", 
-                        "attrLabel":"Notebook", 
-                        "attrVar":"fieldNotebookId"
-                    }, 
-                    {
-                        "attrSource":"NotebookTitle", 
-                        "attrLabel":"", 
-                        "attrVar":"fieldNotebookTitle"
-                    },
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"by", 
-                        "attrVar":"fieldAuthor"
-                    }, 
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrVar":"fieldDate"
-                    }, 
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrVar":"fieldNotebookUrl"
-                    }
-                
-                
-            ]*/
-            }, 
-            {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc"
-             /*, "attributes":[
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"Page", 
-                        "attrTag": "p",
-                        "attrVar":"lithPage"
-                    }, 
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrVar":"lithNotebookId"
-                    },
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrVar":"lithNotebookUrl"
-                    },
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrVar":"lithNotebookThumb"
-                    },
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrVar":"lithAuthor"
-                    }, 
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrVar":"lithDate"
-                    }, 
-                    {
-                        "attrSource":"", 
-                        "attrLabel":"", 
-                        "attrVar":"lithNotebookTitle"
-                    }
-                
-                
-            ]*/
-            }, 
-            {"divisionTitle":"Sample Notes","divisionId":"sampleNotes"
-             /*, "attributes":[
-                
-                {
-                        "attrSource":"Notes", 
-                        "attrLabel":"",
-                        "attrVar":"sampleNotes"
-                    }
-                
-                
-            ]*/
-            },
-            {"divisionTitle":"Available Samples", "divisionId":"availableSamples"
-             /*, "attributes":[
-                    {
-                        "attrSource":"WgnhsId", 
-                        "attrLabel":"WGNHS ID", 
-                        "attrVar":"WGNHSId"
-                    }
-                
-                
-            ]*/
-            }  
+             {"divisionTitle":"", "divisionId":"sampleNumber"},
+            {"divisionTitle":"Thin Sections", "divisionId":"thinSections"}, 
+            {"divisionTitle":"Location", "divisionId":"location"}, 
+            {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"}, 
+            {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc"}, 
+            {"divisionTitle":"Sample Notes","divisionId":"sampleNotes"},
+            {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}  
         ]; 
         
         //this object will hold all of the data for the record.
         //this data must be drawn from several different tables. 
         var sampleRecordData = {
-            "sampleId":00,
-            "rockType":"undefined",
+            "sampleId":"00",
+            
             "thinSectionCount":1, 
             "thinSections": [{"thinSectionId":2759, "thinImgppl": "", "thinImgxpl": "", "thinThumbppl":"images/400pxwide/2793ppl_400pxwide.jpg", "thinThumbxpl": "images/400pxwide/2793xpl_400pxwide.jpg"}], 
             
@@ -281,7 +103,8 @@
                 "locationNote": "Penokee Range" 
             },
             
-            "fieldNotebookId":0,
+            "rockType":"unknown",
+            "fieldNotebookId":12,
             "fieldPage": 44,
             "fieldNotebookTitle": "Penokee Iron Region, Wisconsin",
             "fieldNotebookThumb":"images/notebooks/fieldNotebook31_thumb.jpg",
@@ -302,50 +125,49 @@
             
         }; 
         
-        //call after loading the window? after loading the body?
-        retrieveData();
+   
+           
+        //this only happens once, on window load. 
+        resetSampleNumber(window.location.hash.replace("#", ""));
+        
+        
+       //listener for hash changes 
+        $(window).on('hashchange',function(){
+            resetSampleNumber(window.location.hash.replace("#", ""));
+        });
+        
+        //listener for go button; resets the hash, which triggers a hash change. 
+        $("#searchGo").on('click', function(){
+            console.log("go.", $("#sampleSearch").val());
+            //reset the url hash
+            window.location.hash = "#"+$("#sampleSearch").val();
+        });
+        
+        function resetSampleNumber(number){
+            console.log("reset with number ", number);
+            //reset the global variable: 
+            samID = number;
+            //reset the search input value: 
+            $("#sampleSearch").val(samID);
+            
+            retrieveData();
+        }
+   
+       
         
         function retrieveData(){
             //will need to retrieve data from five tables and place it into an internal data object.
-            $.getJSON('data/esriResult_sample2759.json', function(data){
-                console.log("data:", data);
-
-            // from the SAMPLES TABLE...    
-            //based on the samID variable, find the object within the features array that matches that sample ID...
-                var selectedSample = jQuery.grep(data.features, function(object, index){
-                    console.log("object.attributes.SampleId:", object.attributes.SampleId);
-                    var thisSampleId = object.attributes.SampleId;
-                    console.log("thisSampleId", thisSampleId);
-                    return(thisSampleId === samID);
-                });
-                var sample = selectedSample[0].attributes;
-                console.log("selectedSample[0]:", sample);
-
-                //re-assign the sampleRecordData values as the actual data values. 
-                sampleRecordData.sampleId = sample.SampleId;
-                sampleRecordData.rockType = sample.RockType;
-                sampleRecordData.fieldNotebookId = sample.NotebookId;
-
-                //build the sections and divs to contain report information...
-                buildReport(sample);
-
-            })
-                //for debugging json load errors
-                // .done(function(){console.log('success', arguments);})
-                // .fail(function(){console.log('failure', arguments);})
-            ; //end getJSON
+            sampleRecordData.sampleId = samID;
             
+            
+            buildReport();
         } //end retrieveData function
-       
-               
-        function buildReport(sample){
+           
+        function buildReport(){
             //console.log("build report for sample ",sample); 
             
-            //add sample number and rock type at the top. 
-            var sampleIDh2 = $('<h2></h2>').html("Sample #"+sampleRecordData.sampleId); 
-            var rockTypep = $('<p></p>').text(sampleRecordData.rockType);
-            rockTypep.css("font-size","14pt");
-            $('#sampleRecord').append(sampleIDh2, rockTypep);
+            //clear the sample record div. 
+            $("#sampleRecord").html('');
             
             //iterate through the reportDivisions array above, 
             //creating a div for each with an id property and h3 title 
@@ -363,6 +185,7 @@
             }
             
             //populate the various fields in the report, using the values in the sampleRecordData object (global variable)
+            addSampleNumber();
             addThinSections();
             addLocation();
             addFieldNotes();
@@ -372,7 +195,13 @@
             
         } //end buildReport 
         
- 
+        function addSampleNumber(){
+            if(samID){
+                var sampleIDh2 = $('<h2></h2>').html("Sample #"+sampleRecordData.sampleId); 
+                $("#sampleNumber").append(sampleIDh2);
+                
+            } else {console.log("samID is false.");}
+        }
         
        function addThinSections(){
             
@@ -430,7 +259,7 @@
             var fieldNotebookreport = ''; 
             if (sampleRecordData.fieldNotebookId > 0){
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.fieldNotebookThumb+"' alt='notebook cover'/></a>";
-                fieldNotebookreport+="<div class='detailsDiv'><p>Page "+sampleRecordData.fieldPage+"</p> <a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.rockType+"</p><p>Page "+sampleRecordData.fieldPage+"</p> <a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
      
             } else {
                 fieldNotebookreport+="<p>none</p>";
