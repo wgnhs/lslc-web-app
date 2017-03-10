@@ -52,7 +52,7 @@
     <div id="wrapper">
         <div id="header"></div>
         <div id="searchArea">
-            <h1>Sample Record</h1>
+            <h1>Sample Search</h1>
             <label>Search by sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <p>or visit our </p><a href="mapView_esri3-18.html" target="_blank">filter samples</a> <p>page.</p>
        </div>
         
@@ -314,7 +314,7 @@
         function addLocation(){
             
             var loc = ''
-            loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
+            //loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
             loc+="<div class='detailsDiv'>";
             for (prop in sampleRecordData.location){
                 //console.log("prop:", prop);
