@@ -38,22 +38,21 @@ h1{
 
 /*----- HEADER -----*/
 #header nav{
-    background-color: black;
-   /* clear: both;*/
-    width: 100%;
+   
+   float: right;
     padding: 2px 0px;
     margin: 5px 0px 15px 0px;
 }
 
 #header a {
-   background-color: black;
-    color: white;
+   
+    color: black;
     text-decoration: none;
-    padding: 2px 10px;
+    padding: 2px 15px;
 }
 #header a:hover{
     cursor: pointer;
-    background-color: gray;
+    background-color: #e6e6e6;
 }
 
 /*----- end HEADER -----*/
