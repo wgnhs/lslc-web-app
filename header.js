@@ -2,3 +2,5 @@ var header = "<img src='images/LSLCLogo_v3_lightLake.png' alt='The Lake Superior
 
 
 $("#header").append(header);
+
+//may need to work on this header's responsiveness in narrow windows... figure out how to collapse to a simple list or a menu button. 
