@@ -36,6 +36,29 @@ h1{
     cursor: pointer;
 }
 
+/*----- HEADER -----*/
+#header nav{
+    background-color: black;
+    clear: both;
+    width: 100%;
+    padding: 2px 0px;
+    margin: 5px 0px 15px 0px;
+}
+
+#header a {
+   background-color: black;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 2px 10px;
+}
+#header a:hover{
+    cursor: pointer;
+    background-color: gray;
+}
+
+/*----- end HEADER -----*/
+
 /*---------------- modal --------------*/ 
 .modalBackground {
    /* display: none; */   /* Hidden by default */
