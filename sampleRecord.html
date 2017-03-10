@@ -52,10 +52,11 @@
     <div id="wrapper">
         <div id="header"></div>
         <div id="searchArea">
+            <h1>Sample Record</h1>
             <label>Search by sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <p>or visit our </p><a href="mapView_esri3-18.html" target="_blank">filter samples</a> <p>page.</p>
        </div>
         
-       <h3>Sample Record</h3>
+       
         <div id="sampleRecord"></div>
         
         <!-- add a project footer... -->
@@ -138,29 +139,46 @@
         
        //listener for hash changes 
         $(window).on('hashchange',function(){
+            //reset the search input value to match the hash 
+            $("#sampleSearch").val(window.location.hash.replace("#", ""));
+            
             resetSampleNumber(window.location.hash.replace("#", ""));
         });
         
+        //can there also be a listener for hitting 'enter' in the input?? 
         //listener for go button; resets the hash, which triggers a hash change. 
         $("#searchGo").on('click', function(){
-            console.log("go.", $("#sampleSearch").val());
+            //console.log("go.", $("#sampleSearch").val());
             //reset the url hash
             window.location.hash = "#"+$("#sampleSearch").val();
         });
         
         function resetSampleNumber(number){
-            console.log("reset with number ", number);
-            //reset the global variable: 
-            sampleRecordData.sampleId = number;
-            //reset the search input value: 
-            $("#sampleSearch").val(number);
-            
-            retrieveData();
+           // console.log("number is ", number);
+            //number.parseInt
+            if (/^\+?\d+$/.test(number)){
+                console.log("valid number ", number);
+                //reset the global variable: 
+                sampleRecordData.sampleId = number;
+                  
+                findSample();
+                
+            } else {console.log("the number "+number+" is false."); 
+                    
+                    /*only display the search section of the page.*/ 
+                    $("#sampleRecord").html(''); 
+                    
+                        if (number){
+                            console.log(number, " is not a valid number.");
+                            $("#sampleRecord").append("'"+number+"' is not a valid number.");
+                        }
+                    
+                   }
         }
    
        
         
-        function retrieveData(){
+        function findSample(){
             //will need to retrieve data from five tables and place it into the internal data object (global variable sampleRecordData).
             //sampleRecordQuery.consoleLog("hello");
             
@@ -169,28 +187,38 @@
                 sampleQuery.outFields = ['*'];
                 sampleQuery.where = "SampleID = "+sampleRecordData.sampleId;
                 
+                console.log("where is:", sampleQuery.where);
                 var sampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
                 sampleTableQuery.execute(sampleQuery, function(sampleTableResult){
                     if(sampleTableResult.features[0]){
                         console.log("sample table info:", sampleTableResult.features[0].attributes);
-                    } else {console.log("no result from the samples table.");}
-                });
-                
-                var thinSectionTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/4");
-                thinSectionTableQuery.execute(sampleQuery, function(thinTableResult){
-                    if(thinTableResult.features[0]){
-                        console.log("thin section info", thinTableResult.features[0].attributes);
+                        //if the sample id is successfully found, 
+                        retrieveData(sampleQuery, Query, QueryTask);
+                        
+                    } else {
+                        //if the sample id is not successfully found, return an error message. 
+                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.sampleId+". Try a different number.");
                     }
                 });
                 
+                
+                
             }); //end require
+
+        } //end findSample function
+        
+        function retrieveData(sampleQuery, Query, QueryTask){
+                    console.log("retrieve all data.");
+                    //primary queries will return only 
             
-            //if the sample id is successfully found, 
-            buildReport();
-            
-            //if the sample id is not successfully found, return an error message. 
-            
-        } //end retrieveData function
+                    var thinSectionTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/4");
+                    thinSectionTableQuery.execute(sampleQuery, function(thinTableResult){
+                        if(thinTableResult.features[0]){
+                            console.log("thin section info", thinTableResult.features[0].attributes);
+                        }
+                    });
+                    buildReport();
+                } //end function retrieveData. 
            
         function buildReport(){
            
@@ -265,9 +293,7 @@
             })
             
             
-        } //end addThinSections function
-        
-         
+        } //end addThinSections function         
              
         function addLocation(){
             
