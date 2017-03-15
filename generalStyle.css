@@ -2,7 +2,7 @@ body, input {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-p, label {
+label, span {
     color: grey;
     font-weight: 300;
     display: inline;
