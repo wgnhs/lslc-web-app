@@ -52,7 +52,7 @@
     <div id="wrapper">
         <div id="header"></div>
         <div id="searchArea">
-            <h1>Sample Search</h1>
+          <!--  <h1>Sample Search</h1>-->
             <label>Search by sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <span>or visit our </span><a href="mapView_esri3-18.html" target="_blank">filter samples</a> <span>page.</span>
             
        </div>
@@ -74,6 +74,7 @@
    <script src="header.js"></script>
        
     <script type="text/javascript">
+        $("#navSample").css("background-color", "#848484");
         //global variable to store the current sample number. 
         
         
@@ -82,7 +83,7 @@
         //this creates the skeleton of the webpage.
         //unclear whether an attributes list for each division here would be useful for anything, They are not in use right now. 
         var reportDivisions = [
-             {"divisionTitle":"", "divisionId":"sampleNumber"},
+          /*   {"divisionTitle":"", "divisionId":"sampleNumber"},*/
             {"divisionTitle":"Thin Sections", "divisionId":"thinSections"}, 
             {"divisionTitle":"Location", "divisionId":"location"}, 
             {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"}, 
@@ -154,7 +155,7 @@
       
         //listener for go button; resets the hash, which triggers a hash change. 
         $("#searchGo").on('click', function(){
-            //console.log("go.", $("#sampleSearch").val());
+            
             //reset the url hash
             window.location.hash = "#"+$("#sampleSearch").val();
         });
@@ -162,10 +163,10 @@
         $("#sampleSearch").on('keyup', function(e){if(e.keyCode ===13){window.location.hash = "#"+$("#sampleSearch").val();}});
         
         function resetSampleNumber(number){
-           // console.log("number is ", number);
+           
             ///^\+?\d+$/
             if (/^\+?\d+$/.test(number)){
-                console.log("valid number ", number);
+                //console.log("valid number ", number);
                 //reset the global variable: 
                // sampleRecordData.sampleId = number;
                   
@@ -179,7 +180,7 @@
                 $("#sampleRecord").html(''); 
                 
                 if (number){
-                    console.log(number, " is not a valid number.");
+                  
                     $("#sampleRecord").append("'"+number+"' is not a valid sample number.");
                 }
 
@@ -201,11 +202,11 @@
                 sampleQuery.outFields = ['*'];
                 sampleQuery.where = "SampleID = "+number;
                 sampleRecordData.sampleId = number;
-                console.log("where is:", sampleQuery.where);
+                console.log("query.where:", sampleQuery.where);
                 var sampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
                 sampleTableQuery.execute(sampleQuery, function(sampleTableResult){
                     if(sampleTableResult.features[0]){
-                        console.log("sample table info:", sampleTableResult.features[0].attributes);
+                        //console.log("sample table info:", sampleTableResult.features[0].attributes);
                         //set the attributes that can be found in the samples table. 
                         
                         
@@ -240,17 +241,17 @@
         } //end findSample function
         
         function retrieveAllData(sampleQuery, Query, QueryTask){
-            console.log("retrieve all data.");
+           
             //primary queries will return only 
             
             //we need a notebook id to run a query of the notebooks table. 
             if(sampleRecordData.fieldNotebookId > 0){
-                console.log("notebook", sampleRecordData.fieldNotebookId);
+               // console.log("notebook", sampleRecordData.fieldNotebookId);
                 var notebookQuery = new Query();
                 notebookQuery.outFields=['*'];
                 notebookQuery.where = 'NotebookID = '+sampleRecordData.fieldNotebookId;
                 
-                console.log('where is ', notebookQuery.where);
+                console.log('query.where:', notebookQuery.where);
                 var notebooksTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/3");
                 notebooksTableQuery.execute(notebookQuery, function(notebooksResult){
                         console.log("notebook info", notebooksResult.features[0].attributes);
@@ -314,23 +315,26 @@
            console.log("build report.");
             //clear the sample record div. 
             $("#sampleRecord").html('');
+             addSampleNumber();
             
             //iterate through the reportDivisions array above, 
             //creating a div for each with an id property and h3 title 
             for (r in reportDivisions){
                 //create a new div element.
-                var newdiv = $('<div></div>');
+                var reportDiv = $('<div class="reportDivision"></div>');
                 var rd = reportDivisions[r];
+                if (rd.divisionTitle){reportDiv.append($('<h3 class="inline"></h3>').html(rd.divisionTitle))};
+                var newdiv = $('<div class="divisionContent"></div>');
                 //give it an id property and add a title h3 to it. 
                 newdiv.attr("id", rd.divisionId);
-                newdiv.append($('<h3 class="inline"></h3>').html(rd.divisionTitle));
+                reportDiv.append(newdiv);
                 //append it to the html page. 
-                $('#sampleRecord').append(newdiv);           
+                $('#sampleRecord').append(reportDiv);           
                 
             };
             
             //populate the various fields in the report, using the values in the sampleRecordData object (global variable)
-            addSampleNumber();
+           
             addThinSections();
             addLocation();
             addFieldNotes();
@@ -343,7 +347,7 @@
         function addSampleNumber(){
             if(sampleRecordData.sampleId){
                 var sampleIDh2 = $('<h2></h2>').html("Sample #"+sampleRecordData.sampleId); 
-                $("#sampleNumber").append(sampleIDh2);
+                $("#sampleRecord").append(sampleIDh2);
                 
             } else {console.log("samID is false.");}
         }
@@ -351,17 +355,19 @@
        function addThinSections(){
             console.log("sampleRecordData", sampleRecordData);
             //populate the thin section results:
+           
+            //a container at block-level
+//            var thinSectionsContainer = $('<div></div>');
+//            thinSectionsContainer.addClass('divisionContent');
+           
             if (sampleRecordData.thinSections.length > 0){
                 
-                $("#thinSections").append('<span> ('+sampleRecordData.thinSections.length+' found)</span>')
+                $("#thinSections").before('<span> ('+sampleRecordData.thinSections.length+' found)</span>');
+                
                 
                 for (i in sampleRecordData.thinSections){
                     
-                   //a container at block-level
-                    var thinSectionContainer = $('<div></div>');
-                    thinSectionContainer.addClass('thinSectionContainer');
-                    
-                    var thinSec = $('<div></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
+                    var thinSec = $('<div class="thinSectionContainer"></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
                     if(sampleRecordData.thinSections[i].thinThumbppl){  
                         thinSec.append(
                             "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
@@ -369,23 +375,28 @@
                         thinSec.attr('title','click to view');
                         thinSec.data({'thinID':sampleRecordData.thinSections[i].thinSectionId});
                     } else {
-                        console.log("no image available.");
-                         thinSec.append("<span>(no image available.)</span>");
+                    
+                        thinSec.append("<span>(no image available.)</span>");
                     }
                     
                     
                     //add the thin section area into its block-level container
-                    thinSectionContainer.append(thinSec);
-                    //add the block-level container into the overall div of all thin sections. this is later appended to the record. 
-                    $('#thinSections').append(thinSectionContainer);
+                    $("#thinSections").append(thinSec);
                     
-                } } else {
-                console.log("thin section count is zero");
-                $('#thinSections').append('<p>none</p>');
+                    
+                } //end for loop. 
                 
-            }
+                
+                
+                } else {
+                   // console.log("thin section count is zero");
+                    $('#thinSections').append('<p>none</p>');
+                
+                }
+            //add the block-level container into the overall div of all thin sections. this is later appended to the record. 
+//            $('#thinSections').append(thinSectionsContainer);
             
-             $(".thinSection").on('click', function(){
+            $(".thinSection").on('click', function(){
                 console.log("view thin section #", $(this).data('thinID'));
                 
                 modal.thinSectionViewer($(this).data('thinID'));
@@ -397,25 +408,25 @@
         function addLocation(){
             
             var loc = ''
-            loc+='<div>';
+//            loc+='<div class="divisionContent">';
             //loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
             loc+="<div class='detailsDiv'><table>";
             for (prop in sampleRecordData.location){
-                //console.log("prop:", prop);
+                
                 loc+="<tr><td><span class='green'>"+prop+":</span> </td><td>"+sampleRecordData.location[prop]+"</td></tr>";
             }
             loc+="</table></div>"; //end details div
-            loc+="</div>";
+//            loc+="</div>";
             $('#location').append(loc);
         }
    
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
             if (sampleRecordData.fieldNotebookId > 0){
-                fieldNotebookreport += "<div>";
+//                fieldNotebookreport += "<div class='divisionContent'>";
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover'/></a>";
                 fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.rockType+"</p><p>Page "+sampleRecordData.fieldPage+"</p> <a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
-                fieldNotebookreport += "</div>";
+//                fieldNotebookreport += "</div>";
      
             } else {
                 fieldNotebookreport+="<p>none</p>";
@@ -429,7 +440,7 @@
             var lith = '';
             if(sampleRecordData.lithologies.length > 0){
                 for (i in sampleRecordData.lithologies){
-                lith+="<div>";
+//                lith+="<div class='divisionContent'>";
                 //thumbnail in link
                 lith += "<a syle='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank> <img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
                 //details
@@ -437,7 +448,7 @@
                 lith += "<p>Book "+sampleRecordData.lithologies[i].lithNotebookId+"</p>"
      //         lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
                 lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p></div>";
-                lith+="</div>";
+//                lith+="</div>";
                 }
             } else {
                 lith = "<p>none</p>";
@@ -450,6 +461,7 @@
         
         function addNotes(){
             if (sampleRecordData.sampleNotes){
+                
                 $('#sampleNotes').append('<p>'+sampleRecordData.sampleNotes+'</p>');
             } else {
                 $('#sampleNotes').append('<p>none</p>');

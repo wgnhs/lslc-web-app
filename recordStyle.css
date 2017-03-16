@@ -24,9 +24,17 @@
     display: inline-block;
     
 }
+#searchArea{
+    text-align: center;
+}
 
-
-
+.reportDivision{
+    padding-top: 10px;
+}
+.divisionContent{
+    border-top: 1px solid #e6e6e6;
+    padding-top: 4px;
+}
 .detailsDiv{
     display: inline-block; 
     vertical-align: top;
@@ -38,8 +46,8 @@
     padding-right: 10px;
 }
 
-#sampleRecord h2, h3{
-    margin:8px 0 3px 0;
+#sampleRecord h3, h2{
+    margin: 0;
 }
 
 
@@ -54,7 +62,8 @@
 }
 
 #sampleRecord .thinSectionContainer{
-    display: block;
+    display: inline-block;
+    margin-right: 10px;
 }
 #sampleRecord .thinSection{
     display: inline-block;
