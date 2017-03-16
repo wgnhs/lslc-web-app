@@ -78,12 +78,13 @@
         //global variable to store the current sample number. 
         
         
-             //The parts of the record webpage are referred to as 'divisions' in this code. 
+        //The parts of the record webpage are referred to as 'divisions' in this code. 
         //The buildReport function will iterate through this array.
         //this creates the skeleton of the webpage.
         //unclear whether an attributes list for each division here would be useful for anything, They are not in use right now. 
         var reportDivisions = [
           /*   {"divisionTitle":"", "divisionId":"sampleNumber"},*/
+            {"divisionTitle":"Hand Samples", "divisionId":"handSamples"}, 
             {"divisionTitle":"Thin Sections", "divisionId":"thinSections"}, 
             {"divisionTitle":"Location", "divisionId":"location"}, 
             {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"}, 
@@ -276,11 +277,20 @@
                     lithDetails.lithDesc = lithTableResult.features[i].attributes.RockType;
                     lithDetails.lithNotes = lithTableResult.features[i].attributes.Notes;
                     
-                    sampleRecordData.lithologies.push(lithDetails);
-                    
+                    sampleRecordData.lithologies.push(lithDetails);  
                 }
                 
             }); //end execute lithology querytask
+            
+            //we always query the hand samples table 
+            var handSampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/2");
+            handSampleTableQuery.execute(sampleQuery, function(handSampleResult){
+                if(handSampleResult.features[0]){
+                    console.log("hand sample info:", handSampleResult.features[0].attributes);
+                    sampleRecordData.handSampleId = handSampleResult.features[0].attributes.SampleId;
+                }
+                
+            }); //end execute
 
             //we always query the thin section.     
             var thinSectionTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/4");
@@ -334,7 +344,7 @@
             };
             
             //populate the various fields in the report, using the values in the sampleRecordData object (global variable)
-           
+            addHandSamples();
             addThinSections();
             addLocation();
             addFieldNotes();
@@ -351,6 +361,12 @@
                 //$("#sampleRecord").append('<img src="images/download_gw.png" alt="download" style="display: inline;">');
                 
             } else {console.log("samID is false.");}
+        }
+        
+        function addHandSamples(){
+            if (sampleRecordData.handSampleId){
+                $("#handSamples").append("Hand Sample # "+sampleRecordData.handSampleId);
+            } else {$("#handSamples").append('<p>none</p>');}
         }
         
        function addThinSections(){
