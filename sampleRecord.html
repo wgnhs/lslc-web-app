@@ -348,6 +348,7 @@
             if(sampleRecordData.sampleId){
                 var sampleIDh2 = $('<h2></h2>').html("Sample #"+sampleRecordData.sampleId); 
                 $("#sampleRecord").append(sampleIDh2);
+                //$("#sampleRecord").append('<img src="images/download_gw.png" alt="download" style="display: inline;">');
                 
             } else {console.log("samID is false.");}
         }
@@ -355,10 +356,6 @@
        function addThinSections(){
             console.log("sampleRecordData", sampleRecordData);
             //populate the thin section results:
-           
-            //a container at block-level
-//            var thinSectionsContainer = $('<div></div>');
-//            thinSectionsContainer.addClass('divisionContent');
            
             if (sampleRecordData.thinSections.length > 0){
                 
@@ -408,25 +405,24 @@
         function addLocation(){
             
             var loc = ''
-//            loc+='<div class="divisionContent">';
-            //loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
+
+            loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
             loc+="<div class='detailsDiv'><table>";
             for (prop in sampleRecordData.location){
                 
                 loc+="<tr><td><span class='green'>"+prop+":</span> </td><td>"+sampleRecordData.location[prop]+"</td></tr>";
             }
             loc+="</table></div>"; //end details div
-//            loc+="</div>";
+
             $('#location').append(loc);
         }
    
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
             if (sampleRecordData.fieldNotebookId > 0){
-//                fieldNotebookreport += "<div class='divisionContent'>";
+
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover'/></a>";
                 fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.rockType+"</p><p>Page "+sampleRecordData.fieldPage+"</p> <a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
-//                fieldNotebookreport += "</div>";
      
             } else {
                 fieldNotebookreport+="<p>none</p>";
@@ -440,7 +436,7 @@
             var lith = '';
             if(sampleRecordData.lithologies.length > 0){
                 for (i in sampleRecordData.lithologies){
-//                lith+="<div class='divisionContent'>";
+
                 //thumbnail in link
                 lith += "<a syle='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank> <img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
                 //details
@@ -448,7 +444,7 @@
                 lith += "<p>Book "+sampleRecordData.lithologies[i].lithNotebookId+"</p>"
      //         lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
                 lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p></div>";
-//                lith+="</div>";
+
                 }
             } else {
                 lith = "<p>none</p>";

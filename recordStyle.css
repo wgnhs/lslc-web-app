@@ -56,7 +56,7 @@
     margin: 3px 0;
 }
 
-#sampleRecord img{
+.reportDivision img{
     padding-right: 8px;
     height: 200px;
 }
@@ -78,6 +78,6 @@
 }
 
 /* if we are already on a sample page, don't show the sample link. */
-#sampleLink {
+/*#sampleLink {
     display: none;
-}
+}*/
