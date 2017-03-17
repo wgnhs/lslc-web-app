@@ -307,8 +307,8 @@
                     thinDetails.condition = thinTableResult.features[i].attributes.Condition;
                     thinDetails.thinImgppl = null;
                     thinDetails.thinImgxpl = null;
-                    thinDetails.thinThumbppl = null;
-                    thinDetails.thinThumbxpl = null;
+                  //  thinDetails.thinThumbppl = '//mp-web2t/lslc/assets/thin-section/images/thumbnails/724ppl_thumb.jpg';
+                  //  thinDetails.thinThumbxpl = '//mp-web2t/lslc/assets/thin-section/images/thumbnails/724xpl_thumb.jpg';
 
                     sampleRecordData.thinSections.push(thinDetails);
                     
@@ -464,15 +464,15 @@
             var lith = '';
             if(sampleRecordData.lithologies.length > 0){
                 for (i in sampleRecordData.lithologies){
-
-                //thumbnail in link
-                lith += "<a syle='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank> <img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
-                //details
-                lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>" 
-                lith += "<p>Book "+sampleRecordData.lithologies[i].lithNotebookId+"</p>"
-     //         lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
-                lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p></div>";
-
+                    lith+='<div>';      
+                    //thumbnail in link
+                    lith += "<a syle='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank> <img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
+                    //details
+                    lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>" 
+                    lith += "<p>Book "+sampleRecordData.lithologies[i].lithNotebookId+"</p>"
+                    //lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
+                    lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p></div>";
+                    lith+='</div>';
                 }
             } else {
                 lith = "<p>none</p>";

@@ -84,3 +84,7 @@
 
     }
 
+/* if we are already on a sample page, don't show the sample link. */
+#sampleLink {
+    display: none;
+}
