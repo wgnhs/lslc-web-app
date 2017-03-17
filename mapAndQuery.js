@@ -103,13 +103,13 @@ function initMapButtons(event){
     //set up event listener for DrawEnd
     //when the selection tool has finished drawing a box, 
     // create a new selection in the feature layer (fl) 
-    on(selectionTool, "DrawEnd", function(geometry){
+    on(selectionTool, "DrawEnd", function(drawGeometry){
     	console.log('draw end.');
         selectionTool.deactivate();
         
         //construct a new query using the DrawEnd geometry. 
         var mapFilter = new Query();
-        mapFilter.geometry = geometry;
+        mapFilter.geometry = drawGeometry;
         
         //create a new selection using the query
         var mapSelection = fl.selectFeatures(mapFilter, fl.SELECTION_NEW);
@@ -123,8 +123,8 @@ function initMapButtons(event){
             var selectedSectionId = mapSelectionResults[j].attributes.UID;
             selectedSections.push(selectedSectionId);
         }
-      //  console.log("filter based on these sections:", selectedSections);
-        filterForSections(selectedSections, fl);
+        console.log("filter based on these sections:", selectedSections);
+        filterForSections(selectedSections);
        
     });
 

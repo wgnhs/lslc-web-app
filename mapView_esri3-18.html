@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
    <HEAD>
-      <TITLE>LSLC Map View</TITLE>
+      <TITLE>LSLC Filter Samples</TITLE>
        <meta charset="UTF-8">
        
        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
@@ -43,10 +43,12 @@
               
            </div>
        </div><!--close modal div-->
+       
        <div id="wrapper">
-            <div id="header">
-                <h1>Sample Search</h1>
-                <p>Select map sections or apply other filters.</p>
+           <div id="header"></div>
+            <div id="filterHeader">
+                <!--<h1>Filter Samples</h1>-->
+                <span>Select map sections or apply other filters.</span>
             </div>
             
            <div id="leftPanel">
@@ -77,11 +79,11 @@
                        </div>
                        <div class='filter'>
                            <label><p><span class="bold">County</span></p>
-                           <input class="searchBox" type="search" name="countySearch" id="countySearch" placeholder="'Ashland'" /></label>
+                           <input class="searchBox" type="search" name="countySearch" id="countySearch"  /></label>
                         </div>
                        <div class='filter'>
                            <label><p><span class="bold">State</span></p>
-                           <input class="searchBox" type="search" name="stateSearch" id="stateSearch" placeholder="'Wisconsin'" /></label>
+                           <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  /></label>
                         </div>
                     </div>
                    
@@ -103,7 +105,7 @@
            
            <div id="resultsPanel">
                <div id="resultsHeader">
-                   <h2 class="inline">Results</h2><p>(<span id="resultCount">0</span> samples found)</p>
+                   <h2 class="inline">Results</h2><span>(<span id="resultCount">0</span> samples found)</span>
                    <!--
                    <div id="viewOptions">
                        <div class='switchView button'>
@@ -136,8 +138,13 @@
             </div> 
            
        </div><!-- end wrapper div-->
-
+       
        <!-- javascript links -->
+       <script src="header.js"></script>
+       <script>
+           //indicate the current page in the nav bar. 
+           $("#navFilter").css("background-color", "#848484");
+       </script>
        <script type='text/javascript' src='lib/jquery-1.11.3.js'></script>
        <!--<script type='text/javascript' src='query.js'></script>-->
        <script type='text/javascript' src='mapAndQuery.js'></script>

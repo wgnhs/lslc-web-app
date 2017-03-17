@@ -17,7 +17,9 @@
   </style>
 </head>
 <body>
-
+<!-- load the latest release from the cdn -->
+<script src="https://unpkg.com/esri-leaflet-vector"></script>
+    
 <div id="map"></div>
 
 <script>
@@ -113,15 +115,16 @@ var array = [128743,183356,64592,64309,128457,128457,128457,199279,199279,199279
   var map = L.map('map').setView([ 47, -90], 7); //sets up esri leaflet map
 
   //basemap -- default
-  L.esri.basemapLayer('Gray').addTo(map); 
-  L.esri.basemapLayer('GrayLabels').addTo(map);
-
+//  L.esri.basemapLayer('Gray').addTo(map); 
+//  L.esri.basemapLayer('GrayLabels').addTo(map);
+    L.esri.Vector.basemap('ModernAntique').addTo(map);
+    
   //connects to our database
   L.esri.featureLayer({
     //url is copied from New Feature Layer at top of MapAndQuery.js
     url: 'http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0',
-    simplifyFactor: 0.5, //not sure didn't change
-    precision: 5, //not sure didn't change
+   // simplifyFactor: 0.5, //not sure didn't change
+    //precision: 5, //not sure didn't change
 
     //this loops through every section -- not sure where the loop syntax is, probably esri leaflet method 
     style: function (feature) {
@@ -142,7 +145,7 @@ var array = [128743,183356,64592,64309,128457,128457,128457,199279,199279,199279
       //actual style declaration for each feature using assignment from above
       return { color: "#999", weight: 0.35, fillColor: fillColor, fillOpacity: .9 };
 
-    } //end of loop
+    } //end of style loop
   }).addTo(map); //adds to map
 </script>
 

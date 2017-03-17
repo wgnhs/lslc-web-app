@@ -1,0 +1,503 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+   <HEAD>
+      <TITLE>LSLC Sample Record</TITLE>
+       <meta charset="UTF-8">
+       
+        <LINK href="generalStyle.css" rel='stylesheet'/>
+       
+       <!--Google font-->
+       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+       
+       
+
+       <!-- Leaflet -->
+            <!-- online -->
+            <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+           <!-- local -->  
+            <script src="lib/leaflet.js"></script>
+
+            <link rel="stylesheet" href="lib/leaflet.css" />
+       <!-- Zoomify Leaflet -->
+            <script type="text/javascript" src="lib/zoomify_layer.js"></script>
+            <!--<script type="text/javascript" src="script/zoomify_layer.js"></script>-->
+       
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+       
+        <!--ESRI 3.18-->
+           <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
+           <script src="https://js.arcgis.com/3.18/"></script>
+       
+       <LINK href="recordStyle.css" rel='stylesheet'/> 
+       <LINK href="modalStyle.css" rel='stylesheet'/>
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+   </HEAD>
+   <BODY>
+       <div id="modalBackground" class="modalBackground">
+           <div id="modal-content"></div>
+       </div>   
+       
+  
+    <div id="wrapper">
+        <div id="header"></div>
+        <div id="searchArea">
+          <!--  <h1>Sample Search</h1>-->
+            <label>Search by sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <span>or visit our </span><a href="mapView_esri3-18.html" target="_blank">filter samples</a> <span>page.</span>
+            
+       </div>
+        
+       
+        <div id="sampleRecord"></div>
+        
+        <!-- add a project footer... -->
+        <div id='footer'>
+           <p> Lake Superior Legacy Collection <br/>
+            Wisconsin Geological and Natural History Survey <br/>
+            University of Wisconsin Extention 
+           </p>
+        </div>
+
+   
+    </div><!--end wrapper div-->    
+       
+   <script src="header.js"></script>
+       
+    <script type="text/javascript">
+        //indicate the current page in the nav bar. 
+        $("#navSample").css("background-color", "#848484");
+        
+            
+        
+        //The parts of the record webpage are referred to as 'divisions' in this code. 
+        //The buildReport function will iterate through this array.
+        //this creates the skeleton of the webpage.
+        //unclear whether an attributes list for each division here would be useful for anything, They are not in use right now. 
+        var reportDivisions = [
+          /*   {"divisionTitle":"", "divisionId":"sampleNumber"},*/
+            {"divisionTitle":"Hand Samples", "divisionId":"handSamples"}, 
+            {"divisionTitle":"Thin Sections", "divisionId":"thinSections"}, 
+            {"divisionTitle":"Location", "divisionId":"location"}, 
+            {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"}, 
+            {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc"}, 
+            {"divisionTitle":"Sample Notes","divisionId":"sampleNotes"},
+            {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}  
+        ]; 
+        
+        //this object will hold all of the data for the record.
+        //this data must be drawn from several different tables. 
+        var sampleRecordData = 
+            //an empty object. comments here show the parts that may be added after queries. 
+            {/*
+            "sampleId":"00",
+            
+            "thinSectionCount":1, 
+            "thinSections": [], 
+            
+            "mapSectionId": null,
+            "location" : {
+                "state": null,
+                "township":null,
+                "range":null,
+                "PLSSSectionNum": null,
+                "quarterSection": null,
+                "quarterQuarterSection": null,
+                "locationNote": null 
+            },
+            
+            "rockType":"unknown",
+            "fieldNotebookId":"none",
+            "fieldPage": "N/A",
+            "fieldNotebookTitle": "N/A",
+            "fieldNotebookThumb":"images/notebooks/fieldNotebook31_thumb.jpg",
+            "fieldNotebookUrl":"http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=article&did=EcoNatRes.VHBook035.i0001&id=EcoNatRes.VHBook035&isize=M", 
+            "fieldAuthor":null,
+            "fieldDate": null,
+            
+            lithologies:[{
+                "lithNotebookId": "none",
+                "lithPage": null,
+                "lithNotebookTitle": null,
+                "lithNotebookTitle": null,
+                "lithDate": null, 
+                "lithAuthor":null,
+                "lithNotebookUrl": "http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=header&id=EcoNatRes.LithDescV&isize=M",
+                "lithNotebookThumb":"images/notebooks/lithBookV_thumb.jpg"
+                }],
+            "WGNHSId": null,
+            "sampleNotes":""
+            
+        */}; 
+        
+   
+           
+        //this only happens once, on window load. 
+        //reset the input value to match the hash.
+        $("#sampleSearch").val(window.location.hash.replace("#", ""));
+        resetSampleNumber(window.location.hash.replace("#", ""));
+        
+        
+       //listener for hash changes 
+        $(window).on('hashchange',function(){
+            //reset the search input value to match the hash 
+            $("#sampleSearch").val(window.location.hash.replace("#", ""));
+            resetSampleNumber(window.location.hash.replace("#", ""));
+        });
+        
+      
+        //listener for go button; resets the hash, which triggers a hash change. 
+        $("#searchGo").on('click', function(){
+            
+            //reset the url hash
+            window.location.hash = "#"+$("#sampleSearch").val();
+        });
+        //listener for the 'enter' key (key 13) in the search input: 
+        $("#sampleSearch").on('keyup', function(e){if(e.keyCode ===13){window.location.hash = "#"+$("#sampleSearch").val();}});
+        
+        function resetSampleNumber(number){
+           
+            ///^\+?\d+$/
+            if (/^\+?\d+$/.test(number)){
+                //console.log("valid number ", number);
+                //reset the global variable: 
+               // sampleRecordData.sampleId = number;
+                  
+                findSample(number);
+               
+                
+            } else {
+                console.log("the number "+number+" is false."); 
+                    
+                /*only display the search section of the page.*/ 
+                $("#sampleRecord").html(''); 
+                
+                if (number){
+                  
+                    $("#sampleRecord").append("'"+number+"' is not a valid sample number.");
+                }
+
+            } //end else
+        } //end function resetSampleNumber
+   
+       
+        
+        function findSample(number){
+            //will need to retrieve data from five tables and place it into the internal data object (global variable sampleRecordData).
+            //sampleRecordQuery.consoleLog("hello");
+            sampleRecordData = {};
+            sampleRecordData.location = {};
+            sampleRecordData.thinSections =[];
+            sampleRecordData.lithologies = [];
+            
+            require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask){
+                var sampleQuery = new Query();
+                sampleQuery.outFields = ['*'];
+                sampleQuery.where = "SampleID = "+number;
+                sampleRecordData.sampleId = number;
+                console.log("query.where:", sampleQuery.where);
+                var sampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
+                sampleTableQuery.execute(sampleQuery, function(sampleTableResult){
+                    if(sampleTableResult.features[0]){
+                        //console.log("sample table info:", sampleTableResult.features[0].attributes);
+                        //set the attributes that can be found in the samples table. 
+                        
+                        
+                        sampleRecordData.rockType = sampleTableResult.features[0].attributes.RockType;
+                        sampleRecordData.thinSectionCount = sampleTableResult.features[0].attributes.ThinSectionCount;
+                        sampleRecordData.mapSectionId = sampleTableResult.features[0].attributes.SectionId;
+                        sampleRecordData.location.state = sampleTableResult.features[0].attributes.State;
+                        sampleRecordData.location.township = sampleTableResult.features[0].attributes.Township +"N";
+                        sampleRecordData.location.range = sampleTableResult.features[0].attributes.Range + sampleTableResult.features[0].attributes.Direction;
+                        sampleRecordData.location.PLSSSectionNum = sampleTableResult.features[0].attributes.Section_;
+                        sampleRecordData.location.quarterSection = sampleTableResult.features[0].attributes.Quarter;
+                        sampleRecordData.location.quarterQuarterSection = sampleTableResult.features[0].attributes.QuarterQuarter;
+                        sampleRecordData.location.locationNote = sampleTableResult.features[0].attributes.LocNote;
+                        sampleRecordData.fieldNotebookId = sampleTableResult.features[0].attributes.NotebookId;
+                        sampleRecordData.fieldPage = sampleTableResult.features[0].attributes.NotebookPage;
+                        sampleRecordData.WGNHSId = sampleTableResult.features[0].attributes.WgnhsId;
+                        sampleRecordData.sampleNotes = sampleTableResult.features[0].attributes.Notes;
+                        
+                        //if the sample id is successfully found, 
+                        retrieveAllData(sampleQuery, Query, QueryTask);
+                        
+                    } else {
+                        //if the sample id is not successfully found, return an error message. 
+                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.sampleId+". Try a different number.");
+                  
+                    }
+                    
+                }); //end execute
+           
+            }); //end require
+
+        } //end findSample function
+        
+        function retrieveAllData(sampleQuery, Query, QueryTask){
+           
+            //primary queries will return only 
+            
+            //we need a notebook id to run a query of the notebooks table. 
+            if(sampleRecordData.fieldNotebookId > 0){
+               // console.log("notebook", sampleRecordData.fieldNotebookId);
+                var notebookQuery = new Query();
+                notebookQuery.outFields=['*'];
+                notebookQuery.where = 'NotebookID = '+sampleRecordData.fieldNotebookId;
+                
+                console.log('query.where:', notebookQuery.where);
+                var notebooksTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/3");
+                notebooksTableQuery.execute(notebookQuery, function(notebooksResult){
+                        console.log("notebook info", notebooksResult.features[0].attributes);
+                        sampleRecordData.fieldNotebookTitle = notebooksResult.features[0].attributes.Title;
+                        sampleRecordData.fieldAuthor= notebooksResult.features[0].attributes.Author;
+                        sampleRecordData.fieldDate = notebooksResult.features[0].attributes.Year;
+                    }); //end execute
+                
+            } //end if (field notebook id >0 ) 
+            
+            //We always query the lithology table for the sample ID. 
+            var lithologyTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/5");
+            lithologyTableQuery.execute(sampleQuery, function(lithTableResult){
+               
+               // sampleRecordData.lithologies = [];
+                
+                for (i in lithTableResult.features){
+                    var lithDetails = {};
+                    console.log("lith info", lithTableResult.features[i].attributes);
+                    lithDetails.lithNotebookId = lithTableResult.features[i].attributes.Book;
+                    lithDetails.lithPage = lithTableResult.features[i].attributes.Page;
+                    lithDetails.lithDesc = lithTableResult.features[i].attributes.RockType;
+                    lithDetails.lithNotes = lithTableResult.features[i].attributes.Notes;
+                    
+                    sampleRecordData.lithologies.push(lithDetails);  
+                }
+                
+            }); //end execute lithology querytask
+            
+            //we always query the hand samples table 
+            var handSampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/2");
+            handSampleTableQuery.execute(sampleQuery, function(handSampleResult){
+                if(handSampleResult.features[0]){
+                    console.log("hand sample info:", handSampleResult.features[0].attributes);
+                    sampleRecordData.handSampleId = handSampleResult.features[0].attributes.SampleId;
+                }
+                
+            }); //end execute
+
+            //we always query the thin section.     
+            var thinSectionTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/4");
+            thinSectionTableQuery.execute(sampleQuery, function(thinTableResult){
+                //clear previous results. 
+                //sampleRecordData.thinSections = [];
+
+                for(i in thinTableResult.features){
+                    var thinDetails = {};
+                    console.log("thin section info", thinTableResult.features[i].attributes);
+                    //add attributes to the thin sections array. 
+                    thinDetails.thinSectionId = thinTableResult.features[i].attributes.CatalogNumber;
+                    thinDetails.condition = thinTableResult.features[i].attributes.Condition;
+                    thinDetails.thinImgppl = null;
+                    thinDetails.thinImgxpl = null;
+                  //  thinDetails.thinThumbppl = '//mp-web2t/lslc/assets/thin-section/images/thumbnails/724ppl_thumb.jpg';
+                  //  thinDetails.thinThumbxpl = '//mp-web2t/lslc/assets/thin-section/images/thumbnails/724xpl_thumb.jpg';
+
+                    sampleRecordData.thinSections.push(thinDetails);
+                    
+                } //end for loop
+                
+                 buildReport(); //to happen in the right order, this has to go within this execute function for some reason... 
+            });
+            
+           
+            
+             
+        } //end function retrieveAllData. 
+           
+        function buildReport(){
+           console.log("build report.");
+            //clear the sample record div. 
+            $("#sampleRecord").html('');
+             addSampleNumber();
+            
+            //iterate through the reportDivisions array above, 
+            //creating a div for each with an id property and h3 title 
+            for (r in reportDivisions){
+                //create a new div element.
+                var reportDiv = $('<div class="reportDivision"></div>');
+                var rd = reportDivisions[r];
+                if (rd.divisionTitle){reportDiv.append($('<h3 class="inline"></h3>').html(rd.divisionTitle))};
+                var newdiv = $('<div class="divisionContent"></div>');
+                //give it an id property and add a title h3 to it. 
+                newdiv.attr("id", rd.divisionId);
+                reportDiv.append(newdiv);
+                //append it to the html page. 
+                $('#sampleRecord').append(reportDiv);           
+                
+            };
+            
+            //populate the various fields in the report, using the values in the sampleRecordData object (global variable)
+            addHandSamples();
+            addThinSections();
+            addLocation();
+            addFieldNotes();
+            addLithDesc();
+            addNotes();
+            addAvailableSamples();
+            
+        } //end buildReport 
+        
+        function addSampleNumber(){
+            if(sampleRecordData.sampleId){
+                var sampleIDh2 = $('<h2></h2>').html("Sample #"+sampleRecordData.sampleId); 
+                $("#sampleRecord").append(sampleIDh2);
+                //$("#sampleRecord").append('<img src="images/download_gw.png" alt="download" style="display: inline;">');
+                
+            } else {console.log("samID is false.");}
+        }
+        
+        function addHandSamples(){
+            if (sampleRecordData.handSampleId){
+                $("#handSamples").append("Hand Sample # "+sampleRecordData.handSampleId);
+            } else {$("#handSamples").append('<p>none</p>');}
+        }
+        
+       function addThinSections(){
+            console.log("sampleRecordData", sampleRecordData);
+            //populate the thin section results:
+           
+            if (sampleRecordData.thinSections.length > 0){
+                
+                $("#thinSections").before('<span> ('+sampleRecordData.thinSections.length+' found)</span>');
+                
+                
+                for (i in sampleRecordData.thinSections){
+                    
+                    var thinSec = $('<div class="thinSectionContainer"></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
+                    if(sampleRecordData.thinSections[i].thinThumbppl){  
+                        thinSec.append(
+                            "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
+                        thinSec.addClass('thinSection');
+                        thinSec.attr('title','click to view');
+                        thinSec.data({'thinID':sampleRecordData.thinSections[i].thinSectionId});
+                    } else {
+                    
+                        thinSec.append("<span>(no image available.)</span>");
+                    }
+                    
+                    
+                    //add the thin section area into its block-level container
+                    $("#thinSections").append(thinSec);
+                    
+                    
+                } //end for loop. 
+                
+                
+                
+                } else {
+                   // console.log("thin section count is zero");
+                    $('#thinSections').append('<p>none</p>');
+                
+                }
+            //add the block-level container into the overall div of all thin sections. this is later appended to the record. 
+//            $('#thinSections').append(thinSectionsContainer);
+            
+            $(".thinSection").on('click', function(){
+                console.log("view thin section #", $(this).data('thinID'));
+                
+                modal.thinSectionViewer($(this).data('thinID'));
+            })
+            
+            
+        } //end addThinSections function         
+             
+        function addLocation(){
+            
+            var mapDiv = $("<div id='map' style='width: 300px; height: 200px; display: inline-block;'>");
+            $('#location').append(mapDiv);
+            var map = L.map('map').setView([48, -89.5], 4);
+            
+            var CartoDB_PositronNoLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+               subdomains: 'abcd',
+	           maxZoom: 19
+                }).addTo(map);
+            
+            //set up an empty var for the location info.
+            var loc = ''
+            
+            //  loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
+            loc+="<div class='detailsDiv'><table>";
+            for (prop in sampleRecordData.location){
+                
+                loc+="<tr><td><span class='green'>"+prop+":</span> </td><td>"+sampleRecordData.location[prop]+"</td></tr>";
+            }
+            loc+="</table></div>"; //end details div
+
+            $('#location').append(loc);
+        }
+   
+        function addFieldNotes(){
+            var fieldNotebookreport = ''; 
+            if (sampleRecordData.fieldNotebookId > 0){
+
+                fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover'/></a>";
+                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.rockType+"</p><p>Page "+sampleRecordData.fieldPage+"</p> <a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+     
+            } else {
+                fieldNotebookreport+="<p>none</p>";
+            }
+            
+            //append to the appropriate div
+            $('#fieldNotes').append(fieldNotebookreport);
+        }
+        
+        function addLithDesc(){
+            var lith = '';
+            if(sampleRecordData.lithologies.length > 0){
+                for (i in sampleRecordData.lithologies){
+                    lith+='<div>';      
+                    //thumbnail in link
+                    lith += "<a syle='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank> <img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
+                    //details
+                    lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>" 
+                    lith += "<p>Book "+sampleRecordData.lithologies[i].lithNotebookId+"</p>"
+                    //lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
+                    lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p></div>";
+                    lith+='</div>';
+                }
+            } else {
+                lith = "<p>none</p>";
+            }
+            
+            //append to the appropriate div
+            $('#lithDesc').append(lith);
+            
+        }
+        
+        function addNotes(){
+            if (sampleRecordData.sampleNotes){
+                
+                $('#sampleNotes').append('<p>'+sampleRecordData.sampleNotes+'</p>');
+            } else {
+                $('#sampleNotes').append('<p>none</p>');
+            }
+        }
+        
+        function addAvailableSamples(){
+            $('#availableSamples').append('<p>Information about where to find the physical samples, if available...</p>');
+        }
+        
+   </script>   
+        <script src="modal.js"></script>
+       
+   </BODY>
+</HTML>
