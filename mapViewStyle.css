@@ -15,6 +15,9 @@ h2{
   
 }
 
+#filters p {
+    margin:0;
+}
 
 /*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
 
@@ -104,7 +107,7 @@ input {
     cursor: pointer;
     padding: 0px 3px;
     border-radius: 4px;
-    margin-right: 3px;
+    margin: 1px 3px;
     display: inline-block;
 }
 /*------------------------ Results List ----------------------*/

@@ -47,8 +47,8 @@
        <div id="wrapper">
            <div id="header"></div>
             <div id="filterHeader">
-                <h1>Filter Samples</h1>
-                <p>Select map sections or apply other filters.</p>
+                <!--<h1>Filter Samples</h1>-->
+                <span>Select map sections or apply other filters.</span>
             </div>
             
            <div id="leftPanel">
@@ -79,11 +79,11 @@
                        </div>
                        <div class='filter'>
                            <label><p><span class="bold">County</span></p>
-                           <input class="searchBox" type="search" name="countySearch" id="countySearch" placeholder="'Ashland'" /></label>
+                           <input class="searchBox" type="search" name="countySearch" id="countySearch"  /></label>
                         </div>
                        <div class='filter'>
                            <label><p><span class="bold">State</span></p>
-                           <input class="searchBox" type="search" name="stateSearch" id="stateSearch" placeholder="'Wisconsin'" /></label>
+                           <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  /></label>
                         </div>
                     </div>
                    
@@ -141,6 +141,10 @@
        
        <!-- javascript links -->
        <script src="header.js"></script>
+       <script>
+           //indicate the current page in the nav bar. 
+           $("#navFilter").css("background-color", "#848484");
+       </script>
        <script type='text/javascript' src='lib/jquery-1.11.3.js'></script>
        <!--<script type='text/javascript' src='query.js'></script>-->
        <script type='text/javascript' src='mapAndQuery.js'></script>
