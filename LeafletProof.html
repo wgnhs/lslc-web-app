@@ -115,9 +115,9 @@ var array = [128743,183356,64592,64309,128457,128457,128457,199279,199279,199279
   var map = L.map('map').setView([ 47, -90], 7); //sets up esri leaflet map
 
   //basemap -- default
-//  L.esri.basemapLayer('Gray').addTo(map); 
-//  L.esri.basemapLayer('GrayLabels').addTo(map);
-    L.esri.Vector.basemap('ModernAntique').addTo(map);
+  L.esri.basemapLayer('Gray').addTo(map); 
+  L.esri.basemapLayer('GrayLabels').addTo(map);
+  //  L.esri.Vector.basemap('ModernAntique').addTo(map);
     
   //connects to our database
   L.esri.featureLayer({
