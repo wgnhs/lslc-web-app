@@ -74,9 +74,10 @@
    <script src="header.js"></script>
        
     <script type="text/javascript">
+        //indicate the current page in the nav bar. 
         $("#navSample").css("background-color", "#848484");
-        //global variable to store the current sample number. 
         
+            
         
         //The parts of the record webpage are referred to as 'divisions' in this code. 
         //The buildReport function will iterate through this array.
@@ -420,9 +421,20 @@
              
         function addLocation(){
             
+            var mapDiv = $("<div id='map' style='width: 300px; height: 200px; display: inline-block;'>");
+            $('#location').append(mapDiv);
+            var map = L.map('map').setView([48, -89.5], 4);
+            
+            var CartoDB_PositronNoLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+               subdomains: 'abcd',
+	           maxZoom: 19
+                }).addTo(map);
+            
+            //set up an empty var for the location info.
             var loc = ''
-
-            loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
+            
+            //  loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
             loc+="<div class='detailsDiv'><table>";
             for (prop in sampleRecordData.location){
                 
