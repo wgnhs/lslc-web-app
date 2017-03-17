@@ -302,7 +302,7 @@ function queryTableForFilters(){
 }
 
     
-function highlightMap(array, fl){
+function choroplethClasses(array, fl){
     console.log("highlight the map sections", array);
     //set the symbol to the variable highlightSymbol (an object defined above)
 
@@ -392,5 +392,9 @@ function highlightMap(array, fl){
  
     
 }
+    
+    function highlightMap (array, fl){
+        choroplethClasses(array, fl);
+    }
 
 }); //end map-constructing function beginning with require...
