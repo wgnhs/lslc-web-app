@@ -91,7 +91,8 @@
             {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"}, 
             {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc"}, 
             {"divisionTitle":"Sample Notes","divisionId":"sampleNotes"},
-            {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}  
+            {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}, 
+            {"divisionTitle":"All Sample Data", "divisionId":"allData"}
         ]; 
         
         //this object will hold all of the data for the record.
@@ -115,7 +116,7 @@
                 "locationNote": null 
             },
             
-            "rockType":"unknown",
+            "fieldDesc":"unknown",
             "fieldNotebookId":"none",
             "fieldPage": "N/A",
             "fieldNotebookTitle": "N/A",
@@ -195,6 +196,7 @@
             //will need to retrieve data from five tables and place it into the internal data object (global variable sampleRecordData).
             //sampleRecordQuery.consoleLog("hello");
             sampleRecordData = {};
+            sampleRecordData.sampleId = number;
             sampleRecordData.location = {};
             sampleRecordData.thinSections =[];
             sampleRecordData.lithologies = [];
@@ -203,7 +205,7 @@
                 var sampleQuery = new Query();
                 sampleQuery.outFields = ['*'];
                 sampleQuery.where = "SampleID = "+number;
-                sampleRecordData.sampleId = number;
+                
                 console.log("query.where:", sampleQuery.where);
                 var sampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
                 sampleTableQuery.execute(sampleQuery, function(sampleTableResult){
@@ -212,7 +214,7 @@
                         //set the attributes that can be found in the samples table. 
                         
                         
-                        sampleRecordData.rockType = sampleTableResult.features[0].attributes.RockType;
+                        sampleRecordData.fieldDesc = sampleTableResult.features[0].attributes.RockType;
                         sampleRecordData.thinSectionCount = sampleTableResult.features[0].attributes.ThinSectionCount;
                         sampleRecordData.mapSectionId = sampleTableResult.features[0].attributes.SectionId;
                         sampleRecordData.location.state = sampleTableResult.features[0].attributes.State;
@@ -307,11 +309,11 @@
                     thinDetails.condition = thinTableResult.features[i].attributes.Condition;
                     thinDetails.thinImgppl = null;
                     thinDetails.thinImgxpl = null;
-                  //  thinDetails.thinThumbppl = '//mp-web2t/lslc/assets/thin-section/images/thumbnails/724ppl_thumb.jpg';
-                  //  thinDetails.thinThumbxpl = '//mp-web2t/lslc/assets/thin-section/images/thumbnails/724xpl_thumb.jpg';
+                    thinDetails.thinThumbppl = 'http://mp-web2t/lslc/assets/thin-section/images/thumbnails/'+thinTableResult.features[i].attributes.CatalogNumber+'ppl_thumb.jpg';
+                    thinDetails.thinThumbxpl = 'http://mp-web2t/lslc/assets/thin-section/images/thumbnails/'+thinTableResult.features[i].attributes.CatalogNumber+'xpl_thumb.jpg';
 
                     sampleRecordData.thinSections.push(thinDetails);
-                    
+                    //http://mp-web2t/lslc/assets/thin-section/images/thumbnails/724ppl_thumb.jpg
                 } //end for loop
                 
                  buildReport(); //to happen in the right order, this has to go within this execute function for some reason... 
@@ -352,6 +354,7 @@
             addLithDesc();
             addNotes();
             addAvailableSamples();
+            addDataTable();
             
         } //end buildReport 
         
@@ -382,7 +385,7 @@
                 for (i in sampleRecordData.thinSections){
                     
                     var thinSec = $('<div class="thinSectionContainer"></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
-                    if(sampleRecordData.thinSections[i].thinThumbppl){  
+                    if(sampleRecordData.location.state == 'Wisconsin' && sampleRecordData.thinSections[i].thinThumbppl){  
                         thinSec.append(
                             "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
                         thinSec.addClass('thinSection');
@@ -448,10 +451,15 @@
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
             if (sampleRecordData.fieldNotebookId > 0){
+                if(sampleRecordData.fieldNotebookTitle === null){sampleRecordData.fieldNotebookTitle = "untitled"}; 
 
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover'/></a>";
-                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.rockType+"</p><p>Page "+sampleRecordData.fieldPage+"</p> <a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p> <a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
      
+            } else if (sampleRecordData.fieldDesc){
+                
+                fieldNotebookreport+= "<p>Field description: "+sampleRecordData.fieldDesc+"</p>";
+                    
             } else {
                 fieldNotebookreport+="<p>none</p>";
             }
@@ -494,6 +502,44 @@
         
         function addAvailableSamples(){
             $('#availableSamples').append('<p>Information about where to find the physical samples, if available...</p>');
+        }
+        
+        function addDataTable(){
+            $("#allData").append('<table id="dataTable">'); 
+            
+            for (prop in sampleRecordData){
+                if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Array){
+                    //all arrays are arrays of objects in this structure. 
+                    console.log("array", prop);
+                    //if (sampleRecordData[prop].length > 1){
+                        for(o in sampleRecordData[prop]){
+                            //sampleRecordData[prop][o] is an object. 
+                            // o is the index number. 
+                            var num = parseInt(o)+1;
+
+                            console.log(prop, " ", num, " of ", sampleRecordData[prop].length);
+                            for (subProp in sampleRecordData[prop][o]){
+                                $("#dataTable").append("<tr><td>"+prop+"_"+num+"of"+sampleRecordData[prop].length+"_"+subProp+"</td><td>"+sampleRecordData[prop][o][subProp]+"</td></tr>");
+                            }
+
+
+                        }
+                 //   } else {
+                 //       for (subProp in sampleRecordData[prop][0]){
+                 //           $("#dataTable").append("<tr><td>"+subProp+"</td><td>"+sampleRecordData[prop][0][subProp]+"</td></tr>");
+                 //       }
+                //    }
+                    
+                } else if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Object){
+                    //console.log("object", prop);
+                    //location is an object. iterate through its properties and add them to the list. 
+                    for (subProp in sampleRecordData[prop]){
+                        $("#dataTable").append("<tr><td>"+subProp+"</td><td>"+sampleRecordData[prop][subProp]+"</td></tr>");
+                    }
+                } else {
+                    $("#dataTable").append("<tr><td>"+prop+"</td><td>"+sampleRecordData[prop]+"</td></tr>");
+                }
+            }
         }
         
    </script>   
