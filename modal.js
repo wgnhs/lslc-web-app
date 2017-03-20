@@ -21,8 +21,8 @@ var modal = (function(){
     var showThinSection = function (id){
         console.log("showThinSection", id);
             var map = new L.Map('photo').setView(new L.LatLng(0,0), 0);
-            var sectionNum = 16;
-            var urlRoot = 'http://mp-web2t/thin-sections/photos/';
+            var sectionNum = id;
+            var urlRoot = 'http://mp-web2t/lslc/assets/thin-section/zoomify/';
             var photoWidth = 2700;
             var photoHeight = 1800;
 
