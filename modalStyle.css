@@ -47,7 +47,7 @@
 
     #slider { 
         display: inline-block;
-        height: 7px;
+        height: 14px;
         width: calc(100% - 92px); 
         margin: 20px 15px;
         vertical-align: middle;
@@ -56,8 +56,8 @@
         border-radius: 10px;
     }
     #modal-content .ui-slider .ui-slider-handle {
-        width: 16px;
-        height: 16px;
+        width: 20px;
+        height: 20px;
     }
 
     #sliderContainer label {
