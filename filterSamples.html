@@ -21,15 +21,15 @@
       <!-- Load Esri Leaflet from CDN -->
       <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
        
-       <!--ESRI 4.0--> 
-     <!--  <link rel="stylesheet" href="https://js.arcgis.com/4.0/esri/css/main.css">
-       <script src="https://js.arcgis.com/4.0/"></script> -->
+        <!-- Leaflet Draw -->
+        <script src="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.css">
        
-       <!--ESRI 3.18-->
-       <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-       <script src="https://js.arcgis.com/3.18/"></script>
 
-       <!--<script src="main.js" ></script>-->
+       <!--ESRI 3.18-->
+  <!--     <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
+       <script src="https://js.arcgis.com/3.18/"></script> -->
+
       
         <LINK href="generalStyle.css" rel='stylesheet'/>
         <LINK href="mapViewStyle.css" rel='stylesheet'/>
@@ -41,12 +41,7 @@
        
    </HEAD>
    <BODY>
-       
-       <!-- Leaflet Draw -->
-<script src="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.css">
-       
-       
+  
        <div id="modalBackground" class="modalBackground">
            <div class="modal-content">
             <span id="closemodal" class="close">x</span>
@@ -162,6 +157,7 @@
        <script type='text/javascript' src='lib/jquery-1.11.3.js'></script>
        <!--<script type='text/javascript' src='query.js'></script>-->
        <!--<script type='text/javascript' src='mapAndQuery.js'></script>-->
+       <script type='text/javascript' src='LeafletQuery.js'></script>
        <script type='text/javascript' src='LeafletMap.js'></script>
        <script>leafletMap.initialize(); </script>
        <script src="resultsList.js"></script>
