@@ -9,9 +9,17 @@
        
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
        
-       <!-- Leaflet-->
+       <!-- Leaflet
        <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
        <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+        -->
+       
+       <!-- Load Leaflet from CDN-->
+       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+       <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+
+      <!-- Load Esri Leaflet from CDN -->
+      <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
        
        <!--ESRI 4.0--> 
      <!--  <link rel="stylesheet" href="https://js.arcgis.com/4.0/esri/css/main.css">
@@ -33,6 +41,12 @@
        
    </HEAD>
    <BODY>
+       
+       <!-- Leaflet Draw -->
+<script src="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.css">
+       
+       
        <div id="modalBackground" class="modalBackground">
            <div class="modal-content">
             <span id="closemodal" class="close">x</span>
@@ -147,7 +161,9 @@
        </script>
        <script type='text/javascript' src='lib/jquery-1.11.3.js'></script>
        <!--<script type='text/javascript' src='query.js'></script>-->
-       <script type='text/javascript' src='mapAndQuery.js'></script>
+       <!--<script type='text/javascript' src='mapAndQuery.js'></script>-->
+       <script type='text/javascript' src='LeafletMap.js'></script>
+       <script>leafletMap.initialize(); </script>
        <script src="resultsList.js"></script>
     
    </BODY>

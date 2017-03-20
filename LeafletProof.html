@@ -31,11 +31,11 @@ var array = [128743,183356,64592,64309,128457,128457,128457,199279,199279,199279
 //++++++++++++++LINES 31–109 FROM highlightMap()++++++++++++++++++++++++++++++++++
 //these are called with above array
     var sortedArray = array.sort(function(a,b){return a-b});
-    var filteredSections = []
+    var filteredSections = [];
 
     for (i = 0; i < sortedArray.length; i++){
       if (sortedArray[i] != sortedArray[i-1]) {
-        filteredSections.push(sortedArray[i])
+        filteredSections.push(sortedArray[i]);
       }
     }
 

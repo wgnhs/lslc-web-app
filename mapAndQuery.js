@@ -302,7 +302,7 @@ function queryTableForFilters(){
 }
 
     
-function choroplethClasses(array, fl){
+function choroplethClasses(array){
     console.log("highlight the map sections", array);
     //set the symbol to the variable highlightSymbol (an object defined above)
 
@@ -319,12 +319,7 @@ function choroplethClasses(array, fl){
     
    
 
-        var mapHighlight = new Query();
-        mapHighlight.where = ('UID IN ('+filteredSections+')');
-
-        fl.selectFeatures(mapHighlight, fl.SELECTION_NEW); 
-        //zoom to the extent of the filter results.
-
+    
         //CHOROPLETH-----------------------------------------
         var choroplethStructureArray = [];
         //populates 2D array with [[sectionID, # of records in it],,]
@@ -382,19 +377,31 @@ function choroplethClasses(array, fl){
         //tests out how the choropleth system is working
         console.log("filtered values array -->", filteredValuesArray)
         console.log("class breaks -->", break0,break1,break2,break3,breakTop)
-        console.log("class 1 array:", class1Array)
-        console.log("class 2 array:", class2Array)
-        console.log("class 3 array:", class3Array)
-        console.log("class 4 array:", class4Array)
+       
 
         //create new Feature Layer with each of these
         
+        
+        return {"class1Array": class1Array, "class2Array": class2Array, "class3Array": class3Array, "class4Array": class4Array};
  
     
 }
     
-    function highlightMap (array, fl){
-        choroplethClasses(array, fl);
+    function highlightMap (array){
+        var classes = choroplethClasses(array);
+        
+        console.log("class 1 array:", classes.class1Array);
+        console.log("class 2 array:", classes.class2Array);
+        console.log("class 3 array:", classes.class3Array);
+        console.log("class 4 array:", classes.class4Array);
+        
+        /*
+        var mapHighlight = new Query();
+        mapHighlight.where = ('UID IN ('+filteredSections+')');
+
+        fl.selectFeatures(mapHighlight, fl.SELECTION_NEW); 
+        //zoom to the extent of the filter results.
+*/
     }
 
 }); //end map-constructing function beginning with require...
