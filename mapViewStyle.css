@@ -193,14 +193,12 @@ section {
   border-bottom: 1px solid #fff;
 }
 
-#resultsPanel #tab1:checked ~ #tab1content{
+/* tabs and their content divs must have exactly the same parent div in html */
+/* ~ is a general sibling selector. */
+#resultsPanel #tab1:checked ~ #tab1content, 
+#resultsPanel #tab2:checked ~ #tab2content {
   display: block;
 }
-#resultsPanel #tab2:checked ~ #tab2content{
-  display: block;
-}
-
-
 
 /*++++++++++++++++++ RESULTS TABLE +++++++++++++++++++++*/
 #resultsTable{
