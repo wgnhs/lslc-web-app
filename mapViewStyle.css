@@ -171,17 +171,38 @@ input {
     cursor: pointer;
 }
 
-#resultsPanel ul p, h3{
-    padding: 0 24px 0 0;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    
-}
+
 .sampleChevron{
     position:absolute; 
     top:50%; 
     right: 0px; 
     transform: translateY(-50%);
+}
+
+/*++++++++++++++++++ RESULTS TABLE +++++++++++++++++++++*/
+#resultsTable{
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x:auto;
+}
+
+#resultsTable thead td{
+    background-color: #e6e6e6;
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+}
+
+#resultsTable tr{
+    
+    border-bottom: 0.5px solid lightgrey;
+}
+
+#resultsTableBody tr:hover{
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+
+#resultsTable td{
+   /* width: 16.67%; */
+    padding: 3px;
 }

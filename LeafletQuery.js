@@ -14,6 +14,8 @@ $(window).on("load", function(){
     initSearchBars();
     //initialize a listener for filter removal through a click on a filter indicator
     removeFilters();
+    //initialize table
+    initializeResultsTable();
     
     //call whenever the filters object has changed (EXCEPT map filter). 
     resetFilters();   
