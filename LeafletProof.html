@@ -135,12 +135,12 @@ var array = [128743,183356,64592,64309,128457,128457,128457,199279,199279,199279
       //checks to see if the section id of the feature is located in any of the class arrays
       //if so gives it a choropleth color
       //choropleth colors are all dark; starts half way up 8 class color brewer scheme to stand out in visual hierarchy even if value 1
-      if ( class4Array.indexOf(sectionID) != -1 ) fillColor = "#8c2d04";
-      else if ( class3Array.indexOf(sectionID) != -1) fillColor = "#cc4c02";
-      else if ( class2Array.indexOf(sectionID) != -1) fillColor = "#ec7014";
-      else if ( class1Array.indexOf(sectionID) != -1 ) fillColor = "#fe9929";
+      if ( class4Array.indexOf(sectionID) != -1 ) {fillColor = "#8c2d04"}
+      else if ( class3Array.indexOf(sectionID) != -1) {fillColor = "#cc4c02"}
+      else if ( class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014"}
+      else if ( class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929"}
       //if not found in any class array, given no-value color
-      else fillColor = "#ece7f2";  // opposite hue, low saturation, slightly diverging to show seperation
+      else fillColor = {"#ece7f2"};  // opposite hue, low saturation, slightly diverging to show seperation
 
       //actual style declaration for each feature using assignment from above
       return { color: "#999", weight: 0.35, fillColor: fillColor, fillOpacity: .9 };

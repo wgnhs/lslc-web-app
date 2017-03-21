@@ -2,11 +2,10 @@ var leafletMap = (function(){
     
     
     var leafletFeatureLayer;
+    var drawnItems; 
+    var customDeleteButton;
     
     var initialize = function(){
-        //console.log("Leaflet map setup."); 
-        
-       
         
         var map = L.map('map')
             //.on('load', function(){setupMapButtons();})
@@ -16,15 +15,22 @@ var leafletMap = (function(){
       //   map.on("load", function(){setupMapButtons();});
         
         //basemap -- default
-          L.esri.basemapLayer('Gray').addTo(map); 
-          L.esri.basemapLayer('GrayLabels').addTo(map);
+        L.esri.basemapLayer('Gray').addTo(map); 
+        L.esri.basemapLayer('GrayLabels').addTo(map);
         
+        //panes are supposed to control drawing order... but this isn't working yet for me. 
+//        map.createPane('BPLSSSections');
+//        map.createPane('AdrawnSelection');
+        
+       
         //connects to our map service
         leafletFeatureLayer = L.esri.featureLayer({
             url: 'http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0', 
             style: {color: "#000", weight: 0.35, fillColor: "#ece7f2"}
+//            , 
+//            pane: 'BPLSSSections'
         }).addTo(map);
-        
+
         setupMapButtons(map);
     }
     
@@ -32,10 +38,15 @@ var leafletMap = (function(){
         //called by the map's on load event. 
         //console.log("set up leaflet map buttons.");
         
-        // FeatureGroup is to store editable layers
-        var drawnItems = new L.FeatureGroup;
+       
+        //working with pane to make this appear above the sections layer. 
+        //NOT WORKING RIGHT NOW. 
+         // FeatureGroup is to store editable layers
+        drawnItems = new L.FeatureGroup;
+//        drawnItems.options.pane = 'AdrawnSelection';
         
         map.addLayer(drawnItems);
+        
 
         var drawControl = new L.Control.Draw({
              edit: 
@@ -44,6 +55,7 @@ var leafletMap = (function(){
 //                 featureGroup: drawnItems
 //                 ,
 //                 poly: {allowIntersection: false}
+//                 
 //             },
              draw: {
                  marker: false, polyline: false, circle: false, rectangle: {repeatMode: false}
@@ -55,12 +67,40 @@ var leafletMap = (function(){
         });
         map.addControl(drawControl);
         
+        customDeleteButton = L.Control.extend({
+            options: {position: "topleft"},
+            onAdd: function(map){
+                var container = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom leaflet-draw-toolbar leaflet-draw-edit-remove');
+                container.id = 'customDeleteButton';
+                container.title = "Clear map selection";
+                container.style.backgroundColor = 'white'; 
+                container.style.width = '26px';
+                container.style.height = '26px';
+                container.style.backgroundImage = "linear-gradient(transparent, transparent), url('https://unpkg.com/leaflet-draw@0.4.7/dist/images/spritesheet.svg')";
+                container.style.backgroundPosition = "-242px -2px"; //tool disabled style
+               // container.style.backgroundPosition = "-182px -2px"; //tool enabled style
+                container.style.backgroundSize = "270px 30px";
+                container.style.backgroundClip = "padding-box";
+                container.style.pointerEvents = "auto";
+                container.style.cursor = 'pointer';
+                //hover? 
+ 
+                container.onclick = function(){clearMapSelection();}
+
+                return container; 
+            }
+        });
+       
+        //add a delete button
+         map.addControl(new customDeleteButton());
+        
         //use this if you want something to happen on draw start. 
         //  map.on (L.Draw.Event.DRAWSTART, function(){
         //      console.log("draw start ");
           
         //  });
-    
+        
+        //listener for draw end event: 
         map.on(L.Draw.Event.CREATED, function (e) {
 
            
@@ -69,35 +109,65 @@ var leafletMap = (function(){
                 drawnItems.clearLayers();
             }
             
+            //add new layer to the featureGroup
             var layer = e.layer;
             drawnItems.addLayer(layer);
-
+            drawnItems.setStyle({fillOpacity: 0, color: "#333"});
+            
+            //style the 
+            document.getElementById('customDeleteButton').style.backgroundPosition = "-182px -2px";
+            
+            //zoom to the selection
+            map.fitBounds(layer._bounds);
+            
+            //pass on the layer to the function which will query it for section IDs
             queryGeom(layer);
             
             
         });
         
         
-//        layer.on('click', function (e){
-//            
-//        })
+        drawnItems.on('click', function (e){
+            console.log("clicked layer.");
+        }); 
        
+    } //end setupMapButtons function 
+    
+    
+    var clearMapSelection = function (){
+         //clear the layer
+        if (drawnItems && drawnItems.getLayers().length !== 0){
+            console.log('clearMapSelection!');
+            //clear the map layer. 
+            drawnItems.clearLayers();
+
+            //reset the filters var
+            filters.mapSectionsInput = null;
+            queryTableForFilters();
+            
+            //remove the item in filter feedback
+
+            //re-style the map tool as disabled. 
+            document.getElementById('customDeleteButton').style.backgroundPosition = "-242px -2px"; //tool disabled style
+
+            //customDeleteButton.disable();
+        } else {console.log("no selection to clear.");}
+
     }
-    function queryGeom(layer){
+    
+    
+    function queryGeom(inputGeom){
         //takes in a rectangle from a draw event 
-        var inputGeom = layer;
         
-        console.log ("input", inputGeom);
         
-//        leafletFeatureLayer.query()[intersect](inputGeom).ids(function(error, ids){
-//            console.log(ids);
-//        })
+       // console.log ("input", inputGeom);
         
         var query = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0"}); 
         query.intersects(inputGeom);
         
+        
         query.run(function(error, featureCollection, response){
-            console.log('Found ' + featureCollection.features.length + ' sections');
+            //console.log('Found ' + featureCollection.features.length + ' sections');
            // console.log("features", featureCollection.features);
             
             var selectedSections= [];
@@ -113,16 +183,19 @@ var leafletMap = (function(){
     function filterForSections(array){
         //console.log("update map filter/filter for sections");
         
+        //reset the filters global var
         filters.mapSectionsInput = array; 
+        
+        //run the query
         queryTableForFilters();
+        
+        //add a filter indicator to the page. 
+        $("#filterFeedback").append($("<span id='mapOn' class='feedbackBar' data='mapSectionsInput'>intersects&nbspmap&nbsppolygon"+"<img src='images/close.png' /></span>"));
         
     }
     
     function calculateClasses(array){
-        console.log("calculate classes.");
-         console.log("highlight the map sections", array);
-    //set the symbol to the variable highlightSymbol (an object defined above)
-
+    
     //filters out redundant section ids 
     var sortedArray = array.sort(function(a,b){return a-b});
     var filteredSections = []
@@ -188,44 +261,46 @@ var leafletMap = (function(){
         } 
 
         //tests out how the choropleth system is working
-        console.log("filtered values array -->", filteredValuesArray)
+       // console.log("filtered values array -->", filteredValuesArray)
         console.log("class breaks -->", break0,break1,break2,break3,breakTop)
-       
 
-        //create new Feature Layer with each of these
-        
-        
-        return {"class1Array": class1Array, "class2Array": class2Array, "class3Array": class3Array, "class4Array": class4Array};
-        
-        
-        
+       return {"class1Array": class1Array, "class2Array": class2Array, "class3Array": class3Array, "class4Array": class4Array};
+
     } //end calculateClasses
     
-    function styleSections (){
-        console.log ("style sections");
-    }
-    
+       
     var highlight = function (array){
-        console.log("highlight via Leaflet");
+      //  console.log("highlight via Leaflet");
         var classes = calculateClasses(array); 
         
-        console.log("class 1 array:", classes.class1Array);
-        console.log("class 2 array:", classes.class2Array);
-        console.log("class 3 array:", classes.class3Array);
-        console.log("class 4 array:", classes.class4Array);
+//        console.log("class 1 array:", classes.class1Array);
+//        console.log("class 2 array:", classes.class2Array);
+//        console.log("class 3 array:", classes.class3Array);
+//        console.log("class 4 array:", classes.class4Array);
         
-          /*
-        var mapHighlight = new Query();
-        mapHighlight.where = ('UID IN ('+filteredSections+')');
-
-        fl.selectFeatures(mapHighlight, fl.SELECTION_NEW); 
-        //zoom to the extent of the filter results.
-*/
-    }
+        leafletFeatureLayer.setStyle(function (feature){
+            var fillColor; //blank variable for fill color
+            var strokeColor;
+            var sectionID = feature.properties.UID; //pulls out section id from feature
+            
+            if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04", strokeColor = "#8c2d04"}
+            else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02", strokeColor = "#8c2d04"}
+            else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014", strokeColor = "#8c2d04"}
+            else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929", strokeColor = "#8c2d04"}
+            //if not found in any class array, given no-value color
+            else {fillColor = "#ece7f2", strokeColor = "#444"};  // opposite hue, low saturation, slightly diverging to show seperation
+           
+            //actual style declaration for each feature using assignment from above
+            return { color: strokeColor, weight: 0.35, fillColor: fillColor, fillOpacity: .9 };
+            
+           
+        });//end setStyle
+        
+    } //end highlight function
     
     return {
         "initialize": initialize,
-        
+        "clearMapSelection": clearMapSelection,
         "highlight": highlight
     }
     

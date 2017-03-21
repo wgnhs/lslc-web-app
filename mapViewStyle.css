@@ -19,6 +19,19 @@ h2{
     margin:0;
 }
 
+/*.leaflet-control-custom a:hover{
+    background-color: #f4f4f4;
+}
+*/
+#customDeleteButton:hover{
+     background-color: #f4f4f4;
+}
+
+/*.leaflet-bar a:hover {
+    background-color: #f4f4f4;
+    cursor: pointer;
+}
+*/
 /*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
 
 
@@ -109,6 +122,12 @@ input {
     border-radius: 4px;
     margin: 1px 3px;
     display: inline-block;
+}
+
+#filterFeedback img {
+    height: 21px; 
+    margin-bottom: -5px;
+    
 }
 /*------------------------ Results List ----------------------*/
 #resultsPanel{
