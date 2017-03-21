@@ -116,27 +116,24 @@
            <div id="resultsPanel">
                <div id="resultsHeader">
                    <h2 class="inline">Results</h2><span>(<span id="resultCount">0</span> samples found)</span>
-                   <!--
-                   <div id="viewOptions">
-                       <div class='switchView button'>
-                            <img  src="images/tableIcon_gw.png" alt="view as table" />
-                           <p>view as table</p>
-                           
-                       </div>
-                       <div class='switchView button'>
-                            <a href='galleryView.html' target='_blank'>
-                                <img src="images/galleryIcon_gw.png" alt="view as gallery" />
-                                <p>view as gallery</p>
-                              
-                           </a>
-                       </div>
-                   </div>--><!--end viewOptions div-->
-                   
-                   
+                               
                </div>
+               
+                <!-- <div id="viewOptions">-->
+                       <input id='tab1' type="radio" name="resultsTabs" checked><label for="tab1">Table</label>
+                       
+                       <input id='tab2' type="radio" name="resultsTabs"><label for="tab2">Media</label>
+                   <!--</div>--><!--end viewOptions div-->
+                   
+                   <section id="tab1content">
+                        <div><table id="resultsTable"></table></div>
+                   </section>
 
-               <ul id="resultsUL"></ul>
-               <div><table id="resultsTable"></table></div>
+                   <section id="tab2content">
+                       <div id="gallery">thin sections gallery</div>
+                   </section>
+
+               
            </div>
           
            <!-- add a project footer... -->

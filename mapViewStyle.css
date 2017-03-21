@@ -133,10 +133,11 @@ input {
 #resultsPanel{
     clear: both;
 }
-
+/*
 #viewOptions{
     padding: 5px 0 10px 0;
-}
+}*/
+
 .switchView{
     display: inline-block;
     padding: 0 5px 0 0;
@@ -152,32 +153,54 @@ input {
     text-decoration: none;
 }
 
-
-#resultsPanel ul{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#resultsPanel li {
-    padding-left: 5px;
-    padding-bottom: 10px;
-    position: relative;
-    border-top: thin solid lightgrey;
-    
-}
-#resultsPanel li:hover{
-    background-color: #e6e6e6;
-    cursor: pointer;
-}
-
-
 .sampleChevron{
     position:absolute; 
     top:50%; 
     right: 0px; 
     transform: translateY(-50%);
 }
+/*============ results tabs ==========*/
+/* adapted from https://codepen.io/oknoblich/pen/tfjFl */
+
+section {
+  display: none;
+  padding: 20px 0 0;
+  border-top: 1px solid #ddd;
+}
+#resultsPanel input {
+  display: none;
+}
+
+#resultsPanel label {
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 5px 10px;
+  font-weight: 400;
+  text-align: center;
+  color: #bbb;
+  border: 1px solid transparent;
+}
+
+#resultsPanel label:hover {
+  color: #888;
+  cursor: pointer;
+}
+
+#resultsPanel input:checked + label {
+  color: #555;
+  border: 1px solid #ddd;
+  /*border-top: 2px solid grey;*/
+  border-bottom: 1px solid #fff;
+}
+
+#resultsPanel #tab1:checked ~ #tab1content{
+  display: block;
+}
+#resultsPanel #tab2:checked ~ #tab2content{
+  display: block;
+}
+
+
 
 /*++++++++++++++++++ RESULTS TABLE +++++++++++++++++++++*/
 #resultsTable{
@@ -204,5 +227,5 @@ input {
 
 #resultsTable td{
    /* width: 16.67%; */
-    padding: 3px;
+    padding: 3px 10px 1px 3px;
 }
