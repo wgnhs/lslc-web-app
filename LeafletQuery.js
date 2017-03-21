@@ -104,7 +104,10 @@ function queryTableForFilters(){
         newsqlArray.push("ThinsectionCount > 0");
         $("#filterFeedback").append($("<span id='thinSectionOn' class='feedbackBar' data='thinSectionAvailabilityInput'>Thin&nbspsection:&nbsp" + filters.thinSectionAvailabilityInput + "<img src='images/close.png'/></span>"));
         }; 
-    if (filters.mapSectionsInput) {newsqlArray.push("SectionId IN ("+filters.mapSectionsInput+")");}; 
+    if (filters.mapSectionsInput) {
+        newsqlArray.push("SectionId IN ("+filters.mapSectionsInput+")"); 
+        $("#filterFeedback").append($("<span id='mapOn' class='feedbackBar' data='mapSectionsInput'>intersects&nbspmap&nbsppolygon"+"<img src='images/close.png' /></span>"));
+        }; 
     if (filters.stateInput){
         newsqlArray.push("Upper(State) LIKE Upper('%"+filters.stateInput+"%')");
         $("#filterFeedback").append($("<span id='stateOn' class='feedbackBar' data='stateInput'>state:&nbsp" + filters.stateInput + "<img src='images/close.png'/></span>"));

@@ -187,11 +187,8 @@ var leafletMap = (function(){
         filters.mapSectionsInput = array; 
         
         //run the query
-        queryTableForFilters();
-        
-        //add a filter indicator to the page. 
-        $("#filterFeedback").append($("<span id='mapOn' class='feedbackBar' data='mapSectionsInput'>intersects&nbspmap&nbsppolygon"+"<img src='images/close.png' /></span>"));
-        
+        queryTableForFilters(); //handles the filter feedback indicators. 
+
     }
     
     function calculateClasses(array){
