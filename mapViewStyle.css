@@ -15,40 +15,27 @@ h2{
   
 }
 
-#filters p {
-    margin:0;
-}
-
-/*.leaflet-control-custom a:hover{
-    background-color: #f4f4f4;
-}
-*/
 #customDeleteButton:hover{
      background-color: #f4f4f4;
 }
 
-/*.leaflet-bar a:hover {
-    background-color: #f4f4f4;
-    cursor: pointer;
-}
-*/
 /*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
 
 
 
 #leftPanel{
-    width:24.5%;
+    width:30%;
     float: left;
     
 }
 #rightPanel{
-    width:75%;
+    width:69.5%;
     float: right;
     display: inline-block;
     
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 925px) {
   /* Tablet view and smaller: one column layout*/
     #rightPanel{
         display: block; 
@@ -85,23 +72,27 @@ h2{
 #filters {
     padding-bottom: 10px;
     position: relative;
+    max-width: 400px;
 }
 
 .filter{
-    
-/*    display: inline-block;*/
+    overflow: hidden; /*keeps the inputs from being pushed outside the div*/
+    display: block;
     vertical-align: top;
     margin: 5px 8px 0 0;
+    
 }
-
-.searchBox{
+.filter input {
+    float: right;
+}
+/*.searchBox{
     display: block;
-}
+}*/
 
-input {
-   /* width: 200px;*/
+/*input {
+    width: 200px;
     clear: left;
-}
+}*/
 
 #largeChevron{
     position: absolute; 

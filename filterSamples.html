@@ -64,12 +64,34 @@
                <div id="filters">
                    <h2>Filters</h2>
                    
-                   <div id="filterFeedback">
-                 
-
-                    </div>
-                    
-                    <div class='filter'>
+                   <div id="filterFeedback"></div>
+                   
+                   <div class="filter">
+                        <label for="rockTypeSearch"><span>Field description: </span></label>
+                        <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" />
+                   </div>
+                   <div class="filter">
+                        <label for="handSampleCheckbox"><span>Hand sample available </span></label>
+                        <input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />
+                   </div>
+                   <div class="filter">
+                        <label for="thinSectionNumberSearch"><span>Thin sections </span></label>
+                        <input type="number" name="thinSectionAvailability" id="thinSectionNumberSearch" min="1" />
+                   </div>
+                   <div class="filter">
+                        <label for="noteSearch"><span>Notes </span></label>
+                        <input class="searchBox" type="search" name="noteSearch" id="notesSearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="countySearch"><span>County </span></label>
+                        <input class="searchBox" type="search" name="countySearch" id="countySearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="stateSearch"><span>State </span></label>
+                        <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  />
+                   </div>
+                   
+      <!--              <div class='filter'>
                        <label><p><span class="bold">Rock Type </span></p>
                        <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" /></label>
                    </div>
@@ -81,11 +103,11 @@
                   <div id="mapfilters">
                        <div class='filter'>
                            <p><span class="bold">Search by area </span></p>
-                              <!--  <div id="mapInteractionButtons">
+                                <div id="mapInteractionButtons">
                                         <img  class="button" id="mapFilterButton" src="images/mapSelection.png" alt="select on map" title="select area on map"/> 
                                         <img class="button" id="mapClearButton" src="images/clearMapSelection2.png" alt="clear map selection" title="clear map selection" /> 
                                     </div>
-                                -->
+                                
                        </div>
                        <div class='filter'>
                            <label><p><span class="bold">County</span></p>
@@ -96,7 +118,7 @@
                            <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  /></label>
                         </div>
                     </div>
-                   
+             -->      
                    
                    
                </div><!--end filters div-->
