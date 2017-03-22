@@ -278,17 +278,18 @@ var leafletMap = (function(){
         leafletFeatureLayer.setStyle(function (feature){
             var fillColor; //blank variable for fill color
             var strokeColor;
+            var fillOpacity;
             var sectionID = feature.properties.UID; //pulls out section id from feature
             
-            if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04", strokeColor = "#8c2d04"}
-            else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02", strokeColor = "#8c2d04"}
-            else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014", strokeColor = "#8c2d04"}
-            else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929", strokeColor = "#8c2d04"}
+            if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04", strokeColor = "#8c2d04", fillOpacity = 0.8}
+            else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02", strokeColor = "#8c2d04", fillOpacity = 0.8}
+            else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014", strokeColor = "#8c2d04", fillOpacity = 0.8}
+            else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929", strokeColor = "#8c2d04", fillOpacity = 0.8}
             //if not found in any class array, given no-value color
-            else {fillColor = "#ece7f2", strokeColor = "#444"};  // opposite hue, low saturation, slightly diverging to show seperation
+            else {fillColor = "#ece7f2", strokeColor = "#444", fillOpacity = 0.2};  // opposite hue, low saturation, slightly diverging to show seperation
            
             //actual style declaration for each feature using assignment from above
-            return { color: strokeColor, weight: 0.35, fillColor: fillColor, fillOpacity: .9 };
+            return { color: strokeColor, weight: 0.35, fillColor: fillColor, fillOpacity: fillOpacity };
             
            
         });//end setStyle
