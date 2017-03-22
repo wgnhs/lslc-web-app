@@ -78,7 +78,7 @@ function initFiltersListeners(){
     
     
 function resetFilters() {
-    //reset for every filter except the map filter. 
+    //reset for every filter that's based on an input in the #filters div (everything except the map filter). 
         filters.rockTypeInput = $("#rockTypeSearch").val();
         filters.countyInput = $("#countySearch").val(); 
         filters.stateInput = $("#stateSearch").val();

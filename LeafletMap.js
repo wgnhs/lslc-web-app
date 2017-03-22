@@ -277,14 +277,14 @@ var leafletMap = (function(){
         
         leafletFeatureLayer.setStyle(function (feature){
             var fillColor; //blank variable for fill color
-            var strokeColor;
-            var fillOpacity;
+            var strokeColor = "#8c2d04"; //this applies to all except where it's re-set below
+            var fillOpacity = 0.8; //this applies to all except where it's re-set below
             var sectionID = feature.properties.UID; //pulls out section id from feature
             
-            if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04", strokeColor = "#8c2d04", fillOpacity = 0.8}
-            else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02", strokeColor = "#8c2d04", fillOpacity = 0.8}
-            else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014", strokeColor = "#8c2d04", fillOpacity = 0.8}
-            else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929", strokeColor = "#8c2d04", fillOpacity = 0.8}
+            if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04"}
+            else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02"}
+            else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014"}
+            else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929"}
             //if not found in any class array, given no-value color
             else {fillColor = "#ece7f2", strokeColor = "#444", fillOpacity = 0.2};  // opposite hue, low saturation, slightly diverging to show seperation
            
