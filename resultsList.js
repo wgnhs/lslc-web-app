@@ -11,6 +11,10 @@ var tableAttributes = [
         {"field": "HandSampleCount", "label": "Hand Samples"}, 
         {"field": "ThinSectionCount", "label": "Thin Sections"}, 
         {"field": "State", "label": "State"},
+        {"field": "Township", "label": "Township"},
+        {"field": "Range", "label": "Range"},
+        {"field": "Direction", "label": "Range Direction"},
+        {"field": "Section_", "label": "Section"},
         {"field": "NotebookId", "label": "Notebook ID"},
         {"field": "Notes", "label": "Notes"},
         //{"field": "", "label": ""}

@@ -22,13 +22,25 @@ $(window).on("load", function(){
 
 });
 
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
 
 function initSearchBars(){
     //called once on load
     //event listener for a filter input 
     
     $("#filters").on("input", "input", function(){
-        resetFilters();
+        delay(function(){
+            
+            console.log('time elapsed');
+            resetFilters();
+        }, 1000);
+        
 
     }); //close #filters.on input function
  
@@ -141,10 +153,10 @@ function queryTableForFilters(){
      var samplesQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
     samplesQuery.fields(["*"]);
     samplesQuery.returnGeometry(false);
-   // samplesQuery.where(""); // assigns empty string to where statement
+  
     samplesQuery.where(whereString);
     
-    console.log("query where is:", samplesQuery.where);
+    //console.log("query where is:", samplesQuery.where);
     console.log(" where string is:", whereString);
      //set the sections query where clause to the same where as the normal query. 
    // sectionsQuery.where = samplesQuery.where;
@@ -181,7 +193,6 @@ function queryTableForFilters(){
         console.log("query is empty.");
         
     }
-     
-    
+
     
 } //end queryTableForFilters
