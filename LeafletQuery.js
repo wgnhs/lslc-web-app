@@ -5,15 +5,19 @@ var filters = {
     //an empty string is falsy. 
     //an empty array is not falsy, so the map sections input must be set to null when cleared. 
     
-    "mapSectionsInput": null, "rockTypeInput": "", "countyInput": "", "handSampleAvailabilityInput": null, "thinSectionAvailabilityInput": null, "stateInput": null, "notesInput": null 
+    "mapSectionsInput": null, 
+    "rockTypeInput": "", 
+    "countyInput": "", 
+    "handSampleAvailabilityInput": null, 
+    "thinSectionAvailabilityInput": null, 
+    "stateInput": null, 
+    "notesInput": null 
 };
 
 $(window).on("load", function(){
-    
-    //This sets an event listener for inputs. 
-    initSearchBars();
-    //initialize a listener for filter removal through a click on a filter indicator
-    removeFilters();
+
+    //initialize listeners for inputs and for filter removal through a click on a filter indicator
+    initFiltersListeners();
     //initialize table
     initializeResultsTable();
     
@@ -30,25 +34,19 @@ var delay = (function(){
   };
 })();
 
-function initSearchBars(){
+function initFiltersListeners(){
     //called once on load
-    //event listener for a filter input 
-    
+    //set an event listener for a filter input 
+    //delay helps with performance 
     $("#filters").on("input", "input", function(){
         delay(function(){
-            
             console.log('time elapsed');
             resetFilters();
         }, 1000);
-        
 
     }); //close #filters.on input function
- 
-} //end initSearchBars function
 
-function removeFilters(){
-    //called once on load
-	//when the user clicks on a filter indicator... 
+	//set a listener for when the user clicks on a filter indicator... 
     $("#filterFeedback").on("click", "span", function(){
       
         console.log("clear", filters[this.getAttribute('data')]);
@@ -75,8 +73,7 @@ function removeFilters(){
             resetFilters();
         }
     });
-    
-  
+
 }
     
     
