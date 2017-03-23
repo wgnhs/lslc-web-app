@@ -11,7 +11,9 @@ var filters = {
     "handSampleAvailabilityInput": null, 
     "thinSectionAvailabilityInput": null, 
     "stateInput": null, 
-    "notesInput": null 
+    "notesInput": null, 
+    "notebookInput": null, 
+    "notebookPageInput": null
 };
 
 $(window).on("load", function(){
@@ -62,12 +64,14 @@ function initFiltersListeners(){
             
         } else {
             //reset the value in the input / searchbar
-            if (this.getAttribute('data') == 'rockTypeInput'){console.log("clear rock type."); $("#rockTypeSearch").val('');};
-            if (this.getAttribute('data') == 'countyInput'){console.log("clear county"); $("#countySearch").val('');};
-            if (this.getAttribute('data') == 'stateInput'){console.log("clear state"); $("#stateSearch").val('');};
-            if (this.getAttribute('data') == 'notesInput'){console.log("clear notes"); $("#notesSearch").val('');};
-            if (this.getAttribute('data') == 'handSampleAvailabilityInput'){console.log("clear handsample"); document.getElementById("handSampleCheckbox").checked = false;};
-            if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){console.log("clear thin section"); $("#thinSectionNumberSearch").val('');};
+            if (this.getAttribute('data') == 'rockTypeInput'){$("#rockTypeSearch").val('');};
+            if (this.getAttribute('data') == 'countyInput'){$("#countySearch").val('');};
+            if (this.getAttribute('data') == 'stateInput'){$("#stateSearch").val('');};
+            if (this.getAttribute('data') == 'notesInput'){$("#notesSearch").val('');};
+            if (this.getAttribute('data') == 'notebookInput'){$("#notebookSearch").val('');};
+            if (this.getAttribute('data') == 'notebookPageInput'){$("#notebookPageSearch").val('');};
+            if (this.getAttribute('data') == 'handSampleAvailabilityInput'){document.getElementById("handSampleCheckbox").checked = false;};
+            if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){$("#thinSectionNumberSearch").val('');};
 
             //resetFilters will call QueryTable. 
             resetFilters();
@@ -83,6 +87,8 @@ function resetFilters() {
         filters.countyInput = $("#countySearch").val(); 
         filters.stateInput = $("#stateSearch").val();
         filters.notesInput = $("#notesSearch").val();
+        filters.notebookInput = $("#notebookSearch").val();
+        filters.notebookPageInput = $("#notebookPageSearch").val();
         filters.thinSectionAvailabilityInput =  $("#thinSectionNumberSearch").val();
         filters.handSampleAvailabilityInput = document.getElementById("handSampleCheckbox").checked;
         
@@ -102,22 +108,26 @@ function queryTableForFilters(){
     if (filters.rockTypeInput) {
         newsqlArray.push("Upper(RockType) LIKE Upper('%"+filters.rockTypeInput+"%')");
         //adds feedback indicator
-    	//$("#rockSearchOn").remove();
     	$("#filterFeedback").append($("<span id='rockSearchOn' class='feedbackBar' data='rockTypeInput'>description:&nbsp" + filters.rockTypeInput + "<img src='images/close.png'/></span>"));
         }; 
     if (filters.countyInput) {
         newsqlArray.push("Upper(County) LIKE Upper('%"+filters.countyInput+"%')");
-       // $("#countySearchOn").remove();
     	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar' data = 'countyInput'>county:&nbsp" + filters.countyInput +"<img src='images/close.png' /></span>"));
         }; 
     if (filters.notesInput) {
         newsqlArray.push("Upper(Notes) LIKE Upper('%"+filters.notesInput+"%')");
-       // $("#countySearchOn").remove();
-    	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar' data = 'notesInput'>notes:&nbsp" + filters.notesInput +"<img src='images/close.png' /></span>"));
+        $("#filterFeedback").append($("<span id='notesSearchOn' class='feedbackBar' data = 'notesInput'>notes:&nbsp" + filters.notesInput +"<img src='images/close.png' /></span>"));
         }; 
+    if (filters.notebookInput) {
+        newsqlArray.push("NotebookId IN ("+filters.notebookInput+")");
+    	$("#filterFeedback").append($("<span id='notebookSearchOn' class='feedbackBar' data = 'notebookInput'>notebook:&nbsp" + filters.notebookInput +"<img src='images/close.png' /></span>"));
+        };
+    if (filters.notebookPageInput) {
+        newsqlArray.push("NotebookPage LIKE '%"+filters.notebookPageInput+"%'");
+    	$("#filterFeedback").append($("<span id='notebookPageSearchOn' class='feedbackBar' data = 'notebookPageInput'>notebook page:&nbsp" + filters.notebookPageInput +"<img src='images/close.png' /></span>"));
+        };
     if (filters.handSampleAvailabilityInput) {
         newsqlArray.push("HandSampleCount > 0");
-       // $("#handSampleOn").remove();
     	$("#filterFeedback").append($("<span id='handSampleOn' class='feedbackBar' data='handSampleAvailabilityInput'>Hand&nbspsample:&nbsp" + filters.handSampleAvailabilityInput + "<img src='images/close.png' /></span>"));
         }; 
     if (filters.thinSectionAvailabilityInput) {
@@ -147,19 +157,27 @@ function queryTableForFilters(){
         
    	};
     
-     var samplesQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
+    var samplesQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
     samplesQuery.fields(["*"]);
     samplesQuery.returnGeometry(false);
-  
+   
     samplesQuery.where(whereString);
     
     //console.log("query where is:", samplesQuery.where);
-    console.log(" where string is:", whereString);
+    console.log("where string is:", whereString);
      //set the sections query where clause to the same where as the normal query. 
    // sectionsQuery.where = samplesQuery.where;
+    
+    
    
    //only try to send queryTask if there is something to search on.
     if (samplesQuery.where.length > 0){
+        
+        samplesQuery.ids(function(error, result, response){
+            console.log('result for ids', result);
+            console.log("result for ids length", result.length);
+            console.log("response for ids", response.features);
+        });
         
         if (whereString === "1=1"){ console.log("Narrow the results by applying filters above.")};
 

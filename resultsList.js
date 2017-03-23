@@ -14,8 +14,9 @@ var tableAttributes = [
         {"field": "Township", "label": "Township"},
         {"field": "Range", "label": "Range"},
         {"field": "Direction", "label": "Range Direction"},
-        {"field": "Section_", "label": "Section"},
+       
         {"field": "NotebookId", "label": "Notebook ID"},
+        {"field": "NotebookPage", "label": "Notebook Page"},
         {"field": "Notes", "label": "Notes"},
         //{"field": "", "label": ""}
     ];

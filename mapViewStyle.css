@@ -2,17 +2,11 @@ body, html, #wrapper{
     height:100%;
 }
 h2{
-   /* padding-right: 7px;*/
     margin: 0 7px 7px 0;
 }
 
-
 #map{
-   /* width: 66%;*/
-
-    height: calc(66vh);
-  /*  display: inline-block;*/
-  
+    height: calc(50vh);
 }
 
 #customDeleteButton:hover{
@@ -20,8 +14,6 @@ h2{
 }
 
 /*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
-
-
 
 #leftPanel{
     width:30%;
@@ -53,13 +45,9 @@ h2{
     
 } /*end media query*/
 
-@media only screen and (min-width: 1500px) {
-   /*solution for making the body fixed-width when the window is wide (canceled)*/
-    body {
-        /*width: 1500px;*/
-        margin: auto;
-    }   
-    
+@media only screen and (min-width: 1333px) {
+
+  
     /*would prefer instead to allow the map to continue to expand...*/
 }
 
@@ -85,14 +73,7 @@ h2{
 .filter input {
     float: right;
 }
-/*.searchBox{
-    display: block;
-}*/
 
-/*input {
-    width: 200px;
-    clear: left;
-}*/
 
 #largeChevron{
     position: absolute; 
@@ -102,7 +83,6 @@ h2{
 
 #filterFeedback{
     display: block;
-   /* height: 50px;*/
     width: 100%;
 }
 
@@ -183,7 +163,10 @@ section {
   /*border-top: 2px solid grey;*/
   border-bottom: 1px solid #fff;
 }
-
+#tab1content{
+    display: block;
+    
+}
 /* tabs and their content divs must have exactly the same parent div in html */
 /* ~ is a general sibling selector. */
 #resultsPanel #tab1:checked ~ #tab1content, 
