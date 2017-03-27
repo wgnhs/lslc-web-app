@@ -119,11 +119,11 @@ function queryTableForFilters(){
         $("#filterFeedback").append($("<span id='notesSearchOn' class='feedbackBar' data = 'notesInput'>notes:&nbsp" + filters.notesInput +"<img src='images/close.png' /></span>"));
         }; 
     if (filters.notebookInput) {
-        newsqlArray.push("NotebookId IN ("+filters.notebookInput+")");
+        newsqlArray.push("NotebookNum LIKE '"+filters.notebookInput+"'");
     	$("#filterFeedback").append($("<span id='notebookSearchOn' class='feedbackBar' data = 'notebookInput'>notebook:&nbsp" + filters.notebookInput +"<img src='images/close.png' /></span>"));
         };
     if (filters.notebookPageInput) {
-        newsqlArray.push("NotebookPage LIKE '%"+filters.notebookPageInput+"%'");
+        newsqlArray.push("NotebookPage LIKE '"+filters.notebookPageInput+"'");
     	$("#filterFeedback").append($("<span id='notebookPageSearchOn' class='feedbackBar' data = 'notebookPageInput'>notebook page:&nbsp" + filters.notebookPageInput +"<img src='images/close.png' /></span>"));
         };
     if (filters.handSampleAvailabilityInput) {
