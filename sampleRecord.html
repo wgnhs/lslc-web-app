@@ -118,7 +118,7 @@
             },
             
             "fieldDesc":"unknown",
-            "fieldNotebookId":"none",
+            "fieldNotebookNum":"none",
             "fieldPage": "N/A",
             "fieldNotebookTitle": "N/A",
             "fieldNotebookThumb":"images/notebooks/fieldNotebook31_thumb.jpg",
@@ -225,7 +225,8 @@
                         sampleRecordData.location.quarterSection = sampleTableResult.features[0].attributes.Quarter;
                         sampleRecordData.location.quarterQuarterSection = sampleTableResult.features[0].attributes.QuarterQuarter;
                         sampleRecordData.location.locationNote = sampleTableResult.features[0].attributes.LocNote;
-                        sampleRecordData.fieldNotebookId = sampleTableResult.features[0].attributes.NotebookId;
+                        sampleRecordData.fieldNotebookNum = sampleTableResult.features[0].attributes.NotebookNum;
+                       
                         sampleRecordData.fieldPage = sampleTableResult.features[0].attributes.NotebookPage;
                         sampleRecordData.WGNHSId = sampleTableResult.features[0].attributes.WgnhsId;
                         sampleRecordData.sampleNotes = sampleTableResult.features[0].attributes.Notes;
@@ -250,11 +251,11 @@
             //primary queries will return only 
             
             //we need a notebook id to run a query of the notebooks table. 
-            if(sampleRecordData.fieldNotebookId > 0){
-               // console.log("notebook", sampleRecordData.fieldNotebookId);
+            if(sampleRecordData.fieldNotebookNum > 0){
+               // console.log("notebook", sampleRecordData.fieldNotebookNum);
                 var notebookQuery = new Query();
                 notebookQuery.outFields=['*'];
-                notebookQuery.where = 'NotebookID = '+sampleRecordData.fieldNotebookId;
+                notebookQuery.where = "Number LIKE '"+sampleRecordData.fieldNotebookNum+"'";
                 
                 console.log('query.where:', notebookQuery.where);
                 var notebooksTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/3");
@@ -263,6 +264,7 @@
                         sampleRecordData.fieldNotebookTitle = notebooksResult.features[0].attributes.Title;
                         sampleRecordData.fieldAuthor= notebooksResult.features[0].attributes.Author;
                         sampleRecordData.fieldDate = notebooksResult.features[0].attributes.Year;
+                        sampleRecordData.fieldNotebookUrl = notebooksResult.features[0].attributes.UwdcUrl;
                     }); //end execute
                 
             } //end if (field notebook id >0 ) 
@@ -451,7 +453,7 @@
    
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
-            if (sampleRecordData.fieldNotebookId > 0){
+            if (sampleRecordData.fieldNotebookNum > 0){
                 if(sampleRecordData.fieldNotebookTitle === null){sampleRecordData.fieldNotebookTitle = "untitled"}; 
 
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover'/></a>";
