@@ -160,13 +160,10 @@ section {
 #resultsPanel input:checked + label {
   color: #555;
   border: 1px solid #ddd;
-  /*border-top: 2px solid grey;*/
-  border-bottom: 1px solid #fff;
+  border-top: 2px solid grey;
+  border-bottom: 1px solid #fff; 
 }
-#tab1content{
-    display: block;
-    
-}
+
 /* tabs and their content divs must have exactly the same parent div in html */
 /* ~ is a general sibling selector. */
 #resultsPanel #tab1:checked ~ #tab1content, 

@@ -92,7 +92,7 @@
             {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"}, 
             {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc"}, 
             {"divisionTitle":"Sample Notes","divisionId":"sampleNotes"},
-            {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}, 
+            //{"divisionTitle":"Available Samples", "divisionId":"availableSamples"}, 
             {"divisionTitle":"All Sample Data", "divisionId":"allData"}
         ]; 
         
@@ -298,7 +298,7 @@
                 
             }); //end execute
 
-            //we always query the thin section.     
+            //we always query the thin sections table.     
             var thinSectionTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/4");
             thinSectionTableQuery.execute(sampleQuery, function(thinTableResult){
                 //clear previous results. 
@@ -356,7 +356,7 @@
             addFieldNotes();
             addLithDesc();
             addNotes();
-            addAvailableSamples();
+           // addAvailableSamples();
             addDataTable();
             
         } //end buildReport 

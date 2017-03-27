@@ -1,6 +1,6 @@
 
 
-var resultCount = document.getElementById("resultCount");
+//var resultCount = document.getElementById("resultCount");
 var resultsTable; 
 var sample;
 var resultsTableBody;
@@ -92,7 +92,7 @@ function listResults (data){
     }
 
     //set results counter statement: 
-    resultCount.innerHTML = data.features.length;
+    //resultCount.innerHTML = data.features.length;
     
 
 }; //end getResults function
