@@ -18,11 +18,11 @@ var modal = (function(){
     
     
     
-    var showThinSection = function (){
-        console.log("showThinSection")
+    var showThinSection = function (id){
+        console.log("showThinSection", id);
             var map = new L.Map('photo').setView(new L.LatLng(0,0), 0);
-            var sectionNum = 16;
-            var urlRoot = 'http://mp-web2t/thin-sections/photos/';
+            var sectionNum = id;
+            var urlRoot = 'http://mp-web2t/lslc/assets/thin-section/zoomify/';
             var photoWidth = 2700;
             var photoHeight = 1800;
 
@@ -55,7 +55,7 @@ var modal = (function(){
     };
     
     var thinSectionViewer = function(id){
-     //   console.log("show thin section viewer for ID", id);
+        console.log("show thin section viewer for ID", id);
         modalContent = "<span id='closemodal' class='close'>x</span>"; 
         
        
@@ -76,7 +76,7 @@ var modal = (function(){
         $('#sampleLink').append("<div>part of Sample #"+ id +"<br/>(click here to view record)</div><img class='sampleChevron' src='images/chevron_right_gw.png' alt=''>");
         
         //populate the parts of the thin section viewer: 
-        showThinSection();
+        showThinSection(id);
             
         
         //make the modal visible. 

@@ -6,7 +6,7 @@
     border-style: dashed;
 }*/
 
-#sampleRecord a {
+a {
     color: #18846f;
 }
 
@@ -76,4 +76,15 @@
 #sampleRecord .thinSection img{
     width: 300px;
 }
+#allData table{
+     border-collapse: collapse;
+    overflow-x:auto;
+}
 
+#allData td{
+    border: 0.5px solid gray;
+    padding: 3px;
+    
+    
+}
+#allData tr:nth-child(even){background-color: #f2f2f2;}

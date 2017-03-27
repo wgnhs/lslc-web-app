@@ -9,19 +9,27 @@
        
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
        
-       <!-- Leaflet-->
+       <!-- Leaflet
        <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
        <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+        -->
        
-       <!--ESRI 4.0--> 
-     <!--  <link rel="stylesheet" href="https://js.arcgis.com/4.0/esri/css/main.css">
-       <script src="https://js.arcgis.com/4.0/"></script> -->
-       
-       <!--ESRI 3.18-->
-       <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-       <script src="https://js.arcgis.com/3.18/"></script>
+       <!-- Load Leaflet from CDN-->
+       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+       <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
 
-       <!--<script src="main.js" ></script>-->
+      <!-- Load Esri Leaflet from CDN -->
+      <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+       
+        <!-- Leaflet Draw -->
+        <script src="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.css">
+       
+
+       <!--ESRI 3.18-->
+  <!--     <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
+       <script src="https://js.arcgis.com/3.18/"></script> -->
+
       
         <LINK href="generalStyle.css" rel='stylesheet'/>
         <LINK href="mapViewStyle.css" rel='stylesheet'/>
@@ -33,6 +41,7 @@
        
    </HEAD>
    <BODY>
+  
        <div id="modalBackground" class="modalBackground">
            <div class="modal-content">
             <span id="closemodal" class="close">x</span>
@@ -55,12 +64,42 @@
                <div id="filters">
                    <h2>Filters</h2>
                    
-                   <div id="filterFeedback">
-                 
-
-                    </div>
-                    
-                    <div class='filter'>
+                   <div id="filterFeedback"></div>
+                   
+                   <div class="filter">
+                        <label for="rockTypeSearch"><span>Field description </span></label>
+                        <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" />
+                   </div>
+                   <div class="filter">
+                        <label for="handSampleCheckbox"><span>Hand sample available </span></label>
+                        <input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />
+                   </div>
+                   <div class="filter">
+                        <label for="thinSectionNumberSearch"><span>Min # of thin sections </span></label>
+                        <input type="number" name="thinSectionAvailability" id="thinSectionNumberSearch" min="1" />
+                   </div>
+                   <div class="filter">
+                        <label for="noteSearch"><span>Notes </span></label>
+                        <input class="searchBox" type="search" name="noteSearch" id="notesSearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="countySearch"><span>County </span></label>
+                        <input class="searchBox" type="search" name="countySearch" id="countySearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="stateSearch"><span>State </span></label>
+                        <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="notebookSearch"><span>Notebook IDs </span></label>
+                        <input class="searchBox" type="search" name="notebookSearch" id="notebookSearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="notebookPageSearch"><span>Notebook Page </span></label>
+                        <input class="searchBox" type="search" name="notebookPageSearch" id="notebookPageSearch"  />
+                   </div>
+                   
+      <!--              <div class='filter'>
                        <label><p><span class="bold">Rock Type </span></p>
                        <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" /></label>
                    </div>
@@ -73,9 +112,10 @@
                        <div class='filter'>
                            <p><span class="bold">Search by area </span></p>
                                 <div id="mapInteractionButtons">
-                                    <img  class="button" id="mapFilterButton" src="images/mapSelection.png" alt="select on map" title="select area on map"/> 
-                                    <img class="button" id="mapClearButton" src="images/clearMapSelection2.png" alt="clear map selection" title="clear map selection" /> 
-                                </div>
+                                        <img  class="button" id="mapFilterButton" src="images/mapSelection.png" alt="select on map" title="select area on map"/> 
+                                        <img class="button" id="mapClearButton" src="images/clearMapSelection2.png" alt="clear map selection" title="clear map selection" /> 
+                                    </div>
+                                
                        </div>
                        <div class='filter'>
                            <label><p><span class="bold">County</span></p>
@@ -86,7 +126,7 @@
                            <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  /></label>
                         </div>
                     </div>
-                   
+             -->      
                    
                    
                </div><!--end filters div-->
@@ -106,27 +146,24 @@
            <div id="resultsPanel">
                <div id="resultsHeader">
                    <h2 class="inline">Results</h2><span>(<span id="resultCount">0</span> samples found)</span>
-                   <!--
-                   <div id="viewOptions">
-                       <div class='switchView button'>
-                            <img  src="images/tableIcon_gw.png" alt="view as table" />
-                           <p>view as table</p>
-                           
-                       </div>
-                       <div class='switchView button'>
-                            <a href='galleryView.html' target='_blank'>
-                                <img src="images/galleryIcon_gw.png" alt="view as gallery" />
-                                <p>view as gallery</p>
-                              
-                           </a>
-                       </div>
-                   </div>--><!--end viewOptions div-->
-                   
-                   
+                               
                </div>
+               
+                <!-- <div id="viewOptions">-->
+                       <input id='tab1' type="radio" name="resultsTabs" checked><label for="tab1">Table</label>
+                       
+                       <input id='tab2' type="radio" name="resultsTabs"><label for="tab2">Media</label>
+                   <!--</div>--><!--end viewOptions div-->
+                   
+                   <section id="tab1content">
+                        <div><table id="resultsTable"></table></div>
+                   </section>
 
-               <ul id="resultsUL"></ul>
-               <div id="resultsFeatureTable"></div>
+                   <section id="tab2content">
+                       <div id="gallery">thin sections gallery</div>
+                   </section>
+
+               
            </div>
           
            <!-- add a project footer... -->
@@ -146,8 +183,12 @@
            $("#navFilter").css("background-color", "#848484");
        </script>
        <script type='text/javascript' src='lib/jquery-1.11.3.js'></script>
+       <script type="text/javascript" src="lib/jquery.tablesorter.js"></script>
        <!--<script type='text/javascript' src='query.js'></script>-->
-       <script type='text/javascript' src='mapAndQuery.js'></script>
+       <!--<script type='text/javascript' src='mapAndQuery.js'></script>-->
+       <script type='text/javascript' src='LeafletQuery.js'></script>
+       <script type='text/javascript' src='LeafletMap.js'></script>
+       <script>leafletMap.initialize(); </script>
        <script src="resultsList.js"></script>
     
    </BODY>

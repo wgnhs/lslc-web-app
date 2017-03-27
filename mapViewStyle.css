@@ -2,40 +2,32 @@ body, html, #wrapper{
     height:100%;
 }
 h2{
-   /* padding-right: 7px;*/
     margin: 0 7px 7px 0;
 }
 
-
 #map{
-   /* width: 66%;*/
-
-    height: calc(66vh);
-  /*  display: inline-block;*/
-  
+    height: calc(50vh);
 }
 
-#filters p {
-    margin:0;
+#customDeleteButton:hover{
+     background-color: #f4f4f4;
 }
 
 /*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
 
-
-
 #leftPanel{
-    width:24.5%;
+    width:30%;
     float: left;
     
 }
 #rightPanel{
-    width:75%;
+    width:69.5%;
     float: right;
     display: inline-block;
     
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 925px) {
   /* Tablet view and smaller: one column layout*/
     #rightPanel{
         display: block; 
@@ -53,13 +45,9 @@ h2{
     
 } /*end media query*/
 
-@media only screen and (min-width: 1500px) {
-   /*solution for making the body fixed-width when the window is wide (canceled)*/
-    body {
-        /*width: 1500px;*/
-        margin: auto;
-    }   
-    
+@media only screen and (min-width: 1333px) {
+
+  
     /*would prefer instead to allow the map to continue to expand...*/
 }
 
@@ -72,23 +60,20 @@ h2{
 #filters {
     padding-bottom: 10px;
     position: relative;
+    max-width: 400px;
 }
 
 .filter{
-    
-/*    display: inline-block;*/
+    overflow: hidden; /*keeps the inputs from being pushed outside the div*/
+    display: block;
     vertical-align: top;
     margin: 5px 8px 0 0;
+    
+}
+.filter input {
+    float: right;
 }
 
-.searchBox{
-    display: block;
-}
-
-input {
-   /* width: 200px;*/
-    clear: left;
-}
 
 #largeChevron{
     position: absolute; 
@@ -98,7 +83,6 @@ input {
 
 #filterFeedback{
     display: block;
-   /* height: 50px;*/
     width: 100%;
 }
 
@@ -110,14 +94,21 @@ input {
     margin: 1px 3px;
     display: inline-block;
 }
+
+#filterFeedback img {
+    height: 21px; 
+    margin-bottom: -5px;
+    
+}
 /*------------------------ Results List ----------------------*/
 #resultsPanel{
     clear: both;
 }
-
+/*
 #viewOptions{
     padding: 5px 0 10px 0;
-}
+}*/
+
 .switchView{
     display: inline-block;
     padding: 0 5px 0 0;
@@ -133,36 +124,80 @@ input {
     text-decoration: none;
 }
 
-
-#resultsPanel ul{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#resultsPanel li {
-    padding-left: 5px;
-    padding-bottom: 10px;
-    position: relative;
-    border-top: thin solid lightgrey;
-    
-}
-#resultsPanel li:hover{
-    background-color: #e6e6e6;
-    cursor: pointer;
-}
-
-#resultsPanel ul p, h3{
-    padding: 0 24px 0 0;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    
-}
 .sampleChevron{
     position:absolute; 
     top:50%; 
     right: 0px; 
     transform: translateY(-50%);
+}
+/*============ results tabs ==========*/
+/* adapted from https://codepen.io/oknoblich/pen/tfjFl */
+
+section {
+  display: none;
+  padding: 20px 0 0;
+  border-top: 1px solid #ddd;
+}
+#resultsPanel input {
+  display: none;
+}
+
+#resultsPanel label {
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 5px 10px;
+  font-weight: 400;
+  text-align: center;
+  color: #bbb;
+  border: 1px solid transparent;
+}
+
+#resultsPanel label:hover {
+  color: #888;
+  cursor: pointer;
+}
+
+#resultsPanel input:checked + label {
+  color: #555;
+  border: 1px solid #ddd;
+  /*border-top: 2px solid grey;*/
+  border-bottom: 1px solid #fff;
+}
+#tab1content{
+    display: block;
+    
+}
+/* tabs and their content divs must have exactly the same parent div in html */
+/* ~ is a general sibling selector. */
+#resultsPanel #tab1:checked ~ #tab1content, 
+#resultsPanel #tab2:checked ~ #tab2content {
+  display: block;
+}
+
+/*++++++++++++++++++ RESULTS TABLE +++++++++++++++++++++*/
+#resultsTable{
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x:auto;
+}
+
+#resultsTable thead td{
+    background-color: #e6e6e6;
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+}
+
+#resultsTable tr{
+    
+    border-bottom: 0.5px solid lightgrey;
+}
+
+#resultsTableBody tr:hover{
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+
+#resultsTable td{
+   /* width: 16.67%; */
+    padding: 3px 10px 1px 3px;
 }
