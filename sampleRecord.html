@@ -211,7 +211,7 @@
                 var sampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
                 sampleTableQuery.execute(sampleQuery, function(sampleTableResult){
                     if(sampleTableResult.features[0]){
-                        //console.log("sample table info:", sampleTableResult.features[0].attributes);
+                        console.log("sample table info:", sampleTableResult.features[0].attributes);
                         //set the attributes that can be found in the samples table. 
                         
                         
@@ -293,7 +293,7 @@
             handSampleTableQuery.execute(sampleQuery, function(handSampleResult){
                 if(handSampleResult.features[0]){
                     console.log("hand sample info:", handSampleResult.features[0].attributes);
-                    sampleRecordData.handSampleId = handSampleResult.features[0].attributes.SampleId;
+                    sampleRecordData.handSampleCatalogNumber = handSampleResult.features[0].attributes.CatalogNumber;
                 }
                 
             }); //end execute
@@ -371,8 +371,8 @@
         }
         
         function addHandSamples(){
-            if (sampleRecordData.handSampleId){
-                $("#handSamples").append("Hand Sample # "+sampleRecordData.handSampleId);
+            if (sampleRecordData.handSampleCatalogNumber){
+                $("#handSamples").append("Hand Sample # "+sampleRecordData.handSampleCatalogNumber);
             } else {$("#handSamples").append('<p>none</p>');}
         }
         
