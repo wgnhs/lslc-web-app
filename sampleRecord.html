@@ -251,7 +251,7 @@
             //primary queries will return only 
             
             //we need a notebook id to run a query of the notebooks table. 
-            if(sampleRecordData.fieldNotebookNum > 0){
+            if(sampleRecordData.fieldNotebookNum){
                // console.log("notebook", sampleRecordData.fieldNotebookNum);
                 var notebookQuery = new Query();
                 notebookQuery.outFields=['*'];
@@ -453,11 +453,11 @@
    
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
-            if (sampleRecordData.fieldNotebookNum > 0){
+            if (sampleRecordData.fieldNotebookNum){
                 if(sampleRecordData.fieldNotebookTitle === null){sampleRecordData.fieldNotebookTitle = "untitled"}; 
 
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover'/></a>";
-                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p> <a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNum+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
      
             } else if (sampleRecordData.fieldDesc){
                 
