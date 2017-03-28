@@ -6,6 +6,7 @@ var sample;
 var resultsTableBody;
 
 var tableAttributes = [
+        {"field": "OBJECTID", "label": "OBJECT ID"}, 
         {"field": "SampleId", "label": "ID"}, 
         {"field": "RockType", "label": "Field Description"},  
         {"field": "HandSampleCount", "label": "Hand Samples"}, 
@@ -52,23 +53,21 @@ function initializeResultsTable(){
 }
 
 //accepts data from the dojo query 
-function listResults (data){
-   
+function listResults (dataObjects){
+    console.log("dataObjects is: ", dataObjects);
+    //dataObjects is an array of objects. 
    
     //Clear the results list before re-populating. 
    // console.log("clear results.");
-
     $("#resultsCount").html('0');
     resultsTableBody.innerHTML = '';
     
-    console.log("data.features is: ", data.features);
-    //data.features is an array of objects. 
-    
+
     var tb = '';
-    for (obj in data.features){
-       // console.log("data.features[obj].attributes.SampleId: ", data.features[obj].attributes.SampleId);
+    for (obj in dataObjects){
+       // console.log("dataObjects[obj].attributes.SampleId: ", dataObjects[obj].attributes.SampleId);
         
-        var samId = data.features[obj].attributes.SampleId;
+        var samId = dataObjects[obj].attributes.SampleId;
         //console.log("samId", samId);
         
         var tr = "";
@@ -76,7 +75,7 @@ function listResults (data){
         //var trHTML = '';
         for (attr in tableAttributes){
             var field = tableAttributes[attr].field;
-            var val = data.features[obj].attributes[field];
+            var val = dataObjects[obj].attributes[field];
             //only add the val if it's not null. if null, add an empty cell.  
             if(val === null){
                 tr+= "<td></td>";

@@ -16,6 +16,9 @@ var filters = {
     "notebookPageInput": null
 };
 
+//global var for 
+var globalResultsArray = [];
+
 $(window).on("load", function(){
 
     //initialize listeners for inputs and for filter removal through a click on a filter indicator
@@ -98,8 +101,57 @@ function resetFilters() {
     
     
 function queryTableForFilters(){
+    
+    //reset the global variable. 
+    globalResultsArray = [];
    
+    var whereString = buildSqlAndAddIndicators(); //call the function to build a SQL where clause. It will return the where clause as a string. 
+    
+    //set up the query, which will return only the ids of samples matching the where clause. 
+    var sampleIdsQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
+   // sampleIdsQuery.fields(["*"]);
+    //sampleIdsQuery.returnGeometry(false);
+    sampleIdsQuery.where(whereString);
+    
+    console.log("where string is:", whereString);
+    
+    //set the sections query where clause to the same where as the normal query.
+    // sectionsQuery.where = sampleIdsQuery.where;
+    
+   
+ 
+   //only try to run query if there is something to search on.
+    if (sampleIdsQuery.where.length > 0){
+        
+        if (whereString === "1=1"){ console.log("Narrow the results by applying filters above.")};
+
+        sampleIdsQuery.ids(function(error, result){
+            console.log("error", error);
+            console.log('result for ids', result);
+            //console.log("result for ids length", result.length);
+           
+            var resultCount = document.getElementById("resultCount");
+            //set results counter statement: 
+            resultCount.innerHTML = result.length;
+            
+            
+            sliceResult(result);
+
+        }); //end sampleIdsQuery.ids
+
+    } else {
+        //this shouldn't happen while we're using ["1=1"] in the SQL array. 
+        console.log("query is empty.");
+        
+    }
+} //end queryTableForFilters
+
+function buildSqlAndAddIndicators() {
+    
+    //start with a search for everything. 
     var newsqlArray = ["1=1"];
+    //and a blank string to contain the where clause.
+    var whereString = "";
     
     //delete all filter indicators. They will be replaced. 
     $("#filterFeedback").html('');
@@ -143,106 +195,130 @@ function queryTableForFilters(){
         $("#filterFeedback").append($("<span id='stateOn' class='feedbackBar' data='stateInput'>state:&nbsp" + filters.stateInput + "<img src='images/close.png'/></span>"));
         };
     
-    //console.log ("new SQL array:", newsqlArray);
-    
    
-    var whereString = "";
-
-   	//iterates through newsqlArray
-    //THIS IS UNNECESSARY if we always search for everything when no filters are applied. 
+    //iterates through newsqlArray
+   
     for (i = 0; i < newsqlArray.length; i++) {
    		//testing for a value before and after, if so, adds AND in between them
+         //THIS If STATEMENT IS UNNECESSARY if we always search for everything (start with ["1=1"]) when no filters are applied. 
    		if (whereString != "" && newsqlArray[i] != "") {whereString +=  " AND " };
+        
    		whereString += newsqlArray[i]; //adds the sql query to the string 
         
    	};
     
-    var sampleIdsQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
-    sampleIdsQuery.fields(["*"]);
-    sampleIdsQuery.returnGeometry(false);
-   
-    sampleIdsQuery.where(whereString);
+    return whereString;
+}
+
+
+function sliceResult(allResultOBJECTIDs){
+       
+    var sliceSize = 1000; 
     
-    //console.log("query where is:", sampleIdsQuery.where);
-    console.log("where string is:", whereString);
-     //set the sections query where clause to the same where as the normal query. 
-   // sectionsQuery.where = sampleIdsQuery.where;
+    //calculate how many pages.
+    var numberOfSlices = Math.ceil(allResultOBJECTIDs.length/sliceSize);
+    console.log(allResultOBJECTIDs.length, "is broken into ", numberOfSlices, "slices."); 
+    
+    //build a list of page limit indices. 
+    var pageBreaks = [0];
+    
+
+    pageBreaks.push(allResultOBJECTIDs.length);
+    
+    for (i = 1; i < numberOfSlices; i++){
+        pageBreaks.push(i*sliceSize);
+    }
+
+    pageBreaks.sort(function(a, b){return a-b});
+    
+    
+    
+    console.log("pageBreaks", pageBreaks);
+    for (j=1 ; j < pageBreaks.length; j++){
+        
+        var rangeMin = pageBreaks[j-1]; 
+        var rangeMax = pageBreaks[j];
+       
+        console.log("page "+j+" would be values at indices", pageBreaks[j-1], "up to (not including) ", pageBreaks[j]);
+        
+        var oneThousandOBJECTIDs= allResultOBJECTIDs.slice(rangeMin, rangeMax); 
+        console.log("one thousand result OBJECTIDS:", oneThousandOBJECTIDs); 
+        
+ //      queryForSliceData(oneThousandOBJECTIDs, false);
+        
+        if (j == pageBreaks.length-1){
+            console.log("last page.");
+//            console.log("final objectIDs", OneThousandOBJECTIDs);
+            queryForSliceData(oneThousandOBJECTIDs, true);
+        }  else {
+//            console.log("not last or first page.");
+            queryForSliceData(oneThousandOBJECTIDs, false);
+        }
+//
+//
+    }
+
+
+   
+} //end sliceResult function 
+
+function queryForSliceData(resultSliceOBJECTIDs, drawList){
+    //resultsIds is an array of the objectIDs of one slice of results. Max length 1000. 
+    //drawList is a boolean indicating whether to add the list  
+    
+    var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
     
     var sliceDataQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
     sliceDataQuery.fields(["*"]);
     sliceDataQuery.returnGeometry(false);
-   
+    sliceDataQuery.where(sliceWhereClause);
     
-   
-   //only try to send queryTask if there is something to search on.
-    if (sampleIdsQuery.where.length > 0){
-        
-         if (whereString === "1=1"){ console.log("Narrow the results by applying filters above.")};
-        
-        
-        
-        sampleIdsQuery.ids(function(error, result, response){
-            console.log('result for ids', result);
-            console.log("result for ids length", result.length);
-           
-            var resultCount = document.getElementById("resultCount");
-            //set results counter statement: 
-            resultCount.innerHTML = result.length;
-            
-            if (result.length >500){
-                console.log("more than 500.");
-                
-                //extract first 1000 ids from the result. 
-               var numberOfSlices = Math.ceil(result.length/500);
-                console.log(result.length, "is broken into ", numberOfSlices, "slices."); 
-                
-                for (i = 0; i < numberOfSlices+1; i++){
-                    console.log(i*500);
-                   
-                }
-                
-                var sliceWhereString = "OBJECTID IN ("+result.slice(0, 499)+")";
-                
-               sliceDataQuery.where(sliceWhereString);
-                
-                sliceDataQuery.run(function(error, sliceResult, sliceResponse){
-                   console.log("slice resp", sliceResponse.features);  
-                    listResults(sliceResponse);
-                    
-                });
-            
-            } else {
-
-                sampleIdsQuery.run(function(error, result, response){
-                  //  console.log('result', result);
-                  //  console.log("response", response.features);
-
-                    listResults(response);
-
-                    //iterate through and output array of sections for the highlight function. 
-                    var highlightMapSections = []; 
-                    //iterate through  
-                    for (f in response.features){
-                       // console.log("f attributes sectionId", response.features[f].attributes.SectionId);
-                        highlightMapSections.push(response.features[f].attributes.SectionId);
-                    }
-
-                    leafletMap.highlight(highlightMapSections);
-
-                });
-        
-
-            } //end else for results <= 1000
-
-        });
-         
+    
+    //this can only ever return 1000 results at a time.  
+    sliceDataQuery.run(function(error, result, response){
+       console.log('result of slice query', result);
+     
        
-
-    } else {
-        //if query.where.length is 0 or less, query for everything! 
-        console.log("query is empty.");
+        globalResultsArray = globalResultsArray.concat(response.features);
         
-    }
+        console.log("global results", globalResultsArray);
+        
+        //response.features is an array of objects.     
+        //listResults(globalResultsArray);
+         if (drawList === true){ 
+            console.log("please draw the list and highlight map.");
+            console.log("global results", globalResultsArray);
+             var firstThousand = globalResultsArray.slice(0,1000); 
+             console.log("first thousand", firstThousand);
+           
+            listResults(firstThousand);
+            highlightAll();
+        }
+       
+    });
 
     
-} //end queryTableForFilters
+} //end function queryForSliceData 
+
+//not called anywhere yet. 
+//var displayTablePage = function (pageNumber){
+//    
+//    var pageIndex = pageNumber-1;
+//    console.log("page index", pageIndex); 
+//    
+//    
+//}
+
+function highlightAll(){
+    
+    //iterate through and output array of sections for the highlight function. 
+    var highlightMapSections = []; 
+    //iterate through  
+    for (f in globalResultsArray){
+       
+        highlightMapSections.push(globalResultsArray[f].attributes.SectionId);
+    }
+    
+    //accepts and array of section IDs. 
+    leafletMap.highlight(highlightMapSections);
+}
