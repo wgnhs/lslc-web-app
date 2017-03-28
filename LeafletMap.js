@@ -7,10 +7,12 @@ var leafletMap = (function(){
     
     var initialize = function(){
         
-        var map = L.map('map')
+        var map = L.map('map', {zoomControl:false})
             //.on('load', function(){setupMapButtons();})
             .setView([ 47, -90], 7) //setview actually triggers the on load event. 
+        
             ; //sets up esri leaflet map
+        var zoom = new L.control.zoom({position:'topright'}).addTo(map);
         
       //   map.on("load", function(){setupMapButtons();});
         
