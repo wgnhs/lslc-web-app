@@ -92,7 +92,7 @@
             {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"}, 
             {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc"}, 
             {"divisionTitle":"Sample Notes","divisionId":"sampleNotes"},
-            //{"divisionTitle":"Available Samples", "divisionId":"availableSamples"}, 
+            {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}, 
             {"divisionTitle":"All Sample Data", "divisionId":"allData"}
         ]; 
         
@@ -211,7 +211,7 @@
                 var sampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
                 sampleTableQuery.execute(sampleQuery, function(sampleTableResult){
                     if(sampleTableResult.features[0]){
-                        console.log("sample table info:", sampleTableResult.features[0].attributes);
+                        //console.log("sample table info:", sampleTableResult.features[0].attributes);
                         //set the attributes that can be found in the samples table. 
                         
                         
@@ -293,12 +293,12 @@
             handSampleTableQuery.execute(sampleQuery, function(handSampleResult){
                 if(handSampleResult.features[0]){
                     console.log("hand sample info:", handSampleResult.features[0].attributes);
-                    sampleRecordData.handSampleCatalogNumber = handSampleResult.features[0].attributes.CatalogNumber;
+                    sampleRecordData.handSampleId = handSampleResult.features[0].attributes.SampleId;
                 }
                 
             }); //end execute
 
-            //we always query the thin sections table.     
+            //we always query the thin section.     
             var thinSectionTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/4");
             thinSectionTableQuery.execute(sampleQuery, function(thinTableResult){
                 //clear previous results. 
@@ -356,7 +356,7 @@
             addFieldNotes();
             addLithDesc();
             addNotes();
-           // addAvailableSamples();
+            addAvailableSamples();
             addDataTable();
             
         } //end buildReport 
@@ -371,8 +371,8 @@
         }
         
         function addHandSamples(){
-            if (sampleRecordData.handSampleCatalogNumber){
-                $("#handSamples").append("Hand Sample # "+sampleRecordData.handSampleCatalogNumber);
+            if (sampleRecordData.handSampleId){
+                $("#handSamples").append("Hand Sample # "+sampleRecordData.handSampleId);
             } else {$("#handSamples").append('<p>none</p>');}
         }
         

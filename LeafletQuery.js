@@ -157,85 +157,50 @@ function queryTableForFilters(){
         
    	};
     
-    var sampleIdsQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
-    sampleIdsQuery.fields(["*"]);
-    sampleIdsQuery.returnGeometry(false);
+    var samplesQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
+    samplesQuery.fields(["*"]);
+    samplesQuery.returnGeometry(false);
    
-    sampleIdsQuery.where(whereString);
+    samplesQuery.where(whereString);
     
-    //console.log("query where is:", sampleIdsQuery.where);
+    //console.log("query where is:", samplesQuery.where);
     console.log("where string is:", whereString);
      //set the sections query where clause to the same where as the normal query. 
-   // sectionsQuery.where = sampleIdsQuery.where;
+   // sectionsQuery.where = samplesQuery.where;
     
-    var sliceDataQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
-    sliceDataQuery.fields(["*"]);
-    sliceDataQuery.returnGeometry(false);
-   
     
    
    //only try to send queryTask if there is something to search on.
-    if (sampleIdsQuery.where.length > 0){
+    if (samplesQuery.where.length > 0){
         
-         if (whereString === "1=1"){ console.log("Narrow the results by applying filters above.")};
-        
-        
-        
-        sampleIdsQuery.ids(function(error, result, response){
+        samplesQuery.ids(function(error, result, response){
             console.log('result for ids', result);
             console.log("result for ids length", result.length);
-           
-            var resultCount = document.getElementById("resultCount");
-            //set results counter statement: 
-            resultCount.innerHTML = result.length;
-            
-            if (result.length >500){
-                console.log("more than 500.");
-                
-                //extract first 1000 ids from the result. 
-               var numberOfSlices = Math.ceil(result.length/500);
-                console.log(result.length, "is broken into ", numberOfSlices, "slices."); 
-                
-                for (i = 0; i < numberOfSlices+1; i++){
-                    console.log(i*500);
-                   
-                }
-                
-                var sliceWhereString = "OBJECTID IN ("+result.slice(0, 499)+")";
-                
-               sliceDataQuery.where(sliceWhereString);
-                
-                sliceDataQuery.run(function(error, sliceResult, sliceResponse){
-                   console.log("slice resp", sliceResponse.features);  
-                    listResults(sliceResponse);
-                    
-                });
-            
-            } else {
-
-                sampleIdsQuery.run(function(error, result, response){
-                  //  console.log('result', result);
-                  //  console.log("response", response.features);
-
-                    listResults(response);
-
-                    //iterate through and output array of sections for the highlight function. 
-                    var highlightMapSections = []; 
-                    //iterate through  
-                    for (f in response.features){
-                       // console.log("f attributes sectionId", response.features[f].attributes.SectionId);
-                        highlightMapSections.push(response.features[f].attributes.SectionId);
-                    }
-
-                    leafletMap.highlight(highlightMapSections);
-
-                });
+            console.log("response for ids", response.features);
+        });
         
+        if (whereString === "1=1"){ console.log("Narrow the results by applying filters above.")};
 
-            } //end else for results <= 1000
+        //console.log("run the query.");
+
+        samplesQuery.run(function(error, result, response){
+          //  console.log('result', result);
+          //  console.log("response", response.features);
+
+            listResults(response);
+
+            //iterate through and output array of sections ofr the highlight function. 
+            var highlightMapSections = []; 
+            //iterate through  
+            for (f in response.features){
+               // console.log("f attributes sectionId", response.features[f].attributes.SectionId);
+                highlightMapSections.push(response.features[f].attributes.SectionId);
+            }
+            
+            leafletMap.highlight(highlightMapSections);
 
         });
-         
+            
        
 
     } else {
