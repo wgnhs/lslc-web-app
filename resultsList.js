@@ -1,6 +1,6 @@
 
 
-var resultCount = document.getElementById("resultCount");
+//var resultCount = document.getElementById("resultCount");
 var resultsTable; 
 var sample;
 var resultsTableBody;
@@ -57,14 +57,14 @@ function listResults (data){
    
     //Clear the results list before re-populating. 
    // console.log("clear results.");
-//    $("#resultsUL").html('');
+
     $("#resultsCount").html('0');
     resultsTableBody.innerHTML = '';
     
     console.log("data.features is: ", data.features);
     //data.features is an array of objects. 
     
-    
+    var tb = '';
     for (obj in data.features){
        // console.log("data.features[obj].attributes.SampleId: ", data.features[obj].attributes.SampleId);
         
@@ -86,14 +86,15 @@ function listResults (data){
             
         } //end for loop through table attributes. 
         tr+= "</tr>";
-       
-        resultsTableBody.innerHTML += tr;
+        
+       //add to the table body variable. 
+        tb += tr;
 
     }
-
-    //set results counter statement: 
-    resultCount.innerHTML = data.features.length;
     
+    //this seems to be WAY faster than appending html elements within the for loop! 
+     resultsTableBody.innerHTML += tb;
+
 
 }; //end getResults function
 
