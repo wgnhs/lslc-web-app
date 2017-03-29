@@ -60,6 +60,7 @@ function listResults (dataObjects){
    
     //Clear the results list before re-populating. 
    // console.log("clear results.");
+
     $("#resultsCount").html('0');
     resultsTableBody.innerHTML = '';
     
@@ -86,15 +87,16 @@ function listResults (dataObjects){
             
         } //end for loop through table attributes. 
         tr+= "</tr>";
-        
-       //add to the table body variable. 
+      
+        //add to the table body variable. 
         tb += tr;
 
-    }
-    
-    //this seems to be WAY faster than appending html elements within the for loop! 
-     resultsTableBody.innerHTML += tb;
 
+    }
+
+   //this seems to be WAY faster than appending html elements within the for loop! 
+     resultsTableBody.innerHTML += tb;
+    
 
 }; //end getResults function
 
