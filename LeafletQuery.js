@@ -13,7 +13,8 @@ var filters = {
     "stateInput": null, 
     "notesInput": null, 
     "notebookInput": null, 
-    "notebookPageInput": null
+    "notebookPageInput": null, 
+    "WGNHSInput": null
 };
 
 //global var for 
@@ -75,6 +76,7 @@ function initFiltersListeners(){
             if (this.getAttribute('data') == 'notebookPageInput'){$("#notebookPageSearch").val('');};
             if (this.getAttribute('data') == 'handSampleAvailabilityInput'){document.getElementById("handSampleCheckbox").checked = false;};
             if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){$("#thinSectionNumberSearch").val('');};
+            if (this.getAttribute('data') == 'WGNHSInput'){$("#WGNHSSearch").val('');};
 
             //resetFilters will call QueryTable. 
             resetFilters();
@@ -93,6 +95,7 @@ function resetFilters() {
         filters.notebookInput = $("#notebookSearch").val();
         filters.notebookPageInput = $("#notebookPageSearch").val();
         filters.thinSectionAvailabilityInput =  $("#thinSectionNumberSearch").val();
+        filters.WGNHSInput =  $("#WGNHSSearch").val();
         filters.handSampleAvailabilityInput = document.getElementById("handSampleCheckbox").checked;
         
        // console.log("filters set:", filters);
@@ -193,6 +196,10 @@ function buildSqlAndAddIndicators() {
     if (filters.stateInput){
         newsqlArray.push("Upper(State) LIKE Upper('%"+filters.stateInput+"%')");
         $("#filterFeedback").append($("<span id='stateOn' class='feedbackBar' data='stateInput'>state:&nbsp" + filters.stateInput + "<img src='images/close.png'/></span>"));
+        };
+    if (filters.WGNHSInput){
+        newsqlArray.push("WgnhsId = "+filters.WGNHSInput);
+        $("#filterFeedback").append($("<span id='WGNHSOn' class='feedbackBar' data='WGNHSInput'>WGNHS ID:&nbsp" + filters.WGNHSInput + "<img src='images/close.png'/></span>"));
         };
     
    
@@ -320,10 +327,10 @@ function onQueryEnd(){
     var isQueryDone = new Promise(
         function (resolve, reject) {
             if (globalResultsArray.length === 26274) {
-                var message = 'all samples were returned'
+                var message = 'all samples match this query'
                 resolve(message); // fulfilled
             } else {
-                var error = 'not all results returned.';
+                var error = 'all samples DO NOT match this query.';
                 reject(error); // reject
             }
 
