@@ -207,6 +207,7 @@ function buildSqlAndAddIndicators() {
         
    	};
     
+
     return whereString;
 }
 
@@ -346,6 +347,7 @@ function onQueryEnd(){
 
     testQuery();
 }
+
 
 function highlightAll(){
     
