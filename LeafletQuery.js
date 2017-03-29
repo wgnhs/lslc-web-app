@@ -288,11 +288,15 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
          if (drawList === true){ 
             console.log("please draw the list and highlight map.");
             console.log("global results", globalResultsArray);
+             
+            
              var firstThousand = globalResultsArray.slice(0,1000); 
              console.log("first thousand", firstThousand);
            
             listResults(firstThousand);
-            highlightAll();
+            highlightAll(); //SEEMS TO NOT ALWAYS RETURN EVERYTHING. TRY SEARCHING "MINN" for STATE. 
+             
+             onQueryEnd();
         }
        
     });
@@ -309,16 +313,54 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
 //    
 //}
 
+function onQueryEnd(){
+
+    // Promise
+    var isQueryDone = new Promise(
+        function (resolve, reject) {
+            if (globalResultsArray.length === 26274) {
+                var message = 'all samples were returned'
+                resolve(message); // fulfilled
+            } else {
+                var error = 'not all results returned.';
+                reject(error); // reject
+            }
+
+        }
+    );
+
+    // call our promise
+    var testQuery = function () {
+        isQueryDone
+            .then(function (fulfilled) {
+                
+                console.log(fulfilled);
+             
+            })
+            .catch(function (error) {
+                
+                console.log(error);
+            
+            });
+    };
+
+    testQuery();
+}
+
 function highlightAll(){
     
-    //iterate through and output array of sections for the highlight function. 
-    var highlightMapSections = []; 
-    //iterate through  
-    for (f in globalResultsArray){
-       
-        highlightMapSections.push(globalResultsArray[f].attributes.SectionId);
-    }
-    
-    //accepts and array of section IDs. 
-    leafletMap.highlight(highlightMapSections);
+     delay(function(){
+            console.log('time elapsed');
+        
+            //iterate through and output array of sections for the highlight function. 
+            var highlightMapSections = []; 
+            //iterate through  
+            for (f in globalResultsArray){
+
+                highlightMapSections.push(globalResultsArray[f].attributes.SectionId);
+            }
+
+            //accepts and array of section IDs. 
+            leafletMap.highlight(highlightMapSections);
+     }, 3000);
 }

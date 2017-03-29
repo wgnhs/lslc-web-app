@@ -18,6 +18,7 @@ var tableAttributes = [
        
         {"field": "NotebookNum", "label": "Notebook Number"},
         {"field": "NotebookPage", "label": "Notebook Page"},
+        {"field": "WgnhsId", "label": "WGNHS ID"},
         {"field": "Notes", "label": "Notes"},
         //{"field": "", "label": ""}
     ];
