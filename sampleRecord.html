@@ -19,6 +19,10 @@
             <script src="lib/leaflet.js"></script>
 
             <link rel="stylesheet" href="lib/leaflet.css" />
+       
+       <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+       
        <!-- Zoomify Leaflet -->
             <script type="text/javascript" src="lib/zoomify_layer.js"></script>
             <!--<script type="text/javascript" src="script/zoomify_layer.js"></script>-->
@@ -73,6 +77,7 @@
     </div><!--end wrapper div-->    
        
    <script src="header.js"></script>
+   <script src="mapServiceUrls.js"></script>
        
     <script type="text/javascript">
         //indicate the current page in the nav bar. 
@@ -208,7 +213,7 @@
                 sampleQuery.where = "SampleID = "+number;
                 
                 console.log("query.where:", sampleQuery.where);
-                var sampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
+                var sampleTableQuery = new QueryTask(samplesTableURL);
                 sampleTableQuery.execute(sampleQuery, function(sampleTableResult){
                     if(sampleTableResult.features[0]){
                         //console.log("sample table info:", sampleTableResult.features[0].attributes);
@@ -258,7 +263,7 @@
                 notebookQuery.where = "Number LIKE '"+sampleRecordData.fieldNotebookNum+"'";
                 
                 console.log('query.where:', notebookQuery.where);
-                var notebooksTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/3");
+                var notebooksTableQuery = new QueryTask(notebooksTableURL);
                 notebooksTableQuery.execute(notebookQuery, function(notebooksResult){
                         console.log("notebook info", notebooksResult.features[0].attributes);
                         sampleRecordData.fieldNotebookTitle = notebooksResult.features[0].attributes.Title;
@@ -270,7 +275,7 @@
             } //end if (field notebook id >0 ) 
             
             //We always query the lithology table for the sample ID. 
-            var lithologyTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/5");
+            var lithologyTableQuery = new QueryTask(lithologyTableURL);
             lithologyTableQuery.execute(sampleQuery, function(lithTableResult){
                
                // sampleRecordData.lithologies = [];
@@ -289,7 +294,7 @@
             }); //end execute lithology querytask
             
             //we always query the hand samples table 
-            var handSampleTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/2");
+            var handSampleTableQuery = new QueryTask(handSampleTableURL);
             handSampleTableQuery.execute(sampleQuery, function(handSampleResult){
                 if(handSampleResult.features[0]){
                     console.log("hand sample info:", handSampleResult.features[0].attributes);
@@ -299,7 +304,7 @@
             }); //end execute
 
             //we always query the thin section.     
-            var thinSectionTableQuery = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/4");
+            var thinSectionTableQuery = new QueryTask(thinSectonsTableURL);
             thinSectionTableQuery.execute(sampleQuery, function(thinTableResult){
                 //clear previous results. 
                 //sampleRecordData.thinSections = [];
@@ -436,6 +441,13 @@
                subdomains: 'abcd',
 	           maxZoom: 19
                 }).addTo(map);
+            
+//            var mapSection = L.esri.FeatureLayer({
+//                 url: PLSSSectionsLayerURL,
+//                style:{color: "#000", weight: 0.35, fillColor: "#111"}, 
+//                where: 'UID ='+sampleRecordData.mapSectionId
+//                
+//            });
             
             //set up an empty var for the location info.
             var loc = ''

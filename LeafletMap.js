@@ -25,7 +25,7 @@ var leafletMap = (function(){
        
         //connects to our map service
         leafletFeatureLayer = L.esri.featureLayer({
-            url: 'http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0', 
+            url: PLSSSectionsLayerURL, 
             style: {color: "#000", weight: 0.35, fillColor: "#ece7f2"}
 //            , 
 //            pane: 'BPLSSSections'
@@ -162,7 +162,7 @@ var leafletMap = (function(){
         
        // console.log ("input", inputGeom);
         
-        var query = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0"}); 
+        var query = L.esri.query({url:PLSSSectionsLayerURL}); 
         query.intersects(inputGeom);
         
         

@@ -86,7 +86,7 @@ require([
      // var vectorTiles = new VectorTileLayer('https://www.arcgis.com/sharing/rest/content/items/996d9e7a3aac4514bb692ce7a990f1c1/resources/styles/root.json');
    
    //add map sections feature layer through Esri API. I can style. 
-   fl = new FeatureLayer('http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/0', {mode: FeatureLayer.MODE_ONDEMAND, outFields: ["*"]});
+   fl = new FeatureLayer(PLSSSectionsLayerURL, {mode: FeatureLayer.MODE_ONDEMAND, outFields: ["*"]});
    
     //don't want this symbol applied to sections when they have been selected for the map filter. 
    fl.setSelectionSymbol(highlightSymbol); //var selectedSymbol is an object declared above 
@@ -277,7 +277,7 @@ function queryTableForFilters(){
         if (query.where === "1=1"){ console.log("Narrow the results by applying filters above.");}
    	           
    //url to samples table
-    var queryTask = new QueryTask("http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1");
+    var queryTask = new QueryTask("samplesTableURL");
 
     queryTask.execute( query, function(samplesResult){listResults(samplesResult);}  );
     queryTask.execute( sectionsQuery, function(sectionsQueryResult){
