@@ -111,7 +111,7 @@ function queryTableForFilters(){
     var whereString = buildSqlAndAddIndicators(); //call the function to build a SQL where clause. It will return the where clause as a string. 
     
     //set up the query, which will return only the ids of samples matching the where clause. 
-    var sampleIdsQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
+    var sampleIdsQuery = L.esri.query({url:samplesTableURL}); //url to samples table
    // sampleIdsQuery.fields(["*"]);
     //sampleIdsQuery.returnGeometry(false);
     sampleIdsQuery.where(whereString);
@@ -276,7 +276,7 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
     
     var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
     
-    var sliceDataQuery = L.esri.query({url:"http://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/lslc/MapServer/1"}); //url to samples table
+    var sliceDataQuery = L.esri.query({url:samplesTableURL}); //url to samples table
     sliceDataQuery.fields(["*"]);
     sliceDataQuery.returnGeometry(false);
     sliceDataQuery.where(sliceWhereClause);
