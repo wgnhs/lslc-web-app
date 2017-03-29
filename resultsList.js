@@ -1,11 +1,12 @@
 
 
-var resultCount = document.getElementById("resultCount");
+//var resultCount = document.getElementById("resultCount");
 var resultsTable; 
 var sample;
 var resultsTableBody;
 
 var tableAttributes = [
+        {"field": "OBJECTID", "label": "OBJECT ID"}, 
         {"field": "SampleId", "label": "ID"}, 
         {"field": "RockType", "label": "Field Description"},  
         {"field": "HandSampleCount", "label": "Hand Samples"}, 
@@ -17,6 +18,7 @@ var tableAttributes = [
        
         {"field": "NotebookNum", "label": "Notebook Number"},
         {"field": "NotebookPage", "label": "Notebook Page"},
+        {"field": "WgnhsId", "label": "WGNHS ID"},
         {"field": "Notes", "label": "Notes"},
         //{"field": "", "label": ""}
     ];
@@ -52,23 +54,22 @@ function initializeResultsTable(){
 }
 
 //accepts data from the dojo query 
-function listResults (data){
-   
+function listResults (dataObjects){
+    console.log("dataObjects is: ", dataObjects);
+    //dataObjects is an array of objects. 
    
     //Clear the results list before re-populating. 
    // console.log("clear results.");
-//    $("#resultsUL").html('');
+
     $("#resultsCount").html('0');
     resultsTableBody.innerHTML = '';
     
-    console.log("data.features is: ", data.features);
-    //data.features is an array of objects. 
-    
-    
-    for (obj in data.features){
-       // console.log("data.features[obj].attributes.SampleId: ", data.features[obj].attributes.SampleId);
+
+    var tb = '';
+    for (obj in dataObjects){
+       // console.log("dataObjects[obj].attributes.SampleId: ", dataObjects[obj].attributes.SampleId);
         
-        var samId = data.features[obj].attributes.SampleId;
+        var samId = dataObjects[obj].attributes.SampleId;
         //console.log("samId", samId);
         
         var tr = "";
@@ -76,7 +77,7 @@ function listResults (data){
         //var trHTML = '';
         for (attr in tableAttributes){
             var field = tableAttributes[attr].field;
-            var val = data.features[obj].attributes[field];
+            var val = dataObjects[obj].attributes[field];
             //only add the val if it's not null. if null, add an empty cell.  
             if(val === null){
                 tr+= "<td></td>";
@@ -86,13 +87,15 @@ function listResults (data){
             
         } //end for loop through table attributes. 
         tr+= "</tr>";
-       
-        resultsTableBody.innerHTML += tr;
+      
+        //add to the table body variable. 
+        tb += tr;
+
 
     }
 
-    //set results counter statement: 
-    resultCount.innerHTML = data.features.length;
+   //this seems to be WAY faster than appending html elements within the for loop! 
+     resultsTableBody.innerHTML += tb;
     
 
 }; //end getResults function
