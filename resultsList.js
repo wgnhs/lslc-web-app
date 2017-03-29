@@ -7,14 +7,15 @@ var resultsTableBody;
 
 var tableAttributes = [
         {"field": "OBJECTID", "label": "OBJECT ID"}, 
-        {"field": "SampleId", "label": "ID"}, 
+        //{"field": "SampleId", "label": "ID"}, 
+        {"field": "HandSampleCatalogNumber", "label": "Catalog Number"}, 
         {"field": "RockType", "label": "Field Description"},  
         {"field": "HandSampleCount", "label": "Hand Samples"}, 
         {"field": "ThinSectionCount", "label": "Thin Sections"}, 
         {"field": "State", "label": "State"},
-        {"field": "Township", "label": "Township"},
-        {"field": "Range", "label": "Range"},
-        {"field": "Direction", "label": "Range Direction"},
+        //  {"field": "Township", "label": "Township"},
+        // {"field": "Range", "label": "Range"},
+        // {"field": "Direction", "label": "Range Direction"},
        
         {"field": "NotebookNum", "label": "Notebook Number"},
         {"field": "NotebookPage", "label": "Notebook Page"},
@@ -69,11 +70,11 @@ function listResults (dataObjects){
     for (obj in dataObjects){
        // console.log("dataObjects[obj].attributes.SampleId: ", dataObjects[obj].attributes.SampleId);
         
-        var samId = dataObjects[obj].attributes.SampleId;
+        var samCat = dataObjects[obj].attributes.HandSampleCatalogNumber;
         //console.log("samId", samId);
         
         var tr = "";
-        tr+= "<tr data-ID="+samId+">"; 
+        tr+= "<tr data-ID="+samCat+">"; 
         //var trHTML = '';
         for (attr in tableAttributes){
             var field = tableAttributes[attr].field;
