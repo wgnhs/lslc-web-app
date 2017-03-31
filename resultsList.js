@@ -7,8 +7,10 @@ var resultsTableBody;
 
 var tableAttributes = [
         {"field": "OBJECTID", "label": "OBJECT ID"}, 
-        //{"field": "SampleId", "label": "ID"}, 
+        
         {"field": "HandSampleCatalogNumber", "label": "Catalog Number"}, 
+    
+        {"field": "SampleId", "label": "SampleID"}, 
         {"field": "RockType", "label": "Field Description"},  
         {"field": "HandSampleCount", "label": "Hand Samples"}, 
         {"field": "ThinSectionCount", "label": "Thin Sections"}, 
