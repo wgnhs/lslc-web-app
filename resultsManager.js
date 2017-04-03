@@ -1,4 +1,4 @@
-var resultsMaster = (function(){
+var resultsManager = (function(){
 
     var clear = function(){
     
