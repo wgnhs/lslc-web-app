@@ -129,29 +129,28 @@ function queryTableForFilters(){
         if (whereString === "1=1"){ console.log("Narrow the results by applying filters above.")};
 
         sampleIdsQuery.ids(function(error, result){
-            console.log("error", error);
+           //console.log("query for ids error", error);
             console.log('result for ids', result);
             //console.log("result for ids length", result.length);
             
             //result is either null or non-null. 
             if(result){
-                var resultCount = document.getElementById("resultCount");
+//               
                 //set results counter statement: 
-                resultCount.innerHTML = result.length;
+                document.getElementById("resultCount").innerHTML = result.length;
             
             
                 sliceResult(result);
 
                 
             } else {
-                //empty result. no matches. 
-                console.log("result is", result);
+                //null result. no matches. 
+                console.log("result is", result);      
                 
-                var resultCount = document.getElementById("resultCount");
                 //set results counter statement: 
-                resultCount.innerHTML = 0;
+                document.getElementById("resultCount").innerHTML = 0;
                 
-                listResults([]);
+                listResults(globalResultsArray);
                 highlightAll();
                 
             }
@@ -265,21 +264,19 @@ function sliceResult(allResultOBJECTIDs){
        
        // console.log("page "+j+" would be values at indices", pageBreaks[j-1], "up to (not including) ", pageBreaks[j]);
         
-        var oneThousandOBJECTIDs= allResultOBJECTIDs.slice(rangeMin, rangeMax); 
-        //console.log("one thousand result OBJECTIDS:", oneThousandOBJECTIDs); 
+        var oneSliceOBJECTIDs= allResultOBJECTIDs.slice(rangeMin, rangeMax); 
+        //console.log("one slice result OBJECTIDS:", oneSliceOBJECTIDs); 
         
- //      queryForSliceData(oneThousandOBJECTIDs, false);
-        
+ //      queryForSliceData(oneSliceOBJECTIDs, false);        
         if (j == pageBreaks.length-1){
             console.log("last page.");
-//            console.log("final objectIDs", OneThousandOBJECTIDs);
-            queryForSliceData(oneThousandOBJECTIDs, true);
+//            console.log("final objectIDs", oneSliceOBJECTIDs);
+            queryForSliceData(oneSliceOBJECTIDs, true);
         }  else {
 //            console.log("not last or first page.");
-            queryForSliceData(oneThousandOBJECTIDs, false);
+            queryForSliceData(oneSliceOBJECTIDs, false);
         }
-//
-//
+
     }
 
 
@@ -375,6 +372,10 @@ function onQueryEnd(){
 
 function highlightAll(){
     
+    //just a test for the popup:
+    console.log("section 63435 results: ", resultsManager.matchSection(63821));
+    
+    
      delay(function(){
             console.log('time elapsed');
         
@@ -386,7 +387,8 @@ function highlightAll(){
                 highlightMapSections.push(globalResultsArray[f].attributes.SectionId);
             }
 
-            //accepts and array of section IDs. 
+            //accepts an array of section IDs. 
             leafletMap.highlight(highlightMapSections);
+         
      }, 3000);
 }
