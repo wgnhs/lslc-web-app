@@ -129,17 +129,33 @@ function queryTableForFilters(){
         if (whereString === "1=1"){ console.log("Narrow the results by applying filters above.")};
 
         sampleIdsQuery.ids(function(error, result){
-            //console.log("error", error);
+            console.log("error", error);
             console.log('result for ids', result);
             //console.log("result for ids length", result.length);
-           
-            var resultCount = document.getElementById("resultCount");
-            //set results counter statement: 
-            resultCount.innerHTML = result.length;
+            
+            //result is either null or non-null. 
+            if(result){
+                var resultCount = document.getElementById("resultCount");
+                //set results counter statement: 
+                resultCount.innerHTML = result.length;
             
             
-            sliceResult(result);
+                sliceResult(result);
 
+                
+            } else {
+                //empty result. no matches. 
+                console.log("result is", result);
+                
+                var resultCount = document.getElementById("resultCount");
+                //set results counter statement: 
+                resultCount.innerHTML = 0;
+                
+                listResults([]);
+                highlightAll();
+                
+            }
+ 
         }); //end sampleIdsQuery.ids
 
     } else {
