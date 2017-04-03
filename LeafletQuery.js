@@ -132,14 +132,30 @@ function queryTableForFilters(){
             console.log("error", error);
             console.log('result for ids', result);
             //console.log("result for ids length", result.length);
-           
-            var resultCount = document.getElementById("resultCount");
-            //set results counter statement: 
-            resultCount.innerHTML = result.length;
+            
+            //result is either null or non-null. 
+            if(result){
+                var resultCount = document.getElementById("resultCount");
+                //set results counter statement: 
+                resultCount.innerHTML = result.length;
             
             
-            sliceResult(result);
+                sliceResult(result);
 
+                
+            } else {
+                //empty result. no matches. 
+                console.log("result is", result);
+                
+                var resultCount = document.getElementById("resultCount");
+                //set results counter statement: 
+                resultCount.innerHTML = 0;
+                
+                listResults([]);
+                highlightAll();
+                
+            }
+ 
         }); //end sampleIdsQuery.ids
 
     } else {
@@ -241,16 +257,16 @@ function sliceResult(allResultOBJECTIDs){
     
     
     
-    console.log("pageBreaks", pageBreaks);
+    //console.log("pageBreaks", pageBreaks);
     for (j=1 ; j < pageBreaks.length; j++){
         
         var rangeMin = pageBreaks[j-1]; 
         var rangeMax = pageBreaks[j];
        
-        console.log("page "+j+" would be values at indices", pageBreaks[j-1], "up to (not including) ", pageBreaks[j]);
+       // console.log("page "+j+" would be values at indices", pageBreaks[j-1], "up to (not including) ", pageBreaks[j]);
         
         var oneThousandOBJECTIDs= allResultOBJECTIDs.slice(rangeMin, rangeMax); 
-        console.log("one thousand result OBJECTIDS:", oneThousandOBJECTIDs); 
+        //console.log("one thousand result OBJECTIDS:", oneThousandOBJECTIDs); 
         
  //      queryForSliceData(oneThousandOBJECTIDs, false);
         
@@ -284,22 +300,22 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
     
     //this can only ever return 1000 results at a time.  
     sliceDataQuery.run(function(error, result, response){
-       console.log('result of slice query', result);
+      // console.log('result of slice query', result);
      
        
         globalResultsArray = globalResultsArray.concat(response.features);
         
-        console.log("global results", globalResultsArray);
+        //console.log("global results", JSON.stringify(globalResultsArray));
         
         //response.features is an array of objects.     
         //listResults(globalResultsArray);
          if (drawList === true){ 
             console.log("please draw the list and highlight map.");
-            console.log("global results", globalResultsArray);
+            //console.log("global results", globalResultsArray);
              
             
              var firstThousand = globalResultsArray.slice(0,1000); 
-             console.log("first thousand", firstThousand);
+             //console.log("first thousand", firstThousand);
            
             listResults(firstThousand);
             highlightAll(); //SEEMS TO NOT ALWAYS RETURN EVERYTHING. TRY SEARCHING "MINN" for STATE. 
@@ -321,6 +337,7 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
 //    
 //}
 
+//example of a promise:  
 function onQueryEnd(){
 
     // Promise
