@@ -373,7 +373,7 @@ function onQueryEnd(){
 function highlightAll(){
     
     //just a test for the popup:
-    console.log("section 63435 results: ", resultsManager.matchSection(63821));
+    console.log("section results: ", resultsManager.matchSection(63821));
     
     
      delay(function(){
