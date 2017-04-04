@@ -32,7 +32,12 @@ var leafletMap = (function(){
         }).addTo(map);
 
         setupMapButtons(map);
-        initPopups(map, leafletFeatureLayer);
+        //initPopups(63821);
+
+        leafletFeatureLayer.bindPopup(function (individualSection) {
+            return "<h3>Samples in Section " + individualSection.feature.properties.UID + "</h3>" + initPopups(individualSection.feature.properties.UID)
+            
+        });
     }
     
     function setupMapButtons(map){
@@ -134,7 +139,7 @@ var leafletMap = (function(){
        
     } //end setupMapButtons function 
 
-    function initPopups(map, layer){
+    function initPopups(individualSection){
 
         //sample filter object
         var incomingSampleFilters = {
@@ -181,12 +186,10 @@ var leafletMap = (function(){
         console.log(appliedFilters);
 
         //establishes popup content variable, adding in header besaed on SectionId
-        var content = "<h3>Samples in Section " + sectionResults[0].attributes.SectionId + "</h3><ul>";
+        var content = "<ul>";
 
         //loops through samples in the section adding a line for each of them
         for (i in sectionResults) {
-
-            console.log(i, sectionResults[i].attributes.RockType);
 
             //maybe better way to do this: adjusts for multiple hand samples by changing the value in the sectionResults, that way they will match even if there's more than specified
             if (sectionResults[i].attributes.HandSampleCount >= sampleFilters.HandSampleCount) {
@@ -233,8 +236,13 @@ var leafletMap = (function(){
 
         content = content + "</ul>"
 
+        return content;
+
         //opens popup with content when layer (defined on line 28) is clicked
-        layer.bindPopup(content).openPopup();
+        //layer.bindPopup(content).openPopup();
+
+        // layer.layers.1.feature.properties.UID
+
     }
     
     
