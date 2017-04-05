@@ -1,3 +1,4 @@
+console.log('running')
 var leafletMap = (function(){
     
     
@@ -141,107 +142,25 @@ var leafletMap = (function(){
 
     function initPopups(individualSection){
 
-        //sample filter object
-        var incomingSampleFilters = {
-        "mapSectionsInput": null, 
-        "rockTypeInput": "quartzite", 
-        "countyInput": "", 
-        "handSampleAvailabilityInput": null, 
-        "thinSectionAvailabilityInput": "1", 
-        "stateInput": null, 
-        "notesInput": null, 
-        "notebookInput": null, 
-        "notebookPageInput": null, 
-        "WGNHSInput": null
-        };
-
-        //converts to object elements that corrospond with sectionResults
-        //omits filters that dont corrospond with sectionResult element
-        var sampleFilters = {
-            "RockType": incomingSampleFilters.rockTypeInput,
-            "County": incomingSampleFilters.countyInput,
-            "HandSampleCount": incomingSampleFilters.handSampleAvailabilityInput,
-            "ThinSectionCount": incomingSampleFilters.thinSectionAvailabilityInput,
-            "State": incomingSampleFilters.stateInput,
-            "NotebookNum": incomingSampleFilters.notebookInput,
-            "NotebookPage": incomingSampleFilters.notebookPageInput,
-            "WgnhsId": incomingSampleFilters.WGNHSInput
-        }
-
-        //sectionResults - copied and pasted from exampleSectionResults
-        //normally would come from method
-        var sectionResults = [{"attributes":{"OBJECTID":1466,"SampleId":2747,"SectionId":3171,"WgnhsId":26700009,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":null,"Notes":null,"NotebookPage":"31","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9083"}},{"attributes":{"OBJECTID":1467,"SampleId":2748,"SectionId":3171,"WgnhsId":26700010,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Massive quartzite","Notes":null,"NotebookPage":"31","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9084"}},{"attributes":{"OBJECTID":1468,"SampleId":2749,"SectionId":3171,"WgnhsId":26700176,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Medium grained quartzite","Notes":null,"NotebookPage":"32","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9086"}},{"attributes":{"OBJECTID":1469,"SampleId":2750,"SectionId":3171,"WgnhsId":26700012,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Siliceous slate and quartzite","Notes":null,"NotebookPage":"32","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9088"}},{"attributes":{"OBJECTID":1470,"SampleId":2751,"SectionId":3171,"WgnhsId":26700165,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Purple siliceous slate","Notes":null,"NotebookPage":"33","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9089"}},{"attributes":{"OBJECTID":1471,"SampleId":2752,"SectionId":3171,"WgnhsId":26700166,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Schist conglomerate","Notes":null,"NotebookPage":"37","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9093"}},{"attributes":{"OBJECTID":1472,"SampleId":2753,"SectionId":3171,"WgnhsId":26700017,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Conglomerate","Notes":null,"NotebookPage":"37","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9097"}},{"attributes":{"OBJECTID":1473,"SampleId":2754,"SectionId":3171,"WgnhsId":26700167,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":null,"Notes":null,"NotebookPage":"38","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9099"}},{"attributes":{"OBJECTID":1474,"SampleId":2755,"SectionId":3171,"WgnhsId":26700168,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Mica slate","Notes":null,"NotebookPage":"39","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9107"}},{"attributes":{"OBJECTID":1556,"SampleId":2860,"SectionId":3171,"WgnhsId":26700015,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Schist","Notes":null,"NotebookPage":"37","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9095"}},{"attributes":{"OBJECTID":1557,"SampleId":2861,"SectionId":3171,"WgnhsId":26700016,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Schist","Notes":null,"NotebookPage":"37","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9096"}},{"attributes":{"OBJECTID":1558,"SampleId":2862,"SectionId":3171,"WgnhsId":26700019,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":null,"Notes":null,"NotebookPage":"38","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9100"}},{"attributes":{"OBJECTID":1559,"SampleId":2863,"SectionId":3171,"WgnhsId":26700149,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":null,"Notes":null,"NotebookPage":"38","Chemistry":"Yes","NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9101"}},{"attributes":{"OBJECTID":1560,"SampleId":2864,"SectionId":3171,"WgnhsId":26700020,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":null,"Notes":null,"NotebookPage":"38","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9102"}},{"attributes":{"OBJECTID":1561,"SampleId":2865,"SectionId":3171,"WgnhsId":26700150,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":null,"Notes":null,"NotebookPage":"38","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9103"}},{"attributes":{"OBJECTID":1562,"SampleId":2866,"SectionId":3171,"WgnhsId":26700151,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Chloritic gneiss","Notes":null,"NotebookPage":"38","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9106"}},{"attributes":{"OBJECTID":1944,"SampleId":3263,"SectionId":3171,"WgnhsId":26700014,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Transition from conglomerate to siliceous slate","Notes":null,"NotebookPage":"37","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9094"}},{"attributes":{"OBJECTID":1947,"SampleId":3267,"SectionId":3171,"WgnhsId":26700120,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":"SE","QuarterQuarter":"SE","County":"Iron","LocNote":"Penokee Range, Iron County","RockType":"Schist","Notes":null,"NotebookPage":"7","Chemistry":null,"NotebookNum":"39","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9173"}},{"attributes":{"OBJECTID":1948,"SampleId":3268,"SectionId":3171,"WgnhsId":26700121,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":"SE","QuarterQuarter":"SE","County":"Iron","LocNote":"Penokee Range, Iron County","RockType":"Schist","Notes":null,"NotebookPage":"7","Chemistry":null,"NotebookNum":"39","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9174"}},{"attributes":{"OBJECTID":1949,"SampleId":3269,"SectionId":3171,"WgnhsId":26700122,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":"SE","QuarterQuarter":"SE","County":"Iron","LocNote":"Penokee Range, Iron County","RockType":"Conglomerate","Notes":null,"NotebookPage":"7","Chemistry":null,"NotebookNum":"39","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9177"}},{"attributes":{"OBJECTID":1950,"SampleId":3270,"SectionId":3171,"WgnhsId":26700111,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":"SE","QuarterQuarter":"SE","County":"Iron","LocNote":"Penokee and Gogebic Ranges","RockType":null,"Notes":null,"NotebookPage":"6","Chemistry":null,"NotebookNum":"39","ThinSectionCount":1,"HandSampleCount":null,"HandSampleCatalogNumber":"9179"}},{"attributes":{"OBJECTID":2624,"SampleId":4161,"SectionId":3171,"WgnhsId":null,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":"SW","QuarterQuarter":"SW","County":null,"LocNote":"Penokee Iron Range","RockType":"Magnetitic quartzite","Notes":"Section line between 19, 24 Ranges 1, 2","NotebookPage":"29","Chemistry":null,"NotebookNum":"35","ThinSectionCount":null,"HandSampleCount":1,"HandSampleCatalogNumber":"9081"}},{"attributes":{"OBJECTID":2631,"SampleId":4169,"SectionId":3171,"WgnhsId":26700021,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Ferruginous quartzite","Notes":null,"NotebookPage":"38","Chemistry":null,"NotebookNum":"35","ThinSectionCount":null,"HandSampleCount":1,"HandSampleCatalogNumber":"9104"}},{"attributes":{"OBJECTID":11736,"SampleId":19646,"SectionId":3171,"WgnhsId":26700011,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Siliecous slate","Notes":null,"NotebookPage":"32","Chemistry":null,"NotebookNum":"35","ThinSectionCount":null,"HandSampleCount":1,"HandSampleCatalogNumber":"9085"}},{"attributes":{"OBJECTID":11737,"SampleId":19647,"SectionId":3171,"WgnhsId":26700013,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Chloritic schist","Notes":null,"NotebookPage":"34","Chemistry":null,"NotebookNum":"35","ThinSectionCount":null,"HandSampleCount":1,"HandSampleCatalogNumber":"9092"}},{"attributes":{"OBJECTID":11738,"SampleId":19648,"SectionId":3171,"WgnhsId":26700018,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Comglomerate pebbles","Notes":null,"NotebookPage":"37","Chemistry":null,"NotebookNum":"35","ThinSectionCount":null,"HandSampleCount":1,"HandSampleCatalogNumber":"9098"}},{"attributes":{"OBJECTID":11740,"SampleId":19652,"SectionId":3171,"WgnhsId":26700039,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Range, Iron County","RockType":null,"Notes":null,"NotebookPage":"6","Chemistry":null,"NotebookNum":"39","ThinSectionCount":null,"HandSampleCount":1,"HandSampleCatalogNumber":"9181"}},{"attributes":{"OBJECTID":11809,"SampleId":19762,"SectionId":3171,"WgnhsId":26700066,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Gogebic Iron Range","RockType":null,"Notes":null,"NotebookPage":"48","Chemistry":null,"NotebookNum":"73","ThinSectionCount":null,"HandSampleCount":1,"HandSampleCatalogNumber":"14704"}},{"attributes":{"OBJECTID":16696,"SampleId":27154,"SectionId":3171,"WgnhsId":null,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":null,"LocNote":"Penokee Iron Range","RockType":"Siliceous Slate / Quartzite","Notes":null,"NotebookPage":"32","Chemistry":null,"NotebookNum":"35","ThinSectionCount":null,"HandSampleCount":null,"HandSampleCatalogNumber":"9087"}},{"attributes":{"OBJECTID":16697,"SampleId":27155,"SectionId":3171,"WgnhsId":null,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":null,"LocNote":"Penokee Iron Range","RockType":"Siliceous Slate","Notes":null,"NotebookPage":"33","Chemistry":null,"NotebookNum":"35","ThinSectionCount":null,"HandSampleCount":null,"HandSampleCatalogNumber":"9090"}},{"attributes":{"OBJECTID":16698,"SampleId":27156,"SectionId":3171,"WgnhsId":null,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":null,"LocNote":"Penokee Iron Range","RockType":"Chloritic Schist or Gneiss","Notes":null,"NotebookPage":"33","Chemistry":null,"NotebookNum":"35","ThinSectionCount":null,"HandSampleCount":null,"HandSampleCatalogNumber":"9091"}},{"attributes":{"OBJECTID":16719,"SampleId":27177,"SectionId":3171,"WgnhsId":null,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":null,"LocNote":"Penokee Range, Iron County","RockType":"Scist","Notes":null,"NotebookPage":"7","Chemistry":null,"NotebookNum":"39","ThinSectionCount":null,"HandSampleCount":null,"HandSampleCatalogNumber":"9176"}},{"attributes":{"OBJECTID":16720,"SampleId":27178,"SectionId":3171,"WgnhsId":null,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":null,"LocNote":"Penokee Range, Iron County","RockType":null,"Notes":null,"NotebookPage":"7","Chemistry":null,"NotebookNum":"39","ThinSectionCount":null,"HandSampleCount":null,"HandSampleCatalogNumber":"9178"}},{"attributes":{"OBJECTID":16721,"SampleId":27179,"SectionId":3171,"WgnhsId":null,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":null,"LocNote":"Penokee Range, Iron County","RockType":"Calcite nests in Schist","Notes":null,"NotebookPage":"6","Chemistry":null,"NotebookNum":"39","ThinSectionCount":null,"HandSampleCount":null,"HandSampleCatalogNumber":"9180"}},{"attributes":{"OBJECTID":17972,"SampleId":278153,"SectionId":3171,"WgnhsId":26700008,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Coarse quartzite","Notes":null,"NotebookPage":"31","Chemistry":null,"NotebookNum":"35","ThinSectionCount":1,"HandSampleCount":1,"HandSampleCatalogNumber":"9082"}},{"attributes":{"OBJECTID":17973,"SampleId":278154,"SectionId":3171,"WgnhsId":26700022,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":null,"QuarterQuarter":null,"County":"Iron","LocNote":"Penokee Iron Range","RockType":"Siliceous slate","Notes":null,"NotebookPage":"38","Chemistry":null,"NotebookNum":"35","ThinSectionCount":null,"HandSampleCount":1,"HandSampleCatalogNumber":"9105"}},{"attributes":{"OBJECTID":17977,"SampleId":278158,"SectionId":3171,"WgnhsId":26700134,"State":"Wisconsin","Township":"45","Range":"1","Direction":"E","Section_":"19","Quarter":"SE","QuarterQuarter":"SE","County":"Iron","LocNote":"Penokee Range, Iron County","RockType":"Matrix","Notes":null,"NotebookPage":"7","Chemistry":null,"NotebookNum":"39","ThinSectionCount":2,"HandSampleCount":null,"HandSampleCatalogNumber":"9175"}}]
-
-
-
-        var appliedFilters = {}; //creates empty object
-        //loop iterates through filters object and popuplates applied filters by checking for nul values / empty strings and not writing if so
-        for (var prop in sampleFilters) {
-            if (sampleFilters[prop] != "" && sampleFilters[prop] != null) {
-                appliedFilters[prop] = sampleFilters[prop];
-            }
-
-        }
-
-        console.log(appliedFilters);
-
+        var sectionResults = resultsManager.matchSection(individualSection);
+        
         //establishes popup content variable, adding in header besaed on SectionId
         var content = "<ul>";
 
         //loops through samples in the section adding a line for each of them
         for (i in sectionResults) {
 
-            //maybe better way to do this: adjusts for multiple hand samples by changing the value in the sectionResults, that way they will match even if there's more than specified
-            if (sectionResults[i].attributes.HandSampleCount >= sampleFilters.HandSampleCount) {
-                sectionResults[i].attributes.HandSampleCount = sampleFilters.HandSampleCount
-            }
-
-            //maybe better way to do this: adjusts for multiple thin sections by changing the value in the sectionResults, that way they will match even if there's more than specified
-            if (sectionResults[i].attributes.ThinSectionCount >= sampleFilters.ThinSectionCount) {
-                sectionResults[i].attributes.ThinSectionCount = sampleFilters.ThinSectionCount
-            }
-
             var listedSampleId = sectionResults[i].attributes.SampleId;
             var listedRockType = sectionResults[i].attributes.RockType;
             if (listedRockType == null){ listedRockType = "Unknown";} //checks for null value
 
-            //establishes a boolean to check whether or not the sample meets the filter criteria, starts off as true. Changed below
-            var writeToPopup = true; 
-            
-            //loop iterates through applied filters object
-            for (var prop in appliedFilters) {
-                //checks to see if the filter are null (error saving for indexOf)
-                //if it is, it will not write to popup
-                if (sectionResults[i]["attributes"][prop] == null){
-                    writeToPopup = false;
-                } else {
-                    //if not null, checks for comparison with selected filter 
-                    if (sectionResults[i]["attributes"][prop].indexOf(appliedFilters[prop]) == -1){
-                        //if the search params are not contained in string will not write
-                        writeToPopup = false;
-                    }
-                }
-            }
- 
-            //creates a new li with a link to the smaples page
-            //RENDER POPUP WITH SAMPLE FILTERS APPLIED
-            if (writeToPopup){
-                content = content + "<li>" + listedRockType + ": <a href='sampleRecord.html#" + listedSampleId + "'>" + listedSampleId + "</a></li>";
-            }
-
-            //RENDER POPUP WITH ALL 37 SAMPLES
-            // content = content + "<li>" + listedRockType + ": <a href='sampleRecord.html#" + listedSampleId + "'>" + listedSampleId + "</a></li>";
+            content = content + "<li>" + listedRockType + ": <a href='sampleRecord.html#" + listedSampleId + "'>" + listedSampleId + "</a></li>";
 
         }
 
         content = content + "</ul>"
 
         return content;
-
-        //opens popup with content when layer (defined on line 28) is clicked
-        //layer.bindPopup(content).openPopup();
-
-        // layer.layers.1.feature.properties.UID
 
     }
     
