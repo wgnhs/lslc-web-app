@@ -5,12 +5,23 @@ h2{
     margin: 0 7px 7px 0;
 }
 
+p{ padding: 0; margin: 0;}
+
 #map{
     height: calc(50vh);
 }
 
 #customDeleteButton:hover{
      background-color: #f4f4f4;
+}
+
+/*********** popup *******/
+
+.leaflet-popup-content{
+  max-width: 200px;
+  max-height: 200px;
+  overflow: scroll;
+
 }
 
 /*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/

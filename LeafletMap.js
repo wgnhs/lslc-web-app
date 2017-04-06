@@ -1,3 +1,4 @@
+console.log('running')
 var leafletMap = (function(){
     
     
@@ -32,6 +33,12 @@ var leafletMap = (function(){
         }).addTo(map);
 
         setupMapButtons(map);
+        //initPopups(63821);
+
+        leafletFeatureLayer.bindPopup(function (individualSection) {
+            return "<h3>Samples in Section " + individualSection.feature.properties.UID + "</h3>" + initPopups(individualSection.feature.properties.UID)
+            
+        });
     }
     
     function setupMapButtons(map){
@@ -132,6 +139,30 @@ var leafletMap = (function(){
         }); 
        
     } //end setupMapButtons function 
+
+    function initPopups(individualSection){
+
+        var sectionResults = resultsManager.matchSection(individualSection);
+        
+        //establishes popup content variable, adding in header besaed on SectionId
+        var content = "<ul>";
+
+        //loops through samples in the section adding a line for each of them
+        for (i in sectionResults) {
+
+            var listedSampleId = sectionResults[i].attributes.SampleId;
+            var listedRockType = sectionResults[i].attributes.RockType;
+            if (listedRockType == null){ listedRockType = "Unknown";} //checks for null value
+
+            content = content + "<li>" + listedRockType + ": <a href='sampleRecord.html#" + listedSampleId + "'>" + listedSampleId + "</a></li>";
+
+        }
+
+        content = content + "</ul>"
+
+        return content;
+
+    }
     
     
     var clearMapSelection = function (){
