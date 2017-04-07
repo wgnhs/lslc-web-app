@@ -14,8 +14,10 @@ h2{
   height:100%;
   position: absolute;
   z-index: 1000;
-  background-image: url("images/loading40.gif");
-  /*background-color: #000;*/
+  background-image: url("images/loading.gif");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   opacity:0.7;
 }
 

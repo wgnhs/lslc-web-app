@@ -293,6 +293,8 @@ var leafletMap = (function(){
             
            
         });//end setStyle
+
+        $("#loading").remove(); //stops loading feedback
         
     } //end highlight function
     
