@@ -173,8 +173,9 @@
         
         function resetSampleNumber(number){
            
-            ///^\+?\d+$/
-            if (/^\+?\d+$/.test(number)){
+            // regex for numbers only --> /^\+?\d+$/
+            // regex for letters or numbers --> /[a-zA-Z0-9]+/
+            if (/[a-zA-Z0-9]+/.test(number)){
                 //console.log("valid number ", number);
                 //reset the global variable: 
                // sampleRecordData.sampleId = number;
@@ -212,7 +213,6 @@
                 
                 var sampleCatalogNumberQuery = new Query();
                 sampleCatalogNumberQuery.outFields = ['*'];
-                sampleCatalogNumberQuery.where = "HandSampleCatalogNumber = '"+number+"'";
                 
                 console.log("query.where:", sampleCatalogNumberQuery.where);
                 var sampleTableQuery = new QueryTask(samplesTableURL);
@@ -221,6 +221,7 @@
                         //console.log("sample table info:", sampleTableResult.features[0].attributes);
                         //set the attributes that can be found in the samples table. 
                         
+                        sampleRecordData.catalogNumber = sampleTableResult.features[0].attributes.HandSampleCatalogNumber; //this resets to the correct code if the user entered a lowercase letter
                         sampleRecordData.sampleId = sampleTableResult.features[0].attributes.SampleId;
                         sampleRecordData.fieldDesc = sampleTableResult.features[0].attributes.RockType;
                         sampleRecordData.thinSectionCount = sampleTableResult.features[0].attributes.ThinSectionCount;
@@ -248,7 +249,7 @@
                         
                     } else {
                         //if the sample id is not successfully found, return an error message. 
-                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.sampleId+". Try a different number.");
+                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.catalogNumber+". Try a different number.");
                   
                     }
                     
