@@ -213,6 +213,7 @@
                 
                 var sampleCatalogNumberQuery = new Query();
                 sampleCatalogNumberQuery.outFields = ['*'];
+                sampleCatalogNumberQuery.where = "Upper(HandSampleCatalogNumber) LIKE UPPER('"+number+"')";
                 
                 console.log("query.where:", sampleCatalogNumberQuery.where);
                 var sampleTableQuery = new QueryTask(samplesTableURL);
