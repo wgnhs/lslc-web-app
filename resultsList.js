@@ -119,7 +119,7 @@ function onSampleClick(item){
 }
 
 
-
+//----------------THIS FUNCTION COPIED----------------
   function exportTableToCSV($table, filename) {
 
     var $rows = $table.find('tr:has(td)'),
@@ -188,20 +188,33 @@ function onSampleClick(item){
         });
     }
   }
+//--------------------------------------------^^^^^  
 
-  // This must be a hyperlink
+//Executed on Button Click
   $(".export").on('click', function(event) {
-    // CSV
-    var args = [$('#resultsTable'), 'export.csv'];
 
-    console.log(this)
+    var title = "LSLC_Results-"; //declares title for csv
 
-    //need to figure out how to implement table
+    //iterates through filters object and changes CSV title to fit them
+    for (key in filters){
+      if (filters[key] != null && filters[key] != ""){
+        if (key == "handSampleAvailabilityInput"){
+          title += "HandSample"
+        } else if (key == "thinSectionAvailabilityInput"){
+          title += "ThinSection"
+        } else {
+          title += filters[key]
+        }
+        title += "-"
+      }
+    }
+    title += "exported.csv"; //adds exported.csv at end
 
+    //sets up argument; finds table and adds in title 
+    var args = [$('#resultsTable'), title];
+
+    //calls copied function
     exportTableToCSV.apply(this, args);
-
-    // If CSV, don't do event.preventDefault() or return false
-    // We actually need this to be a typical hyperlink
   });
 
 
