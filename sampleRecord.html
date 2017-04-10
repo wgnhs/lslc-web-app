@@ -134,7 +134,7 @@
             lithologies:[{
                 "lithNotebookId": "none",
                 "lithPage": null,
-                "lithNotebookTitle": null,
+                
                 "lithNotebookTitle": null,
                 "lithDate": null, 
                 "lithAuthor":null,
@@ -295,15 +295,44 @@
                 for (i in lithTableResult.features){
                     var lithDetails = {};
                     console.log("lith info", lithTableResult.features[i].attributes);
-                    lithDetails.lithNotebookId = lithTableResult.features[i].attributes.Book;
+                    lithDetails.lithNotebookId = lithTableResult.features[i].attributes.BookId;
                     lithDetails.lithPage = lithTableResult.features[i].attributes.Page;
                     lithDetails.lithDesc = lithTableResult.features[i].attributes.RockType;
                     lithDetails.lithNotes = lithTableResult.features[i].attributes.Notes;
+                    
+               //   if(lithTableResult.features[i].attributes.BookId > 0){
+                        //tried to use L.esri.query, but got the error "not a function"
+                  /*      var ledgerQuery = L.esri.query({url:ledgerTableURL});
+                        ledgerQuery.where("BookId = "+ lithTableResult.features[i].attributes.BookId); 
+                        ledgerQuery.fields(["*"]); 
+                        
+                        ledgerQuery.run(function(error, result, response){
+                            console.log("result of ledger query", result);
+                             console.log("response of ledger query", response);
+                        })
+               */
+                        var ledgerQuery = new Query();
+                        ledgerQuery.outFields=["*"];
+                        ledgerQuery.where = "BookId = "+ lithTableResult.features[i].attributes.BookId;
+                        
+                        var ledgerTableQuery = new QueryTask(ledgerTableURL);
+                      //  ledgerTableQuery.where = "BookId = "+ lithTableResult.features[i].attributes.BookId; 
+                        ledgerTableQuery.execute(ledgerQuery, function(ledgerResult){
+                            console.log("ledger info: ", ledgerResult.features[0].attributes);
+                           lithDetails.lithNotebookTitle =  ledgerResult.features[0].attributes.Title; 
+                           lithDetails.lithNotebookUrl =  ledgerResult.features[0].attributes.UwdcUrl;
+                           lithDetails.lithDate =  ledgerResult.features[0].attributes.Year;
+                           lithDetails.lithAuthor =  ledgerResult.features[0].attributes.Author;
+                        })
+                        
+                  //  }
                     
                     sampleRecordData.lithologies.push(lithDetails);  
                 }
                 
             }); //end execute lithology querytask
+            
+            
             
             //we always query the hand samples table 
 //            var handSampleTableQuery = new QueryTask(handSampleTableURL);
@@ -373,7 +402,7 @@
             addFieldNotes();
             addLithDesc();
             addNotes();
-            addAvailableSamples();
+           // addAvailableSamples();
             addDataTable();
             
         } //end buildReport 
@@ -496,16 +525,22 @@
         }
         
         function addLithDesc(){
+            //console.log("addLithDesc. sampleRecordData", sampleRecordData.lithologies);
+            
             var lith = '';
             if(sampleRecordData.lithologies.length > 0){
                 for (i in sampleRecordData.lithologies){
+                    console.log("lith data", sampleRecordData.lithologies[i]);
+                    
                     lith+='<div>';      
                     //thumbnail in link
-                    lith += "<a syle='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank> <img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
+                    if (sampleRecordData.lithologies[i].lithNotebookUrl){lith += "<a style='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"}; 
+                    lith += "<img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
                     //details
                     lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>" 
                     lith += "<p>Book "+sampleRecordData.lithologies[i].lithNotebookId+"</p>"
-                    //lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
+                    if (sampleRecordData.lithologies[i].lithNotebookUrl){lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"};
+                    
                     lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p></div>";
                     lith+='</div>';
                 }
@@ -527,10 +562,10 @@
             }
         }
         
-        function addAvailableSamples(){
-            $('#availableSamples').append('<p>Information about where to find the physical samples, if available...</p>');
-        }
-        
+//        function addAvailableSamples(){
+//            $('#availableSamples').append('<p>Information about where to find the physical samples, if available...</p>');
+//        }
+//        
         function addDataTable(){
             $("#allData").append('<table id="dataTable">'); 
             
@@ -558,7 +593,7 @@
                 //    }
                     
                 } else if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Object){
-                    //console.log("object", prop);
+                    console.log("object", prop);
                     //location is an object. iterate through its properties and add them to the list. 
                     for (subProp in sampleRecordData[prop]){
                         $("#dataTable").append("<tr><td>"+subProp+"</td><td>"+sampleRecordData[prop][subProp]+"</td></tr>");
