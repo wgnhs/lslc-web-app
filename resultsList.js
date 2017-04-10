@@ -192,11 +192,13 @@ function onSampleClick(item){
   // This must be a hyperlink
   $(".export").on('click', function(event) {
     // CSV
-    var args = [$('#dvData>table'), 'export.csv'];
+    var args = [$('#resultsTable'), 'export.csv'];
 
     console.log(this)
 
-    //exportTableToCSV.apply(this, args);
+    //need to figure out how to implement table
+
+    exportTableToCSV.apply(this, args);
 
     // If CSV, don't do event.preventDefault() or return false
     // We actually need this to be a typical hyperlink
