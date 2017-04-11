@@ -225,13 +225,16 @@
                        retrieveThinSections()
                            .then(function(resolved){
                                 console.log("7. thin section query done.", resolved);
-                                retrieveLithology().then(function(){
-                                   console.log("9. ledger query done. sample record data is:", sampleRecordData);
+                                retrieveLithology()
+                                    .then(function(lithDescriptions){
+                                        console.log("resolved value:", lithDescriptions);
+                                        retrieveLedgers(lithDescriptions);
+                                    
+                                    
+                                       console.log("9. ledger query done. sample record data is:", sampleRecordData);
 
-                                   //this only works properly when I use a delay! Queries are not finishing before the next part starts. 
-
-                                  buildReport(sampleRecordData);
-                                   //delay(function(){buildReport(sampleRecordData);}, 3000);
+                                       //buildReport();
+                                       //delay(function(){buildReport(sampleRecordData);}, 3000);
                                 });
                             });
 
@@ -316,7 +319,7 @@
 
                     }); //end run 
                 } //end if 
-                else {reject("no field notebook number.");}
+                else {resolve("no field notebook number.");}
                 
             }); //end return  
         } //end retrieveNotebookData 
@@ -372,28 +375,13 @@
                         lithDetails.lithPage = lithResponse.features[i].attributes.Page;
                         lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
                         lithDetails.lithNotes = lithResponse.features[i].attributes.Notes;
-                       
-                       if(lithResponse.features[i].attributes.BookId > 0){
-                           var ledgerQuery = L.esri.query({url:ledgerTableURL});
-                            ledgerQuery.where("BookId = "+ lithResponse.features[i].attributes.BookId); 
-                            ledgerQuery.fields(["*"]); 
-                           
-                           ledgerQuery.run(function(err, result, ledgerResponse){
-                               console.log("ledger info: ", ledgerResponse.features[0].attributes);
-                               lithDetails.lithNotebookTitle =  ledgerResponse.features[0].attributes.Title; 
-                               lithDetails.lithNotebookUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
-                               lithDetails.lithDate =  ledgerResponse.features[0].attributes.Year;
-                               lithDetails.lithAuthor =  ledgerResponse.features[0].attributes.Author;
-                               
-                           }); //end .run
-                           
-                       } //end if
-                       
+                                                                    
                        sampleRecordData.lithologies.push(lithDetails);
                       
                        
                    } //end for
-                    resolve(lithDetails);
+                   
+                   resolve(lithResponse.features);
       
                }); //end .run
                
@@ -402,7 +390,42 @@
        
        } //end retrieveLithology
         
-        
+        function retrieveLedgers(lithDescriptions){
+            return new Promise(function(resolve, reject){
+
+                if (lithDescriptions){
+                    for(i in sampleRecordData.lithologies){
+                        
+                        var ledgerQuery = L.esri.query({url:ledgerTableURL});
+                        ledgerQuery.where("BookId = "+ sampleRecordData.lithologies[i].lithNotebookId); 
+                        ledgerQuery.fields(["*"]);
+                        
+                       // var ledgerDetails = [];
+                        console.log("search for ledger for ", sampleRecordData.lithologies[i]); 
+
+                        ledgerQuery.run(function(err, result, ledgerResponse){
+                           console.log("ledger info: ", ledgerResponse.features[0].attributes);
+                           sampleRecordData.lithologies[i].lithNotebookTitle =  ledgerResponse.features[0].attributes.Title; 
+                           sampleRecordData.lithologies[i].lithNotebookUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
+                           sampleRecordData.lithologies[i].lithDate =  ledgerResponse.features[0].attributes.Year;
+                           sampleRecordData.lithologies[i].lithAuthor =  ledgerResponse.features[0].attributes.Author;
+                            
+                            //sampleRecordData.lithologies[i] = sampleRecordData.lithologies[i].concat(ledgerDetails);
+                            if(i === sampleRecordData.lithologies.length-1){
+                                resolve("done with ledgers.");
+                            }
+
+                        }); //end .run
+                        
+                        
+                    } //end for
+                    
+                } //end if
+                
+                
+            }); //end return Promise
+            
+        } //end function retrieveLedgers
 
            
         function buildReport(input){
