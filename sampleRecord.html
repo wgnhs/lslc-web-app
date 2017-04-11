@@ -86,7 +86,14 @@
         //indicate the current page in the nav bar. 
         $("#navSample").css("background-color", "#848484");
         
-            
+        var delay = (function(){
+          var timer = 0;
+          return function(callback, ms){
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+          };
+        })();
+    
         
         //The parts of the record webpage are referred to as 'divisions' in this code. 
         //The buildReport function will iterate through this array.
@@ -182,7 +189,7 @@
                 console.log("valid number ", number);
                 //reset the global variable: 
                // sampleRecordData.sampleId = number;
-                  testSample(number);
+                  searchSample(number);
               //  findSample(number);
 //                sampleRecordData = {};
 //                sampleRecordData.catalogNumber = number;
@@ -207,28 +214,35 @@
         
         //var sampleNumberSQL = "Upper(HandSampleCatalogNumber) LIKE UPPER('"+number+"')";
    
-        function testSample(number){
-            
-            
+        function searchSample(number){
+ 
            queryForSample(number)
              .then(function(resolved){
-               console.log("1. resolved initial query."); 
+               console.log("3. resolved initial query.", resolved); 
                retrieveNotebookData();
            }).then(function(resolved){
-               console.log("2. resolved notebook query. sample record data is:", sampleRecordData);
+               console.log("5. resolved notebook query. ");
                retrieveThinSections();
-           }).then(function(resolved){
-               console.log("3.", resolved);
+           }).then(function(){
+               console.log("7. thin section query done.");
+               retrieveLithology();
+           }).then(function(){
+               console.log("9. ledger query done. sample record data is:", sampleRecordData);
+               
+               //this only works properly when I use a delay! Queries are not finishing before the next part starts. 
+               
+              // buildReport(sampleRecordData);
+               
            }).catch(function(error){
-               console.log("error.", error);
+               console.log("error. ", error);
            })
        } //end testSample
         
-        console.log("out of sequence...");
+        console.log("this is out of sequence...");
         
         //needs to be called! 
         function queryForSample(number){
-            console.log("query for sample #", number); 
+            console.log("1. query for sample #", number); 
             return new Promise (function(resolve, reject){
                 recordDataManager.clear();
                 sampleRecordData.catalogNumber = number;
@@ -245,7 +259,7 @@
                     //set the attributes that can be found in the samples table. 
 
                     if(sampleTableResponse.features[0]){
-                            console.log("sample found.");
+                            console.log("2. sample found.");
                             //console.log("sample table info:", sampleTableResult.features[0].attributes);
                             //set the attributes that can be found in the samples table. 
 
@@ -265,6 +279,7 @@
                             sampleRecordData.fieldPage = sampleTableResponse.features[0].attributes.NotebookPage;
                             sampleRecordData.WGNHSId = sampleTableResponse.features[0].attributes.WgnhsId;
                             sampleRecordData.sampleNotes = sampleTableResponse.features[0].attributes.Notes;
+                          
                             resolve("resolved");
 
                     } else {
@@ -279,7 +294,7 @@
         } //end query for sample
                                 
         function retrieveNotebookData(){
-           
+           console.log("4.")
             return new Promise (function(resolve){
                 if(sampleRecordData.fieldNotebookNum){
                     var notebookQuery = L.esri.query({url: notebooksTableURL}); 
@@ -292,6 +307,7 @@
                         sampleRecordData.fieldAuthor= notebooksResponse.features[0].attributes.Author;
                         sampleRecordData.fieldDate = notebooksResponse.features[0].attributes.Year;
                         sampleRecordData.fieldNotebookUrl = notebooksResponse.features[0].attributes.UwdcUrl;
+                        
                         resolve("resolved");
 
 
@@ -302,13 +318,15 @@
         } //end retrieveNotebookData 
         
         function retrieveThinSections(){
+            console.log("6.")
             return new Promise(function(resolve){
                 var thinSectionQuery = L.esri.query({url: thinSectonsTableURL}); 
-                thinSectionQuery.where("SampleId = "+sampleRecordData.catalogNumber); 
+                thinSectionQuery.where("SampleId = "+sampleRecordData.sampleId); 
                 thinSectionQuery.fields(["*"]); 
                 
                 thinSectionQuery.run(function(err, fc, thinSectionsResponse){
-                    //WHY DOES THIS ONLY RETURN ONE ITEM, EVEN IF THERE SHOULD BE MORE??
+                    
+                    console.log("err", err);
                     console.log("fc", fc);
                     console.log("thinsectionsResponse", thinSectionsResponse);
                     for (i in thinSectionsResponse.features){
@@ -326,23 +344,62 @@
                         
                     } //end for loop
                     
+                    
                 }); //end .run
                 
-              resolve("resolve");  
-            }); 
-            
-            
-        }
-        
+               
+            }); //end promise
+  
+        } //end retrieveThinSections 
        
+       function retrieveLithology(){
+           return new Promise(function(){
+               console.log("8. query for lithology.")
+               var lithQuery = L.esri.query({url: lithologyTableURL});
+               lithQuery.where("SampleId = "+sampleRecordData.sampleId); 
+               lithQuery.fields(["*"]);
+               
+               lithQuery.run(function(err, fc, lithResponse){
+                   for (i in lithResponse.features){
+                        var lithDetails = {};
+                        console.log("lith info", lithResponse.features[i].attributes);
+                        lithDetails.lithNotebookId = lithResponse.features[i].attributes.BookId;
+                        lithDetails.lithPage = lithResponse.features[i].attributes.Page;
+                        lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
+                        lithDetails.lithNotes = lithResponse.features[i].attributes.Notes;
+                       
+                       if(lithResponse.features[i].attributes.BookId > 0){
+                           var ledgerQuery = L.esri.query({url:ledgerTableURL});
+                            ledgerQuery.where("BookId = "+ lithResponse.features[i].attributes.BookId); 
+                            ledgerQuery.fields(["*"]); 
+                           
+                           ledgerQuery.run(function(err, result, ledgerResponse){
+                               console.log("ledger info: ", ledgerResponse.features[0].attributes);
+                               lithDetails.lithNotebookTitle =  ledgerResponse.features[0].attributes.Title; 
+                               lithDetails.lithNotebookUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
+                               lithDetails.lithDate =  ledgerResponse.features[0].attributes.Year;
+                               lithDetails.lithAuthor =  ledgerResponse.features[0].attributes.Author;
+                               
+                           }); //end .run
+                           
+                       } //end if
+                       
+                       sampleRecordData.lithologies.push(lithDetails);
+                       
+                   } //end for
+      
+               }); //end .run
+               
+           });//end promise
+
        
+       } //end retrieveLithology
         
-        function sayDone(){
-            console.log("retrieveAllData is done.");
-        }
+        
+
            
-        function buildReport(){
-           console.log("build report.");
+        function buildReport(input){
+           console.log("10. build report with", input);
             //clear the sample record div. 
             $("#sampleRecord").html('');
              addSampleNumber();
