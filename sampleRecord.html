@@ -221,10 +221,10 @@
                console.log("3. resolved initial query.", resolved); 
                retrieveNotebookData();
            }).then(function(resolved){
-               console.log("5. resolved notebook query. ");
+               console.log("5. resolved notebook query. ", resolved);
                retrieveThinSections();
-           }).then(function(){
-               console.log("7. thin section query done.");
+           }).then(function(resolved){
+               console.log("7. thin section query done.", resolved);
                retrieveLithology();
            }).then(function(){
                console.log("9. ledger query done. sample record data is:", sampleRecordData);
@@ -281,12 +281,12 @@
                             sampleRecordData.WGNHSId = sampleTableResponse.features[0].attributes.WgnhsId;
                             sampleRecordData.sampleNotes = sampleTableResponse.features[0].attributes.Notes;
                           
-                            resolve("resolved");
+                            resolve(sampleTableResponse.features[0]);
 
                     } else {
                         //if the sample id is not successfully found, return an error message. 
                         $("#sampleRecord").html("No results for sample #"+sampleRecordData.catalogNumber+". Try a different number.");
-                        reject("reject: sample not found.")
+                        reject("reject: sample not found.");
                     }
                 });//end .run
             
@@ -296,7 +296,7 @@
                                 
         function retrieveNotebookData(){
            console.log("4.")
-            return new Promise (function(resolve){
+            return new Promise (function(resolve, reject){
                 if(sampleRecordData.fieldNotebookNum){
                     var notebookQuery = L.esri.query({url: notebooksTableURL}); 
                     notebookQuery.fields(["*"]); 
@@ -309,30 +309,31 @@
                         sampleRecordData.fieldDate = notebooksResponse.features[0].attributes.Year;
                         sampleRecordData.fieldNotebookUrl = notebooksResponse.features[0].attributes.UwdcUrl;
                         
-                        resolve("resolved");
+                        resolve(notebooksResponse);
 
 
                     }); //end run 
                 } //end if 
+                else {reject("no field notebook number.");}
                 
             }); //end return  
         } //end retrieveNotebookData 
         
         function retrieveThinSections(){
             console.log("6.")
-            return new Promise(function(resolve){
+            return new Promise(function(resolve, reject){
                 var thinSectionQuery = L.esri.query({url: thinSectonsTableURL}); 
                 thinSectionQuery.where("SampleId = "+sampleRecordData.sampleId); 
                 thinSectionQuery.fields(["*"]); 
                 
                 thinSectionQuery.run(function(err, fc, thinSectionsResponse){
                     
-                    console.log("err", err);
-                    console.log("fc", fc);
-                    console.log("thinsectionsResponse", thinSectionsResponse);
+                    //console.log("err", err);
+                   // console.log("fc", fc);
+                  //  console.log("thinsectionsResponse", thinSectionsResponse);
                     for (i in thinSectionsResponse.features){
                         var thinDetails = {};
-                        console.log("thin section info", thinSectionsResponse.features[i].attributes);
+                     //   console.log("thin section info", thinSectionsResponse.features[i].attributes);
                         //add attributes to the thin sections array. 
                         thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes.CatalogNumber;
                         thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
@@ -345,6 +346,7 @@
                         
                     } //end for loop
                     
+                    resolve(thinSectionsResponse.features);
                     
                 }); //end .run
                 
@@ -354,7 +356,7 @@
         } //end retrieveThinSections 
        
        function retrieveLithology(){
-           return new Promise(function(){
+           return new Promise(function(resolve, reject){
                console.log("8. query for lithology.")
                var lithQuery = L.esri.query({url: lithologyTableURL});
                lithQuery.where("SampleId = "+sampleRecordData.sampleId); 
@@ -363,7 +365,7 @@
                lithQuery.run(function(err, fc, lithResponse){
                    for (i in lithResponse.features){
                         var lithDetails = {};
-                        console.log("lith info", lithResponse.features[i].attributes);
+                 //       console.log("lith info", lithResponse.features[i].attributes);
                         lithDetails.lithNotebookId = lithResponse.features[i].attributes.BookId;
                         lithDetails.lithPage = lithResponse.features[i].attributes.Page;
                         lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
@@ -375,7 +377,7 @@
                             ledgerQuery.fields(["*"]); 
                            
                            ledgerQuery.run(function(err, result, ledgerResponse){
-                               console.log("ledger info: ", ledgerResponse.features[0].attributes);
+                   //            console.log("ledger info: ", ledgerResponse.features[0].attributes);
                                lithDetails.lithNotebookTitle =  ledgerResponse.features[0].attributes.Title; 
                                lithDetails.lithNotebookUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
                                lithDetails.lithDate =  ledgerResponse.features[0].attributes.Year;
@@ -386,8 +388,10 @@
                        } //end if
                        
                        sampleRecordData.lithologies.push(lithDetails);
+                      
                        
                    } //end for
+                    resolve(lithDetails);
       
                }); //end .run
                
@@ -449,7 +453,7 @@
         }
         
        function addThinSections(){
-            console.log("sampleRecordData", sampleRecordData);
+        //    console.log("sampleRecordData", sampleRecordData);
             //populate the thin section results:
            
             if (sampleRecordData.thinSections.length > 0){
@@ -566,7 +570,7 @@
             var lith = '';
             if(sampleRecordData.lithologies.length > 0){
                 for (i in sampleRecordData.lithologies){
-                    console.log("lith data", sampleRecordData.lithologies[i]);
+                    //console.log("lith data", sampleRecordData.lithologies[i]);
                     
                     lith+='<div>';      
                     //thumbnail in link
@@ -608,14 +612,14 @@
             for (prop in sampleRecordData){
                 if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Array){
                     //all arrays are arrays of objects in this structure. 
-                    console.log("array", prop);
+                   // console.log("array", prop);
                     //if (sampleRecordData[prop].length > 1){
                         for(o in sampleRecordData[prop]){
                             //sampleRecordData[prop][o] is an object. 
                             // o is the index number. 
                             var num = parseInt(o)+1;
 
-                            console.log(prop, " ", num, " of ", sampleRecordData[prop].length);
+                           // console.log(prop, " ", num, " of ", sampleRecordData[prop].length);
                             for (subProp in sampleRecordData[prop][o]){
                                 $("#dataTable").append("<tr><td>"+prop+"_"+num+"of"+sampleRecordData[prop].length+"_"+subProp+"</td><td>"+sampleRecordData[prop][o][subProp]+"</td></tr>");
                             }
@@ -629,7 +633,7 @@
                 //    }
                     
                 } else if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Object){
-                    console.log("object", prop);
+                  //  console.log("object", prop);
                     //location is an object. iterate through its properties and add them to the list. 
                     for (subProp in sampleRecordData[prop]){
                         $("#dataTable").append("<tr><td>"+subProp+"</td><td>"+sampleRecordData[prop][subProp]+"</td></tr>");
