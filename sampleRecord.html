@@ -232,6 +232,7 @@
                //this only works properly when I use a delay! Queries are not finishing before the next part starts. 
                
               // buildReport(sampleRecordData);
+               delay(function(){buildReport(sampleRecordData);}, 3000);
                
            }).catch(function(error){
                console.log("error. ", error);
