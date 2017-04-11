@@ -217,24 +217,26 @@
         function searchSample(number){
  
            queryForSample(number)
-             .then(function(resolved){
+             .then(function(resolved){  
                console.log("3. resolved initial query.", resolved); 
-               retrieveNotebookData();
-           }).then(function(resolved){
-               console.log("5. resolved notebook query. ", resolved);
-               retrieveThinSections();
-           }).then(function(resolved){
-               console.log("7. thin section query done.", resolved);
-               retrieveLithology();
-           }).then(function(){
-               console.log("9. ledger query done. sample record data is:", sampleRecordData);
-               
-               //this only works properly when I use a delay! Queries are not finishing before the next part starts. 
-               
-              // buildReport(sampleRecordData);
-               delay(function(){buildReport(sampleRecordData);}, 3000);
-               
-           }).catch(function(error){
+               retrieveNotebookData()
+                   .then(function(resolved){
+                       console.log("5. resolved notebook query. ", resolved);
+                       retrieveThinSections()
+                           .then(function(resolved){
+                                console.log("7. thin section query done.", resolved);
+                                retrieveLithology().then(function(){
+                                   console.log("9. ledger query done. sample record data is:", sampleRecordData);
+
+                                   //this only works properly when I use a delay! Queries are not finishing before the next part starts. 
+
+                                  buildReport(sampleRecordData);
+                                   //delay(function(){buildReport(sampleRecordData);}, 3000);
+                                });
+                            });
+
+                    });
+            }).catch(function(error){
                console.log("error. ", error);
            })
        } //end testSample
@@ -280,7 +282,7 @@
                             sampleRecordData.fieldPage = sampleTableResponse.features[0].attributes.NotebookPage;
                             sampleRecordData.WGNHSId = sampleTableResponse.features[0].attributes.WgnhsId;
                             sampleRecordData.sampleNotes = sampleTableResponse.features[0].attributes.Notes;
-                          
+                            console.log("resolve with", sampleTableResponse.features[0])
                             resolve(sampleTableResponse.features[0]);
 
                     } else {
@@ -308,7 +310,7 @@
                         sampleRecordData.fieldAuthor= notebooksResponse.features[0].attributes.Author;
                         sampleRecordData.fieldDate = notebooksResponse.features[0].attributes.Year;
                         sampleRecordData.fieldNotebookUrl = notebooksResponse.features[0].attributes.UwdcUrl;
-                        
+                        console.log(notebooksResponse);
                         resolve(notebooksResponse);
 
 
@@ -330,10 +332,10 @@
                     
                     //console.log("err", err);
                    // console.log("fc", fc);
-                  //  console.log("thinsectionsResponse", thinSectionsResponse);
+                   // console.log("thinsectionsResponse", thinSectionsResponse);
                     for (i in thinSectionsResponse.features){
                         var thinDetails = {};
-                     //   console.log("thin section info", thinSectionsResponse.features[i].attributes);
+                        console.log("thin section info", thinSectionsResponse.features[i].attributes);
                         //add attributes to the thin sections array. 
                         thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes.CatalogNumber;
                         thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
@@ -365,7 +367,7 @@
                lithQuery.run(function(err, fc, lithResponse){
                    for (i in lithResponse.features){
                         var lithDetails = {};
-                 //       console.log("lith info", lithResponse.features[i].attributes);
+                        console.log("lith info", lithResponse.features[i].attributes);
                         lithDetails.lithNotebookId = lithResponse.features[i].attributes.BookId;
                         lithDetails.lithPage = lithResponse.features[i].attributes.Page;
                         lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
@@ -377,7 +379,7 @@
                             ledgerQuery.fields(["*"]); 
                            
                            ledgerQuery.run(function(err, result, ledgerResponse){
-                   //            console.log("ledger info: ", ledgerResponse.features[0].attributes);
+                               console.log("ledger info: ", ledgerResponse.features[0].attributes);
                                lithDetails.lithNotebookTitle =  ledgerResponse.features[0].attributes.Title; 
                                lithDetails.lithNotebookUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
                                lithDetails.lithDate =  ledgerResponse.features[0].attributes.Year;
