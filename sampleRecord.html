@@ -227,12 +227,42 @@
                                 console.log("7. thin section query done.", resolved);
                                 retrieveLithology()
                                     .then(function(lithDescriptions){
-                                        console.log("resolved value:", lithDescriptions);
-                                        retrieveLedgers(lithDescriptions);
-                                    
-                                    
-                                       console.log("9. ledger query done. sample record data is:", sampleRecordData);
+                                        console.log("9. lithologies:", sampleRecordData.lithologies);
+                                     //   var ledgerQueryQueue = [];
+//                                        for (i in sampleRecordData.lithologies){
+//                                            ledgerQueryQueue.push(sampleRecordData.lithologies[i]);  
+//                                        }
+                                      //  console.log("10. queue for ledger queries:", sampleRecordData.lithologies);
+                                        var ledgerQueryQueue = [];
+                                        for(i in sampleRecordData.lithologies){
+                                            ledgerQueryQueue.push(i);
+                                        }
+                                        
+ 
+                                        var actions = ledgerQueryQueue.map(retrieveLedger); 
 
+                                    
+                                        var lithResults = Promise.all(actions);
+                                        lithResults.then(function(data){
+                                            console.log("all sample data: ", sampleRecordData);
+                                            buildReport();
+                                        });
+                                        
+                                                                            
+//                                        for(i in sampleRecordData.lithologies){
+//                                            var ledgerPromise = new Promise (function(resolve, reject){
+//                                                
+//                                            });
+//                                            
+//                                            ledgerQueryQueue.push(ledgerPromise); 
+//                                        }
+                                        
+//                                        retrieveLedger(lithDescriptions).then(function(resolved){
+//                                            
+//                                            console.log("11. ledger query done.", resolved);
+//                                            console.log("sample record data is:", sampleRecordData);
+//                                            
+//                                        });
                                        //buildReport();
                                        //delay(function(){buildReport(sampleRecordData);}, 3000);
                                 });
@@ -285,7 +315,7 @@
                             sampleRecordData.fieldPage = sampleTableResponse.features[0].attributes.NotebookPage;
                             sampleRecordData.WGNHSId = sampleTableResponse.features[0].attributes.WgnhsId;
                             sampleRecordData.sampleNotes = sampleTableResponse.features[0].attributes.Notes;
-                            console.log("resolve with", sampleTableResponse.features[0])
+                           // console.log("resolve with", sampleTableResponse.features[0])
                             resolve(sampleTableResponse.features[0]);
 
                     } else {
@@ -338,7 +368,7 @@
                    // console.log("thinsectionsResponse", thinSectionsResponse);
                     for (i in thinSectionsResponse.features){
                         var thinDetails = {};
-                        console.log("thin section info", thinSectionsResponse.features[i].attributes);
+                      //  console.log("thin section info", thinSectionsResponse.features[i].attributes);
                         //add attributes to the thin sections array. 
                         thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes.CatalogNumber;
                         thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
@@ -370,15 +400,14 @@
                lithQuery.run(function(err, fc, lithResponse){
                    for (i in lithResponse.features){
                         var lithDetails = {};
-                        console.log("lith info", lithResponse.features[i].attributes);
+                      // console.log("lith info", lithResponse.features[i].attributes);
                         lithDetails.lithNotebookId = lithResponse.features[i].attributes.BookId;
                         lithDetails.lithPage = lithResponse.features[i].attributes.Page;
                         lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
                         lithDetails.lithNotes = lithResponse.features[i].attributes.Notes;
                                                                     
                        sampleRecordData.lithologies.push(lithDetails);
-                      
-                       
+  
                    } //end for
                    
                    resolve(lithResponse.features);
@@ -390,46 +419,46 @@
        
        } //end retrieveLithology
         
-        function retrieveLedgers(lithDescriptions){
+        function retrieveLedger(lithologyindex){
             return new Promise(function(resolve, reject){
 
-                if (lithDescriptions){
-                    for(i in sampleRecordData.lithologies){
+//                if (lithDescriptions){
+//                    for(i in sampleRecordData.lithologies){
                         
                         var ledgerQuery = L.esri.query({url:ledgerTableURL});
-                        ledgerQuery.where("BookId = "+ sampleRecordData.lithologies[i].lithNotebookId); 
+                        ledgerQuery.where("BookId = "+ sampleRecordData.lithologies[lithologyindex].lithNotebookId); 
                         ledgerQuery.fields(["*"]);
                         
                        // var ledgerDetails = [];
-                        console.log("search for ledger for ", sampleRecordData.lithologies[i]); 
+                        console.log("search for ledger book #", sampleRecordData.lithologies[lithologyindex].lithNotebookId); 
 
                         ledgerQuery.run(function(err, result, ledgerResponse){
                            console.log("ledger info: ", ledgerResponse.features[0].attributes);
-                           sampleRecordData.lithologies[i].lithNotebookTitle =  ledgerResponse.features[0].attributes.Title; 
-                           sampleRecordData.lithologies[i].lithNotebookUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
-                           sampleRecordData.lithologies[i].lithDate =  ledgerResponse.features[0].attributes.Year;
-                           sampleRecordData.lithologies[i].lithAuthor =  ledgerResponse.features[0].attributes.Author;
                             
-                            //sampleRecordData.lithologies[i] = sampleRecordData.lithologies[i].concat(ledgerDetails);
-                            if(i === sampleRecordData.lithologies.length-1){
-                                resolve("done with ledgers.");
-                            }
+                            
+                           sampleRecordData.lithologies[lithologyindex].lithNotebookTitle =  ledgerResponse.features[0].attributes.Title; 
+                           sampleRecordData.lithologies[lithologyindex].lithNotebookUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
+                           sampleRecordData.lithologies[lithologyindex].lithDate =  ledgerResponse.features[0].attributes.Year;
+                           sampleRecordData.lithologies[lithologyindex].lithAuthor =  ledgerResponse.features[0].attributes.Author;
+                           resolve(ledgerResponse.features[0]);
+                           
+                           
 
                         }); //end .run
+//                        
                         
-                        
-                    } //end for
-                    
-                } //end if
-                
-                
+//                    } //end for
+//                    
+//                    
+//                } //end if
+    
             }); //end return Promise
             
         } //end function retrieveLedgers
 
            
-        function buildReport(input){
-           console.log("10. build report with", input);
+        function buildReport(){
+           console.log("11. build report");
             //clear the sample record div. 
             $("#sampleRecord").html('');
              addSampleNumber();
