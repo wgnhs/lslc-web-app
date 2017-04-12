@@ -9,7 +9,7 @@ var modal = (function(){
     }
     /*for the closemodal button*/
      $('#modalBackground').on('click', '#closemodal', function() {
-         //   console.log("clicked closebutton.");
+            console.log("close modal.");
             modal.close();   
     });
     
@@ -20,7 +20,7 @@ var modal = (function(){
     
     var showThinSection = function (id){
         console.log("showThinSection", id);
-            var map = new L.Map('photo').setView(new L.LatLng(0,0), 0);
+            var thinSectionMap = new L.Map('photo').setView(new L.LatLng(0,0), 0);
             var sectionNum = id;
             var urlRoot = 'http://mp-web2t/lslc/assets/thin-section/zoomify/';
             var photoWidth = 2700;
@@ -33,7 +33,7 @@ var modal = (function(){
                 //tolerance: 0.8,
                 opacity: 1.0,
                 attribution: 'Photo: Wisconsin Geological Survey'
-            }).addTo(map);
+            }).addTo(thinSectionMap);
 
             var xpl = new ZoomifyLayer(urlRoot + sectionNum + 'xpl/', {
                 width: photoWidth,
@@ -43,7 +43,7 @@ var modal = (function(){
                 attribution: 'Photo: Wisconsin Geological Survey'
             });
 
-            xpl.setOpacity(0.0).addTo(map);
+            xpl.setOpacity(0.0).addTo(thinSectionMap);
 
             $("#slider").slider({
                 value: 0,
