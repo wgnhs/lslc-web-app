@@ -219,26 +219,25 @@
            queryForSample(number)
              .then(function(resolved){  
                console.log("3. resolved initial query.", resolved); 
-               retrieveNotebookData()
-                   .then(function(resolved){
-                       console.log("5. resolved notebook query. ", resolved);
-                       retrieveThinSections()
-                           .then(function(resolved){
-                                console.log("7. thin section query done.", resolved);
-                                retrieveLithology()
-                                    .then(function(lithDescriptions){
+               
+               var threeTableResults = Promise.all([retrieveNotebookData(), retrieveThinSections(), retrieveLithology()]);
+//               retrieveNotebookData()
+//                   .then(function(resolved){
+//                       console.log("5. resolved notebook query. ", resolved);
+//                       retrieveThinSections()
+//                           .then(function(resolved){
+//                                console.log("7. thin section query done.", resolved);
+//                                retrieveLithology()
+               
+               threeTableResults.then(function(){
                                         console.log("9. lithologies:", sampleRecordData.lithologies);
-                                     //   var ledgerQueryQueue = [];
-//                                        for (i in sampleRecordData.lithologies){
-//                                            ledgerQueryQueue.push(sampleRecordData.lithologies[i]);  
-//                                        }
-                                      //  console.log("10. queue for ledger queries:", sampleRecordData.lithologies);
+
                                         var ledgerQueryQueue = [];
                                         for(i in sampleRecordData.lithologies){
                                             ledgerQueryQueue.push(i);
                                         }
                                         
- 
+                                        //run the promise for each item in the queue. 
                                         var actions = ledgerQueryQueue.map(retrieveLedger); 
 
                                     
@@ -247,28 +246,11 @@
                                             console.log("all sample data: ", sampleRecordData);
                                             buildReport();
                                         });
-                                        
-                                                                            
-//                                        for(i in sampleRecordData.lithologies){
-//                                            var ledgerPromise = new Promise (function(resolve, reject){
-//                                                
-//                                            });
-//                                            
-//                                            ledgerQueryQueue.push(ledgerPromise); 
-//                                        }
-                                        
-//                                        retrieveLedger(lithDescriptions).then(function(resolved){
-//                                            
-//                                            console.log("11. ledger query done.", resolved);
-//                                            console.log("sample record data is:", sampleRecordData);
-//                                            
-//                                        });
-                                       //buildReport();
-                                       //delay(function(){buildReport(sampleRecordData);}, 3000);
-                                });
-                            });
 
-                    });
+                                });
+//                            });
+//
+//                    });
             }).catch(function(error){
                console.log("error. ", error);
            })
