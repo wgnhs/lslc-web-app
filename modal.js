@@ -20,21 +20,32 @@ var modal = (function(){
     
     var zoomifyThinSection = function (id){
         console.log("showThinSection", id);
-            var thinSectionMap = new L.Map('photo').setView(new L.LatLng(0,0), 0);
+            var thinSectionMap = new L.Map('photo'
+                      , {crs: L.CRS.Simple, minZoom: -5}
+                  );
+                //.setView(new L.LatLng(0,0), 0);
             var sectionNum = id;
            // var urlRoot = 'http://mp-web2t/lslc/assets/thin-section/zoomify/';
-            var urlRoot = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-zoomify/';
+            //var urlRoot = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-zoomify/';
+            var urlRoot = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/';
             var photoWidth = 2700;
             var photoHeight = 1800;
-
+            var bounds = [[0,0], [1000,1000]];
+        
+            var ppl = L.imageOverlay(urlRoot + sectionNum + 'ppl.jpg', bounds).addTo(thinSectionMap);
+            var xpl = L.imageOverlay(urlRoot + sectionNum + 'xpl.jpg', bounds);
             
-            var ppl = new ZoomifyLayer(urlRoot + sectionNum + 'ppl/', {
+            xpl.setOpacity(0.0).addTo(thinSectionMap);
+            thinSectionMap.fitBounds(bounds);
+            
+/*            var ppl = new ZoomifyLayer(urlRoot + sectionNum + 'ppl/', {
                 width: photoWidth,
                 height: photoHeight,
                 //tolerance: 0.8,
                 opacity: 1.0,
                 attribution: 'Photo: Wisconsin Geological Survey'
-            }).addTo(thinSectionMap);
+            })
+            //.addTo(thinSectionMap);
 
             var xpl = new ZoomifyLayer(urlRoot + sectionNum + 'xpl/', {
                 width: photoWidth,
@@ -44,8 +55,8 @@ var modal = (function(){
                 attribution: 'Photo: Wisconsin Geological Survey'
             });
 
-            xpl.setOpacity(0.0).addTo(thinSectionMap);
-
+           // xpl.setOpacity(0.0).addTo(thinSectionMap);
+*/
             $("#slider").slider({
                 value: 0,
                 slide: function (e, ui) {
