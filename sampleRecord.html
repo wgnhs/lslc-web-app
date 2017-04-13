@@ -205,7 +205,10 @@
              .then(function(resolved){  
                console.log("3. resolved initial query.", resolved); 
                
+               //three tables can all be queried using the initial information...
                var threeTableResults = Promise.all([retrieveNotebookData(), retrieveThinSections(), retrieveLithology()]);
+               
+               
 //               retrieveNotebookData()
 //                   .then(function(resolved){
 //                       console.log("5. resolved notebook query. ", resolved);
@@ -214,6 +217,7 @@
 //                                console.log("7. thin section query done.", resolved);
 //                                retrieveLithology()
                
+               //finding the ledgers must happen after finding the lithologies. 
                threeTableResults.then(function(){
                                         console.log("9. lithologies:", sampleRecordData.lithologies);
 
@@ -225,10 +229,10 @@
                                         //run the promise for each item in the queue. 
                                         var actions = ledgerQueryQueue.map(retrieveLedger); 
 
-                                    
-                                        var lithResults = Promise.all(actions);
-                                        lithResults.then(function(data){
-                                            console.log("all sample data: ", sampleRecordData);
+                                        //only after the final query has returned, we can build the report. 
+                                        var ledgerResults = Promise.all(actions);
+                                        ledgerResults.then(function(data){
+                                            console.log("queries are done. all sample data: ", sampleRecordData);
                                             buildReport();
                                         });
 
