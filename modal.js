@@ -18,11 +18,12 @@ var modal = (function(){
     
     
     
-    var showThinSection = function (id){
+    var zoomifyThinSection = function (id){
         console.log("showThinSection", id);
             var thinSectionMap = new L.Map('photo').setView(new L.LatLng(0,0), 0);
             var sectionNum = id;
-            var urlRoot = 'http://mp-web2t/lslc/assets/thin-section/zoomify/';
+           // var urlRoot = 'http://mp-web2t/lslc/assets/thin-section/zoomify/';
+            var urlRoot = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-zoomify/';
             var photoWidth = 2700;
             var photoHeight = 1800;
 
@@ -76,7 +77,7 @@ var modal = (function(){
         $('#sampleLink').append("<div>part of Sample #"+ id +"<br/>(click here to view record)</div><img class='sampleChevron' src='images/chevron_right_gw.png' alt=''>");
         
         //populate the parts of the thin section viewer: 
-        showThinSection(id);
+        zoomifyThinSection(id);
             
         
         //make the modal visible. 
