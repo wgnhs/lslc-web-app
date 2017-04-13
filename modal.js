@@ -25,8 +25,7 @@ var modal = (function(){
                   );
                 //.setView(new L.LatLng(0,0), 0);
             var sectionNum = id;
-           // var urlRoot = 'http://mp-web2t/lslc/assets/thin-section/zoomify/';
-            //var urlRoot = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-zoomify/';
+         
             var urlRoot = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/';
             var photoWidth = 2700;
             var photoHeight = 1800;
@@ -37,26 +36,7 @@ var modal = (function(){
             
             xpl.setOpacity(0.0).addTo(thinSectionMap);
             thinSectionMap.fitBounds(bounds);
-            
-/*            var ppl = new ZoomifyLayer(urlRoot + sectionNum + 'ppl/', {
-                width: photoWidth,
-                height: photoHeight,
-                //tolerance: 0.8,
-                opacity: 1.0,
-                attribution: 'Photo: Wisconsin Geological Survey'
-            })
-            //.addTo(thinSectionMap);
 
-            var xpl = new ZoomifyLayer(urlRoot + sectionNum + 'xpl/', {
-                width: photoWidth,
-                height: photoHeight,
-                //tolerance: 0.8,
-                //opacity: 0.0,
-                attribution: 'Photo: Wisconsin Geological Survey'
-            });
-
-           // xpl.setOpacity(0.0).addTo(thinSectionMap);
-*/
             $("#slider").slider({
                 value: 0,
                 slide: function (e, ui) {
