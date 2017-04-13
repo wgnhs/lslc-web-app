@@ -9,7 +9,7 @@ var modal = (function(){
     }
     /*for the closemodal button*/
      $('#modalBackground').on('click', '#closemodal', function() {
-         //   console.log("clicked closebutton.");
+            console.log("close modal.");
             modal.close();   
     });
     
@@ -18,32 +18,24 @@ var modal = (function(){
     
     
     
-    var showThinSection = function (id){
+    var zoomifyThinSection = function (id){
         console.log("showThinSection", id);
-            var map = new L.Map('photo').setView(new L.LatLng(0,0), 0);
+            var thinSectionMap = new L.Map('photo'
+                      , {crs: L.CRS.Simple, minZoom: -5}
+                  );
+                //.setView(new L.LatLng(0,0), 0);
             var sectionNum = id;
-            var urlRoot = 'http://mp-web2t/lslc/assets/thin-section/zoomify/';
+         
+            var urlRoot = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/';
             var photoWidth = 2700;
             var photoHeight = 1800;
-
+            var bounds = [[0,0], [4000,6000]];
+        
+            var ppl = L.imageOverlay(urlRoot + sectionNum + 'ppl.jpg', bounds).addTo(thinSectionMap);
+            var xpl = L.imageOverlay(urlRoot + sectionNum + 'xpl.jpg', bounds);
             
-            var ppl = new ZoomifyLayer(urlRoot + sectionNum + 'ppl/', {
-                width: photoWidth,
-                height: photoHeight,
-                //tolerance: 0.8,
-                opacity: 1.0,
-                attribution: 'Photo: Wisconsin Geological Survey'
-            }).addTo(map);
-
-            var xpl = new ZoomifyLayer(urlRoot + sectionNum + 'xpl/', {
-                width: photoWidth,
-                height: photoHeight,
-                //tolerance: 0.8,
-                //opacity: 0.0,
-                attribution: 'Photo: Wisconsin Geological Survey'
-            });
-
-            xpl.setOpacity(0.0).addTo(map);
+            xpl.setOpacity(0.0).addTo(thinSectionMap);
+            thinSectionMap.fitBounds(bounds);
 
             $("#slider").slider({
                 value: 0,
@@ -76,7 +68,7 @@ var modal = (function(){
         $('#sampleLink').append("<div>part of Sample #"+ id +"<br/>(click here to view record)</div><img class='sampleChevron' src='images/chevron_right_gw.png' alt=''>");
         
         //populate the parts of the thin section viewer: 
-        showThinSection(id);
+        zoomifyThinSection(id);
             
         
         //make the modal visible. 
