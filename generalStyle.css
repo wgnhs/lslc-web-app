@@ -64,7 +64,7 @@ nav a {
    /* display: none; */   /* Hidden by default */
     visibility: hidden;
     position: fixed; /* Stay in place */
-    z-index: 4; /* Sit on top */
+    z-index: 1001; /* Sit on top. This number puts the modal on top of leaflet classes .leaflet-top and .leaflet-bottom, which have a z-index of 1000 */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
