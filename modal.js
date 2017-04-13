@@ -30,6 +30,7 @@ var modal = (function(){
             var urlRoot = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/';
             var photoWidth = 2700;
             var photoHeight = 1800;
+            var bounds = [[0,0], [4000,6000]];
         
             var ppl = L.imageOverlay(urlRoot + sectionNum + 'ppl.jpg', bounds).addTo(thinSectionMap);
             var xpl = L.imageOverlay(urlRoot + sectionNum + 'xpl.jpg', bounds);
