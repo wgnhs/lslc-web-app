@@ -106,7 +106,7 @@ function resetFilters() {
 function queryTableForFilters(){
     
     //reset the global variable. 
-    globalResultsArray = [];
+    resultsManager.clearAll();
    
     var whereString = buildSqlAndAddIndicators(); //call the function to build a SQL where clause. It will return the where clause as a string. 
     
@@ -145,7 +145,7 @@ function queryTableForFilters(){
                 
             } else {
                 //null result. no matches. 
-                console.log("result is", result);      
+                console.log("result is null.", result);      
                 
                 //set results counter statement: 
                 document.getElementById("resultCount").innerHTML = 0;
@@ -159,7 +159,7 @@ function queryTableForFilters(){
 
     } else {
         //this shouldn't happen while we're using ["1=1"] in the SQL array. 
-        console.log("query is empty.");
+        console.warn("query is empty.");
         
     }
 } //end queryTableForFilters
@@ -236,7 +236,7 @@ function buildSqlAndAddIndicators() {
 
 function sliceResult(allResultOBJECTIDs){
        
-    var sliceSize = 1000; 
+    var sliceSize = 1000; //max is 1000, because that is the limit for Esri map service results. 
     
     //calculate how many pages.
     var numberOfSlices = Math.ceil(allResultOBJECTIDs.length/sliceSize);
@@ -245,18 +245,21 @@ function sliceResult(allResultOBJECTIDs){
     //build a list of page limit indices. 
     var pageBreaks = [0];
     
-
+    //the length of the results is the top page break
     pageBreaks.push(allResultOBJECTIDs.length);
     
+    //all intermediate page breaks are inserted here
     for (i = 1; i < numberOfSlices; i++){
         pageBreaks.push(i*sliceSize);
     }
-
+    
+    //order the pages breaks array from smallest to largest. 
     pageBreaks.sort(function(a, b){return a-b});
     
     
     
     //console.log("pageBreaks", pageBreaks);
+    //for each page of objectIDs, call a query for that set of results. 
     for (j=1 ; j < pageBreaks.length; j++){
         
         var rangeMin = pageBreaks[j-1]; 
@@ -267,13 +270,15 @@ function sliceResult(allResultOBJECTIDs){
         var oneSliceOBJECTIDs= allResultOBJECTIDs.slice(rangeMin, rangeMax); 
         //console.log("one slice result OBJECTIDS:", oneSliceOBJECTIDs); 
         
- //      queryForSliceData(oneSliceOBJECTIDs, false);        
+ //      queryForSliceData(oneSliceOBJECTIDs, false); 
+        
+        //deploy a query along with an indicator for last page. 
         if (j == pageBreaks.length-1){
             console.log("last page.");
-//            console.log("final objectIDs", oneSliceOBJECTIDs);
+           // console.log("final objectIDs", oneSliceOBJECTIDs);
             queryForSliceData(oneSliceOBJECTIDs, true);
         }  else {
-//            console.log("not last or first page.");
+            //console.log("not last page.");
             queryForSliceData(oneSliceOBJECTIDs, false);
         }
 
@@ -285,10 +290,12 @@ function sliceResult(allResultOBJECTIDs){
 
 function queryForSliceData(resultSliceOBJECTIDs, drawList){
     //resultsIds is an array of the objectIDs of one slice of results. Max length 1000. 
-    //drawList is a boolean indicating whether to add the list  
+    //drawList is a boolean indicating whether to add the list (whether it's the last query).  
     
+    //SQL for the query
     var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
     
+    //set up a query for one slice of data.
     var sliceDataQuery = L.esri.query({url:samplesTableURL}); //url to samples table
     sliceDataQuery.fields(["*"]);
     sliceDataQuery.returnGeometry(false);
@@ -299,8 +306,7 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
     sliceDataQuery.run(function(error, result, response){
       // console.log('result of slice query', result);
      
-       
-        globalResultsArray = globalResultsArray.concat(response.features);
+        resultsManager.add(response.features);
         
         //console.log("global results", JSON.stringify(globalResultsArray));
         
@@ -315,9 +321,9 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
              //console.log("first thousand", firstThousand);
            
             listResults(firstThousand);
-            highlightAll(); //SEEMS TO NOT ALWAYS RETURN EVERYTHING. TRY SEARCHING "MINN" for STATE. 
+            highlightAll();  
              
-             onQueryEnd();
+            
         }
        
     });
@@ -334,48 +340,11 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
 //    
 //}
 
-//example of a promise:  
-function onQueryEnd(){
-
-    // Promise
-    var isQueryDone = new Promise(
-        function (resolve, reject) {
-            if (globalResultsArray.length === 26274) {
-                var message = 'all samples match this query'
-                resolve(message); // fulfilled
-            } else {
-                var error = 'all samples DO NOT match this query.';
-                reject(error); // reject
-            }
-
-        }
-    );
-
-    // call our promise
-    var testQuery = function () {
-        isQueryDone
-            .then(function (fulfilled) {
-                
-                console.log(fulfilled);
-             
-            })
-            .catch(function (error) {
-                
-                console.log(error);
-            
-            });
-    };
-
-    testQuery();
-}
 
 
 function highlightAll(){
     
-    //just a test for the popup:
-    console.log("section results: ", resultsManager.matchSection(63821));
-    
-    
+      
      delay(function(){
             console.log('time elapsed');
         
