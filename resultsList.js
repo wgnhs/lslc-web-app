@@ -26,6 +26,15 @@ var tableAttributes = [
         //{"field": "", "label": ""}
     ];
 
+// //Executed on Button Click
+  $(".export").on('click', function(event) {
+
+    //not sure why, but it doesn't work without this format
+    //calls function
+    exportTableToCSV.apply(this);
+    //exportTableToCSV();
+  });
+
 
 function initializeResultsTable(){
     
@@ -121,38 +130,59 @@ function onSampleClick(item){
 
 
 
-//----------------THIS FUNCTION COPIED----------------
-  function exportTableToCSV($table, filename) {
+function exportTableToCSV() {
 
-    console.log(globalResultsArray);
+    var filename = "LSLC_Results-"; //declares title for csv
 
-    var $rows = $table.find('tr:has(td)'),
+    //iterates through filters object and changes CSV title to fit them
+    for (key in filters){
+      if (filters[key] != null && filters[key] != ""){
+        if (key == "handSampleAvailabilityInput"){
+          filename += "HandSample"
+        } else if (key == "thinSectionAvailabilityInput"){
+          filename += "ThinSection"
+        } else {
+          filename += filters[key]
+        }
+        filename += "-"
+      }
+    }
+    filename += "exported.csv"; //adds exported.csv at end
 
-      // Temporary delimiter characters unlikely to be typed by keyboard
-      // This is to avoid accidentally splitting the actual contents
-      tmpColDelim = String.fromCharCode(11), // vertical tab character
-      tmpRowDelim = String.fromCharCode(0), // null character
 
-      // actual delimiter characters for CSV format
-      colDelim = '","',
-      rowDelim = '"\r\n"',
+    var csv = '' //establishes csv empty string
+    var newLine = '\r\n' //establishes newline character
 
-      // Grab text from table into CSV formatted string
-      csv = '"' + $rows.map(function(i, row) {
-        var $row = $(row),
-          $cols = $row.find('td');
+    //loop iterates through attributes (globalResultsArray[0])
+    //used to create header
+    for (key in globalResultsArray[0].attributes){
+      //adds csv item, quotes and comma included
+      csv += '"' + key + '"';
+      //if statement adds a newline if the key is the last one in object (HandSampleCatalougueNumber)
+      //otherwise ust adds comma
+      if (key == 'HandSampleCatalogNumber'){
+        csv += newLine
+      } else {
+        csv += ','
+      }
+    }
+    
+    //loop iterates through all of array this time adds CSV body 
+    for (i in globalResultsArray){
+      //pulls out and iterates through each attributes object
+      for (key in globalResultsArray[i].attributes){
+        //adds csv element
+        csv += '"' + globalResultsArray[i].attributes[key] + '"';
+        //adds newline if applicable (see ablove)
+        if (key == 'HandSampleCatalogNumber'){
+          csv += newLine
+        } else {
+          csv += ','
+        }
+      }
+    }
 
-        return $cols.map(function(j, col) {
-          var $col = $(col),
-            text = $col.text();
-
-          return text.replace(/"/g, '""'); // escape double quotes
-
-        }).get().join(tmpColDelim);
-
-      }).get().join(tmpRowDelim)
-      .split(tmpRowDelim).join(rowDelim)
-      .split(tmpColDelim).join(colDelim) + '"';
+    //THIS SECTION CREATES TABLE -- DOWNLOADED FUNCTION
 
     // Deliberate 'false', see comment below
     if (false && window.navigator.msSaveBlob) {
@@ -191,35 +221,8 @@ function onSampleClick(item){
           'target': '_blank'
         });
     }
-  }
-//--------------------------------------------^^^^^  
+}
 
-//Executed on Button Click
-  $(".export").on('click', function(event) {
-
-    var title = "LSLC_Results-"; //declares title for csv
-
-    //iterates through filters object and changes CSV title to fit them
-    for (key in filters){
-      if (filters[key] != null && filters[key] != ""){
-        if (key == "handSampleAvailabilityInput"){
-          title += "HandSample"
-        } else if (key == "thinSectionAvailabilityInput"){
-          title += "ThinSection"
-        } else {
-          title += filters[key]
-        }
-        title += "-"
-      }
-    }
-    title += "exported.csv"; //adds exported.csv at end
-
-    //sets up argument; finds table and adds in title 
-    var args = [$('#resultsTable'), title];
-
-    //calls copied function
-    exportTableToCSV.apply(this, args);
-  });
 
 
 
