@@ -119,8 +119,12 @@ function onSampleClick(item){
 }
 
 
+
+
 //----------------THIS FUNCTION COPIED----------------
   function exportTableToCSV($table, filename) {
+
+    console.log(globalResultsArray);
 
     var $rows = $table.find('tr:has(td)'),
 
