@@ -9,24 +9,16 @@
        
        <!--Google font-->
        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
-       
-       
 
-       <!-- Leaflet -->
-            <!-- online -->
-            <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
-           <!-- local -->  
-            <script src="lib/leaflet.js"></script>
-
-            <link rel="stylesheet" href="lib/leaflet.css" />
+       
+       <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
        
        <!-- Load Esri Leaflet from CDN -->
-            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+            <script type="text/javascript" src="lib/esri-leaflet.js"></script>
        
-       <!-- Zoomify Leaflet -->
-            <script type="text/javascript" src="lib/zoomify_layer.js"></script>
-            <!--<script type="text/javascript" src="script/zoomify_layer.js"></script>-->
-       
+              
        <!-- JQuery  -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
        
@@ -34,10 +26,6 @@
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
        
-        <!--ESRI 3.18-->
-           <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-           <script src="https://js.arcgis.com/3.18/"></script>
-
        
        <LINK href="recordStyle.css" rel='stylesheet'/> 
        <LINK href="modalStyle.css" rel='stylesheet'/>
@@ -78,12 +66,19 @@
        
    <script src="header.js"></script>
    <script src="mapServiceUrls.js"></script>
-       
+   <script src="recordDataManager.js"></script>
     <script type="text/javascript">
         //indicate the current page in the nav bar. 
         $("#navSample").css("background-color", "#848484");
         
-            
+        var delay = (function(){
+          var timer = 0;
+          return function(callback, ms){
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+          };
+        })();
+    
         
         //The parts of the record webpage are referred to as 'divisions' in this code. 
         //The buildReport function will iterate through this array.
@@ -97,7 +92,7 @@
             {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"}, 
             {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc"}, 
             {"divisionTitle":"Sample Notes","divisionId":"sampleNotes"},
-            {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}, 
+          //  {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}, 
             {"divisionTitle":"All Sample Data", "divisionId":"allData"}
         ]; 
         
@@ -134,7 +129,7 @@
             lithologies:[{
                 "lithNotebookId": "none",
                 "lithPage": null,
-                "lithNotebookTitle": null,
+                
                 "lithNotebookTitle": null,
                 "lithDate": null, 
                 "lithAuthor":null,
@@ -173,14 +168,20 @@
         
         function resetSampleNumber(number){
            
-            ///^\+?\d+$/
-            if (/^\+?\d+$/.test(number)){
-                //console.log("valid number ", number);
+            // regex for numbers only --> /^\+?\d+$/
+            // regex for letters or numbers --> /[a-zA-Z0-9]+/
+            if (/[a-zA-Z0-9]+/.test(number)){
+                console.log("valid number ", number);
                 //reset the global variable: 
                // sampleRecordData.sampleId = number;
-                  
-                findSample(number);
-               
+                  searchSample(number);
+              //  findSample(number);
+//                sampleRecordData = {};
+//                sampleRecordData.catalogNumber = number;
+//                sampleRecordData.location = {};
+//                sampleRecordData.thinSections =[];
+//                sampleRecordData.lithologies = [];
+               //buildReport();
                 
             } else {
                 console.log("the number "+number+" is false."); 
@@ -195,155 +196,240 @@
 
             } //end else
         } //end function resetSampleNumber
-   
-       
         
-        function findSample(number){
-            //will need to retrieve data from five tables and place it into the internal data object (global variable sampleRecordData).
-            //sampleRecordQuery.consoleLog("hello");
-            sampleRecordData = {};
-            sampleRecordData.catalogNumber = number;
-            sampleRecordData.location = {};
-            sampleRecordData.thinSections =[];
-            sampleRecordData.lithologies = [];
-            
-            require(["esri/tasks/query", "esri/tasks/QueryTask"], function(Query, QueryTask){
+        //var sampleNumberSQL = "Upper(HandSampleCatalogNumber) LIKE UPPER('"+number+"')";
+   
+        function searchSample(number){
+ 
+           queryForSample(number)
+             .then(function(resolved){  
+               console.log("3. resolved initial query.", resolved); 
                
-                
-                var sampleCatalogNumberQuery = new Query();
-                sampleCatalogNumberQuery.outFields = ['*'];
-                sampleCatalogNumberQuery.where = "HandSampleCatalogNumber = '"+number+"'";
-                
-                console.log("query.where:", sampleCatalogNumberQuery.where);
-                var sampleTableQuery = new QueryTask(samplesTableURL);
-                sampleTableQuery.execute(sampleCatalogNumberQuery, function(sampleTableResult){
-                    if(sampleTableResult.features[0]){
-                        //console.log("sample table info:", sampleTableResult.features[0].attributes);
-                        //set the attributes that can be found in the samples table. 
-                        
-                        sampleRecordData.sampleId = sampleTableResult.features[0].attributes.SampleId;
-                        sampleRecordData.fieldDesc = sampleTableResult.features[0].attributes.RockType;
-                        sampleRecordData.thinSectionCount = sampleTableResult.features[0].attributes.ThinSectionCount;
-                        sampleRecordData.mapSectionId = sampleTableResult.features[0].attributes.SectionId;
-                        sampleRecordData.location.state = sampleTableResult.features[0].attributes.State;
-                        sampleRecordData.location.township = sampleTableResult.features[0].attributes.Township;
-                        sampleRecordData.location.range = sampleTableResult.features[0].attributes.Range + sampleTableResult.features[0].attributes.Direction;
-                        sampleRecordData.location.PLSSSectionNum = sampleTableResult.features[0].attributes.Section_;
-                        sampleRecordData.location.quarterSection = sampleTableResult.features[0].attributes.Quarter;
-                        sampleRecordData.location.quarterQuarterSection = sampleTableResult.features[0].attributes.QuarterQuarter;
-                        sampleRecordData.location.locationNote = sampleTableResult.features[0].attributes.LocNote;
-                        sampleRecordData.fieldNotebookNum = sampleTableResult.features[0].attributes.NotebookNum;
-                       
-                        sampleRecordData.fieldPage = sampleTableResult.features[0].attributes.NotebookPage;
-                        sampleRecordData.WGNHSId = sampleTableResult.features[0].attributes.WgnhsId;
-                        sampleRecordData.sampleNotes = sampleTableResult.features[0].attributes.Notes;
-                        
-                        //define this query after the value is set?
-                        var sampleIDQuery = new Query();
-                        sampleIDQuery.outFields = ['*'];
-                        sampleIDQuery.where = "SampleId = "+sampleRecordData.sampleId;
-                        
-                        //if the sample id is successfully found, 
-                        retrieveAllData(sampleIDQuery, Query, QueryTask);
-                        
+               //three tables can all be queried using the initial information...
+               var threeTableResults = Promise.all([retrieveNotebookData(), retrieveThinSections(), retrieveLithology()]);
+               
+               
+//               retrieveNotebookData()
+//                   .then(function(resolved){
+//                       console.log("5. resolved notebook query. ", resolved);
+//                       retrieveThinSections()
+//                           .then(function(resolved){
+//                                console.log("7. thin section query done.", resolved);
+//                                retrieveLithology()
+               
+               //finding the ledgers must happen after finding the lithologies. 
+               threeTableResults.then(function(){
+                                        console.log("9. lithologies:", sampleRecordData.lithologies);
+
+                                        var ledgerQueryQueue = [];
+                                        for(i in sampleRecordData.lithologies){
+                                            ledgerQueryQueue.push(i);
+                                        }
+                                        
+                                        //run the promise for each item in the queue. 
+                                        var actions = ledgerQueryQueue.map(retrieveLedger); 
+
+                                        //only after the final query has returned, we can build the report. 
+                                        var ledgerResults = Promise.all(actions);
+                                        ledgerResults.then(function(data){
+                                            console.log("queries are done. all sample data: ", sampleRecordData);
+                                            buildReport();
+                                        });
+
+                                });
+//                            });
+//
+//                    });
+            }).catch(function(error){
+               console.log("error. ", error);
+           })
+       } //end testSample
+        
+        console.log("this is out of sequence...");
+        
+        //needs to be called! 
+        function queryForSample(number){
+            console.log("1. query for sample #", number); 
+            return new Promise (function(resolve, reject){
+                recordDataManager.clear();
+                sampleRecordData.catalogNumber = number;
+            
+            
+                var sampleCatalogNumberQuery = L.esri.query({url: samplesTableURL}); 
+                sampleCatalogNumberQuery.fields(["*"]);
+                sampleCatalogNumberQuery.where("Upper(HandSampleCatalogNumber) LIKE UPPER('"+number+"')");
+
+                sampleCatalogNumberQuery.run(function(error, sampleTableResult, sampleTableResponse){
+                   // console.log("sample table response:", sampleTableResponse.features[0].attributes);
+                  //  console.log("sample table result:", sampleTableResult.features[0].properties);
+
+                    //set the attributes that can be found in the samples table. 
+
+                    if(sampleTableResponse.features[0]){
+                            console.log("2. sample found.");
+                            //console.log("sample table info:", sampleTableResult.features[0].attributes);
+                            //set the attributes that can be found in the samples table. 
+
+                            sampleRecordData.catalogNumber = sampleTableResponse.features[0].attributes.HandSampleCatalogNumber; //this resets to the correct code if the user entered a lowercase letter
+                            sampleRecordData.sampleId = sampleTableResponse.features[0].attributes.SampleId;
+                            sampleRecordData.fieldDesc = sampleTableResponse.features[0].attributes.RockType;
+                            sampleRecordData.thinSectionCount = sampleTableResponse.features[0].attributes.ThinSectionCount;
+                            sampleRecordData.mapSectionId = sampleTableResponse.features[0].attributes.SectionId;
+                            sampleRecordData.location.state = sampleTableResponse.features[0].attributes.State;
+                            sampleRecordData.location.township = sampleTableResponse.features[0].attributes.Township;
+                            sampleRecordData.location.range = sampleTableResponse.features[0].attributes.Range + sampleTableResponse.features[0].attributes.Direction;
+                            sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section_;
+                            sampleRecordData.location.quarterSection = sampleTableResponse.features[0].attributes.Quarter;
+                            sampleRecordData.location.quarterQuarterSection = sampleTableResponse.features[0].attributes.QuarterQuarter;
+                            sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes.LocNote;
+                            sampleRecordData.fieldNotebookNum = sampleTableResponse.features[0].attributes.NotebookNum;
+                            sampleRecordData.fieldPage = sampleTableResponse.features[0].attributes.NotebookPage;
+                            sampleRecordData.WGNHSId = sampleTableResponse.features[0].attributes.WgnhsId;
+                            sampleRecordData.sampleNotes = sampleTableResponse.features[0].attributes.Notes;
+                           // console.log("resolve with", sampleTableResponse.features[0])
+                            resolve(sampleTableResponse.features[0]);
+
                     } else {
                         //if the sample id is not successfully found, return an error message. 
-                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.sampleId+". Try a different number.");
-                  
+                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.catalogNumber+". Try a different number.");
+                        reject("reject: sample not found.");
                     }
-                    
-                    
-                    
-                }); //end execute
-                
-           
-            }); //end require
+                });//end .run
+            
+            
+            }); //end return new Promise
+        } //end query for sample
+                                
+        function retrieveNotebookData(){
+           console.log("4.")
+            return new Promise (function(resolve, reject){
+                if(sampleRecordData.fieldNotebookNum){
+                    var notebookQuery = L.esri.query({url: notebooksTableURL}); 
+                    notebookQuery.fields(["*"]); 
+                    notebookQuery.where("Number LIKE '"+sampleRecordData.fieldNotebookNum+"'"); 
 
-        } //end findSample function
+                    notebookQuery.run(function(error, featureCollection, notebooksResponse){
+                        
+                        sampleRecordData.fieldNotebookTitle = notebooksResponse.features[0].attributes.Title;
+                        sampleRecordData.fieldAuthor= notebooksResponse.features[0].attributes.Author;
+                        sampleRecordData.fieldDate = notebooksResponse.features[0].attributes.Year;
+                        sampleRecordData.fieldNotebookUrl = notebooksResponse.features[0].attributes.UwdcUrl;
+                        console.log(notebooksResponse);
+                        resolve(notebooksResponse);
+
+
+                    }); //end run 
+                } //end if 
+                else {resolve("no field notebook number.");}
+                
+            }); //end return  
+        } //end retrieveNotebookData 
         
-        function retrieveAllData(sampleIDQuery, Query, QueryTask){
-           
-            //primary queries will return only 
-            
-            //we need a notebook id to run a query of the notebooks table. 
-            if(sampleRecordData.fieldNotebookNum){
-               // console.log("notebook", sampleRecordData.fieldNotebookNum);
-                var notebookQuery = new Query();
-                notebookQuery.outFields=['*'];
-                notebookQuery.where = "Number LIKE '"+sampleRecordData.fieldNotebookNum+"'";
+        function retrieveThinSections(){
+            console.log("6.")
+            return new Promise(function(resolve, reject){
+                var thinSectionQuery = L.esri.query({url: thinSectonsTableURL}); 
+                thinSectionQuery.where("SampleId = "+sampleRecordData.sampleId); 
+                thinSectionQuery.fields(["*"]); 
                 
-                console.log('query.where:', notebookQuery.where);
-                var notebooksTableQuery = new QueryTask(notebooksTableURL);
-                notebooksTableQuery.execute(notebookQuery, function(notebooksResult){
-                        console.log("notebook info", notebooksResult.features[0].attributes);
-                        sampleRecordData.fieldNotebookTitle = notebooksResult.features[0].attributes.Title;
-                        sampleRecordData.fieldAuthor= notebooksResult.features[0].attributes.Author;
-                        sampleRecordData.fieldDate = notebooksResult.features[0].attributes.Year;
-                        sampleRecordData.fieldNotebookUrl = notebooksResult.features[0].attributes.UwdcUrl;
-                    }); //end execute
-                
-            } //end if (field notebook id >0 ) 
-            
-            //We always query the lithology table for the sample ID. 
-            var lithologyTableQuery = new QueryTask(lithologyTableURL);
-            lithologyTableQuery.execute(sampleIDQuery, function(lithTableResult){
-               
-               // sampleRecordData.lithologies = [];
-                
-                for (i in lithTableResult.features){
-                    var lithDetails = {};
-                    console.log("lith info", lithTableResult.features[i].attributes);
-                    lithDetails.lithNotebookId = lithTableResult.features[i].attributes.Book;
-                    lithDetails.lithPage = lithTableResult.features[i].attributes.Page;
-                    lithDetails.lithDesc = lithTableResult.features[i].attributes.RockType;
-                    lithDetails.lithNotes = lithTableResult.features[i].attributes.Notes;
+                thinSectionQuery.run(function(err, fc, thinSectionsResponse){
                     
-                    sampleRecordData.lithologies.push(lithDetails);  
-                }
+                    //console.log("err", err);
+                   // console.log("fc", fc);
+                   // console.log("thinsectionsResponse", thinSectionsResponse);
+                    for (i in thinSectionsResponse.features){
+                        var thinDetails = {};
+                      //  console.log("thin section info", thinSectionsResponse.features[i].attributes);
+                        //add attributes to the thin sections array. 
+                        thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes.CatalogNumber;
+                        thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
+                        thinDetails.thinImgppl = null;
+                        thinDetails.thinImgxpl = null;
+                        thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'ppl_thumb.jpg';
+                        thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'xpl_thumb.jpg';
+
+                        sampleRecordData.thinSections.push(thinDetails);
+                        
+                    } //end for loop
+                    
+                    resolve(thinSectionsResponse.features);
+                    
+                }); //end .run
                 
-            }); //end execute lithology querytask
-            
-            //we always query the hand samples table 
-//            var handSampleTableQuery = new QueryTask(handSampleTableURL);
-//            handSampleTableQuery.execute(sampleIDQuery, function(handSampleResult){
-//                if(handSampleResult.features[0]){
-//                    console.log("hand sample info:", handSampleResult.features[0].attributes);
-//                    sampleRecordData.handSampleId = handSampleResult.features[0].attributes.SampleId;
-//                }
-//                
-//            }); //end execute
+               
+            }); //end promise
+  
+        } //end retrieveThinSections 
+       
+       function retrieveLithology(){
+           return new Promise(function(resolve, reject){
+               console.log("8. query for lithology.")
+               var lithQuery = L.esri.query({url: lithologyTableURL});
+               lithQuery.where("SampleId = "+sampleRecordData.sampleId); 
+               lithQuery.fields(["*"]);
+               
+               lithQuery.run(function(err, fc, lithResponse){
+                   for (i in lithResponse.features){
+                        var lithDetails = {};
+                      // console.log("lith info", lithResponse.features[i].attributes);
+                        lithDetails.lithNotebookId = lithResponse.features[i].attributes.BookId;
+                        lithDetails.lithPage = lithResponse.features[i].attributes.Page;
+                        lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
+                        lithDetails.lithNotes = lithResponse.features[i].attributes.Notes;
+                                                                    
+                       sampleRecordData.lithologies.push(lithDetails);
+  
+                   } //end for
+                   
+                   resolve(lithResponse.features);
+      
+               }); //end .run
+               
+           });//end promise
 
-            //we always query the thin section.     
-            var thinSectionTableQuery = new QueryTask(thinSectonsTableURL);
-            thinSectionTableQuery.execute(sampleIDQuery, function(thinTableResult){
-                //clear previous results. 
-                //sampleRecordData.thinSections = [];
+       
+       } //end retrieveLithology
+        
+        function retrieveLedger(lithologyindex){
+            return new Promise(function(resolve, reject){
 
-                for(i in thinTableResult.features){
-                    var thinDetails = {};
-                    console.log("thin section info", thinTableResult.features[i].attributes);
-                    //add attributes to the thin sections array. 
-                    thinDetails.thinSectionId = thinTableResult.features[i].attributes.CatalogNumber;
-                    thinDetails.condition = thinTableResult.features[i].attributes.Condition;
-                    thinDetails.thinImgppl = null;
-                    thinDetails.thinImgxpl = null;
-                    thinDetails.thinThumbppl = 'http://mp-web2t/lslc/assets/thin-section/images/thumbnails/'+thinTableResult.features[i].attributes.CatalogNumber+'ppl_thumb.jpg';
-                    thinDetails.thinThumbxpl = 'http://mp-web2t/lslc/assets/thin-section/images/thumbnails/'+thinTableResult.features[i].attributes.CatalogNumber+'xpl_thumb.jpg';
+//                if (lithDescriptions){
+//                    for(i in sampleRecordData.lithologies){
+                        
+                        var ledgerQuery = L.esri.query({url:ledgerTableURL});
+                        ledgerQuery.where("BookId = "+ sampleRecordData.lithologies[lithologyindex].lithNotebookId); 
+                        ledgerQuery.fields(["*"]);
+                        
+                       // var ledgerDetails = [];
+                        console.log("search for ledger book #", sampleRecordData.lithologies[lithologyindex].lithNotebookId); 
 
-                    sampleRecordData.thinSections.push(thinDetails);
-                    //http://mp-web2t/lslc/assets/thin-section/images/thumbnails/724ppl_thumb.jpg
-                } //end for loop
-                
-                 buildReport(); //to happen in the right order, this has to go within this execute function for some reason... 
-            });
+                        ledgerQuery.run(function(err, result, ledgerResponse){
+                           console.log("ledger info: ", ledgerResponse.features[0].attributes);
+                            
+                            
+                           sampleRecordData.lithologies[lithologyindex].lithNotebookTitle =  ledgerResponse.features[0].attributes.Title; 
+                           sampleRecordData.lithologies[lithologyindex].lithNotebookUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
+                           sampleRecordData.lithologies[lithologyindex].lithDate =  ledgerResponse.features[0].attributes.Year;
+                           sampleRecordData.lithologies[lithologyindex].lithAuthor =  ledgerResponse.features[0].attributes.Author;
+                           resolve(ledgerResponse.features[0]);
+                           
+                           
+
+                        }); //end .run
+//                        
+                        
+//                    } //end for
+//                    
+//                    
+//                } //end if
+    
+            }); //end return Promise
             
-           
-            
-             
-        } //end function retrieveAllData. 
+        } //end function retrieveLedgers
+
            
         function buildReport(){
-           console.log("build report.");
+           console.log("11. build report");
             //clear the sample record div. 
             $("#sampleRecord").html('');
              addSampleNumber();
@@ -371,7 +457,7 @@
             addFieldNotes();
             addLithDesc();
             addNotes();
-            addAvailableSamples();
+           // addAvailableSamples();
             addDataTable();
             
         } //end buildReport 
@@ -392,7 +478,7 @@
         }
         
        function addThinSections(){
-            console.log("sampleRecordData", sampleRecordData);
+        //    console.log("sampleRecordData", sampleRecordData);
             //populate the thin section results:
            
             if (sampleRecordData.thinSections.length > 0){
@@ -452,13 +538,23 @@
 	           maxZoom: 19
                 }).addTo(map);
             
-//            var mapSection = L.esri.FeatureLayer({
-//                 url: PLSSSectionsLayerURL,
-//                style:{color: "#000", weight: 0.35, fillColor: "#111"}, 
-//                where: 'UID ='+sampleRecordData.mapSectionId
-//                
-//            });
+            var mapSection = L.esri.featureLayer({
+                 url: PLSSSectionsLayerURL,
+                style: {color: "#000", weight: 0.35, fillColor: "#111"}, 
+               // where: 'UID ='+sampleRecordData.mapSectionId
+                
+            }).addTo(map);
             
+            //zoom the map to the correct section: 
+           var sectionQuery = L.esri.query({url:PLSSSectionsLayerURL});
+
+            sectionQuery.where("UID = "+sampleRecordData.mapSectionId).run(function(error, sec){
+                var section = L.geoJson(sec).addTo(map); 
+                map.fitBounds(section.getBounds().pad(3));
+            }
+            ); 
+            
+
             //set up an empty var for the location info.
             var loc = ''
             
@@ -494,16 +590,22 @@
         }
         
         function addLithDesc(){
+            //console.log("addLithDesc. sampleRecordData", sampleRecordData.lithologies);
+            
             var lith = '';
             if(sampleRecordData.lithologies.length > 0){
                 for (i in sampleRecordData.lithologies){
+                    //console.log("lith data", sampleRecordData.lithologies[i]);
+                    
                     lith+='<div>';      
                     //thumbnail in link
-                    lith += "<a syle='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank> <img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
+                    if (sampleRecordData.lithologies[i].lithNotebookUrl){lith += "<a style='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"}; 
+                    lith += "<img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
                     //details
                     lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>" 
                     lith += "<p>Book "+sampleRecordData.lithologies[i].lithNotebookId+"</p>"
-                    //lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
+                    if (sampleRecordData.lithologies[i].lithNotebookUrl){lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"};
+                    
                     lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p></div>";
                     lith+='</div>';
                 }
@@ -525,24 +627,24 @@
             }
         }
         
-        function addAvailableSamples(){
-            $('#availableSamples').append('<p>Information about where to find the physical samples, if available...</p>');
-        }
-        
+//        function addAvailableSamples(){
+//            $('#availableSamples').append('<p>Information about where to find the physical samples, if available...</p>');
+//        }
+//        
         function addDataTable(){
             $("#allData").append('<table id="dataTable">'); 
             
             for (prop in sampleRecordData){
                 if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Array){
                     //all arrays are arrays of objects in this structure. 
-                    console.log("array", prop);
+                   // console.log("array", prop);
                     //if (sampleRecordData[prop].length > 1){
                         for(o in sampleRecordData[prop]){
                             //sampleRecordData[prop][o] is an object. 
                             // o is the index number. 
                             var num = parseInt(o)+1;
 
-                            console.log(prop, " ", num, " of ", sampleRecordData[prop].length);
+                           // console.log(prop, " ", num, " of ", sampleRecordData[prop].length);
                             for (subProp in sampleRecordData[prop][o]){
                                 $("#dataTable").append("<tr><td>"+prop+"_"+num+"of"+sampleRecordData[prop].length+"_"+subProp+"</td><td>"+sampleRecordData[prop][o][subProp]+"</td></tr>");
                             }
@@ -556,7 +658,7 @@
                 //    }
                     
                 } else if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Object){
-                    //console.log("object", prop);
+                  //  console.log("object", prop);
                     //location is an object. iterate through its properties and add them to the list. 
                     for (subProp in sampleRecordData[prop]){
                         $("#dataTable").append("<tr><td>"+subProp+"</td><td>"+sampleRecordData[prop][subProp]+"</td></tr>");
