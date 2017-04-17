@@ -1,4 +1,3 @@
-console.log('running')
 var leafletMap = (function(){
     
     
@@ -150,11 +149,12 @@ var leafletMap = (function(){
         //loops through samples in the section adding a line for each of them
         for (i in sectionResults) {
 
+            var listedCatalogNumber = sectionResults[i].attributes.HandSampleCatalogNumber
             var listedSampleId = sectionResults[i].attributes.SampleId;
             var listedRockType = sectionResults[i].attributes.RockType;
             if (listedRockType == null){ listedRockType = "Unknown";} //checks for null value
 
-            content = content + "<li>" + listedRockType + ": <a href='sampleRecord.html#" + listedSampleId + "'>" + listedSampleId + "</a></li>";
+            content = content + "<li>" + listedRockType + ": <a href='sampleRecord.html#" + listedCatalogNumber + "'>" + listedSampleId + "</a></li>";
 
         }
 
