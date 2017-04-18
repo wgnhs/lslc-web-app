@@ -1,5 +1,5 @@
 # LSLC-Web-App
-Web Application for the viewing the WGNHS Lake Superior Legacy Collection
+Web Application for viewing the WGNHS Lake Superior Legacy Collection
 
 
 
