@@ -90,9 +90,6 @@ function initFiltersListeners(){
     
 function resetFilters() {
 
-    if (loadingPageOn == false){$("#map").append($("<div id='loading'></div>"))}
-    loadingPageOn = true
-
     //reset for every filter that's based on an input in the #filters div (everything except the map filter). 
         filters.rockTypeInput = $("#rockTypeSearch").val();
         filters.countyInput = $("#countySearch").val(); 
@@ -110,6 +107,12 @@ function resetFilters() {
     
     
 function queryTableForFilters(){
+    
+  //  if (loadingPageOn == false){
+        $("#map").append($("<div id='loading'></div>")); //will be removed in leafletMap.js highlight function after setStyle. 
+    
+  //  };
+  //  loadingPageOn = true;
     
     //reset the global variable. 
     resultsManager.clearAll();
