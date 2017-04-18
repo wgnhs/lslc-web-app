@@ -5,15 +5,15 @@ var filters = {
     //an empty string is falsy. 
     //an empty array is not falsy, so the map sections input must be set to null when cleared. 
     
-    "mapSectionsInput": null, 
-    "rockTypeInput": "", 
-    "countyInput": "", 
-    "handSampleAvailabilityInput": null, 
-    "thinSectionAvailabilityInput": null, 
-    "stateInput": null, 
-    "notesInput": null, 
-    "notebookInput": null, 
-    "notebookPageInput": null, 
+    "mapSectionsInput": null,
+    "rockTypeInput": "",
+    "countyInput": "",
+    "handSampleAvailabilityInput": null,
+    "thinSectionAvailabilityInput": null,
+    "stateInput": null,
+    "notesInput": null,
+    "notebookInput": null,
+    "notebookPageInput": null,
     "WGNHSInput": null
 };
 
@@ -114,7 +114,7 @@ function queryTableForFilters(){
   //  };
   //  loadingPageOn = true;
     
-    //reset the global variable. 
+    //reset the global variable of results. 
     resultsManager.clearAll();
    
     var whereString = buildSqlAndAddIndicators(); //call the function to build a SQL where clause. It will return the where clause as a string. 
@@ -144,7 +144,7 @@ function queryTableForFilters(){
             
             //result is either null or non-null. 
             if(result){
-//               
+               
                 //set results counter statement: 
                 document.getElementById("resultCount").innerHTML = result.length;
             
@@ -159,7 +159,7 @@ function queryTableForFilters(){
                 //set results counter statement: 
                 document.getElementById("resultCount").innerHTML = 0;
                 
-                listResults(globalResultsArray);
+                listResults([]);
                 highlightAll();
                 
             }
@@ -280,25 +280,15 @@ function sliceResult(allResultOBJECTIDs){
         var oneSliceOBJECTIDs= allResultOBJECTIDs.slice(rangeMin, rangeMax); 
         //console.log("one slice result OBJECTIDS:", oneSliceOBJECTIDs); 
         
-        
+       //add the slice query into a queue  
        sliceQueriesQueue.push(slicePromise(oneSliceOBJECTIDs)); 
-        
-        //deploy a query along with an indicator for last page. 
-//        if (j == pageBreaks.length-1){
-//            console.log("last page.");
-//           // console.log("final objectIDs", oneSliceOBJECTIDs);
-//            queryForSliceData(oneSliceOBJECTIDs, true);
-//        }  else {
-//            //console.log("not last page.");
-//            queryForSliceData(oneSliceOBJECTIDs, false);
-//        }
 
     }
     
     var allQueries = Promise.all(sliceQueriesQueue).then(function(data){
-        console.log("allqueries data:", data); 
+       // console.log("allqueries data:", data); 
         for (i in data){
-            resultsManager.add(data[i]); 
+            resultsManager.add(data[i]); //concatenate each slice's results to the global var. 
         }
         
         console.log("global results: ", globalResultsArray); 
@@ -307,7 +297,7 @@ function sliceResult(allResultOBJECTIDs){
         listResults(firstThousand);
         
         highlightAll();
-    })
+    });
 
 
    

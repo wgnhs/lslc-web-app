@@ -57,13 +57,13 @@ function initializeResultsTable(){
 
 //accepts data from the dojo query 
 function listResults (dataObjects){
-    console.log("dataObjects is: ", dataObjects);
+   // console.log("dataObjects is: ", dataObjects);
     //dataObjects is an array of objects. 
    
     //Clear the results list before re-populating. 
    // console.log("clear results.");
 
-    $("#resultsCount").html('0');
+    //$("#resultsCount").html('0');
     resultsTableBody.innerHTML = '';
     
 
@@ -72,11 +72,10 @@ function listResults (dataObjects){
        // console.log("dataObjects[obj].attributes.SampleId: ", dataObjects[obj].attributes.SampleId);
         
         var samCat = dataObjects[obj].attributes.HandSampleCatalogNumber;
-        //console.log("samId", samId);
         
         var tr = "";
         tr+= "<tr data-ID="+samCat+">"; 
-        //var trHTML = '';
+        
         for (attr in tableAttributes){
             var field = tableAttributes[attr].field;
             var val = dataObjects[obj].attributes[field];

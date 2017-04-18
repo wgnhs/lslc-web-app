@@ -46,7 +46,7 @@ var modal = (function(){
 
     };
     
-    var thinSectionViewer = function(id){
+    var thinSectionViewer = function (id) {
         console.log("show thin section viewer for ID", id);
         modalContent = "<span id='closemodal' class='close'>x</span>"; 
         
