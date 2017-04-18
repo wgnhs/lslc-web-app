@@ -256,7 +256,7 @@ function sliceResult(allResultOBJECTIDs){
     //order the pages breaks array from smallest to largest. 
     pageBreaks.sort(function(a, b){return a-b});
     
-    
+    var sliceQueriesQueue = []
     
     //console.log("pageBreaks", pageBreaks);
     //for each page of objectIDs, call a query for that set of results. 
@@ -270,23 +270,60 @@ function sliceResult(allResultOBJECTIDs){
         var oneSliceOBJECTIDs= allResultOBJECTIDs.slice(rangeMin, rangeMax); 
         //console.log("one slice result OBJECTIDS:", oneSliceOBJECTIDs); 
         
- //      queryForSliceData(oneSliceOBJECTIDs, false); 
+        
+       sliceQueriesQueue.push(slicePromise(oneSliceOBJECTIDs)); 
         
         //deploy a query along with an indicator for last page. 
-        if (j == pageBreaks.length-1){
-            console.log("last page.");
-           // console.log("final objectIDs", oneSliceOBJECTIDs);
-            queryForSliceData(oneSliceOBJECTIDs, true);
-        }  else {
-            //console.log("not last page.");
-            queryForSliceData(oneSliceOBJECTIDs, false);
-        }
+//        if (j == pageBreaks.length-1){
+//            console.log("last page.");
+//           // console.log("final objectIDs", oneSliceOBJECTIDs);
+//            queryForSliceData(oneSliceOBJECTIDs, true);
+//        }  else {
+//            //console.log("not last page.");
+//            queryForSliceData(oneSliceOBJECTIDs, false);
+//        }
 
     }
+    
+    var allQueries = Promise.all(sliceQueriesQueue).then(function(data){
+        console.log("allqueries data:", data); 
+        for (i in data){
+            resultsManager.add(data[i]); 
+        }
+        
+        console.log("global results: ", globalResultsArray); 
+        
+        var firstThousand = globalResultsArray.slice(0,1000);   
+        listResults(firstThousand);
+        
+        highlightAll();
+    })
 
 
    
 } //end sliceResult function 
+
+function slicePromise(resultSliceOBJECTIDs){
+    return new Promise(function(resolve, reject){
+        //SQL for the query
+        var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
+
+        //set up a query for one slice of data.
+        var sliceDataQuery = L.esri.query({url:samplesTableURL}); //url to samples table
+        sliceDataQuery.fields(["*"]);
+//        sliceDataQuery.returnGeometry(false);
+        sliceDataQuery.where(sliceWhereClause);
+        
+        sliceDataQuery.run(function(error, featureCollection, sliceResponse){
+            if (error){
+                reject("sliceDataQuery error.");
+            } else {
+                resolve (sliceResponse.features);
+            }
+        }); 
+        
+    }); 
+}
 
 function queryForSliceData(resultSliceOBJECTIDs, drawList){
     //resultsIds is an array of the objectIDs of one slice of results. Max length 1000. 
@@ -343,10 +380,8 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
 
 
 function highlightAll(){
-    
-      
-     delay(function(){
-            console.log('time elapsed');
+ 
+            console.log('highlight now.');
         
             //iterate through and output array of sections for the highlight function. 
             var highlightMapSections = []; 
@@ -358,6 +393,5 @@ function highlightAll(){
 
             //accepts an array of section IDs. 
             leafletMap.highlight(highlightMapSections);
-         
-     }, 3000);
+
 }

@@ -13,6 +13,7 @@ var tableAttributes = [
         {"field": "HandSampleCount", "label": "Hand Sample"}, 
         {"field": "ThinSectionCount", "label": "Thin Sections"}, 
         {"field": "State", "label": "State"},
+        {"field": "County", "label": "County"},
         //  {"field": "Township", "label": "Township"},
         // {"field": "Range", "label": "Range"},
         // {"field": "Direction", "label": "Range Direction"},
