@@ -1,6 +1,9 @@
 var resultsManager = (function(){
     
-  
+    var clearAll = function(){
+        globalResultsArray = [];
+    }
+    
     var resultsPage = function (pageNum){
     //pageNum is an integer beginning at 1 
     
@@ -22,12 +25,17 @@ var resultsManager = (function(){
         return sectionResults; 
         
     }
+    
+    function add(additionalFeatures){
+        globalResultsArray = globalResultsArray.concat(additionalFeatures);
+    }
 
     return {
       
         "resultsPage": resultsPage, 
-        "matchSection": matchSection 
-       
+        "matchSection": matchSection, 
+        "clearAll": clearAll, 
+        "add": add
     }
     
 })();

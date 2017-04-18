@@ -1,5 +1,3 @@
-
-
 //var resultCount = document.getElementById("resultCount");
 var resultsTable; 
 var sample;
@@ -12,9 +10,10 @@ var tableAttributes = [
     
         {"field": "SampleId", "label": "SampleID"}, 
         {"field": "RockType", "label": "Field Description"},  
-        {"field": "HandSampleCount", "label": "Hand Samples"}, 
+        {"field": "HandSampleCount", "label": "Hand Sample"}, 
         {"field": "ThinSectionCount", "label": "Thin Sections"}, 
         {"field": "State", "label": "State"},
+        {"field": "County", "label": "County"},
         //  {"field": "Township", "label": "Township"},
         // {"field": "Range", "label": "Range"},
         // {"field": "Direction", "label": "Range Direction"},
