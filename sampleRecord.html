@@ -343,8 +343,8 @@
                         //add attributes to the thin sections array. 
                         thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes.CatalogNumber;
                         thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
-                        thinDetails.thinImgppl = null;
-                        thinDetails.thinImgxpl = null;
+                        thinDetails.thinImgppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'ppl.jpg';
+                        thinDetails.thinImgxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'xpl.jpg';
                         thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'ppl_thumb.jpg';
                         thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'xpl_thumb.jpg';
 

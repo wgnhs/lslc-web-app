@@ -5,7 +5,6 @@ var leafletMap = (function(){
     var leafletFeatureLayer;
     var drawnItems; 
     var customDeleteButton;
-    var loadingPageOn;
     
     var initialize = function(){
         
@@ -326,7 +325,9 @@ var leafletMap = (function(){
            
         });//end setStyle
 
-        $("#loading").remove() //stops loading feedback
+
+        $("#loading").remove(); //stops loading feedback
+
 
         
     } //end highlight function
