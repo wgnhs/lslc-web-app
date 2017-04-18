@@ -48,7 +48,7 @@ function initFiltersListeners(){
     //delay helps with performance 
     $("#filters").on("input", "input", function(){
         delay(function(){
-            console.log('time elapsed');
+     //       console.log('time elapsed');
             resetFilters();
         }, 1000);
 
@@ -222,7 +222,8 @@ function buildSqlAndAddIndicators() {
         $("#filterFeedback").append($("<span id='stateOn' class='feedbackBar' data='stateInput'>state:&nbsp" + filters.stateInput + "<img src='images/close.png'/></span>"));
         };
     if (filters.WGNHSInput){
-        newsqlArray.push("WgnhsId = "+filters.WGNHSInput);
+        //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
+        newsqlArray.push("cast(WgnhsId as char(1))  LIKE '"+filters.WGNHSInput+"'");
         $("#filterFeedback").append($("<span id='WGNHSOn' class='feedbackBar' data='WGNHSInput'>WGNHS ID:&nbsp" + filters.WGNHSInput + "<img src='images/close.png'/></span>"));
         };
     
