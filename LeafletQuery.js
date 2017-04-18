@@ -20,6 +20,8 @@ var filters = {
 //global var for 
 var globalResultsArray = [];
 
+var loadingPageOn = false;
+
 $(window).on("load", function(){
 
     //initialize listeners for inputs and for filter removal through a click on a filter indicator
@@ -87,6 +89,10 @@ function initFiltersListeners(){
     
     
 function resetFilters() {
+
+    if (loadingPageOn == false){$("#map").append($("<div id='loading'></div>"))}
+    loadingPageOn = true
+
     //reset for every filter that's based on an input in the #filters div (everything except the map filter). 
         filters.rockTypeInput = $("#rockTypeSearch").val();
         filters.countyInput = $("#countySearch").val(); 
@@ -390,6 +396,8 @@ function highlightAll(){
 
                 highlightMapSections.push(globalResultsArray[f].attributes.SectionId);
             }
+
+            loadingPageOn = false;
 
             //accepts an array of section IDs. 
             leafletMap.highlight(highlightMapSections);
