@@ -320,7 +320,7 @@ function slicePromise(resultSliceOBJECTIDs, queryNum){
         
         sliceDataQuery.run(function(error, featureCollection, sliceResponse){
             if (error){
-                reject("sliceDataQuery error.");
+                reject("sliceDataQuery error.", error);
             } else {
                 console.log("4. query #",queryNum," slice response");
                 resolve (sliceResponse.features);
