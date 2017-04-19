@@ -17,8 +17,9 @@ var filters = {
     "WGNHSInput": null
 };
 
-//global var for 
+//global var for results
 var globalResultsArray = [];
+var queryCount = 0;
 
 var loadingPageOn = false;
 
@@ -107,6 +108,7 @@ function resetFilters() {
     
     
 function queryTableForFilters(){
+    queryCount += 1; 
     
   //  if (loadingPageOn == false){
         $("#map").append($("<div id='loading'></div>")); //will be removed in leafletMap.js highlight function after setStyle. 
@@ -114,8 +116,7 @@ function queryTableForFilters(){
   //  };
   //  loadingPageOn = true;
     
-    //reset the global variable of results. 
-    resultsManager.clearAll();
+   
    
     var whereString = buildSqlAndAddIndicators(); //call the function to build a SQL where clause. It will return the where clause as a string. 
     
@@ -125,7 +126,7 @@ function queryTableForFilters(){
     //sampleIdsQuery.returnGeometry(false);
     sampleIdsQuery.where(whereString);
     
-    console.log("where string is:", whereString);
+    console.log("1. query #"+queryCount+" where string is:", whereString);
     
     //set the sections query where clause to the same where as the normal query.
     // sectionsQuery.where = sampleIdsQuery.where;
@@ -139,8 +140,11 @@ function queryTableForFilters(){
 
         sampleIdsQuery.ids(function(error, result){
            //console.log("query for ids error", error);
-            console.log('result for ids', result);
+            console.log('2. query #', queryCount, " result for ids: ", result);
             //console.log("result for ids length", result.length);
+            
+             //reset the global variable of results. 
+            resultsManager.clearAll();
             
             //result is either null or non-null. 
             if(result){
@@ -149,7 +153,7 @@ function queryTableForFilters(){
                 document.getElementById("resultCount").innerHTML = result.length;
             
             
-                sliceResult(result);
+                sliceResult(result, queryCount);
 
                 
             } else {
@@ -244,13 +248,13 @@ function buildSqlAndAddIndicators() {
 }
 
 
-function sliceResult(allResultOBJECTIDs){
+function sliceResult(allResultOBJECTIDs, queryNum){
        
     var sliceSize = 1000; //max is 1000, because that is the limit for Esri map service results. 
     
     //calculate how many pages.
     var numberOfSlices = Math.ceil(allResultOBJECTIDs.length/sliceSize);
-    console.log(allResultOBJECTIDs.length, "is broken into ", numberOfSlices, "slices."); 
+    console.log("3. query #", queryNum," ", allResultOBJECTIDs.length, "results are broken into ", numberOfSlices, "slices."); 
     
     //build a list of page limit indices. 
     var pageBreaks = [0];
@@ -281,7 +285,7 @@ function sliceResult(allResultOBJECTIDs){
         //console.log("one slice result OBJECTIDS:", oneSliceOBJECTIDs); 
         
        //add the slice query into a queue  
-       sliceQueriesQueue.push(slicePromise(oneSliceOBJECTIDs)); 
+       sliceQueriesQueue.push(slicePromise(oneSliceOBJECTIDs, queryNum)); 
 
     }
     
@@ -291,7 +295,7 @@ function sliceResult(allResultOBJECTIDs){
             resultsManager.add(data[i]); //concatenate each slice's results to the global var. 
         }
         
-        console.log("global results: ", globalResultsArray); 
+        console.log("5. global results: ", globalResultsArray); 
         
         var firstThousand = globalResultsArray.slice(0,1000);   
         listResults(firstThousand);
@@ -303,7 +307,7 @@ function sliceResult(allResultOBJECTIDs){
    
 } //end sliceResult function 
 
-function slicePromise(resultSliceOBJECTIDs){
+function slicePromise(resultSliceOBJECTIDs, queryNum){
     return new Promise(function(resolve, reject){
         //SQL for the query
         var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
@@ -318,6 +322,7 @@ function slicePromise(resultSliceOBJECTIDs){
             if (error){
                 reject("sliceDataQuery error.");
             } else {
+                console.log("4. query #",queryNum," slice response");
                 resolve (sliceResponse.features);
             }
         }); 
@@ -381,7 +386,7 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
 
 function highlightAll(){
  
-            console.log('highlight now.');
+            console.log('6. highlight now.');
         
             //iterate through and output array of sections for the highlight function. 
             var highlightMapSections = []; 
