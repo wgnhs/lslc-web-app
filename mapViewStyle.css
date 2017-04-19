@@ -32,9 +32,18 @@ p{ padding: 0; margin: 0;}
 .leaflet-popup-content{
   max-width: 200px;
   max-height: 200px;
-  overflow: scroll;
+  overflow-x: hidden;
 
 }
+
+.leaflet-popup-content ul{
+  list-style: none;
+}
+
+.leaflet-popup-content li:nth-child(even){
+  background-color: #f2f2f2;
+}
+
 
 /*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
 
@@ -85,6 +94,9 @@ p{ padding: 0; margin: 0;}
     position: relative;
     max-width: 400px;
 }
+#filters h2{
+    display: inline;
+}
 
 .filter{
     overflow: hidden; /*keeps the inputs from being pushed outside the div*/
@@ -126,6 +138,7 @@ p{ padding: 0; margin: 0;}
 /*------------------------ Results List ----------------------*/
 #resultsPanel{
     clear: both;
+    padding-top: 20px;
 }
 /*
 #viewOptions{
