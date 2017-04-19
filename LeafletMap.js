@@ -9,7 +9,7 @@ var leafletMap = (function(){
         
         var map = L.map('map')
             //.on('load', function(){setupMapButtons();})
-            .setView([ 47, -90], 7) //setview actually triggers the on load event. 
+            .setView([ 47, -90], 6) //setview actually triggers the on load event. 
             ; //sets up esri leaflet map
         
       //   map.on("load", function(){setupMapButtons();});
@@ -135,7 +135,7 @@ var leafletMap = (function(){
         
         
         drawnItems.on('click', function (e){
-            console.log("clicked layer.");
+            console.log("clicked leaflet draw layer.");
         }); 
        
     } //end setupMapButtons function 
@@ -163,7 +163,7 @@ var leafletMap = (function(){
             var listedRockType = sectionResults[i].attributes.RockType;
             if (listedRockType == null){ listedRockType = "Unknown";} //checks for null value
 
-            content = content + "<li><a href='sampleRecord.html#" + listedCatalogNumber + "'>" + listedCatalogNumber + " " + listedRockType + "</a></li>";
+            content = content + "<li><a href='sampleRecord.html#" + listedCatalogNumber + "' target='_blank' >" + listedCatalogNumber + " " + listedRockType + "</a></li>";
 
         }
 

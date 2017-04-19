@@ -94,6 +94,9 @@ p{ padding: 0; margin: 0;}
     position: relative;
     max-width: 400px;
 }
+#filters h2{
+    display: inline;
+}
 
 .filter{
     overflow: hidden; /*keeps the inputs from being pushed outside the div*/
@@ -135,6 +138,7 @@ p{ padding: 0; margin: 0;}
 /*------------------------ Results List ----------------------*/
 #resultsPanel{
     clear: both;
+    padding-top: 20px;
 }
 /*
 #viewOptions{

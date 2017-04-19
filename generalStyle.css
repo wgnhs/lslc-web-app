@@ -42,22 +42,90 @@ h1{
     /*float: right;*/
    /* padding: 2px 0px;*/
     margin: 5px 0px 15px 0px;
+    
 }
 
 nav a {
     color: black;
     text-decoration: none;
     padding: 2px 0px;
-    width:25%;
+    width: 20%;
     display: inline-block;
     text-align: center;
+    
 }
-#header a:hover{
+#header nav a:hover{
     cursor: pointer;
     background-color: dimgrey;
 }
 
 /*----- end HEADER -----*/
+
+
+
+.reportDivision{
+    padding-top: 20px;
+}
+.divisionContent{
+    border-top: 1px solid #e6e6e6;
+    padding-top: 4px;
+}
+
+
+/*++++++++++++ help icons ++++++++++++*/
+
+.helpIcon {
+    width:15px; 
+    opacity:0.7;
+}
+.helpIcon:hover{
+    
+    opacity: 1;
+}
+
+/*============== tooltips ==============*/
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+   
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 100;
+    
+    width: 120px;
+    top: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */; 
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
 
 /*---------------- modal --------------*/ 
 .modalBackground {

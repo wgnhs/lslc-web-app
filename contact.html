@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
    <HEAD>
-      <TITLE>Lake Superior Legacy Collection</TITLE>
+      <TITLE>Lake Superior Legacy Collection: Contact</TITLE>
        <meta charset="UTF-8">
        
         <LINK href="generalStyle.css" rel='stylesheet'/>
@@ -39,7 +39,6 @@
            <script src="https://js.arcgis.com/3.18/"></script>
 
        
-       <LINK href="recordStyle.css" rel='stylesheet'/> 
        <LINK href="modalStyle.css" rel='stylesheet'/>
        
       <!-- Enable media queries for old IE -->
@@ -47,22 +46,64 @@
         <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
       <![endif]-->
        
+       <style>
+           .divisionContent {
+                border-top: 1px solid #e6e6e6;
+                padding-top: 4px;
+           }
+       </style>
+       
 </HEAD>
 <BODY>
    
    
    <div id="wrapper">
-        
+       
        <div id="header"></div>
        
-       Home page
+       <h2>Contacts</h2>
+       <div id="contacts"></div>
    
    </div><!--end wrapper div-->
+    <script >
+        var contactDivisions = [
+            {"divisionTitle": "Samples",
+            "name":"Val Stanley", 
+            "title": "Samples Manager",
+            "affiliation" : "Wisconsin Geological & Natural History Survey",
+             "email": ""
+            },
+            {"divisionTitle": "Web Design", 
+            "name":"Caroline Rose", 
+            "title": "GIS Specialist and Cartographer",
+            "affiliation" : "Wisconsin Geological & Natural History Survey",
+             "email": "caroline.rose@wgnhs.uwex.edu"
+            }, 
+            
+        ];
+            
+            
+        for (r in contactDivisions){
+            
+                var rd = contactDivisions[r];
+            
+                //create a new div element.
+                var contactDiv = $('<div class="reportDivision"></div>');
+                
+                if (rd.divisionTitle){contactDiv.append($('<h3 class="inline"></h3>').html(rd.divisionTitle))};
+                
+                contactDiv.append('<div class="divisionContent"><p>'+rd.name+'<br>'+rd.title+', <br>'+rd.affiliation+'<br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p></div>');
+                //append it to the html page. 
+                $('#contacts').append(contactDiv);           
+                
+            };
+        
+    </script>
    
    <script src="header.js"></script>
     <script>
            //indicate the current page in the nav bar. 
-           $("#navHome").css("background-color", "#848484");
+           $("#navContact").css("background-color", "#848484");
    </script>
    
 </BODY> 
