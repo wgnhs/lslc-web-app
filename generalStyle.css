@@ -61,6 +61,17 @@ nav a {
 
 /*----- end HEADER -----*/
 
+
+
+.reportDivision{
+    padding-top: 20px;
+}
+.divisionContent{
+    border-top: 1px solid #e6e6e6;
+    padding-top: 4px;
+}
+
+
 /*++++++++++++ help icons ++++++++++++*/
 
 .helpIcon {

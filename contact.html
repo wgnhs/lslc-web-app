@@ -61,23 +61,38 @@
        
        <div id="header"></div>
        
-        Contacts
+       <h2>Contacts</h2>
        <div id="contacts"></div>
    
    </div><!--end wrapper div-->
     <script >
-        var contactDivisions = [{"divisionTitle": "Web Design", "divisionId":"webDesign"}];
+        var contactDivisions = [
+            {"divisionTitle": "Samples",
+            "name":"Val Stanley", 
+            "title": "Samples Manager",
+            "affiliation" : "Wisconsin Geological & Natural History Survey",
+             "email": ""
+            },
+            {"divisionTitle": "Web Design", 
+            "name":"Caroline Rose", 
+            "title": "GIS Specialist and Cartographer",
+            "affiliation" : "Wisconsin Geological & Natural History Survey",
+             "email": "caroline.rose@wgnhs.uwex.edu"
+            }, 
+            
+        ];
             
             
         for (r in contactDivisions){
-                //create a new div element.
-                var contactDiv = $('<div class="contactDivision"></div>');
+            
                 var rd = contactDivisions[r];
+            
+                //create a new div element.
+                var contactDiv = $('<div class="reportDivision"></div>');
+                
                 if (rd.divisionTitle){contactDiv.append($('<h3 class="inline"></h3>').html(rd.divisionTitle))};
-                var newdiv = $('<div class="divisionContent"></div>');
-                //give it an id property and add a title h3 to it. 
-                newdiv.attr("id", rd.divisionId);
-                contactDiv.append(newdiv);
+                
+                contactDiv.append('<div class="divisionContent"><p>'+rd.name+'<br>'+rd.title+', <br>'+rd.affiliation+'<br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p></div>');
                 //append it to the html page. 
                 $('#contacts').append(contactDiv);           
                 
