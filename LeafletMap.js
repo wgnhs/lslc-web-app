@@ -35,7 +35,7 @@ var leafletMap = (function(){
         //initPopups(63821);
 
         leafletFeatureLayer.bindPopup(function (individualSection) {
-            return "<h3>Samples in Section " + individualSection.feature.properties.UID + "</h3>" + initPopups(individualSection.feature.properties.UID)
+            return initPopups(individualSection.feature.properties.UID)
             
         });
     }
@@ -50,7 +50,7 @@ var leafletMap = (function(){
          // FeatureGroup is to store editable layers
         drawnItems = new L.FeatureGroup;
 //        drawnItems.options.pane = 'AdrawnSelection';
-        
+        console.log(drawnItems)
         map.addLayer(drawnItems);
         
 
@@ -114,6 +114,7 @@ var leafletMap = (function(){
             if (drawnItems && drawnItems.getLayers().length !== 0){
                 drawnItems.clearLayers();
             }
+
             
             //add new layer to the featureGroup
             var layer = e.layer;
@@ -142,9 +143,17 @@ var leafletMap = (function(){
     function initPopups(individualSection){
 
         var sectionResults = resultsManager.matchSection(individualSection);
+
+        if (sectionResults.length == 1){
+            var plurality = "Result";
+        } else {
+            var plurality = "Results";
+        }
+
+        var content = "<h3>" + sectionResults.length + " " + plurality + " in Section " + individualSection + "</h3>"
         
         //establishes popup content variable, adding in header besaed on SectionId
-        var content = "<ul>";
+        content += "<ul>";
 
         //loops through samples in the section adding a line for each of them
         for (i in sectionResults) {
@@ -154,7 +163,7 @@ var leafletMap = (function(){
             var listedRockType = sectionResults[i].attributes.RockType;
             if (listedRockType == null){ listedRockType = "Unknown";} //checks for null value
 
-            content = content + "<li>" + listedRockType + ": <a href='sampleRecord.html#" + listedCatalogNumber + "'>" + listedSampleId + "</a></li>";
+            content = content + "<li><a href='sampleRecord.html#" + listedCatalogNumber + "'>" + listedCatalogNumber + " " + listedRockType + "</a></li>";
 
         }
 
