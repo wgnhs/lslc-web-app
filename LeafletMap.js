@@ -135,7 +135,7 @@ var leafletMap = (function(){
         
         
         drawnItems.on('click', function (e){
-            console.log("clicked layer.");
+            console.log("clicked leaflet draw layer.");
         }); 
        
     } //end setupMapButtons function 
