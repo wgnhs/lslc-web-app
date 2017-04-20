@@ -1,3 +1,32 @@
+// $(function() {
+//   adjustStyle($(this).width());
+//   $(window).resize(function() {
+//     console.log($(this).width())
+//     //adjustStyle($(this).width());
+//   });
+// });
+
+// function adjustStyle(width) {
+//   width = parseInt(width);
+//   if (width < 920) {
+//     //$("#size-stylesheet").attr("href", "css/narrow.css");
+//   } else {
+//      //$("#size-stylesheet").attr("href", "mapViewStyle.css"); 
+//   }
+// }
+
+console.log($(this).height())
+if ($(this).height() < 545){
+    var matchHeight = $("#filters").height();
+    matchHeight = String(matchHeight)
+    console.log(matchHeight)
+
+    document.getElementById("map").style.height = matchHeight + "px";
+}
+
+
+
+
 var leafletMap = (function(){
     
     
@@ -7,9 +36,14 @@ var leafletMap = (function(){
     
     var initialize = function(){
         
-        var map = L.map('map')
+        var map = L.map('map', {
+            scrollWheelZoom: determineScroll(),
+            scrollWheelPan: determineScroll() 
+        })
             //.on('load', function(){setupMapButtons();})
             .setView([ 47, -90], 6) //setview actually triggers the on load event. 
+            // .scrollWheelZoom: determineScroll(),
+            // .scrollWheelPan: determineScroll()
             ; //sets up esri leaflet map
         
       //   map.on("load", function(){setupMapButtons();});
@@ -38,6 +72,20 @@ var leafletMap = (function(){
             return initPopups(individualSection.feature.properties.UID)
             
         });
+    }
+
+    function determineScroll(){
+        
+        var width = $(this).width()
+
+        console.log(width)
+
+        if (width < 926) {
+           return false; 
+        } else {
+         return true;
+        }
+
     }
     
     function setupMapButtons(map){
