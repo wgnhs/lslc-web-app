@@ -5,10 +5,8 @@
       <TITLE>LSLC Sample Record</TITLE>
        <meta charset="UTF-8">
        
-        <LINK href="generalStyle.css" rel='stylesheet'/>
-       
-       <!--Google font-->
-       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
 
        
        <!-- Load Leaflet from CDN-->
@@ -27,8 +25,10 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
        
        
-       <LINK href="recordStyle.css" rel='stylesheet'/> 
-       <LINK href="modalStyle.css" rel='stylesheet'/>
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="recordStyle.css" rel='stylesheet'/> 
+           <LINK href="modalStyle.css" rel='stylesheet'/>
        
       <!-- Enable media queries for old IE -->
       <!--[if lt IE 9]>
@@ -63,13 +63,22 @@
 
    
     </div><!--end wrapper div-->    
-       
+     
+   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
    <script src="header.js"></script>
-   <script src="mapServiceUrls.js"></script>
-   <script src="recordDataManager.js"></script>
-    <script type="text/javascript">
+   <script>
         //indicate the current page in the nav bar. 
         $("#navSample").css("background-color", "#848484");
+   </script>   
+       
+   <!-- javascript links -->
+   <script src="mapServiceUrls.js"></script>
+   <script src="recordDataManager.js"></script>
+   <script src="modal.js"></script>
+       
+   <!-- INLINE JS -->   
+   <script type="text/javascript">
+        
         
         var delay = (function(){
           var timer = 0;
@@ -171,17 +180,10 @@
             // regex for numbers only --> /^\+?\d+$/
             // regex for letters or numbers --> /[a-zA-Z0-9]+/
             if (/[a-zA-Z0-9]+/.test(number)){
+                //accept numbers 0-9 and letters in both caps and lowercase
                 console.log("valid number ", number);
-                //reset the global variable: 
-               // sampleRecordData.sampleId = number;
+
                   searchSample(number);
-              //  findSample(number);
-//                sampleRecordData = {};
-//                sampleRecordData.catalogNumber = number;
-//                sampleRecordData.location = {};
-//                sampleRecordData.thinSections =[];
-//                sampleRecordData.lithologies = [];
-               //buildReport();
                 
             } else {
                 console.log("the number "+number+" is false."); 
@@ -671,8 +673,8 @@
             }
         }
         
-   </script>   
-        <script src="modal.js"></script>
+   </script>   <!-- END INLINE JS -->
+        
        
    </BODY>
 </HTML>

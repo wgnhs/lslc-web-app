@@ -5,10 +5,8 @@
       <TITLE>Lake Superior Legacy Collection: Contact</TITLE>
        <meta charset="UTF-8">
        
-        <LINK href="generalStyle.css" rel='stylesheet'/>
-       
-       <!--Google font-->
-       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
        
        
 
@@ -28,25 +26,19 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
        
        
-       
-       <LINK href="modalStyle.css" rel='stylesheet'/>
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="modalStyle.css" rel='stylesheet'/>
        
       <!-- Enable media queries for old IE -->
       <!--[if lt IE 9]>
         <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
       <![endif]-->
        
-       <style>
-           .divisionContent {
-                border-top: 1px solid #e6e6e6;
-                padding-top: 4px;
-           }
-       </style>
        
 </HEAD>
 <BODY>
-   
-   
+       
    <div id="wrapper">
        
        <div id="header"></div>
@@ -90,11 +82,13 @@
         
     </script>
    
-   <script src="header.js"></script>
+    <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
+    <script src="header.js"></script>
     <script>
            //indicate the current page in the nav bar. 
            $("#navContact").css("background-color", "#848484");
-   </script>
+    </script>
+   
    
 </BODY> 
 </HTML>
