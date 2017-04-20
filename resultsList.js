@@ -1,5 +1,3 @@
-
-
 //var resultCount = document.getElementById("resultCount");
 var resultsTable; 
 var sample;
@@ -157,29 +155,28 @@ function exportTableToCSV() {
     //used to create header
     for (key in globalResultsArray[0].attributes){
       //adds csv item, quotes and comma included
-      csv += '"' + key + '"';
-      //if statement adds a newline if the key is the last one in object (HandSampleCatalougueNumber)
-      //otherwise ust adds comma
-      if (key == 'HandSampleCatalogNumber'){
-        csv += newLine
-      } else {
-        csv += ','
-      }
+      csv += key + ',';
     }
-    
+    //takes off last comma and adds newline
+    csv = csv.substr(0,csv.length-1)
+    csv += newLine
+
+    var csvLine;
+
     //loop iterates through all of array this time adds CSV body 
     for (i in globalResultsArray){
+      csvLine = "";
       //pulls out and iterates through each attributes object
       for (key in globalResultsArray[i].attributes){
+        
         //adds csv element
-        csv += '"' + globalResultsArray[i].attributes[key] + '"';
-        //adds newline if applicable (see ablove)
-        if (key == 'HandSampleCatalogNumber'){
-          csv += newLine
-        } else {
-          csv += ','
-        }
+        csvLine += globalResultsArray[i].attributes[key] + ',';
+        
       }
+      //takes off last comma and adds newline
+      csvLine = csvLine.substr(0,csvLine.length-1)
+      csvLine += newLine
+      csv += csvLine
     }
 
     //THIS SECTION CREATES TABLE -- DOWNLOADED FUNCTION
