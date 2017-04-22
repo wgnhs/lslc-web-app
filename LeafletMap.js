@@ -1,33 +1,45 @@
-// $(function() {
-//   adjustStyle($(this).width());
-//   $(window).resize(function() {
-//     console.log($(this).width())
-//     //adjustStyle($(this).width());
-//   });
-// });
+//function called anonymously 
+$(function(){
+    scaleMapHeight($(this).height()) 
+    //called on window resize
+    $(window).resize(function() {
+        scaleMapHeight($(this).height())
+    });
+});
 
-// function adjustStyle(width) {
-//   width = parseInt(width);
-//   if (width < 920) {
-//     //$("#size-stylesheet").attr("href", "css/narrow.css");
-//   } else {
-//      //$("#size-stylesheet").attr("href", "mapViewStyle.css"); 
-//   }
-// }
+//function matches map height to filters
+function scaleMapHeight(height){
+    //checks for height less than 545px, because that's where the map starts getting distorted
+    if (height < 545){
+       var matchHeight = $("#filters").height(); //references height of filters div
+        matchHeight = String(matchHeight) //converts to string for css format
+        console.log(matchHeight)
 
-console.log($(this).height())
-if ($(this).height() < 545){
-    var matchHeight = $("#filters").height();
-    matchHeight = String(matchHeight)
-    console.log(matchHeight)
+        //sets map to height of filters div
+        document.getElementById("map").style.height = matchHeight + "px";
+    }
+}
 
-    document.getElementById("map").style.height = matchHeight + "px";
+//when window size changes past the 925px theshold, reload the page
+if ($(this).width() < 925) {
+    $(window).resize(function(){
+        if ($(this).width() > 925){
+            location.reload()
+        }
+    })
+}
+
+if ($(this).width() > 925) {
+    $(window).resize(function(){
+        if ($(this).width() < 925){
+            location.reload()
+        }
+    })
 }
 
 
-
-
 var leafletMap = (function(){
+    
     
     
     var leafletFeatureLayer;
@@ -37,7 +49,7 @@ var leafletMap = (function(){
     var initialize = function(){
         
         var map = L.map('map', {
-            scrollWheelZoom: determineScroll(),
+            scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
             scrollWheelPan: determineScroll() 
         })
             //.on('load', function(){setupMapButtons();})
@@ -74,12 +86,14 @@ var leafletMap = (function(){
         });
     }
 
+    //called on map properties
     function determineScroll(){
         
-        var width = $(this).width()
+        var width = $(this).width() //defines width
 
         console.log(width)
 
+        //return boolean based on width
         if (width < 926) {
            return false; 
         } else {
