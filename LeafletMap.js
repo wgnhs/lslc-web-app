@@ -1,4 +1,27 @@
+//function called anonymously 
+$(function(){
+    scaleMapHeight($(this).height()) 
+    //called on window resize
+    $(window).resize(function() {
+        scaleMapHeight($(this).height())
+    });
+});
+
+//function matches map height to filters
+function scaleMapHeight(height){
+    //checks for height less than 545px, because that's where the map starts getting distorted
+    if (height < 545){
+       var matchHeight = $("#filters").height(); //references height of filters div
+        matchHeight = String(matchHeight) //converts to string for css format
+        console.log(matchHeight)
+
+        //sets map to height of filters div
+        document.getElementById("map").style.height = matchHeight + "px";
+    }
+}
+
 var leafletMap = (function(){
+    
     
     
     var leafletFeatureLayer;
@@ -7,9 +30,14 @@ var leafletMap = (function(){
     
     var initialize = function(){
         
-        var map = L.map('map')
+        var map = L.map('map', {
+            scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
+            scrollWheelPan: determineScroll() 
+        })
             //.on('load', function(){setupMapButtons();})
             .setView([ 47, -90], 6) //setview actually triggers the on load event. 
+            // .scrollWheelZoom: determineScroll(),
+            // .scrollWheelPan: determineScroll()
             ; //sets up esri leaflet map
         
       //   map.on("load", function(){setupMapButtons();});
@@ -38,6 +66,22 @@ var leafletMap = (function(){
             return initPopups(individualSection.feature.properties.UID)
             
         });
+    }
+
+    //called on map properties
+    function determineScroll(){
+        
+        var width = $(this).width() //defines width
+
+        console.log(width)
+
+        //return boolean based on width
+        if (width < 926) {
+           return false; 
+        } else {
+         return true;
+        }
+
     }
     
     function setupMapButtons(map){
