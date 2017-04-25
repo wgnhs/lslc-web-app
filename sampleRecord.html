@@ -540,7 +540,7 @@
             var mapSection = L.esri.featureLayer({
                  url: PLSSSectionsLayerURL,
                 style: {color: "#000", weight: 0.35, fillColor: "#111"}, 
-               // where: 'UID ='+sampleRecordData.mapSectionId
+               // where: sectionsLayerPlssField+' ='+sampleRecordData.mapSectionId
                 
             }).addTo(map);
             

@@ -63,7 +63,7 @@ var leafletMap = (function(){
         //initPopups(63821);
 
         leafletFeatureLayer.bindPopup(function (individualSection) {
-            return initPopups(individualSection.feature.properties.UID)
+            return initPopups(individualSection.feature.properties[sectionsLayerPlssField]);
             
         });
     }
@@ -196,7 +196,7 @@ var leafletMap = (function(){
 
         var content = "<h3>" + sectionResults.length + " " + plurality + " in Section " + individualSection + "</h3>"
         
-        //establishes popup content variable, adding in header based on SectionId
+        //establishes popup content variable, adding in header based on PlssId/SectionId
         content += "<ul>";
 
         //loops through samples in the section adding a line for each of them
