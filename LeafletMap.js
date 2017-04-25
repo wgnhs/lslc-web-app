@@ -20,24 +20,6 @@ function scaleMapHeight(height){
     }
 }
 
-//when window size changes past the 925px theshold, reload the page
-if ($(this).width() < 925) {
-    $(window).resize(function(){
-        if ($(this).width() > 925){
-            location.reload()
-        }
-    })
-}
-
-if ($(this).width() > 925) {
-    $(window).resize(function(){
-        if ($(this).width() < 925){
-            location.reload()
-        }
-    })
-}
-
-
 var leafletMap = (function(){
     
     
