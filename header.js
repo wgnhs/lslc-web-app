@@ -4,3 +4,7 @@ var header = "<a href='index.html'><img src='images/LSLCLogo_v3_lightLake.png' a
 $("#header").append(header);
 
 //may need to work on this header's responsiveness in narrow windows... figure out how to collapse to a simple list or a menu button. 
+
+var footer = "<p> Lake Superior Legacy Collection <br/> Wisconsin Geological and Natural History Survey <br/>University of Wisconsin Extension </p>";
+
+$("#footer").append(footer);
