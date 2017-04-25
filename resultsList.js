@@ -155,7 +155,7 @@ function exportTableToCSV() {
     //used to create header
     for (key in globalResultsArray[0].attributes){
       //adds csv item, quotes and comma included
-      csv += key + ',';
+      csv += '"' + key + '",';
     }
     //takes off last comma and adds newline
     csv = csv.substr(0,csv.length-1)
@@ -165,12 +165,12 @@ function exportTableToCSV() {
 
     //loop iterates through all of array this time adds CSV body 
     for (i in globalResultsArray){
-      csvLine = "";
+      csvLine = '';
       //pulls out and iterates through each attributes object
       for (key in globalResultsArray[i].attributes){
         
         //adds csv element
-        csvLine += globalResultsArray[i].attributes[key] + ',';
+        csvLine += '"' + globalResultsArray[i].attributes[key] + '",';
         
       }
       //takes off last comma and adds newline
