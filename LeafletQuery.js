@@ -221,7 +221,7 @@ function buildSqlAndAddIndicators() {
         $("#filterFeedback").append($("<span id='thinSectionOn' class='feedbackBar' data='thinSectionAvailabilityInput'>Thin&nbspsections:&nbsp" + filters.thinSectionAvailabilityInput + "+ <img src='images/close.png'/></span>"));
         }; 
     if (filters.mapSectionsInput) {
-        newsqlArray.push("SectionId IN ("+filters.mapSectionsInput+")"); 
+        newsqlArray.push(PlssField+" IN ("+filters.mapSectionsInput+")"); 
         $("#filterFeedback").append($("<span id='mapOn' class='feedbackBar' data='mapSectionsInput'>intersects&nbspmap&nbsppolygon <img src='images/close.png' /></span>"));
         }; 
     if (filters.stateInput){
@@ -401,7 +401,7 @@ function highlightAll(){
             //iterate through  
             for (f in globalResultsArray){
 
-                highlightMapSections.push(globalResultsArray[f].attributes.SectionId);
+                highlightMapSections.push(globalResultsArray[f].attributes[PlssField]);
             }
 
             loadingPageOn = false;

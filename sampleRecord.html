@@ -271,7 +271,7 @@
                             sampleRecordData.sampleId = sampleTableResponse.features[0].attributes.SampleId;
                             sampleRecordData.fieldDesc = sampleTableResponse.features[0].attributes.RockType;
                             sampleRecordData.thinSectionCount = sampleTableResponse.features[0].attributes.ThinSectionCount;
-                            sampleRecordData.mapSectionId = sampleTableResponse.features[0].attributes.SectionId;
+                            sampleRecordData.mapSectionId = sampleTableResponse.features[0].attributes[PlssField];
                             sampleRecordData.location.state = sampleTableResponse.features[0].attributes.State;
                             sampleRecordData.location.township = sampleTableResponse.features[0].attributes.Township;
                             sampleRecordData.location.range = sampleTableResponse.features[0].attributes.Range + sampleTableResponse.features[0].attributes.Direction;
@@ -547,9 +547,9 @@
             //zoom the map to the correct section: 
            var sectionQuery = L.esri.query({url:PLSSSectionsLayerURL});
 
-            sectionQuery.where("UID = "+sampleRecordData.mapSectionId).run(function(error, sec){
+            sectionQuery.where(sectionsLayerPlssField+" = "+sampleRecordData.mapSectionId).run(function(error, sec){
                 var section = L.geoJson(sec).addTo(map); 
-                map.fitBounds(section.getBounds().pad(3));
+                map.fitBounds(section.getBounds().pad(4));
             }
             ); 
             

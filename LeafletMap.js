@@ -73,7 +73,7 @@ var leafletMap = (function(){
         
         var width = $(this).width() //defines width
 
-        console.log(width)
+        console.log("width:", width)
 
         //return boolean based on width
         if (width < 926) {
@@ -196,7 +196,7 @@ var leafletMap = (function(){
 
         var content = "<h3>" + sectionResults.length + " " + plurality + " in Section " + individualSection + "</h3>"
         
-        //establishes popup content variable, adding in header besaed on SectionId
+        //establishes popup content variable, adding in header based on SectionId
         content += "<ul>";
 
         //loops through samples in the section adding a line for each of them
@@ -256,7 +256,7 @@ var leafletMap = (function(){
             
             var selectedSections= [];
             for (i in featureCollection.features){
-                var selectedSectionId =featureCollection.features[i].properties.UID;
+                var selectedSectionId =featureCollection.features[i].properties[sectionsLayerPlssField];
                 selectedSections.push(selectedSectionId);
             }
            // console.log("filter based on these sections:", selectedSections);
@@ -363,7 +363,7 @@ var leafletMap = (function(){
             var fillColor; //blank variable for fill color
             var strokeColor = "#8c2d04"; //this applies to all except where it's re-set below
             var fillOpacity = 0.8; //this applies to all except where it's re-set below
-            var sectionID = feature.properties.UID; //pulls out section id from feature
+            var sectionID = feature.properties[sectionsLayerPlssField]; //pulls out section id from feature
             
             if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04"}
             else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02"}
