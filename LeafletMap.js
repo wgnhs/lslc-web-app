@@ -106,7 +106,7 @@ var leafletMap = (function(){
              draw: {
                  marker: false, polyline: false, circle: false,
                  rectangle: {repeatMode: false},
-                 polygon: {allowIntersection: true} 
+                 polygon: {allowIntersection: false} 
                  
                     //not sure why, but circle doesn't seem to work with the query. 
                  
@@ -166,8 +166,8 @@ var leafletMap = (function(){
             drawnItems.addLayer(layer);
             drawnItems.setStyle({fillOpacity: 0, color: "#000"});
             
-            //style the delete button: 
-            document.getElementById('customDeleteButton').style.backgroundPosition = "-182px -2px";
+            //style the delete button to enable it: 
+            //document.getElementById('customDeleteButton').style.backgroundPosition = "-182px -2px";
             
             //zoom to the selection
             map.fitBounds(layer._bounds);
@@ -236,7 +236,7 @@ var leafletMap = (function(){
             //remove the item in filter feedback
 
             //re-style the map tool as disabled. 
-            document.getElementById('customDeleteButton').style.backgroundPosition = "-242px -2px"; //tool disabled style
+            //document.getElementById('customDeleteButton').style.backgroundPosition = "-242px -2px"; //tool disabled style
 
             //customDeleteButton.disable();
         } else {console.log("no selection to clear.");}
