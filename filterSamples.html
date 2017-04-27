@@ -5,34 +5,34 @@
       <TITLE>LSLC Filter Samples</TITLE>
        <meta charset="UTF-8">
        
-       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
-       
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-       
-       <!-- Leaflet
-       <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
-       <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
-        -->
-       
-       <!-- Load Leaflet from CDN-->
-       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-       <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
 
-      <!-- Load Esri Leaflet from CDN -->
-      <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+       
+        <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+
+        <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
        
         <!-- Leaflet Draw -->
-        <script src="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.js"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.css">
+            <script src="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.js"></script>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.7/dist/leaflet.draw-src.css">
        
-
-       <!--ESRI 3.18-->
-  <!--     <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-       <script src="https://js.arcgis.com/3.18/"></script> -->
-
-      
-        <LINK href="generalStyle.css" rel='stylesheet'/>
-        <LINK href="mapViewStyle.css" rel='stylesheet'/>
+        <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+        <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+       
+        <!-- TABLESORTER -->
+             <script type="text/javascript" src="lib/jquery.tablesorter.js"></script>
+       
+        <!-- local stylesheets -->
+            <LINK href="generalStyle.css" rel='stylesheet'/>
+            <LINK href="mapViewStyle.css" rel='stylesheet'/>
        
       <!-- Enable media queries for old IE -->
       <!--[if lt IE 9]>
@@ -102,6 +102,10 @@
                    <div class="filter">
                         <label for="WGNHSSearch"><span>WGNHS ID </span></label>
                         <input class="searchBox" type="search" name="WGNHSSearch" id="WGNHSSearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="catalogNumberSearch"><span>Catalog Number </span></label>
+                        <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
                    </div>
                    
       <!--              <div class='filter'>
@@ -175,31 +179,24 @@
            </div>
           
            <!-- add a project footer... -->
-            <div id='footer'>
-               <p> Lake Superior Legacy Collection <br/>
-                Wisconsin Geological and Natural History Survey <br/>
-                University of Wisconsin Extention 
-               </p>
-            </div> 
+            <div id='footer'></div> 
            
        </div><!-- end wrapper div-->
        
-       <!-- javascript links -->
+       <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
        <script src="header.js"></script>
-       <script src="mapServiceUrls.js"></script>
        <script>
            //indicate the current page in the nav bar. 
            $("#navFilter").css("background-color", "#848484");
        </script>
        
-       <script type='text/javascript' src='lib/jquery-1.11.3.js'></script>
-       <script type="text/javascript" src="lib/jquery.tablesorter.js"></script>
+       <!-- javascript links -->
+       <script src="mapServiceUrls.js"></script>
        <script type='text/javascript' src='resultsManager.js'></script>
-       <!--<script type='text/javascript' src='mapAndQuery.js'></script>-->
        <script type='text/javascript' src='LeafletQuery.js'></script>
        <script type='text/javascript' src='LeafletMap.js'></script>
-       <script>leafletMap.initialize(); </script>
        <script src="resultsList.js"></script>
+       <script>leafletMap.initialize(); </script>
     
    </BODY>
 </HTML>

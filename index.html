@@ -4,21 +4,17 @@
    <HEAD>
       <TITLE>Lake Superior Legacy Collection</TITLE>
        <meta charset="UTF-8">
-       
-        <LINK href="generalStyle.css" rel='stylesheet'/>
-       
-       <!--Google font-->
-       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
-       
-       
 
-         <!-- Load Leaflet from CDN-->
-       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-       <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+ 
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+ 
+       <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
        
        <!-- Load Esri Leaflet from CDN -->
             <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
-       
        
        <!-- JQuery  -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -26,11 +22,13 @@
        <!-- JQuery UI  -->
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    
        
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="recordStyle.css" rel='stylesheet'/> 
+           <LINK href="modalStyle.css" rel='stylesheet'/>
 
-       
-       <LINK href="recordStyle.css" rel='stylesheet'/> 
-       <LINK href="modalStyle.css" rel='stylesheet'/>
        
       <!-- Enable media queries for old IE -->
       <!--[if lt IE 9]>
@@ -39,7 +37,7 @@
        
 </HEAD>
 <BODY>
-   
+  
    
    <div id="wrapper">
         
@@ -47,13 +45,17 @@
        
        Home page
    
+       
+       <div id="footer"></div>
    </div><!--end wrapper div-->
    
+   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
    <script src="header.js"></script>
-    <script>
+   <script>
            //indicate the current page in the nav bar. 
            $("#navHome").css("background-color", "#848484");
    </script>
+   
    
 </BODY> 
 </HTML>

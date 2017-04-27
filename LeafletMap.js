@@ -1,19 +1,44 @@
+//function called anonymously 
+$(function(){
+    scaleMapHeight($(this).height()) 
+    //called on window resize
+    $(window).resize(function() {
+        scaleMapHeight($(this).height())
+    });
+});
+
+//function matches map height to filters
+function scaleMapHeight(height){
+    //checks for height less than 545px, because that's where the map starts getting distorted
+    if (height < 545){
+       var matchHeight = $("#filters").height(); //references height of filters div
+        matchHeight = String(matchHeight) //converts to string for css format
+        console.log(matchHeight)
+
+        //sets map to height of filters div
+        document.getElementById("map").style.height = matchHeight + "px";
+    }
+}
+
 var leafletMap = (function(){
-    
-    
+
     var leafletFeatureLayer;
     var drawnItems; 
     var customDeleteButton;
     
     var initialize = function(){
         
-        var map = L.map('map')
-            //.on('load', function(){setupMapButtons();})
+        var map = L.map('map', {
+            scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
+            scrollWheelPan: determineScroll(), 
+            zoomControl: false
+        })
+           
             .setView([ 47, -90], 6) //setview actually triggers the on load event. 
             ; //sets up esri leaflet map
         
-      //   map.on("load", function(){setupMapButtons();});
         
+        new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
         L.esri.basemapLayer('Gray').addTo(map); 
         L.esri.basemapLayer('GrayLabels').addTo(map);
@@ -32,12 +57,27 @@ var leafletMap = (function(){
         }).addTo(map);
 
         setupMapButtons(map);
-        //initPopups(63821);
 
         leafletFeatureLayer.bindPopup(function (individualSection) {
-            return initPopups(individualSection.feature.properties.UID)
+            return initPopups(individualSection.feature.properties[sectionsLayerPlssField]);
             
         });
+    }
+
+    //called on map properties
+    function determineScroll(){
+        
+        var width = $(this).width() //defines width
+
+        console.log("width:", width)
+
+        //return boolean based on width
+        if (width < 926) {
+           return false; 
+        } else {
+         return true;
+        }
+
     }
     
     function setupMapButtons(map){
@@ -50,7 +90,7 @@ var leafletMap = (function(){
          // FeatureGroup is to store editable layers
         drawnItems = new L.FeatureGroup;
 //        drawnItems.options.pane = 'AdrawnSelection';
-        console.log(drawnItems)
+        console.log(drawnItems);
         map.addLayer(drawnItems);
         
 
@@ -64,16 +104,20 @@ var leafletMap = (function(){
 //                 
 //             },
              draw: {
-                 marker: false, polyline: false, circle: false, rectangle: {repeatMode: false}
+                 marker: false, polyline: false, circle: false,
+                 rectangle: {repeatMode: false},
+                 polygon: {allowIntersection: true} 
+                 
                     //not sure why, but circle doesn't seem to work with the query. 
-                 ,
-                 polygon: {allowIntersection: false}
+                 
              }
 
         });
         map.addControl(drawControl);
+        $(".leaflet-draw-section").before("<span>Select an area of interest:</span>");
+        $(".leaflet-draw-section").after('<a id="clearMapLink" onclick="leafletMap.clearMapSelection();">clear</a>');
         
-        customDeleteButton = L.Control.extend({
+ /*       customDeleteButton = L.Control.Draw.extend({
             options: {position: "topleft"},
             onAdd: function(map){
                 var container = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom leaflet-draw-toolbar leaflet-draw-edit-remove');
@@ -89,6 +133,7 @@ var leafletMap = (function(){
                 container.style.backgroundClip = "padding-box";
                 container.style.pointerEvents = "auto";
                 container.style.cursor = 'pointer';
+                container.style.float = 'left';
                 //hover? 
  
                 container.onclick = function(){clearMapSelection();}
@@ -99,7 +144,7 @@ var leafletMap = (function(){
        
         //add a delete button
          map.addControl(new customDeleteButton());
-        
+ */       
         //use this if you want something to happen on draw start. 
         //  map.on (L.Draw.Event.DRAWSTART, function(){
         //      console.log("draw start ");
@@ -119,13 +164,16 @@ var leafletMap = (function(){
             //add new layer to the featureGroup
             var layer = e.layer;
             drawnItems.addLayer(layer);
-            drawnItems.setStyle({fillOpacity: 0, color: "#333"});
+            drawnItems.setStyle({fillOpacity: 0, color: "#000"});
             
-            //style the 
+            //style the delete button: 
             document.getElementById('customDeleteButton').style.backgroundPosition = "-182px -2px";
             
             //zoom to the selection
             map.fitBounds(layer._bounds);
+            
+            //bring sections to front? TEMPORARY, PARTIAL FIX for seeing the popups. 
+            leafletFeatureLayer.bringToFront();
             
             //pass on the layer to the function which will query it for section IDs
             queryGeom(layer);
@@ -152,7 +200,7 @@ var leafletMap = (function(){
 
         var content = "<h3>" + sectionResults.length + " " + plurality + " in Section " + individualSection + "</h3>"
         
-        //establishes popup content variable, adding in header besaed on SectionId
+        //establishes popup content variable, adding in header based on PlssId/SectionId
         content += "<ul>";
 
         //loops through samples in the section adding a line for each of them
@@ -212,7 +260,7 @@ var leafletMap = (function(){
             
             var selectedSections= [];
             for (i in featureCollection.features){
-                var selectedSectionId =featureCollection.features[i].properties.UID;
+                var selectedSectionId =featureCollection.features[i].properties[sectionsLayerPlssField];
                 selectedSections.push(selectedSectionId);
             }
            // console.log("filter based on these sections:", selectedSections);
@@ -319,7 +367,7 @@ var leafletMap = (function(){
             var fillColor; //blank variable for fill color
             var strokeColor = "#8c2d04"; //this applies to all except where it's re-set below
             var fillOpacity = 0.8; //this applies to all except where it's re-set below
-            var sectionID = feature.properties.UID; //pulls out section id from feature
+            var sectionID = feature.properties[sectionsLayerPlssField]; //pulls out section id from feature
             
             if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04"}
             else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02"}
