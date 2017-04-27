@@ -487,10 +487,10 @@
                     
                     var thinSec = $('<div class="thinSectionContainer"></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
                     thinSec.append('<p>condition: '+sampleRecordData.thinSections[i].condition+'</p>');
-                    if(sampleRecordData.location.state == 'Wisconsin' && sampleRecordData.thinSections[i].thinThumbppl){  
+                    if(sampleRecordData.thinSections[i].thinImgppl){  
                       //  thinSec.append('<p>(click to view in detail)</p>');
                         thinSec.append(
-                            "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
+                            "<img src='"+sampleRecordData.thinSections[i].thinImgppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinImgxpl+"' alt='cross-polar thumbnail'/>");
                         thinSec.addClass('thinSection');
                         thinSec.attr('title','click to view');
                         thinSec.data({'thinID':sampleRecordData.thinSections[i].thinSectionId});
