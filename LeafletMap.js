@@ -21,9 +21,7 @@ function scaleMapHeight(height){
 }
 
 var leafletMap = (function(){
-    
-    
-    
+
     var leafletFeatureLayer;
     var drawnItems; 
     var customDeleteButton;
@@ -32,16 +30,15 @@ var leafletMap = (function(){
         
         var map = L.map('map', {
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
-            scrollWheelPan: determineScroll() 
+            scrollWheelPan: determineScroll(), 
+            zoomControl: false
         })
-            //.on('load', function(){setupMapButtons();})
+           
             .setView([ 47, -90], 6) //setview actually triggers the on load event. 
-            // .scrollWheelZoom: determineScroll(),
-            // .scrollWheelPan: determineScroll()
             ; //sets up esri leaflet map
         
-      //   map.on("load", function(){setupMapButtons();});
         
+        new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
         L.esri.basemapLayer('Gray').addTo(map); 
         L.esri.basemapLayer('GrayLabels').addTo(map);
@@ -60,7 +57,6 @@ var leafletMap = (function(){
         }).addTo(map);
 
         setupMapButtons(map);
-        //initPopups(63821);
 
         leafletFeatureLayer.bindPopup(function (individualSection) {
             return initPopups(individualSection.feature.properties[sectionsLayerPlssField]);
@@ -94,7 +90,7 @@ var leafletMap = (function(){
          // FeatureGroup is to store editable layers
         drawnItems = new L.FeatureGroup;
 //        drawnItems.options.pane = 'AdrawnSelection';
-        console.log(drawnItems)
+        console.log(drawnItems);
         map.addLayer(drawnItems);
         
 
@@ -108,16 +104,20 @@ var leafletMap = (function(){
 //                 
 //             },
              draw: {
-                 marker: false, polyline: false, circle: false, rectangle: {repeatMode: false}
+                 marker: false, polyline: false, circle: false,
+                 rectangle: {repeatMode: false},
+                 polygon: {allowIntersection: true} 
+                 
                     //not sure why, but circle doesn't seem to work with the query. 
-                 ,
-                 polygon: {allowIntersection: false}
+                 
              }
 
         });
         map.addControl(drawControl);
+        $(".leaflet-draw-section").before("<span>Select an area of interest:</span>");
+        $(".leaflet-draw-section").after('<a id="clearMapLink" onclick="leafletMap.clearMapSelection();">clear</a>');
         
-        customDeleteButton = L.Control.extend({
+ /*       customDeleteButton = L.Control.Draw.extend({
             options: {position: "topleft"},
             onAdd: function(map){
                 var container = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom leaflet-draw-toolbar leaflet-draw-edit-remove');
@@ -133,6 +133,7 @@ var leafletMap = (function(){
                 container.style.backgroundClip = "padding-box";
                 container.style.pointerEvents = "auto";
                 container.style.cursor = 'pointer';
+                container.style.float = 'left';
                 //hover? 
  
                 container.onclick = function(){clearMapSelection();}
@@ -143,7 +144,7 @@ var leafletMap = (function(){
        
         //add a delete button
          map.addControl(new customDeleteButton());
-        
+ */       
         //use this if you want something to happen on draw start. 
         //  map.on (L.Draw.Event.DRAWSTART, function(){
         //      console.log("draw start ");
@@ -163,13 +164,16 @@ var leafletMap = (function(){
             //add new layer to the featureGroup
             var layer = e.layer;
             drawnItems.addLayer(layer);
-            drawnItems.setStyle({fillOpacity: 0, color: "#333"});
+            drawnItems.setStyle({fillOpacity: 0, color: "#000"});
             
-            //style the 
+            //style the delete button: 
             document.getElementById('customDeleteButton').style.backgroundPosition = "-182px -2px";
             
             //zoom to the selection
             map.fitBounds(layer._bounds);
+            
+            //bring sections to front? TEMPORARY, PARTIAL FIX for seeing the popups. 
+            leafletFeatureLayer.bringToFront();
             
             //pass on the layer to the function which will query it for section IDs
             queryGeom(layer);
