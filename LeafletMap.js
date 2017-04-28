@@ -96,19 +96,15 @@ var leafletMap = (function(){
 
         var drawControl = new L.Control.Draw({
              edit: 
-                 false,
-//             {
-//                 featureGroup: drawnItems
-//                 ,
+                 false, // {featureGroup: drawnItems,
 //                 poly: {allowIntersection: false}
-//                 
-//             },
+//                 },
              draw: {
                  marker: false, polyline: false, circle: false,
                  rectangle: {repeatMode: false},
                  polygon: {allowIntersection: false} 
                  
-                    //not sure why, but circle doesn't seem to work with the query. 
+                 //not sure why, but circle doesn't seem to work with the query. 
                  
              }
 
@@ -170,7 +166,7 @@ var leafletMap = (function(){
             //document.getElementById('customDeleteButton').style.backgroundPosition = "-182px -2px";
             
             //zoom to the selection
-            map.fitBounds(layer._bounds);
+            map.fitBounds(layer.getBounds().pad(0.1));
             
             //bring sections to front? TEMPORARY, PARTIAL FIX for seeing the popups. 
             leafletFeatureLayer.bringToFront();
