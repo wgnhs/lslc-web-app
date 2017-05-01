@@ -14,7 +14,8 @@ var filters = {
     "notesInput": null,
     "notebookInput": null,
     "notebookPageInput": null,
-    "WGNHSInput": null
+    "WGNHSInput": null, 
+    "catalogNumberInput": null
 };
 
 //global var for results
@@ -55,7 +56,7 @@ function initFiltersListeners(){
 
     }); //close #filters.on input function
 
-	//set a listener for when the user clicks on a filter indicator... 
+	//set a listener for when the user clicks on a filter indicator (to cancel a filter)... 
     $("#filterFeedback").on("click", "span", function(){
       
         console.log("clear", filters[this.getAttribute('data')]);
@@ -80,6 +81,7 @@ function initFiltersListeners(){
             if (this.getAttribute('data') == 'handSampleAvailabilityInput'){document.getElementById("handSampleCheckbox").checked = false;};
             if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){$("#thinSectionNumberSearch").val('');};
             if (this.getAttribute('data') == 'WGNHSInput'){$("#WGNHSSearch").val('');};
+            if (this.getAttribute('data') == 'catalogNumberInput'){$("#catalogNumberSearch").val('');};
 
             //resetFilters will call QueryTable. 
             resetFilters();
@@ -100,6 +102,7 @@ function resetFilters() {
         filters.notebookPageInput = $("#notebookPageSearch").val();
         filters.thinSectionAvailabilityInput =  $("#thinSectionNumberSearch").val();
         filters.WGNHSInput =  $("#WGNHSSearch").val();
+        filters.catalogNumberInput =  $("#catalogNumberSearch").val();
         filters.handSampleAvailabilityInput = document.getElementById("handSampleCheckbox").checked;
         
        // console.log("filters set:", filters);
@@ -218,7 +221,7 @@ function buildSqlAndAddIndicators() {
         $("#filterFeedback").append($("<span id='thinSectionOn' class='feedbackBar' data='thinSectionAvailabilityInput'>Thin&nbspsections:&nbsp" + filters.thinSectionAvailabilityInput + "+ <img src='images/close.png'/></span>"));
         }; 
     if (filters.mapSectionsInput) {
-        newsqlArray.push("SectionId IN ("+filters.mapSectionsInput+")"); 
+        newsqlArray.push(PlssField+" IN ("+filters.mapSectionsInput+")"); 
         $("#filterFeedback").append($("<span id='mapOn' class='feedbackBar' data='mapSectionsInput'>intersects&nbspmap&nbsppolygon <img src='images/close.png' /></span>"));
         }; 
     if (filters.stateInput){
@@ -229,6 +232,11 @@ function buildSqlAndAddIndicators() {
         //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
         newsqlArray.push("cast(WgnhsId as char(1))  LIKE '"+filters.WGNHSInput+"'");
         $("#filterFeedback").append($("<span id='WGNHSOn' class='feedbackBar' data='WGNHSInput'>WGNHS ID:&nbsp" + filters.WGNHSInput + "<img src='images/close.png'/></span>"));
+        };
+    if (filters.catalogNumberInput){
+        //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
+        newsqlArray.push("Upper(HandSampleCatalogNumber)  LIKE Upper('"+filters.catalogNumberInput+"')");
+        $("#filterFeedback").append($("<span id='catalogNumberOn' class='feedbackBar' data='catalogNumberInput'>Catalog Number:&nbsp" + filters.catalogNumberInput + "<img src='images/close.png'/></span>"));
         };
     
    
@@ -310,7 +318,7 @@ function sliceResult(allResultOBJECTIDs, queryNum){
 function slicePromise(resultSliceOBJECTIDs, queryNum){
     return new Promise(function(resolve, reject){
         //SQL for the query
-        var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
+        var sliceWhereClause = samplesOIDField+" IN ("+resultSliceOBJECTIDs+")";
 
         //set up a query for one slice of data.
         var sliceDataQuery = L.esri.query({url:samplesTableURL}); //url to samples table
@@ -335,7 +343,7 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
     //drawList is a boolean indicating whether to add the list (whether it's the last query).  
     
     //SQL for the query
-    var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
+    var sliceWhereClause = samplesOIDField+" IN ("+resultSliceOBJECTIDs+")";
     
     //set up a query for one slice of data.
     var sliceDataQuery = L.esri.query({url:samplesTableURL}); //url to samples table
@@ -393,7 +401,7 @@ function highlightAll(){
             //iterate through  
             for (f in globalResultsArray){
 
-                highlightMapSections.push(globalResultsArray[f].attributes.SectionId);
+                highlightMapSections.push(globalResultsArray[f].attributes[PlssField]);
             }
 
             loadingPageOn = false;

@@ -23,9 +23,6 @@ p{ padding: 0; margin: 0;}
   opacity:0.7;
 }
 
-#customDeleteButton:hover{
-     background-color: #f4f4f4;
-}
 
 /*********** popup *******/
 
@@ -44,6 +41,39 @@ p{ padding: 0; margin: 0;}
   background-color: #f2f2f2;
 }
 
+/*---- Leaflet Draw ----*/
+.leaflet-draw-tooltip{
+    background-color: black; 
+    color: white;
+}
+
+#mapSelectionButtonsContainer{
+    display: inline-block;
+    
+}
+.mapSelectionButton {
+    margin-bottom: 5px;
+    padding: 3px;
+    color: grey;
+    
+}
+
+.mapSelectionButton:hover {
+    background-color: #f4f4f4;
+    cursor: pointer;
+}
+
+.mapSelectionButton img {
+    vertical-align: middle;
+    padding-right: 3px;
+    width: 24px;
+    height: 24px;    
+}
+.mapSelectionButton.active {
+    background-color: #f4f4f4;
+    border: 1px solid grey;
+    
+}
 
 /*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
 
@@ -168,6 +198,10 @@ p{ padding: 0; margin: 0;}
 }
 /*============ results tabs ==========*/
 /* adapted from https://codepen.io/oknoblich/pen/tfjFl */
+
+#resultsHeader{
+    padding-bottom: 10px;
+}
 
 section {
   display: none;

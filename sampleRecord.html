@@ -46,7 +46,7 @@
         <div id="header"></div>
         <div id="searchArea">
           <!--  <h1>Sample Search</h1>-->
-            <label>Search by sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <span>or visit our </span><a href="filterSamples.html" target="_blank">filter samples</a> <span>page.</span>
+            <label>Search by sample catalog number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <span>or visit our </span><a href="filterSamples.html" target="_blank">filter samples</a> <span>page.</span>
             
        </div>
         
@@ -54,12 +54,7 @@
         <div id="sampleRecord"></div>
         
         <!-- add a project footer... -->
-        <div id='footer'>
-           <p> Lake Superior Legacy Collection <br/>
-            Wisconsin Geological and Natural History Survey <br/>
-            University of Wisconsin Extention 
-           </p>
-        </div>
+        <div id='footer'></div>
 
    
     </div><!--end wrapper div-->    
@@ -276,11 +271,11 @@
                             sampleRecordData.sampleId = sampleTableResponse.features[0].attributes.SampleId;
                             sampleRecordData.fieldDesc = sampleTableResponse.features[0].attributes.RockType;
                             sampleRecordData.thinSectionCount = sampleTableResponse.features[0].attributes.ThinSectionCount;
-                            sampleRecordData.mapSectionId = sampleTableResponse.features[0].attributes.SectionId;
+                            sampleRecordData.mapSectionId = sampleTableResponse.features[0].attributes[PlssField];
                             sampleRecordData.location.state = sampleTableResponse.features[0].attributes.State;
                             sampleRecordData.location.township = sampleTableResponse.features[0].attributes.Township;
                             sampleRecordData.location.range = sampleTableResponse.features[0].attributes.Range + sampleTableResponse.features[0].attributes.Direction;
-                            sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section_;
+                            sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section;
                             sampleRecordData.location.quarterSection = sampleTableResponse.features[0].attributes.Quarter;
                             sampleRecordData.location.quarterQuarterSection = sampleTableResponse.features[0].attributes.QuarterQuarter;
                             sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes.LocNote;
@@ -492,7 +487,7 @@
                     
                     var thinSec = $('<div class="thinSectionContainer"></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
                     thinSec.append('<p>condition: '+sampleRecordData.thinSections[i].condition+'</p>');
-                    if(sampleRecordData.location.state == 'Wisconsin' && sampleRecordData.thinSections[i].thinThumbppl){  
+                    if(sampleRecordData.thinSections[i].thinThumbppl){  
                       //  thinSec.append('<p>(click to view in detail)</p>');
                         thinSec.append(
                             "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
@@ -542,19 +537,33 @@
 	           maxZoom: 19
                 }).addTo(map);
             
-            var mapSection = L.esri.featureLayer({
+            var mapSectionsLayer = L.esri.featureLayer({
                  url: PLSSSectionsLayerURL,
                 style: {color: "#000", weight: 0.35, fillColor: "#111"}, 
-               // where: 'UID ='+sampleRecordData.mapSectionId
+               // where: sectionsLayerPlssField+' ='+sampleRecordData.mapSectionId
                 
             }).addTo(map);
+            
+            mapSectionsLayer.bindPopup(function(individualSection){
+                
+                    var sectionInfo = individualSection.feature.properties;
+                    //build the popup content: 
+                    var popupContent = "Section "+sectionInfo.Section_+" of "+sectionInfo.State+" Township "+sectionInfo.TownNum+sectionInfo.TownDir+", Range "+sectionInfo.RangeNum+sectionInfo.RangeDir; 
+                    return popupContent;
+                },                 
+                { //popup options
+                
+                maxWidth: 100, 
+                className: 'sectionInfoPopup'
+                
+            });
             
             //zoom the map to the correct section: 
            var sectionQuery = L.esri.query({url:PLSSSectionsLayerURL});
 
-            sectionQuery.where("UID = "+sampleRecordData.mapSectionId).run(function(error, sec){
+            sectionQuery.where(sectionsLayerPlssField+" = "+sampleRecordData.mapSectionId).run(function(error, sec){
                 var section = L.geoJson(sec).addTo(map); 
-                map.fitBounds(section.getBounds().pad(3));
+                map.fitBounds(section.getBounds().pad(4));
             }
             ); 
             

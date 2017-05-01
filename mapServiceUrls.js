@@ -6,3 +6,8 @@ var thinSectonsTableURL = "https://geodata.wgnhs.uwex.edu/arcgis/rest/services/l
 var lithologyTableURL = "https://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/MapServer/4";
 var ledgerTableURL = "https://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/MapServer/5";
 var samplesTableURL = "https://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/MapServer/6"; 
+
+//vars for table field names 
+var PlssField = 'PlssId'; 
+var sectionsLayerPlssField = 'PlssId';
+var samplesOIDField = 'SampleId';
