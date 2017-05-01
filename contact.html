@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+   <HEAD>
+      <TITLE>Lake Superior Legacy Collection: Contact</TITLE>
+       <meta charset="UTF-8">
+       
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+
+         <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+       
+       <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+
+       
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="modalStyle.css" rel='stylesheet'/>
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+       
+</HEAD>
+<BODY>
+       
+   <div id="wrapper">
+       
+       <div id="header"></div>
+       
+       <h2>Contacts</h2>
+       <div id="contacts"></div>
+       
+       <div id="footer"></div>
+   
+   </div><!--end wrapper div-->
+    <script >
+        var contactDivisions = [
+            {"divisionTitle": "Samples",
+            "name":"Val Stanley", 
+            "title": "Samples Manager",
+            "affiliation" : "Wisconsin Geological & Natural History Survey",
+             "email": ""
+            },
+            {"divisionTitle": "Web Design", 
+            "name":"Caroline Rose", 
+            "title": "GIS Specialist and Cartographer",
+            "affiliation" : "Wisconsin Geological & Natural History Survey",
+             "email": "caroline.rose@wgnhs.uwex.edu"
+            }, 
+            
+        ];
+            
+            
+        for (r in contactDivisions){
+            
+                var rd = contactDivisions[r];
+            
+                //create a new div element.
+                var contactDiv = $('<div class="reportDivision"></div>');
+                
+                if (rd.divisionTitle){contactDiv.append($('<h3 class="inline"></h3>').html(rd.divisionTitle))};
+                
+                contactDiv.append('<div class="divisionContent"><p>'+rd.name+'<br>'+rd.title+', <br>'+rd.affiliation+'<br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p></div>');
+                //append it to the html page. 
+                $('#contacts').append(contactDiv);           
+                
+            };
+        
+    </script>
+   
+    <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
+    <script src="header.js"></script>
+    <script>
+           //indicate the current page in the nav bar. 
+           $("#navContact").css("background-color", "#848484");
+    </script>
+   
+   
+</BODY> 
+</HTML>

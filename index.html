@@ -2,30 +2,19 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
    <HEAD>
-      <TITLE>LSLC Sample Record</TITLE>
+      <TITLE>Lake Superior Legacy Collection</TITLE>
        <meta charset="UTF-8">
-       
-        <LINK href="generalStyle.css" rel='stylesheet'/>
-       
-       <!--Google font-->
-       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
-       
-       
 
-       <!-- Leaflet -->
-            <!-- online -->
-            <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
-           <!-- local -->  
-            <script src="lib/leaflet.js"></script>
-
-            <link rel="stylesheet" href="lib/leaflet.css" />
+ 
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+ 
+       <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
        
        <!-- Load Esri Leaflet from CDN -->
             <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
-       
-       <!-- Zoomify Leaflet -->
-            <script type="text/javascript" src="lib/zoomify_layer.js"></script>
-            <!--<script type="text/javascript" src="script/zoomify_layer.js"></script>-->
        
        <!-- JQuery  -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -33,14 +22,13 @@
        <!-- JQuery UI  -->
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    
        
-        <!--ESRI 3.18-->
-           <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-           <script src="https://js.arcgis.com/3.18/"></script>
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="recordStyle.css" rel='stylesheet'/> 
+           <LINK href="modalStyle.css" rel='stylesheet'/>
 
-       
-       <LINK href="recordStyle.css" rel='stylesheet'/> 
-       <LINK href="modalStyle.css" rel='stylesheet'/>
        
       <!-- Enable media queries for old IE -->
       <!--[if lt IE 9]>
@@ -49,18 +37,25 @@
        
 </HEAD>
 <BODY>
-   <div id="header"></div>
+  
    
    <div id="wrapper">
-        Home page
+        
+       <div id="header"></div>
+       
+       Home page
    
+       
+       <div id="footer"></div>
    </div><!--end wrapper div-->
    
+   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
    <script src="header.js"></script>
-    <script>
+   <script>
            //indicate the current page in the nav bar. 
            $("#navHome").css("background-color", "#848484");
    </script>
+   
    
 </BODY> 
 </HTML>

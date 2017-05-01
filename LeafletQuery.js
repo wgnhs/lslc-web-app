@@ -5,20 +5,24 @@ var filters = {
     //an empty string is falsy. 
     //an empty array is not falsy, so the map sections input must be set to null when cleared. 
     
-    "mapSectionsInput": null, 
-    "rockTypeInput": "", 
-    "countyInput": "", 
-    "handSampleAvailabilityInput": null, 
-    "thinSectionAvailabilityInput": null, 
-    "stateInput": null, 
-    "notesInput": null, 
-    "notebookInput": null, 
-    "notebookPageInput": null, 
-    "WGNHSInput": null
+    "mapSectionsInput": null,
+    "rockTypeInput": "",
+    "countyInput": "",
+    "handSampleAvailabilityInput": null,
+    "thinSectionAvailabilityInput": null,
+    "stateInput": null,
+    "notesInput": null,
+    "notebookInput": null,
+    "notebookPageInput": null,
+    "WGNHSInput": null, 
+    "catalogNumberInput": null
 };
 
-//global var for 
+//global var for results
 var globalResultsArray = [];
+var queryCount = 0;
+
+var loadingPageOn = false;
 
 $(window).on("load", function(){
 
@@ -46,13 +50,13 @@ function initFiltersListeners(){
     //delay helps with performance 
     $("#filters").on("input", "input", function(){
         delay(function(){
-            console.log('time elapsed');
+     //       console.log('time elapsed');
             resetFilters();
         }, 1000);
 
     }); //close #filters.on input function
 
-	//set a listener for when the user clicks on a filter indicator... 
+	//set a listener for when the user clicks on a filter indicator (to cancel a filter)... 
     $("#filterFeedback").on("click", "span", function(){
       
         console.log("clear", filters[this.getAttribute('data')]);
@@ -77,6 +81,7 @@ function initFiltersListeners(){
             if (this.getAttribute('data') == 'handSampleAvailabilityInput'){document.getElementById("handSampleCheckbox").checked = false;};
             if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){$("#thinSectionNumberSearch").val('');};
             if (this.getAttribute('data') == 'WGNHSInput'){$("#WGNHSSearch").val('');};
+            if (this.getAttribute('data') == 'catalogNumberInput'){$("#catalogNumberSearch").val('');};
 
             //resetFilters will call QueryTable. 
             resetFilters();
@@ -87,6 +92,7 @@ function initFiltersListeners(){
     
     
 function resetFilters() {
+
     //reset for every filter that's based on an input in the #filters div (everything except the map filter). 
         filters.rockTypeInput = $("#rockTypeSearch").val();
         filters.countyInput = $("#countySearch").val(); 
@@ -96,6 +102,7 @@ function resetFilters() {
         filters.notebookPageInput = $("#notebookPageSearch").val();
         filters.thinSectionAvailabilityInput =  $("#thinSectionNumberSearch").val();
         filters.WGNHSInput =  $("#WGNHSSearch").val();
+        filters.catalogNumberInput =  $("#catalogNumberSearch").val();
         filters.handSampleAvailabilityInput = document.getElementById("handSampleCheckbox").checked;
         
        // console.log("filters set:", filters);
@@ -104,9 +111,15 @@ function resetFilters() {
     
     
 function queryTableForFilters(){
+    queryCount += 1; 
     
-    //reset the global variable. 
-    globalResultsArray = [];
+  //  if (loadingPageOn == false){
+        $("#map").append($("<div id='loading'></div>")); //will be removed in leafletMap.js highlight function after setStyle. 
+    
+  //  };
+  //  loadingPageOn = true;
+    
+   
    
     var whereString = buildSqlAndAddIndicators(); //call the function to build a SQL where clause. It will return the where clause as a string. 
     
@@ -116,7 +129,7 @@ function queryTableForFilters(){
     //sampleIdsQuery.returnGeometry(false);
     sampleIdsQuery.where(whereString);
     
-    console.log("where string is:", whereString);
+    console.log("1. query #"+queryCount+" where string is:", whereString);
     
     //set the sections query where clause to the same where as the normal query.
     // sectionsQuery.where = sampleIdsQuery.where;
@@ -130,27 +143,30 @@ function queryTableForFilters(){
 
         sampleIdsQuery.ids(function(error, result){
            //console.log("query for ids error", error);
-            console.log('result for ids', result);
+            console.log('2. query #', queryCount, " result for ids: ", result);
             //console.log("result for ids length", result.length);
+            
+             //reset the global variable of results. 
+            resultsManager.clearAll();
             
             //result is either null or non-null. 
             if(result){
-//               
+               
                 //set results counter statement: 
                 document.getElementById("resultCount").innerHTML = result.length;
             
             
-                sliceResult(result);
+                sliceResult(result, queryCount);
 
                 
             } else {
                 //null result. no matches. 
-                console.log("result is", result);      
+                console.log("result is null.", result);      
                 
                 //set results counter statement: 
                 document.getElementById("resultCount").innerHTML = 0;
                 
-                listResults(globalResultsArray);
+                listResults([]);
                 highlightAll();
                 
             }
@@ -159,7 +175,7 @@ function queryTableForFilters(){
 
     } else {
         //this shouldn't happen while we're using ["1=1"] in the SQL array. 
-        console.log("query is empty.");
+        console.warn("query is empty.");
         
     }
 } //end queryTableForFilters
@@ -205,7 +221,7 @@ function buildSqlAndAddIndicators() {
         $("#filterFeedback").append($("<span id='thinSectionOn' class='feedbackBar' data='thinSectionAvailabilityInput'>Thin&nbspsections:&nbsp" + filters.thinSectionAvailabilityInput + "+ <img src='images/close.png'/></span>"));
         }; 
     if (filters.mapSectionsInput) {
-        newsqlArray.push("SectionId IN ("+filters.mapSectionsInput+")"); 
+        newsqlArray.push(PlssField+" IN ("+filters.mapSectionsInput+")"); 
         $("#filterFeedback").append($("<span id='mapOn' class='feedbackBar' data='mapSectionsInput'>intersects&nbspmap&nbsppolygon <img src='images/close.png' /></span>"));
         }; 
     if (filters.stateInput){
@@ -213,8 +229,14 @@ function buildSqlAndAddIndicators() {
         $("#filterFeedback").append($("<span id='stateOn' class='feedbackBar' data='stateInput'>state:&nbsp" + filters.stateInput + "<img src='images/close.png'/></span>"));
         };
     if (filters.WGNHSInput){
-        newsqlArray.push("WgnhsId = "+filters.WGNHSInput);
+        //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
+        newsqlArray.push("cast(WgnhsId as char(1))  LIKE '"+filters.WGNHSInput+"'");
         $("#filterFeedback").append($("<span id='WGNHSOn' class='feedbackBar' data='WGNHSInput'>WGNHS ID:&nbsp" + filters.WGNHSInput + "<img src='images/close.png'/></span>"));
+        };
+    if (filters.catalogNumberInput){
+        //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
+        newsqlArray.push("Upper(HandSampleCatalogNumber)  LIKE Upper('"+filters.catalogNumberInput+"')");
+        $("#filterFeedback").append($("<span id='catalogNumberOn' class='feedbackBar' data='catalogNumberInput'>Catalog Number:&nbsp" + filters.catalogNumberInput + "<img src='images/close.png'/></span>"));
         };
     
    
@@ -234,29 +256,32 @@ function buildSqlAndAddIndicators() {
 }
 
 
-function sliceResult(allResultOBJECTIDs){
+function sliceResult(allResultOBJECTIDs, queryNum){
        
-    var sliceSize = 1000; 
+    var sliceSize = 1000; //max is 1000, because that is the limit for Esri map service results. 
     
     //calculate how many pages.
     var numberOfSlices = Math.ceil(allResultOBJECTIDs.length/sliceSize);
-    console.log(allResultOBJECTIDs.length, "is broken into ", numberOfSlices, "slices."); 
+    console.log("3. query #", queryNum," ", allResultOBJECTIDs.length, "results are broken into ", numberOfSlices, "slices."); 
     
     //build a list of page limit indices. 
     var pageBreaks = [0];
     
-
+    //the length of the results is the top page break
     pageBreaks.push(allResultOBJECTIDs.length);
     
+    //all intermediate page breaks are inserted here
     for (i = 1; i < numberOfSlices; i++){
         pageBreaks.push(i*sliceSize);
     }
-
+    
+    //order the pages breaks array from smallest to largest. 
     pageBreaks.sort(function(a, b){return a-b});
     
-    
+    var sliceQueriesQueue = []
     
     //console.log("pageBreaks", pageBreaks);
+    //for each page of objectIDs, call a query for that set of results. 
     for (j=1 ; j < pageBreaks.length; j++){
         
         var rangeMin = pageBreaks[j-1]; 
@@ -267,28 +292,60 @@ function sliceResult(allResultOBJECTIDs){
         var oneSliceOBJECTIDs= allResultOBJECTIDs.slice(rangeMin, rangeMax); 
         //console.log("one slice result OBJECTIDS:", oneSliceOBJECTIDs); 
         
- //      queryForSliceData(oneSliceOBJECTIDs, false);        
-        if (j == pageBreaks.length-1){
-            console.log("last page.");
-//            console.log("final objectIDs", oneSliceOBJECTIDs);
-            queryForSliceData(oneSliceOBJECTIDs, true);
-        }  else {
-//            console.log("not last or first page.");
-            queryForSliceData(oneSliceOBJECTIDs, false);
-        }
+       //add the slice query into a queue  
+       sliceQueriesQueue.push(slicePromise(oneSliceOBJECTIDs, queryNum)); 
 
     }
+    
+    var allQueries = Promise.all(sliceQueriesQueue).then(function(data){
+       // console.log("allqueries data:", data); 
+        for (i in data){
+            resultsManager.add(data[i]); //concatenate each slice's results to the global var. 
+        }
+        
+        console.log("5. global results: ", globalResultsArray); 
+        
+        var firstThousand = globalResultsArray.slice(0,1000);   
+        listResults(firstThousand);
+        
+        highlightAll();
+    });
 
 
    
 } //end sliceResult function 
 
+function slicePromise(resultSliceOBJECTIDs, queryNum){
+    return new Promise(function(resolve, reject){
+        //SQL for the query
+        var sliceWhereClause = samplesOIDField+" IN ("+resultSliceOBJECTIDs+")";
+
+        //set up a query for one slice of data.
+        var sliceDataQuery = L.esri.query({url:samplesTableURL}); //url to samples table
+        sliceDataQuery.fields(["*"]);
+//        sliceDataQuery.returnGeometry(false);
+        sliceDataQuery.where(sliceWhereClause);
+        
+        sliceDataQuery.run(function(error, featureCollection, sliceResponse){
+            if (error){
+                reject("sliceDataQuery error.", error);
+            } else {
+                console.log("4. query #",queryNum," slice response");
+                resolve (sliceResponse.features);
+            }
+        }); 
+        
+    }); 
+}
+
 function queryForSliceData(resultSliceOBJECTIDs, drawList){
     //resultsIds is an array of the objectIDs of one slice of results. Max length 1000. 
-    //drawList is a boolean indicating whether to add the list  
+    //drawList is a boolean indicating whether to add the list (whether it's the last query).  
     
-    var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
+    //SQL for the query
+    var sliceWhereClause = samplesOIDField+" IN ("+resultSliceOBJECTIDs+")";
     
+    //set up a query for one slice of data.
     var sliceDataQuery = L.esri.query({url:samplesTableURL}); //url to samples table
     sliceDataQuery.fields(["*"]);
     sliceDataQuery.returnGeometry(false);
@@ -299,8 +356,7 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
     sliceDataQuery.run(function(error, result, response){
       // console.log('result of slice query', result);
      
-       
-        globalResultsArray = globalResultsArray.concat(response.features);
+        resultsManager.add(response.features);
         
         //console.log("global results", JSON.stringify(globalResultsArray));
         
@@ -315,9 +371,9 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
              //console.log("first thousand", firstThousand);
            
             listResults(firstThousand);
-            highlightAll(); //SEEMS TO NOT ALWAYS RETURN EVERYTHING. TRY SEARCHING "MINN" for STATE. 
+            highlightAll();  
              
-             onQueryEnd();
+            
         }
        
     });
@@ -334,61 +390,23 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
 //    
 //}
 
-//example of a promise:  
-function onQueryEnd(){
-
-    // Promise
-    var isQueryDone = new Promise(
-        function (resolve, reject) {
-            if (globalResultsArray.length === 26274) {
-                var message = 'all samples match this query'
-                resolve(message); // fulfilled
-            } else {
-                var error = 'all samples DO NOT match this query.';
-                reject(error); // reject
-            }
-
-        }
-    );
-
-    // call our promise
-    var testQuery = function () {
-        isQueryDone
-            .then(function (fulfilled) {
-                
-                console.log(fulfilled);
-             
-            })
-            .catch(function (error) {
-                
-                console.log(error);
-            
-            });
-    };
-
-    testQuery();
-}
 
 
 function highlightAll(){
-    
-    //just a test for the popup:
-    console.log("section results: ", resultsManager.matchSection(63821));
-    
-    
-     delay(function(){
-            console.log('time elapsed');
+ 
+            console.log('6. highlight now.');
         
             //iterate through and output array of sections for the highlight function. 
             var highlightMapSections = []; 
             //iterate through  
             for (f in globalResultsArray){
 
-                highlightMapSections.push(globalResultsArray[f].attributes.SectionId);
+                highlightMapSections.push(globalResultsArray[f].attributes[PlssField]);
             }
+
+            loadingPageOn = false;
 
             //accepts an array of section IDs. 
             leafletMap.highlight(highlightMapSections);
-         
-     }, 3000);
+
 }

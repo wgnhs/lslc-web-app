@@ -5,10 +5,8 @@
       <TITLE>LSLC Sample Record</TITLE>
        <meta charset="UTF-8">
        
-        <LINK href="generalStyle.css" rel='stylesheet'/>
-       
-       <!--Google font-->
-       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
 
        
        <!-- Load Leaflet from CDN-->
@@ -27,8 +25,10 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
        
        
-       <LINK href="recordStyle.css" rel='stylesheet'/> 
-       <LINK href="modalStyle.css" rel='stylesheet'/>
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="recordStyle.css" rel='stylesheet'/> 
+           <LINK href="modalStyle.css" rel='stylesheet'/>
        
       <!-- Enable media queries for old IE -->
       <!--[if lt IE 9]>
@@ -46,7 +46,7 @@
         <div id="header"></div>
         <div id="searchArea">
           <!--  <h1>Sample Search</h1>-->
-            <label>Search by sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <span>or visit our </span><a href="filterSamples.html" target="_blank">filter samples</a> <span>page.</span>
+            <label>Search by sample catalog number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <span>or visit our </span><a href="filterSamples.html" target="_blank">filter samples</a> <span>page.</span>
             
        </div>
         
@@ -54,22 +54,26 @@
         <div id="sampleRecord"></div>
         
         <!-- add a project footer... -->
-        <div id='footer'>
-           <p> Lake Superior Legacy Collection <br/>
-            Wisconsin Geological and Natural History Survey <br/>
-            University of Wisconsin Extention 
-           </p>
-        </div>
+        <div id='footer'></div>
 
    
     </div><!--end wrapper div-->    
-       
+     
+   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
    <script src="header.js"></script>
-   <script src="mapServiceUrls.js"></script>
-   <script src="recordDataManager.js"></script>
-    <script type="text/javascript">
+   <script>
         //indicate the current page in the nav bar. 
         $("#navSample").css("background-color", "#848484");
+   </script>   
+       
+   <!-- javascript links -->
+   <script src="mapServiceUrls.js"></script>
+   <script src="recordDataManager.js"></script>
+   <script src="modal.js"></script>
+       
+   <!-- INLINE JS -->   
+   <script type="text/javascript">
+        
         
         var delay = (function(){
           var timer = 0;
@@ -171,17 +175,10 @@
             // regex for numbers only --> /^\+?\d+$/
             // regex for letters or numbers --> /[a-zA-Z0-9]+/
             if (/[a-zA-Z0-9]+/.test(number)){
+                //accept numbers 0-9 and letters in both caps and lowercase
                 console.log("valid number ", number);
-                //reset the global variable: 
-               // sampleRecordData.sampleId = number;
+
                   searchSample(number);
-              //  findSample(number);
-//                sampleRecordData = {};
-//                sampleRecordData.catalogNumber = number;
-//                sampleRecordData.location = {};
-//                sampleRecordData.thinSections =[];
-//                sampleRecordData.lithologies = [];
-               //buildReport();
                 
             } else {
                 console.log("the number "+number+" is false."); 
@@ -274,11 +271,11 @@
                             sampleRecordData.sampleId = sampleTableResponse.features[0].attributes.SampleId;
                             sampleRecordData.fieldDesc = sampleTableResponse.features[0].attributes.RockType;
                             sampleRecordData.thinSectionCount = sampleTableResponse.features[0].attributes.ThinSectionCount;
-                            sampleRecordData.mapSectionId = sampleTableResponse.features[0].attributes.SectionId;
+                            sampleRecordData.mapSectionId = sampleTableResponse.features[0].attributes[PlssField];
                             sampleRecordData.location.state = sampleTableResponse.features[0].attributes.State;
                             sampleRecordData.location.township = sampleTableResponse.features[0].attributes.Township;
                             sampleRecordData.location.range = sampleTableResponse.features[0].attributes.Range + sampleTableResponse.features[0].attributes.Direction;
-                            sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section_;
+                            sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section;
                             sampleRecordData.location.quarterSection = sampleTableResponse.features[0].attributes.Quarter;
                             sampleRecordData.location.quarterQuarterSection = sampleTableResponse.features[0].attributes.QuarterQuarter;
                             sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes.LocNote;
@@ -343,8 +340,8 @@
                         //add attributes to the thin sections array. 
                         thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes.CatalogNumber;
                         thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
-                        thinDetails.thinImgppl = null;
-                        thinDetails.thinImgxpl = null;
+                        thinDetails.thinImgppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'ppl.jpg';
+                        thinDetails.thinImgxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'xpl.jpg';
                         thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'ppl_thumb.jpg';
                         thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'xpl_thumb.jpg';
 
@@ -489,7 +486,9 @@
                 for (i in sampleRecordData.thinSections){
                     
                     var thinSec = $('<div class="thinSectionContainer"></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
-                    if(sampleRecordData.location.state == 'Wisconsin' && sampleRecordData.thinSections[i].thinThumbppl){  
+                    thinSec.append('<p>condition: '+sampleRecordData.thinSections[i].condition+'</p>');
+                    if(sampleRecordData.thinSections[i].thinThumbppl){  
+                      //  thinSec.append('<p>(click to view in detail)</p>');
                         thinSec.append(
                             "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
                         thinSec.addClass('thinSection');
@@ -538,19 +537,33 @@
 	           maxZoom: 19
                 }).addTo(map);
             
-            var mapSection = L.esri.featureLayer({
+            var mapSectionsLayer = L.esri.featureLayer({
                  url: PLSSSectionsLayerURL,
                 style: {color: "#000", weight: 0.35, fillColor: "#111"}, 
-               // where: 'UID ='+sampleRecordData.mapSectionId
+               // where: sectionsLayerPlssField+' ='+sampleRecordData.mapSectionId
                 
             }).addTo(map);
+            
+            mapSectionsLayer.bindPopup(function(individualSection){
+                
+                    var sectionInfo = individualSection.feature.properties;
+                    //build the popup content: 
+                    var popupContent = "Section "+sectionInfo.Section_+" of "+sectionInfo.State+" Township "+sectionInfo.TownNum+sectionInfo.TownDir+", Range "+sectionInfo.RangeNum+sectionInfo.RangeDir; 
+                    return popupContent;
+                },                 
+                { //popup options
+                
+                maxWidth: 100, 
+                className: 'sectionInfoPopup'
+                
+            });
             
             //zoom the map to the correct section: 
            var sectionQuery = L.esri.query({url:PLSSSectionsLayerURL});
 
-            sectionQuery.where("UID = "+sampleRecordData.mapSectionId).run(function(error, sec){
+            sectionQuery.where(sectionsLayerPlssField+" = "+sampleRecordData.mapSectionId).run(function(error, sec){
                 var section = L.geoJson(sec).addTo(map); 
-                map.fitBounds(section.getBounds().pad(3));
+                map.fitBounds(section.getBounds().pad(4));
             }
             ); 
             
@@ -669,8 +682,8 @@
             }
         }
         
-   </script>   
-        <script src="modal.js"></script>
+   </script>   <!-- END INLINE JS -->
+        
        
    </BODY>
 </HTML>
