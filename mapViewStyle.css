@@ -23,9 +23,6 @@ p{ padding: 0; margin: 0;}
   opacity:0.7;
 }
 
-#customDeleteButton:hover{
-     background-color: #f4f4f4;
-}
 
 /*********** popup *******/
 
@@ -44,47 +41,39 @@ p{ padding: 0; margin: 0;}
   background-color: #f2f2f2;
 }
 
-/*---- Leaflet Draw buttons ----*/
-.leaflet-draw {
-    background-color: white;
-    padding: 2px; 
-    border-radius: 4px;
-}
-.leaflet-draw span{
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 400;
-    font-size: 1.2em;
+/*---- Leaflet Draw ----*/
+.leaflet-draw-tooltip{
+    background-color: black; 
+    color: white;
 }
 
-.leaflet-draw a {
-    float: left;
-    border: 1px solid #ccc;
-}
-
-.leaflet-draw-toolbar a:first-child {
-   border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+#mapSelectionButtonsContainer{
+    display: inline-block;
     
-   
+}
+.mapSelectionButton {
+    margin-bottom: 5px;
+    padding: 3px;
+    color: grey;
+    
 }
 
-.leaflet-draw-toolbar a:last-child {
-   border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-bottom: 1px solid #ccc;
+.mapSelectionButton:hover {
+    background-color: #f4f4f4;
+    cursor: pointer;
 }
 
-#clearMapLink {
-    border: none; 
-    text-decoration: underline;
-    padding-left: 4px;
-    padding-top: 4px;
+.mapSelectionButton img {
+    vertical-align: middle;
+    padding-right: 3px;
+    width: 24px;
+    height: 24px;    
 }
-
+.mapSelectionButton.active {
+    background-color: #f4f4f4;
+    border: 1px solid grey;
+    
+}
 
 /*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
 

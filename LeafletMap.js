@@ -24,18 +24,16 @@ var leafletMap = (function(){
 
     var leafletFeatureLayer;
     var drawnItems; 
-    var customDeleteButton;
+    //var customDeleteButton;
     
     var initialize = function(){
         
         var map = L.map('map', {
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
             scrollWheelPan: determineScroll(), 
-            zoomControl: false
-        })
-           
-            .setView([ 47, -90], 6) //setview actually triggers the on load event. 
-            ; //sets up esri leaflet map
+            zoomControl: false //will add zoom control in the top right corner next
+        }).setView([ 47, -90], 6); //setview actually triggers the on load event. 
+            
         
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
@@ -44,27 +42,38 @@ var leafletMap = (function(){
         L.esri.basemapLayer('GrayLabels').addTo(map);
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
-//        map.createPane('BPLSSSections');
-//        map.createPane('AdrawnSelection');
+//        map.createPane('B-PLSSSections');
+//        map.createPane('A-drawnSelection');
         
        
-        //connects to our map service
+        //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
             url: PLSSSectionsLayerURL, 
             style: {color: "#000", weight: 0.35, fillColor: "#ece7f2"}
 //            , 
-//            pane: 'BPLSSSections'
+//            pane: 'B-PLSSSections'
         }).addTo(map);
-
+        
+        //set up leaflet draw layer: 
+        // FeatureGroup is to store drawn shapes
+        //drawn items is an obj with a _layers obj
+        drawnItems = new L.FeatureGroup();
+//        drawnItems.options.pane = 'A-drawnSelection';
+      
+        map.addLayer(drawnItems);
+        
+        
+        //set up the Leaflet Draw buttons. 
         setupMapButtons(map);
+        drawListener(map);
 
         leafletFeatureLayer.bindPopup(function (individualSection) {
-            return initPopups(individualSection.feature.properties[sectionsLayerPlssField]);
+            return initPopup(individualSection.feature.properties[sectionsLayerPlssField]);
             
         });
-    }
+    } //end initialize function
 
-    //called on map properties
+    //called in map properties during the initialize function
     function determineScroll(){
         
         var width = $(this).width() //defines width
@@ -82,80 +91,68 @@ var leafletMap = (function(){
     
     function setupMapButtons(map){
         //called by the map's on load event. 
-        //console.log("set up leaflet map buttons.");
+        //listeners for the leaflet draw buttons
+       
+        $("#selectRectangleButton").click(function(d){
+            //console.log("click rectangle");
+            //console.log("d is: ", d);
+            //console.log("this is: ", this);
+            
+             $("#selectRectangleButton").addClass("active");
+            
+            var rectangle = new L.Draw.Rectangle(map, {
+                shapeOptions: {color:'#000'}, 
+                repeatMode: false
+            });
+            
+            rectangle.enable();
+        });
+        
+        $("#selectPolygonButton").click(function(d){
+         
+            $("#selectPolygonButton").addClass("active");
+            
+            var polygon = new L.Draw.Polygon(map, {
+                shapeOptions: {color:'#529952'}, 
+                repeatMode: false, 
+                allowIntersection: false
+            });
+            
+            polygon.enable();
+        });
         
        
-        //working with pane to make this appear above the sections layer. 
-        //NOT WORKING RIGHT NOW. 
-         // FeatureGroup is to store editable layers
-        drawnItems = new L.FeatureGroup;
-//        drawnItems.options.pane = 'AdrawnSelection';
-        console.log(drawnItems);
-        map.addLayer(drawnItems);
-        
-
-        var drawControl = new L.Control.Draw({
-             edit: 
-                 false, // {featureGroup: drawnItems,
-//                 poly: {allowIntersection: false}
-//                 },
-             draw: {
-                 marker: false, polyline: false, circle: false,
-                 rectangle: {repeatMode: false},
-                 polygon: {allowIntersection: false} 
-                 
-                 //not sure why, but circle doesn't seem to work with the query. 
-                 
-             }
-
-        });
-        map.addControl(drawControl);
-        $(".leaflet-draw-section").before("<span>Select an area of interest:</span>");
-        $(".leaflet-draw-section").after('<a id="clearMapLink" onclick="leafletMap.clearMapSelection();">clear</a>');
-        
- /*       customDeleteButton = L.Control.Draw.extend({
-            options: {position: "topleft"},
-            onAdd: function(map){
-                var container = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom leaflet-draw-toolbar leaflet-draw-edit-remove');
-                container.id = 'customDeleteButton';
-                container.title = "Clear map selection";
-                container.style.backgroundColor = 'white'; 
-                container.style.width = '26px';
-                container.style.height = '26px';
-                container.style.backgroundImage = "linear-gradient(transparent, transparent), url('https://unpkg.com/leaflet-draw@0.4.7/dist/images/spritesheet.svg')";
-                container.style.backgroundPosition = "-242px -2px"; //tool disabled style
-               // container.style.backgroundPosition = "-182px -2px"; //tool enabled style
-                container.style.backgroundSize = "270px 30px";
-                container.style.backgroundClip = "padding-box";
-                container.style.pointerEvents = "auto";
-                container.style.cursor = 'pointer';
-                container.style.float = 'left';
-                //hover? 
+    } //end setupMapButtons function 
+    
  
-                container.onclick = function(){clearMapSelection();}
-
-                return container; 
-            }
-        });
-       
-        //add a delete button
-         map.addControl(new customDeleteButton());
- */       
-        //use this if you want something to happen on draw start. 
+    
+    function drawListener(map){
+        
+         //use this if you want something to happen on draw start. 
         //  map.on (L.Draw.Event.DRAWSTART, function(){
         //      console.log("draw start ");
           
         //  });
         
-        //listener for draw end event: 
+         map.on(L.Draw.Event.DRAWSTOP, function (e) {
+              console.log("draw stop.");
+             //style the draw buttons as not-active. 
+             $("#selectRectangleButton").removeClass("active");
+             $("#selectPolygonButton").removeClass("active");
+             
+         });
+        
+        //listener for draw created event: 
         map.on(L.Draw.Event.CREATED, function (e) {
-
+           console.log("shape created.");
            
-            //To only allow one selection, clear the layer when a new shape is completed. 
+            //To only allow one map selection, clear the layer when a new shape is completed. 
             if (drawnItems && drawnItems.getLayers().length !== 0){
                 drawnItems.clearLayers();
             }
 
+            var type = e.layerType; //type is either rectangle or polygon
+           
             
             //add new layer to the featureGroup
             var layer = e.layer;
@@ -181,10 +178,9 @@ var leafletMap = (function(){
         drawnItems.on('click', function (e){
             console.log("clicked leaflet draw layer.");
         }); 
-       
-    } //end setupMapButtons function 
+    }
 
-    function initPopups(individualSection){
+    function initPopup(individualSection){
 
         var sectionResults = resultsManager.matchSection(individualSection);
 
@@ -219,6 +215,9 @@ var leafletMap = (function(){
     
     
     var clearMapSelection = function (){
+        
+       
+        
          //clear the layer
         if (drawnItems && drawnItems.getLayers().length !== 0){
             console.log('clearMapSelection!');
@@ -388,7 +387,8 @@ var leafletMap = (function(){
     return {
         "initialize": initialize,
         "clearMapSelection": clearMapSelection,
-        "highlight": highlight
+        "highlight": highlight 
+        
     }
     
 })();
