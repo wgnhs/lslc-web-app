@@ -8,5 +8,6 @@ var ledgerTableURL = "https://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/M
 var samplesTableURL = "https://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/MapServer/6"; 
 
 //vars for table field names 
-var PlssField = 'SectionId'; 
-var sectionsLayerPlssField = 'UID';
+var PlssField = 'PlssId'; 
+var sectionsLayerPlssField = 'PlssId';
+var samplesOIDField = 'SampleId';

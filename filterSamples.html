@@ -107,6 +107,14 @@
                         <label for="catalogNumberSearch"><span>Catalog Number </span></label>
                         <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
                    </div>
+                   <div class="filter">
+                        <p>Filter by map area: </p>
+                       <div  id="mapSelectionButtonsContainer">
+                            <div class="mapSelectionButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
+                            <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/mapSelection_poly.png"/><span>Select by polygon</span></div>
+                            <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clearMapSelection2.png"><span>Clear map selection</span></div>
+                       </div>
+                   </div>
                    
       <!--              <div class='filter'>
                        <label><p><span class="bold">Rock Type </span></p>

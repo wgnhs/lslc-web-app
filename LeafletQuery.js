@@ -318,7 +318,7 @@ function sliceResult(allResultOBJECTIDs, queryNum){
 function slicePromise(resultSliceOBJECTIDs, queryNum){
     return new Promise(function(resolve, reject){
         //SQL for the query
-        var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
+        var sliceWhereClause = samplesOIDField+" IN ("+resultSliceOBJECTIDs+")";
 
         //set up a query for one slice of data.
         var sliceDataQuery = L.esri.query({url:samplesTableURL}); //url to samples table
@@ -343,7 +343,7 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
     //drawList is a boolean indicating whether to add the list (whether it's the last query).  
     
     //SQL for the query
-    var sliceWhereClause = "OBJECTID IN ("+resultSliceOBJECTIDs+")";
+    var sliceWhereClause = samplesOIDField+" IN ("+resultSliceOBJECTIDs+")";
     
     //set up a query for one slice of data.
     var sliceDataQuery = L.esri.query({url:samplesTableURL}); //url to samples table

@@ -275,7 +275,7 @@
                             sampleRecordData.location.state = sampleTableResponse.features[0].attributes.State;
                             sampleRecordData.location.township = sampleTableResponse.features[0].attributes.Township;
                             sampleRecordData.location.range = sampleTableResponse.features[0].attributes.Range + sampleTableResponse.features[0].attributes.Direction;
-                            sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section_;
+                            sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section;
                             sampleRecordData.location.quarterSection = sampleTableResponse.features[0].attributes.Quarter;
                             sampleRecordData.location.quarterQuarterSection = sampleTableResponse.features[0].attributes.QuarterQuarter;
                             sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes.LocNote;
@@ -487,10 +487,10 @@
                     
                     var thinSec = $('<div class="thinSectionContainer"></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
                     thinSec.append('<p>condition: '+sampleRecordData.thinSections[i].condition+'</p>');
-                    if(sampleRecordData.thinSections[i].thinImgppl){  
+                    if(sampleRecordData.thinSections[i].thinThumbppl){  
                       //  thinSec.append('<p>(click to view in detail)</p>');
                         thinSec.append(
-                            "<img src='"+sampleRecordData.thinSections[i].thinImgppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinImgxpl+"' alt='cross-polar thumbnail'/>");
+                            "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
                         thinSec.addClass('thinSection');
                         thinSec.attr('title','click to view');
                         thinSec.data({'thinID':sampleRecordData.thinSections[i].thinSectionId});
@@ -537,12 +537,26 @@
 	           maxZoom: 19
                 }).addTo(map);
             
-            var mapSection = L.esri.featureLayer({
+            var mapSectionsLayer = L.esri.featureLayer({
                  url: PLSSSectionsLayerURL,
                 style: {color: "#000", weight: 0.35, fillColor: "#111"}, 
                // where: sectionsLayerPlssField+' ='+sampleRecordData.mapSectionId
                 
             }).addTo(map);
+            
+            mapSectionsLayer.bindPopup(function(individualSection){
+                
+                    var sectionInfo = individualSection.feature.properties;
+                    //build the popup content: 
+                    var popupContent = "Section "+sectionInfo.Section_+" of "+sectionInfo.State+" Township "+sectionInfo.TownNum+sectionInfo.TownDir+", Range "+sectionInfo.RangeNum+sectionInfo.RangeDir; 
+                    return popupContent;
+                },                 
+                { //popup options
+                
+                maxWidth: 100, 
+                className: 'sectionInfoPopup'
+                
+            });
             
             //zoom the map to the correct section: 
            var sectionQuery = L.esri.query({url:PLSSSectionsLayerURL});
