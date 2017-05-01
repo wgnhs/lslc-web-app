@@ -247,23 +247,43 @@ section {
 /*++++++++++++++++++ RESULTS TABLE +++++++++++++++++++++*/
 
 /*download button*/
-a.export,
-a.export:visited {
+
+a.export{
   display: inline-block;
   text-decoration: none;
-  color: #000;
-  background-color: #ddd;
   border: 1px solid #ccc;
-  padding: 8px;
+  padding: 1px 5px;
+ /* color: #000;
+  background-color: #ddd;
+    */
+}
+/*
+,
+a.export:visited {
+
 }
 
-#downloadButtonContainer{
+ #downloadButtonContainer{
   position: relative;
   top:0;
   right:0;
 }
+*/
+#downloadButtonContainer{
+    margin-left: 10px; 
+    
+}
+a.export:hover{
+    background-color: #f4f4f4;
+    cursor: pointer;
+}
+#downloadButtonContainer img {
+    vertical-align: middle;
+    height: 24px;
+    width: 24px;
+}
 
-#resultsTable{
+#resultsTable {
     width: 100%;
     border-collapse: collapse;
     overflow-x:auto;
