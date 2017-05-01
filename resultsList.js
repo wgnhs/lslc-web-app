@@ -130,23 +130,28 @@ function onSampleClick(item){
 
 function exportTableToCSV() {
 
+//    var dateStr = new Date(datestring); 
+//    console.log("datestr: ", dateStr);
+    
     var filename = "LSLC_Results-"; //declares title for csv
 
     //iterates through filters object and changes CSV title to fit them
-    for (key in filters){
-      if (filters[key] != null && filters[key] != ""){
-        if (key == "handSampleAvailabilityInput"){
-          filename += "HandSample"
-        } else if (key == "thinSectionAvailabilityInput"){
-          filename += "ThinSection"
-        } else {
-          filename += filters[key]
-        }
-        filename += "-"
-      }
-    }
-    filename += "exported.csv"; //adds exported.csv at end
-
+//    for (key in filters){
+//      if (filters[key] != null && filters[key] != ""){
+//        if (key == "handSampleAvailabilityInput"){
+//          filename += "HandSample"
+//        } else if (key == "thinSectionAvailabilityInput"){
+//          filename += "ThinSection"
+//        } else {
+//          filename += filters[key]
+//        }
+//        filename += "-"
+//      }
+//    }
+    filename += "export"; //adds export.csv at end
+    //filename += 
+    filename += ".csv";
+    
 
     var csv = '' //establishes csv empty string
     var newLine = '\r\n' //establishes newline character
@@ -158,19 +163,29 @@ function exportTableToCSV() {
       csv += '"' + key + '",';
     }
     //takes off last comma and adds newline
-    csv = csv.substr(0,csv.length-1)
-    csv += newLine
+    csv = csv.substr(0,csv.length-1);
+    csv += newLine;
 
     var csvLine;
 
-    //loop iterates through all of array this time adds CSV body 
+    //loop iterates through all of array; this time adds CSV body 
     for (i in globalResultsArray){
       csvLine = '';
       //pulls out and iterates through each attributes object
       for (key in globalResultsArray[i].attributes){
-        
+        if (globalResultsArray[i].attributes[key]){
+            //non-null value 
+            
+             var value = (globalResultsArray[i].attributes[key]).toString();
+            //escape any commas in the value. 
+           // var commasReplaced = value.replace(/,/g, '-');
+            //all double quotes within the 
+            var quotesReplacedValue = value.replace(/"/g, '""');
+            console.log("replaced", quotesReplacedValue);
+        }  
+
         //adds csv element
-        csvLine += '"' + globalResultsArray[i].attributes[key] + '",';
+        csvLine += '"' + quotesReplacedValue + '",';
         
       }
       //takes off last comma and adds newline
@@ -217,7 +232,7 @@ function exportTableToCSV() {
           'href': csvData,
           'target': '_blank'
         });
-    }
+    } //end if... else if... else
 }
 
 

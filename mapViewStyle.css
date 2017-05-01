@@ -251,8 +251,8 @@ section {
 a.export{
   display: inline-block;
   text-decoration: none;
-  border: 1px solid #ccc;
-  padding: 1px 5px;
+  border: 1px solid #e6e6e6;
+  padding: 1px 6px 1px 1px;
  /* color: #000;
   background-color: #ddd;
     */
@@ -276,6 +276,7 @@ a.export:visited {
 a.export:hover{
     background-color: #f4f4f4;
     cursor: pointer;
+    border: 1px solid #ccc;
 }
 #downloadButtonContainer img {
     vertical-align: middle;
