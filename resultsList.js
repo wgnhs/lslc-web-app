@@ -25,6 +25,15 @@ var tableAttributes = [
         //{"field": "", "label": ""}
     ];
 
+// //Executed on Button Click
+  $(".export").on('click', function(event) {
+
+    //not sure why, but it doesn't work without this format
+    //calls function
+    exportTableToCSV.apply(this);
+    //exportTableToCSV();
+  });
+
 
 function initializeResultsTable(){
     
@@ -115,3 +124,119 @@ function onSampleClick(item){
     window.open("sampleRecord.html#"+clickedId, "_blank");
 
 }
+
+
+
+
+function exportTableToCSV() {
+
+//    var dateStr = new Date(datestring); 
+//    console.log("datestr: ", dateStr);
+    
+    var filename = "LSLC_Results-"; //declares title for csv
+
+    //iterates through filters object and changes CSV title to fit them
+//    for (key in filters){
+//      if (filters[key] != null && filters[key] != ""){
+//        if (key == "handSampleAvailabilityInput"){
+//          filename += "HandSample"
+//        } else if (key == "thinSectionAvailabilityInput"){
+//          filename += "ThinSection"
+//        } else {
+//          filename += filters[key]
+//        }
+//        filename += "-"
+//      }
+//    }
+    filename += "export"; //adds export.csv at end
+    //filename += 
+    filename += ".csv";
+    
+
+    var csv = '' //establishes csv empty string
+    var newLine = '\r\n' //establishes newline character
+
+    //loop iterates through attributes (globalResultsArray[0])
+    //used to create header
+    for (key in globalResultsArray[0].attributes){
+      //adds csv item, quotes and comma included
+      csv += '"' + key + '",';
+    }
+    //takes off last comma and adds newline
+    csv = csv.substr(0,csv.length-1);
+    csv += newLine;
+
+    var csvLine;
+
+    //loop iterates through all of array; this time adds CSV body 
+    for (i in globalResultsArray){
+      csvLine = '';
+      //pulls out and iterates through each attributes object
+      for (key in globalResultsArray[i].attributes){
+        if (globalResultsArray[i].attributes[key]){
+            //non-null value 
+            
+             var value = (globalResultsArray[i].attributes[key]).toString();
+            //escape any commas in the value. 
+           // var commasReplaced = value.replace(/,/g, '-');
+            //all double quotes within the 
+            var quotesReplacedValue = value.replace(/"/g, '""');
+            console.log("replaced", quotesReplacedValue);
+        }  
+
+        //adds csv element
+        csvLine += '"' + quotesReplacedValue + '",';
+        
+      }
+      //takes off last comma and adds newline
+      csvLine = csvLine.substr(0,csvLine.length-1)
+      csvLine += newLine
+      csv += csvLine
+    }
+
+    //THIS SECTION CREATES TABLE -- DOWNLOADED FUNCTION
+
+    // Deliberate 'false', see comment below
+    if (false && window.navigator.msSaveBlob) {
+
+      var blob = new Blob([decodeURIComponent(csv)], {
+        type: 'text/csv;charset=utf8'
+      });
+
+      // Crashes in IE 10, IE 11 and Microsoft Edge
+      // See MS Edge Issue #10396033
+      // Hence, the deliberate 'false'
+      // This is here just for completeness
+      // Remove the 'false' at your own risk
+      window.navigator.msSaveBlob(blob, filename);
+
+    } else if (window.Blob && window.URL) {
+      // HTML5 Blob        
+      var blob = new Blob([csv], {
+        type: 'text/csv;charset=utf-8'
+      });
+      var csvUrl = URL.createObjectURL(blob);
+
+      $(this)
+        .attr({
+          'download': filename,
+          'href': csvUrl
+        });
+    } else {
+      // Data URI
+      var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+      $(this)
+        .attr({
+          'download': filename,
+          'href': csvData,
+          'target': '_blank'
+        });
+    } //end if... else if... else
+}
+
+
+
+
+
+
