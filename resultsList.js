@@ -176,16 +176,18 @@ function exportTableToCSV() {
         if (globalResultsArray[i].attributes[key]){
             //non-null value 
             
-             var value = (globalResultsArray[i].attributes[key]).toString();
-            //escape any commas in the value. 
-           // var commasReplaced = value.replace(/,/g, '-');
-            //all double quotes within the 
-            var quotesReplacedValue = value.replace(/"/g, '""');
-            console.log("replaced", quotesReplacedValue);
+            var value = (globalResultsArray[i].attributes[key]).toString();
+            //if the value contains a double quote: 
+            if (value.indexOf('"') >= 0){
+                //all double quotes within the value must be doubled. 
+                value = value.replace(/"/g, '""');
+            }       
+            
+           // console.log("replaced", value);
         }  
 
         //adds csv element
-        csvLine += '"' + quotesReplacedValue + '",';
+        csvLine += '"' + value + '",';
         
       }
       //takes off last comma and adds newline
