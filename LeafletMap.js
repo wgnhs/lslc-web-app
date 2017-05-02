@@ -9,15 +9,20 @@ $(function(){
 
 //function matches map height to filters
 function scaleMapHeight(height){
+    
+    var matchHeight = $("#filters").height(); //references height of filters div
+    
     //checks for height less than 545px, because that's where the map starts getting distorted
-    if (height < 545){
-       var matchHeight = $("#filters").height(); //references height of filters div
-        matchHeight = String(matchHeight) //converts to string for css format
-        console.log(matchHeight)
-
-        //sets map to height of filters div
-        document.getElementById("map").style.height = matchHeight + "px";
-    }
+//    if (height < 545){
+//       
+//        matchHeight = String(matchHeight) //converts to string for css format
+//        console.log(matchHeight)
+//
+//        //sets map to height of filters div
+//        document.getElementById("map").style.height = matchHeight + "px";
+//    }
+    
+    document.getElementById("map").style.height = matchHeight + "px";
 }
 
 var leafletMap = (function(){
@@ -25,6 +30,8 @@ var leafletMap = (function(){
     var leafletFeatureLayer;
     var drawnItems; 
     //var customDeleteButton;
+    var rectangle; 
+    var polygon;
     
     var initialize = function(){
         
@@ -89,43 +96,53 @@ var leafletMap = (function(){
 
     }
     
+    
     function setupMapButtons(map){
         //called by the map's on load event. 
         //listeners for the leaflet draw buttons
        
-        $("#selectRectangleButton").click(function(d){
-            //console.log("click rectangle");
-            //console.log("d is: ", d);
-            //console.log("this is: ", this);
-            
-             $("#selectRectangleButton").addClass("active");
-            
-            var rectangle = new L.Draw.Rectangle(map, {
+        rectangle = new L.Draw.Rectangle(map, {
                 shapeOptions: {color:'#000'}, 
                 repeatMode: false
             });
-            
-            rectangle.enable();
-        });
         
-        $("#selectPolygonButton").click(function(d){
-         
-            $("#selectPolygonButton").addClass("active");
-            
-            var polygon = new L.Draw.Polygon(map, {
+         polygon = new L.Draw.Polygon(map, {
                 shapeOptions: {color:'#529952'}, 
                 repeatMode: false, 
                 allowIntersection: false
             });
+        
+        $("#selectRectangleButton").click(function(d){
+            console.log("click rectangle");
+            //console.log("d is: ", d);
+            //console.log("this is: ", this);
             
+            //clear all Leaflet Draw indicators and handlers. 
+            disableLeafletDraw(); 
+            
+            $("#selectRectangleButton").addClass("active");
+             rectangle.enable();
+        });
+        
+        $("#selectPolygonButton").click(function(d){
+            
+            //clear all Leaflet Draw indicators and handlers. 
+            disableLeafletDraw(); 
+            
+            $("#selectPolygonButton").addClass("active");
             polygon.enable();
         });
         
        
     } //end setupMapButtons function 
     
- 
-    
+    function disableLeafletDraw(){
+        $("#selectPolygonButton").removeClass("active");
+        $("#selectRectangleButton").removeClass("active");
+        polygon.disable();
+        rectangle.disable();
+    }
+        
     function drawListener(map){
         
          //use this if you want something to happen on draw start. 
@@ -136,16 +153,19 @@ var leafletMap = (function(){
         
          map.on(L.Draw.Event.DRAWSTOP, function (e) {
               console.log("draw stop.");
-             //style the draw buttons as not-active. 
-             $("#selectRectangleButton").removeClass("active");
-             $("#selectPolygonButton").removeClass("active");
+             
+             //clear all Leaflet Draw indicators and handlers.
+             disableLeafletDraw();
              
          });
         
         //listener for draw created event: 
         map.on(L.Draw.Event.CREATED, function (e) {
            console.log("shape created.");
-           
+            
+            //clear all Leaflet Draw indicators and handlers.    
+            disableLeafletDraw();
+            
             //To only allow one map selection, clear the layer when a new shape is completed. 
             if (drawnItems && drawnItems.getLayers().length !== 0){
                 drawnItems.clearLayers();
@@ -216,7 +236,7 @@ var leafletMap = (function(){
     
     var clearMapSelection = function (){
         
-       
+       disableLeafletDraw();
         
          //clear the layer
         if (drawnItems && drawnItems.getLayers().length !== 0){
