@@ -245,7 +245,46 @@ section {
 }
 
 /*++++++++++++++++++ RESULTS TABLE +++++++++++++++++++++*/
-#resultsTable{
+
+/*download button*/
+
+a.export{
+  display: inline-block;
+  text-decoration: none;
+  border: 1px solid #e6e6e6;
+  padding: 1px 6px 1px 1px;
+ /* color: #000;
+  background-color: #ddd;
+    */
+}
+/*
+,
+a.export:visited {
+
+}
+
+ #downloadButtonContainer{
+  position: relative;
+  top:0;
+  right:0;
+}
+*/
+#downloadButtonContainer{
+    margin-left: 10px; 
+    
+}
+a.export:hover{
+    background-color: #f4f4f4;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+#downloadButtonContainer img {
+    vertical-align: middle;
+    height: 24px;
+    width: 24px;
+}
+
+#resultsTable {
     width: 100%;
     border-collapse: collapse;
     overflow-x:auto;
