@@ -129,11 +129,13 @@ function onSampleClick(item){
 
 
 function exportTableToCSV() {
-
-//    var dateStr = new Date(datestring); 
-//    console.log("datestr: ", dateStr);
     
-    var filename = "LSLC_Results-"; //declares title for csv
+    //build a date and time stamp for the filename: 
+    var date = new Date(); 
+    var dateStr = date.getFullYear().toString() + "-" + ("00"+(date.getMonth()+1).toString()).slice(-2)+ "-" + ("00"+date.getDay().toString()).slice(-2) + "_" + ("00"+date.getHours().toString()).slice(-2) + ("00"+date.getMinutes().toString()).slice(-2);
+   // console.log("datestr: ", dateStr);
+    
+    var filename = "LSLC_Results_"; //declares title for csv
 
     //iterates through filters object and changes CSV title to fit them
 //    for (key in filters){
@@ -148,8 +150,9 @@ function exportTableToCSV() {
 //        filename += "-"
 //      }
 //    }
-    filename += "export"; //adds export.csv at end
-    //filename += 
+    
+    filename += dateStr;
+    filename += "_export"; //adds export.csv at end
     filename += ".csv";
     
 
