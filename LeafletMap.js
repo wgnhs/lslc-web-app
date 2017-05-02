@@ -9,15 +9,20 @@ $(function(){
 
 //function matches map height to filters
 function scaleMapHeight(height){
+    
+    var matchHeight = $("#filters").height(); //references height of filters div
+    
     //checks for height less than 545px, because that's where the map starts getting distorted
-    if (height < 545){
-       var matchHeight = $("#filters").height(); //references height of filters div
-        matchHeight = String(matchHeight) //converts to string for css format
-        console.log(matchHeight)
-
-        //sets map to height of filters div
-        document.getElementById("map").style.height = matchHeight + "px";
-    }
+//    if (height < 545){
+//       
+//        matchHeight = String(matchHeight) //converts to string for css format
+//        console.log(matchHeight)
+//
+//        //sets map to height of filters div
+//        document.getElementById("map").style.height = matchHeight + "px";
+//    }
+    
+    document.getElementById("map").style.height = matchHeight + "px";
 }
 
 var leafletMap = (function(){
