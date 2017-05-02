@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+   <HEAD>
+      <TITLE>Lake Superior Legacy Collection</TITLE>
+       <meta charset="UTF-8">
+
+ 
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+       
+       <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+       
+       <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+ 
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    
+       
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="recordStyle.css" rel='stylesheet'/> 
+           <LINK href="modalStyle.css" rel='stylesheet'/>
+
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+</HEAD>
+<BODY>
+  
+   
+   <div id="wrapper">
+        
+       <div id="header"></div>
+       
+       <h2>Notebooks</h2> 
+       <p>explanation paragraph... </p>
+       
+       <div id="notebooksList"></div>
+   
+       
+       <div id="footer"></div>
+   </div><!--end wrapper div-->
+   
+   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
+   <script src="header.js"></script>
+   <script>
+           //indicate the current page in the nav bar. 
+          // $("#navHome").css("background-color", "#848484");
+   </script>
+    
+    <!-- javascript links -->
+    <script src="mapServiceUrls.js"></script>
+    
+    <!-- javascript for building the notebook list -->
+    <script>
+        function retrieveAllNotebooks(){
+            var notebookQuery = L.esri.query({url: notebooksTableURL}); 
+            notebookQuery.fields(["*"]); 
+                     
+            notebookQuery.run(function(error, featureCollection, notebooksResponse){
+                console.log("notebooks: ", notebooksResponse.features);
+               for(i in notebooksResponse.features){
+                  
+//                   console.log("Notebook: ", notebooksResponse.features[i].attributes);
+                   findThumbnail(notebooksResponse.features[i].attributes);
+               }
+
+            }); //end run 
+            
+        }
+        function findThumbnail(notebookAttributes){
+            
+            var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.NotebookID+"_cover_thumb.jpg"; 
+            
+            //WHY DOES THIS ALWAYS FAIL? 
+            
+//            var thumbnailFound = $.get(thumbURL).done(function(img){
+//                //image found. 
+//                console.log("found"); 
+//               buildListItem(notebookAttributes, thumbURL); 
+//                
+//            }).fail(function(){
+//                //image not found. 
+//                 console.log("not found.");
+//                buildListItem(notebookAttributes, 'images/notebooks/notebookIcon.jpg'); 
+//            });
+            
+            buildListItem(notebookAttributes, thumbURL);
+            
+        }
+        
+        function buildListItem(notebookAttributes, thumbnail){
+            
+            
+            bookDiv = "<div class='reportDivision'>"; 
+            
+            
+            
+            // First, add the thumbnail: 
+            
+             bookDiv += "<img src='"+thumbnail+"' alt='notebook cover' style='height: 200px;'/>"
+            
+//            if(thumbnailFound) {
+//                    bookDiv += "<img src='http://mp-web2t/lslc/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.NotebookID+"_cover_thumb.jpg' alt='notebook cover' style='height: 200px;'/>";
+//            } else {
+//                bookDiv += "<img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover' style='height: 200px;'/>"
+//            }
+
+            //if there's a UWDC Link:
+//            if (notebookAttributes.UwdcUrl){
+//                bookDiv += "<a href='"+notebookAttributes.UwdcUrl+"' target=_blank>"; 
+//                
+//                bookDiv += "</a>";
+//            } else {
+//                //if no UWDC link
+//                
+//                
+//            }
+            
+            
+            
+            bookDiv += "<div class='detailsDiv'>";
+            bookDiv += "<p>Notebook #"+notebookAttributes.NotebookID+"</p>";
+                bookDiv += "<p>"+notebookAttributes.Title+"</p>";
+                bookDiv += "<p>by "+notebookAttributes.Author+"</p>";
+                bookDiv += "<p>"+notebookAttributes.Year+"</p>";
+            
+                if (notebookAttributes.UwdcUrl){
+                    bookDiv += "Scan at UW Digital Collections: <a href='"+notebookAttributes.UwdcUrl+"' target=_blank>"+ notebookAttributes.UwdcUrl +"</a>";
+                } 
+            bookDiv += "</div>";
+            
+            bookDiv += "</div>";
+            
+            $("#notebooksList").append(bookDiv); 
+            
+        }
+        
+        retrieveAllNotebooks();
+    
+    </script><!-- end javascript for building the notebook list -->
+   
+   
+</BODY> 
+</HTML>
