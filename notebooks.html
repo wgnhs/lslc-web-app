@@ -81,26 +81,24 @@
         }
         function findThumbnail(notebookAttributes){
             
-            var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.NotebookID+"_cover_thumb.jpg"; 
+            var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.Number+"_cover_thumb.jpg"; 
             
-            //WHY DOES THIS ALWAYS FAIL? 
             
-//            var thumbnailFound = $.get(thumbURL).done(function(img){
-//                //image found. 
-//                console.log("found"); 
-//               buildListItem(notebookAttributes, thumbURL); 
-//                
-//            }).fail(function(){
-//                //image not found. 
-//                 console.log("not found.");
-//                buildListItem(notebookAttributes, 'images/notebooks/notebookIcon.jpg'); 
-//            });
-            
-            buildListItem(notebookAttributes, thumbURL);
+            var img = new Image();
+            img.onload = function(resp){
+               console.log(notebookAttributes.Number+" found", resp); 
+               buildListItem(notebookAttributes, thumbURL); 
+            }
+            img.onerror = function(){
+                console.log(notebookAttributes.Number+" not found.");
+                buildListItem(notebookAttributes, 'images/notebooks/notebookIcon.jpg');
+            }
+            img.src = thumbURL; 
+ 
             
         }
         
-        function buildListItem(notebookAttributes, thumbnail){
+        function buildListItem(notebookAttributes, thumbnailsrc){
             
             
             bookDiv = "<div class='reportDivision'>"; 
@@ -109,10 +107,10 @@
             
             // First, add the thumbnail: 
             
-             bookDiv += "<img src='"+thumbnail+"' alt='notebook cover' style='height: 200px;'/>"
+             bookDiv += "<img src='"+thumbnailsrc+"' alt='notebook cover' style='height: 200px;'/>"
             
 //            if(thumbnailFound) {
-//                    bookDiv += "<img src='http://mp-web2t/lslc/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.NotebookID+"_cover_thumb.jpg' alt='notebook cover' style='height: 200px;'/>";
+//                    bookDiv += "<img src='http://mp-web2t/lslc/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.Number+"_cover_thumb.jpg' alt='notebook cover' style='height: 200px;'/>";
 //            } else {
 //                bookDiv += "<img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover' style='height: 200px;'/>"
 //            }
@@ -131,7 +129,7 @@
             
             
             bookDiv += "<div class='detailsDiv'>";
-            bookDiv += "<p>Notebook #"+notebookAttributes.NotebookID+"</p>";
+            bookDiv += "<p>Notebook #"+notebookAttributes.Number+"</p>";
                 bookDiv += "<p>"+notebookAttributes.Title+"</p>";
                 bookDiv += "<p>by "+notebookAttributes.Author+"</p>";
                 bookDiv += "<p>"+notebookAttributes.Year+"</p>";
@@ -145,7 +143,7 @@
             
             $("#notebooksList").append(bookDiv); 
             
-        }
+        } //end buildListItem function
         
         retrieveAllNotebooks();
     
