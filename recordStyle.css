@@ -25,7 +25,7 @@ a {
     
 }
 #searchArea{
-    text-align: center;
+  /*  text-align: center; */ /* aligns better with other pages if not centered. */
     padding: 25px 0px;
 }
 
@@ -36,7 +36,7 @@ a {
     padding-right: 10px;
 }
 
-#sampleRecord h3, h2{
+#sampleRecord h3, #sampleRecord h2{
     margin: 0;
 }
 
