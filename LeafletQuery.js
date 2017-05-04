@@ -307,15 +307,14 @@ function sliceResult(allResultOBJECTIDs, queryNum){
     }
     
     var allQueries = Promise.all(sliceQueriesQueue).then(function(data){
-       // console.log("allqueries data:", data); 
+        console.log("allqueries data:", data); 
         for (i in data){
             resultsManager.add(data[i]); //concatenate each slice's results to the global var. 
         }
         
         console.log("5. global results: ", globalResultsArray); 
         
-        var firstThousand = globalResultsArray.slice(0,1000);   
-        listResults(firstThousand);
+        listResults(resultsManager.resultsPage(1));
         
         highlightAll();
     });

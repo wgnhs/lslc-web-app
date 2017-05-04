@@ -6,6 +6,10 @@ var resultsManager = (function(){
     
     var resultsPage = function (pageNum){
     //pageNum is an integer beginning at 1 
+        var upperLimit = pageNum*1000;
+        var lowerLimit = (pageNum-1)*1000; 
+        
+        return globalResultsArray.slice(lowerLimit, upperLimit);
     
     }
     var matchSection = function (clickSectionID){
