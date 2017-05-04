@@ -44,9 +44,9 @@
        <div id="header"></div>
        
        <h2>Notebooks</h2> 
-       <p>explanation paragraph... </p>
+       <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as fulll digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
        
-       <div id="notebooksList"></div>
+       <div class='reportDivision'><div id="fieldNotebooksList"></div></div>
    
        
        <div id="footer"></div>
@@ -129,7 +129,7 @@
             
             
             bookDiv += "<div class='detailsDiv'>";
-            bookDiv += "<p>Notebook #"+notebookAttributes.Number+"</p>";
+            bookDiv += "<p>Field Notebook #"+notebookAttributes.Number+"</p>";
                 bookDiv += "<p>"+notebookAttributes.Title+"</p>";
                 bookDiv += "<p>by "+notebookAttributes.Author+"</p>";
                 bookDiv += "<p>"+notebookAttributes.Year+"</p>";
@@ -141,7 +141,7 @@
             
             bookDiv += "</div>";
             
-            $("#notebooksList").append(bookDiv); 
+            $("#fieldNotebooksList").append(bookDiv); 
             
         } //end buildListItem function
         
