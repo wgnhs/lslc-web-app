@@ -240,7 +240,7 @@
            })
        } //end testSample
         
-        console.log("this is out of sequence...");
+        
         
         //needs to be called! 
         function queryForSample(number){
@@ -299,6 +299,9 @@
            console.log("4.")
             return new Promise (function(resolve, reject){
                 if(sampleRecordData.fieldNotebookNum){
+                    
+                    retrieveFieldNotebookThumbnail(sampleRecordData.fieldNotebookNum);
+                    
                     var notebookQuery = L.esri.query({url: notebooksTableURL}); 
                     notebookQuery.fields(["*"]); 
                     notebookQuery.where("Number LIKE '"+sampleRecordData.fieldNotebookNum+"'"); 
@@ -309,7 +312,7 @@
                         sampleRecordData.fieldAuthor= notebooksResponse.features[0].attributes.Author;
                         sampleRecordData.fieldDate = notebooksResponse.features[0].attributes.Year;
                         sampleRecordData.fieldNotebookUrl = notebooksResponse.features[0].attributes.UwdcUrl;
-                        console.log(notebooksResponse);
+                      //  console.log("notebook response", notebooksResponse);
                         resolve(notebooksResponse);
 
 
@@ -421,6 +424,31 @@
             }); //end return Promise
             
         } //end function retrieveLedgers
+       
+       function retrieveFieldNotebookThumbnail(notebookNumber){
+           return new Promise(function(resolve, reject){
+                var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookNumber+"_cover_thumb.jpg"; 
+            
+            
+               
+            var img = new Image();
+            img.onload = function(resp){
+               console.log("notebook "+notebookNumber+" thumb found", resp); 
+                sampleRecordData.fieldNotebookThumbnail = thumbURL;
+                resolve(thumbURL); 
+               
+            }
+            img.onerror = function(){
+                console.log("notebook "+notebookNumber+" thumb not found.");
+                sampleRecordData.fieldNotebookThumbnail = 'images/notebooks/notebookIcon.jpg';
+                resolve('images/notebooks/notebookIcon.jpg');
+               
+            }
+            img.src = thumbURL; 
+               
+           })
+           
+       }
 
            
         function buildReport(){
@@ -585,7 +613,7 @@
             if (sampleRecordData.fieldNotebookNum){
                 if(sampleRecordData.fieldNotebookTitle === null){sampleRecordData.fieldNotebookTitle = "untitled"}; 
 
-                fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover'/></a>";
+                fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.fieldNotebookThumbnail+"' alt='notebook cover'/></a>";
                 fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNum+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
      
             } else if (sampleRecordData.fieldDesc){
@@ -657,7 +685,7 @@
 
                            // console.log(prop, " ", num, " of ", sampleRecordData[prop].length);
                             for (subProp in sampleRecordData[prop][o]){
-                                $("#dataTable").append("<tr><td>"+prop+"_"+num+"of"+sampleRecordData[prop].length+"_"+subProp+"</td><td>"+sampleRecordData[prop][o][subProp]+"</td></tr>");
+                                $("#dataTable").append("<tr><td>"+subProp+"_"+num+"of"+sampleRecordData[prop].length+"</td><td>"+sampleRecordData[prop][o][subProp]+"</td></tr>");
                             }
 
 
