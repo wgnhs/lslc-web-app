@@ -4,15 +4,19 @@ var resultsManager = (function(){
         globalResultsArray = [];
     }
     
+    //this will return a an array of a subset of results. 
     var resultsPage = function (pageNum){
     //pageNum is an integer beginning at 1 
-        var upperLimit = pageNum*1000;
-        var lowerLimit = (pageNum-1)*1000; 
+        
+        var pageLength = 1000;
+        
+        var upperLimit = pageNum*pageLength;
+        var lowerLimit = (pageNum-1)*pageLength; 
         
         return globalResultsArray.slice(lowerLimit, upperLimit);
     
     }
-    var matchSection = function (clickSectionID){
+    var matchPLSSSection = function (clickSectionID){
         //sectionID comes from the UID/PlssId of a clicked section. 
         //this function will pull all results that are in that section, using the result's PlssId/sectionID attribute. 
         console.log("match section", clickSectionID);
@@ -37,7 +41,7 @@ var resultsManager = (function(){
     return {
       
         "resultsPage": resultsPage, 
-        "matchSection": matchSection, 
+        "matchPLSSSection": matchPLSSSection, 
         "clearAll": clearAll, 
         "add": add
     }
