@@ -4,7 +4,7 @@ var filters = {
     //all initial values in this filters object should be falsy. 
     //an empty string is falsy. 
     //an empty array is not falsy, so the map sections input must be set to null when cleared. 
-    
+    "mappedInput": null,
     "mapSectionsInput": null,
     "rockTypeInput": "",
     "countyInput": "",
@@ -81,6 +81,7 @@ function initFiltersListeners(){
             
         } else {
             //reset the value in the input / searchbar
+            if (this.getAttribute('data') == 'mappedInput'){document.getElementById("mappedCheckbox").checked = false;};
             if (this.getAttribute('data') == 'rockTypeInput'){$("#rockTypeSearch").val('');};
             if (this.getAttribute('data') == 'countyInput'){$("#countySearch").val('');};
             if (this.getAttribute('data') == 'stateInput'){$("#stateSearch").val('');};
@@ -103,6 +104,7 @@ function initFiltersListeners(){
 function resetFilters() {
 
     //reset for every filter that's based on an input in the #filters div (everything except the map filter). 
+        filters.mappedInput = document.getElementById("mappedCheckbox").checked;
         filters.rockTypeInput = $("#rockTypeSearch").val();
         filters.countyInput = $("#countySearch").val(); 
         filters.stateInput = $("#stateSearch").val();
@@ -200,6 +202,10 @@ function buildSqlAndAddIndicators() {
     $("#filterFeedback").html('');
     
     //for each truthy value in filters, build the SQL text and append a filter indicator span  
+     if (filters.mappedInput) {
+        newsqlArray.push(PlssField+" IS NOT NULL");
+    	$("#filterFeedback").append($("<span id='mappedOn' class='feedbackBar' data='mappedInput'>Must&nbspbe&nbspmapped:&nbsp" + filters.mappedInput + "<img src='images/close.png' /></span>"));
+        };
     if (filters.rockTypeInput) {
         newsqlArray.push("Upper(RockType) LIKE Upper('%"+filters.rockTypeInput+"%')");
         //adds feedback indicator
