@@ -25,14 +25,10 @@ a {
     
 }
 #searchArea{
-    text-align: center;
+  /*  text-align: center; */ /* aligns better with other pages if not centered. */
     padding: 25px 0px;
 }
 
-.detailsDiv{
-    display: inline-block; 
-    vertical-align: top;
-}
 
 .attributeLabel{ /*first column in the sample record table*/
     font-weight: 600;
@@ -40,7 +36,7 @@ a {
     padding-right: 10px;
 }
 
-#sampleRecord h3, h2{
+#sampleRecord h3, #sampleRecord h2{
     margin: 0;
 }
 
@@ -50,10 +46,7 @@ a {
     margin: 3px 0;
 }
 
-.reportDivision img{
-    padding-right: 8px;
-    height: 200px;
-}
+
 
 #sampleRecord .thinSectionContainer{
     display: inline-block;

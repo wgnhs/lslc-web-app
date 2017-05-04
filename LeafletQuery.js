@@ -48,13 +48,22 @@ function initFiltersListeners(){
     //called once on load
     //set an event listener for a filter input 
     //delay helps with performance 
-    $("#filters").on("input", "input", function(){
+    $("#filters input:not([type=checkbox])").on("input", function(){
+       // console.log('non-checkbox input event');
         delay(function(){
      //       console.log('time elapsed');
             resetFilters();
         }, 1000);
 
     }); //close #filters.on input function
+    
+    $('#filters input:checkbox').on('change', function(){
+       // console.log("checkbox change event.");
+       // delay(function(){
+
+            resetFilters();
+      //  }, 1000);
+    })
 
 	//set a listener for when the user clicks on a filter indicator (to cancel a filter)... 
     $("#filterFeedback").on("click", "span", function(){
