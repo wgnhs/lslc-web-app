@@ -202,7 +202,7 @@ var leafletMap = (function(){
 
     function initPopup(individualSection){
 
-        var sectionResults = resultsManager.matchSection(individualSection);
+        var sectionResults = resultsManager.matchPLSSSection(individualSection);
 
         if (sectionResults.length == 1){
             var plurality = "Result";

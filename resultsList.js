@@ -4,8 +4,7 @@ var sample;
 var resultsTableBody;
 
 var tableAttributes = [
-     //   {"field": "OBJECTID", "label": "OBJECT ID"}, 
-        
+           
         {"field": "HandSampleCatalogNumber", "label": "Catalog Number"}, 
     
    //     {"field": "SampleId", "label": "SampleID"}, 
@@ -86,8 +85,10 @@ function listResults (dataObjects){
         tr+= "<tr data-ID="+samCat+">"; 
         
         for (attr in tableAttributes){
+            
             var field = tableAttributes[attr].field;
             var val = dataObjects[obj].attributes[field];
+            
             //only add the val if it's not null. if null, add an empty cell.  
             if(val === null){
                 tr+= "<td></td>";
@@ -176,10 +177,13 @@ function exportTableToCSV() {
       csvLine = '';
       //pulls out and iterates through each attributes object
       for (key in globalResultsArray[i].attributes){
+        //reset the value variable 
+        var value = '';
+          
         if (globalResultsArray[i].attributes[key]){
             //non-null value 
             
-            var value = (globalResultsArray[i].attributes[key]).toString();
+            value = (globalResultsArray[i].attributes[key]).toString();
             //if the value contains a double quote: 
             if (value.indexOf('"') >= 0){
                 //all double quotes within the value must be doubled. 
