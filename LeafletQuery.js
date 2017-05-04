@@ -48,11 +48,11 @@ function initFiltersListeners(){
     //called once on load
     //set an event listener for a filter input 
     //delay helps with performance 
-    $("#filters").on("input", "input", function(){
-        delay(function(){
+    $("#filters").on("change", "input", function(){
+      //  delay(function(){
      //       console.log('time elapsed');
             resetFilters();
-        }, 1000);
+     //   }, 1000);
 
     }); //close #filters.on input function
 
