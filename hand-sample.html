@@ -553,7 +553,30 @@
              
         function addLocation(){
             
-            var mapDiv = $("<div id='map' style='width: 300px; height: 200px; display: inline-block;'>");
+             //add a note explaining that there might be more specific location info in the field notebook. 
+            $('#location').append('<div><span>Some of the location information has been digitized, but some has not. The scanned field notes, if there are any, can often provide more specific location information. </span></div>');
+            
+            if (sampleRecordData.location.PLSSSectionNum){
+                addMap();
+            }   
+
+            //set up an empty var for the location info.
+            var loc = ''
+            
+            //  loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
+            loc+="<div class='detailsDiv'><table>";
+            for (prop in sampleRecordData.location){
+                
+                loc+="<tr><td><span class='green'>"+prop+":</span> </td><td>"+sampleRecordData.location[prop]+"</td></tr>";
+            }
+            loc+="</table></div>"; //end details div
+
+            $('#location').append(loc);
+        }
+       
+       function addMap(){
+           
+           var mapDiv = $("<div id='map' style='width: 300px; height: 200px; display: inline-block;'>");
             $('#location').append(mapDiv);
             var map = L.map('map').setView([48, -89.5], 4);
             
@@ -592,21 +615,9 @@
                 map.fitBounds(section.getBounds().pad(4));
             }
             ); 
-            
 
-            //set up an empty var for the location info.
-            var loc = ''
-            
-            //  loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
-            loc+="<div class='detailsDiv'><table>";
-            for (prop in sampleRecordData.location){
-                
-                loc+="<tr><td><span class='green'>"+prop+":</span> </td><td>"+sampleRecordData.location[prop]+"</td></tr>";
-            }
-            loc+="</table></div>"; //end details div
-
-            $('#location').append(loc);
-        }
+       
+       }
    
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
