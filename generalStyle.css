@@ -3,7 +3,7 @@ body, input {
 }
 
 label, span {
-    color: grey;
+    /*color: grey;*/
     font-weight: 300;
     display: inline;
 }

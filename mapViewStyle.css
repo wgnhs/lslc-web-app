@@ -54,7 +54,7 @@ p{ padding: 0; margin: 0;}
 .mapSelectionButton {
     margin-bottom: 5px;
     padding: 3px;
-    color: grey;
+   /* color: grey; */
     
 }
 
@@ -149,6 +149,7 @@ p{ padding: 0; margin: 0;}
 #filterFeedback{
     display: block;
     width: 100%;
+    padding: 5px 0;
 }
 
 #filterFeedback span{

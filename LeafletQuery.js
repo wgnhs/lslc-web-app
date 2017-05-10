@@ -245,7 +245,7 @@ function buildSqlAndAddIndicators() {
     if (filters.catalogNumberInput){
         //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
         newsqlArray.push("Upper(HandSampleCatalogNumber)  LIKE Upper('"+filters.catalogNumberInput+"')");
-        $("#filterFeedback").append($("<span id='catalogNumberOn' class='feedbackBar' data='catalogNumberInput'>Catalog Number:&nbsp" + filters.catalogNumberInput + "<img src='images/close.png'/></span>"));
+        $("#filterFeedback").append($("<span id='catalogNumberOn' class='feedbackBar' data='catalogNumberInput'>Hand Sample Number:&nbsp" + filters.catalogNumberInput + "<img src='images/close.png'/></span>"));
         };
     
    

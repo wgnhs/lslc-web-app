@@ -130,7 +130,8 @@
             
             bookDiv += "<div class='detailsDiv'>";
             bookDiv += "<p>Field Notebook #"+notebookAttributes.Number+"</p>";
-                bookDiv += "<p>"+notebookAttributes.Title+"</p>";
+                if (notebookAttributes.Title){bookDiv += "<p>"+notebookAttributes.Title+"</p>"}
+                else {bookDiv += "<p>[Untitled]</p>"};
                 bookDiv += "<p>by "+notebookAttributes.Author+"</p>";
                 bookDiv += "<p>"+notebookAttributes.Year+"</p>";
                 if (notebookAttributes.Notes){
