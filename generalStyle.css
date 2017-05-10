@@ -3,7 +3,7 @@ body, input {
 }
 
 label, span {
-    color: grey;
+    /*color: grey;*/
     font-weight: 300;
     display: inline;
 }
@@ -24,6 +24,10 @@ label, span {
 h1{
     display: inline-block;
     margin: 5px 10px 5px 0px;
+}
+h3 {
+    display: inline-block;
+    margin: 10px 10px 0 0;
 }
 #wrapper{
     width: 90%;

@@ -44,7 +44,7 @@
        <div id="header"></div>
        
        <h2>Notebooks</h2> 
-       <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as fulll digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
+       <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
        
        <div class='reportDivision'><div id="fieldNotebooksList"></div></div>
    
@@ -86,7 +86,7 @@
             
             var img = new Image();
             img.onload = function(resp){
-               console.log(notebookAttributes.Number+" found", resp); 
+               console.log(notebookAttributes.Number+" found"); 
                buildListItem(notebookAttributes, thumbURL); 
             }
             img.onerror = function(){
@@ -130,9 +130,13 @@
             
             bookDiv += "<div class='detailsDiv'>";
             bookDiv += "<p>Field Notebook #"+notebookAttributes.Number+"</p>";
-                bookDiv += "<p>"+notebookAttributes.Title+"</p>";
+                if (notebookAttributes.Title){bookDiv += "<p>"+notebookAttributes.Title+"</p>"}
+                else {bookDiv += "<p>[Untitled]</p>"};
                 bookDiv += "<p>by "+notebookAttributes.Author+"</p>";
                 bookDiv += "<p>"+notebookAttributes.Year+"</p>";
+                if (notebookAttributes.Notes){
+                    bookDiv += "<p>Notes: "+notebookAttributes.Notes+"</p>";
+                }
             
                 if (notebookAttributes.UwdcUrl){
                     bookDiv += "Scan at UW Digital Collections: <a href='"+notebookAttributes.UwdcUrl+"' target=_blank>"+ notebookAttributes.UwdcUrl +"</a>";

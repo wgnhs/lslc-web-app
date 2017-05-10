@@ -49,12 +49,13 @@ p{ padding: 0; margin: 0;}
 
 #mapSelectionButtonsContainer{
     display: inline-block;
+    margin: 5px 8px 0 0;
     
 }
 .mapSelectionButton {
     margin-bottom: 5px;
     padding: 3px;
-    color: grey;
+   /* color: grey; */
     
 }
 
@@ -122,7 +123,7 @@ p{ padding: 0; margin: 0;}
 #filters {
     padding-bottom: 10px;
     position: relative;
-    max-width: 400px;
+    max-width: 350px;
 }
 #filters h2{
     display: inline;
@@ -149,6 +150,7 @@ p{ padding: 0; margin: 0;}
 #filterFeedback{
     display: block;
     width: 100%;
+    padding: 5px 0;
 }
 
 #filterFeedback span{
@@ -294,6 +296,7 @@ a.export:hover{
     background-color: #e6e6e6;
     border-left: solid 1px white;
     border-right: solid 1px white;
+    vertical-align: bottom;
 }
 
 #resultsTable tr{

@@ -62,59 +62,16 @@
             
            <div id="leftPanel">
                <div id="filters">
-                   <h2>Filters</h2><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span></div>
                    
-                   <div id="filterFeedback"></div>
+                   <h3>Filter by map area</h3>
                    
-                   <div class="filter">
-                        <label for="mappedCheckbox"><span>Must have map location </span></label>
-                        <input type="checkbox" name="mappedCheckbox" id="mappedCheckbox" />
-                   </div>
-                
                    
                    <div class="filter">
-                        <label for="rockTypeSearch"><span>Field description </span></label>
-                        <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" />
-                   </div>
-                   <div class="filter">
-                        <label for="handSampleCheckbox"><span>Hand sample available </span></label>
-                        <input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />
-                   </div>
-                   <div class="filter">
-                        <label for="thinSectionNumberSearch"><span>Min # of thin sections </span></label>
-                        <input type="number" name="thinSectionAvailability" id="thinSectionNumberSearch" min="1" />
-                   </div>
-                   <div class="filter">
-                        <label for="noteSearch"><span>Sample Notes </span></label>
-                        <input class="searchBox" type="search" name="noteSearch" id="notesSearch"  />
-                   </div>
-                 <!--  <div class="filter">
-                        <label for="countySearch"><span>County </span></label>
-                        <input class="searchBox" type="search" name="countySearch" id="countySearch"  />
-                   </div>
--->
-                   <div class="filter">
-                        <label for="stateSearch"><span>State </span></label>
-                        <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  />
-                   </div>
-                   <div class="filter">
-                        <label for="notebookSearch"><span>Notebook Number </span></label>
-                        <input class="searchBox" type="search" name="notebookSearch" id="notebookSearch"  />
-                   </div>
-                   <div class="filter">
-                        <label for="notebookPageSearch"><span>Notebook Page </span></label>
-                        <input class="searchBox" type="search" name="notebookPageSearch" id="notebookPageSearch"  />
-                   </div>
-                   <div class="filter">
-                        <label for="WGNHSSearch"><span>WGNHS ID </span></label>
-                        <input class="searchBox" type="search" name="WGNHSSearch" id="WGNHSSearch"  />
-                   </div>
-                   <div class="filter">
-                        <label for="catalogNumberSearch"><span>Catalog Number </span></label>
-                        <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
-                   </div>
-                   <div class="filter">
-                        <p>Filter by map area: </p>
+                       <div class="filter">
+                            <label for="mappedCheckbox"><span>Must have map location </span></label>
+                            <input type="checkbox" name="mappedCheckbox" id="mappedCheckbox" />
+                       </div>
+                        
                        <div  id="mapSelectionButtonsContainer">
                             <div class="mapSelectionButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
                             <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/mapSelection_poly.png"/><span>Select by polygon</span></div>
@@ -122,36 +79,61 @@
                        </div>
                    </div>
                    
-      <!--              <div class='filter'>
-                       <label><p><span class="bold">Rock Type </span></p>
-                       <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" /></label>
-                   </div>
-                   <div class='filter'>
-                       <p><span class="bold">Sample availability</span></p>
-                       <label class='block'><input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />Hand sample available</label>
-                       <label class='block'><input type="checkbox" name="thinSectionAvailability" id="thinSectionCheckbox" />Thin section available</label>
-                   </div>
-                  <div id="mapfilters">
-                       <div class='filter'>
-                           <p><span class="bold">Search by area </span></p>
-                                <div id="mapInteractionButtons">
-                                        <img  class="button" id="mapFilterButton" src="images/mapSelection.png" alt="select on map" title="select area on map"/> 
-                                        <img class="button" id="mapClearButton" src="images/clearMapSelection2.png" alt="clear map selection" title="clear map selection" /> 
-                                    </div>
-                                
-                       </div>
-                       <div class='filter'>
-                           <label><p><span class="bold">County</span></p>
-                           <input class="searchBox" type="search" name="countySearch" id="countySearch"  /></label>
-                        </div>
-                       <div class='filter'>
-                           <label><p><span class="bold">State</span></p>
-                           <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  /></label>
-                        </div>
-                    </div>
-             -->      
                    
+
+               
+                   <h3>Text filters </h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span></div>
+
                    
+                  
+                   <div class="filter">
+                        <label for="handSampleCheckbox"><span>Hand sample available </span></label>
+                        <input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />
+                   </div>
+                    <div class="filter">
+                        <label for="thinSectionCheckbox"><span>Thin section available </span></label>
+                        <input type="checkbox" name="thinSectionAvailability" id="thinSectionCheckbox" />
+                   </div>
+                 <!--  <div class="filter">
+                        <label for="thinSectionNumberSearch"><span>Min # of thin sections </span></label>
+                        <input type="number" name="thinSectionCount" id="thinSectionNumberSearch" min="1" />
+                   </div>
+                    -->
+                    <div class="filter">
+                        <label for="rockTypeSearch"><span>Field description </span></label>
+                        <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" />
+                   </div>
+                   <div class="filter">
+                        <label for="noteSearch"><span>Sample notes </span></label>
+                        <input class="searchBox" type="search" name="noteSearch" id="notesSearch"  />
+                   </div>
+                 <!--  <div class="filter">
+                        <label for="countySearch"><span>County </span></label>
+                        <input class="searchBox" type="search" name="countySearch" id="countySearch"  />
+                   </div>
+                    -->
+                   <div class="filter">
+                        <label for="stateSearch"><span>State </span></label>
+                        <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="notebookSearch"><span>Notebook number </span></label>
+                        <input class="searchBox" type="search" name="notebookSearch" id="notebookSearch"  />
+                   </div>
+                  <!-- <div class="filter">
+                        <label for="notebookPageSearch"><span>Notebook page </span></label>
+                        <input class="searchBox" type="search" name="notebookPageSearch" id="notebookPageSearch"  />
+                   </div>
+                    -->
+                   <div class="filter">
+                        <label for="WGNHSSearch"><span>WGNHS ID </span></label>
+                        <input class="searchBox" type="search" name="WGNHSSearch" id="WGNHSSearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="catalogNumberSearch"><span>Hand sample number </span></label>
+                        <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
+                   </div>
+           
                </div><!--end filters div-->
 
                
@@ -161,7 +143,7 @@
            
            <div id="rightPanel">
                
-               
+              <div id="filterFeedback"></div>
                
                <div id="map">
                </div>
