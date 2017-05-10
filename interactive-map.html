@@ -62,15 +62,25 @@
             
            <div id="leftPanel">
                <div id="filters">
-                   <h2>Filters</h2><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span></div>
                    
+                   <h3>Filter by map area</h3>
                    <div id="filterFeedback"></div>
+                   
+                   <div class="filter">
+                        
+                       <div  id="mapSelectionButtonsContainer">
+                            <div class="mapSelectionButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
+                            <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/mapSelection_poly.png"/><span>Select by polygon</span></div>
+                            <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clearMapSelection2.png"><span>Clear map selection</span></div>
+                       </div>
+                   </div>
                    
               <!--     <div class="filter">
                         <label for="mappedCheckbox"><span>Must have map location </span></label>
                         <input type="checkbox" name="mapped" id="mappedCheckbox" />
                    </div>
                 -->
+                   <h3>Text filters </h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span></div>
                    
                    <div class="filter">
                         <label for="rockTypeSearch"><span>Field description </span></label>
@@ -113,14 +123,7 @@
                         <label for="catalogNumberSearch"><span>Catalog Number </span></label>
                         <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
                    </div>
-                   <div class="filter">
-                        <p>Filter by map area: </p>
-                       <div  id="mapSelectionButtonsContainer">
-                            <div class="mapSelectionButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
-                            <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/mapSelection_poly.png"/><span>Select by polygon</span></div>
-                            <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clearMapSelection2.png"><span>Clear map selection</span></div>
-                       </div>
-                   </div>
+                   
                    
       <!--              <div class='filter'>
                        <label><p><span class="bold">Rock Type </span></p>

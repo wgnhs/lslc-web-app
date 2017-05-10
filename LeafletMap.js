@@ -223,7 +223,7 @@ var leafletMap = (function(){
             var listedRockType = sectionResults[i].attributes.RockType;
             if (listedRockType == null){ listedRockType = "Unknown";} //checks for null value
 
-            content = content + "<li><a href='sampleRecord.html#" + listedCatalogNumber + "' target='_blank' >" + listedCatalogNumber + " " + listedRockType + "</a></li>";
+            content = content + "<li><a href='hand-sample.html#" + listedCatalogNumber + "' target='_blank' >" + listedCatalogNumber + " " + listedRockType + "</a></li>";
 
         }
 

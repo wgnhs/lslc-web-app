@@ -5,11 +5,11 @@ var resultsTableBody;
 
 var tableAttributes = [
            
-        {"field": "HandSampleCatalogNumber", "label": "Catalog Number"}, 
+        {"field": "HandSampleCatalogNumber", "label": "Hand Sample Number"}, 
     
    //     {"field": "SampleId", "label": "SampleID"}, 
         {"field": "RockType", "label": "Field Description"},  
-        {"field": "HandSampleCount", "label": "Hand Sample"}, 
+        {"field": "HandSampleCount", "label": "Hand Sample Available"}, 
         {"field": "ThinSectionCount", "label": "Thin Sections"}, 
         {"field": "State", "label": "State"},
         // {"field": "County", "label": "County"},
@@ -122,7 +122,7 @@ function onSampleClick(item){
     console.log("You selected sample ", clickedId, ". sample data is: ", $(item).data());
     
 
-    window.open("sampleRecord.html#"+clickedId, "_blank");
+    window.open("hand-sample.html#"+clickedId, "_blank");
 
 }
 

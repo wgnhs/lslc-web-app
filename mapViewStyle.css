@@ -294,6 +294,7 @@ a.export:hover{
     background-color: #e6e6e6;
     border-left: solid 1px white;
     border-right: solid 1px white;
+    vertical-align: bottom;
 }
 
 #resultsTable tr{
