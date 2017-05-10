@@ -67,6 +67,10 @@
                    
                    
                    <div class="filter">
+                       <div class="filter">
+                            <label for="mappedCheckbox"><span>Must have map location </span></label>
+                            <input type="checkbox" name="mappedCheckbox" id="mappedCheckbox" />
+                       </div>
                         
                        <div  id="mapSelectionButtonsContainer">
                             <div class="mapSelectionButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
@@ -75,26 +79,26 @@
                        </div>
                    </div>
                    
-                   <div class="filter">
-                        <label for="mappedCheckbox"><span>Must have map location </span></label>
-                        <input type="checkbox" name="mappedCheckbox" id="mappedCheckbox" />
-                   </div>
-<<<<<<< HEAD:interactive-map.html
-                -->
+                   
+
+               
                    <h3>Text filters </h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span></div>
-=======
-                
->>>>>>> origin/master:filterSamples.html
+
                    
                   
                    <div class="filter">
                         <label for="handSampleCheckbox"><span>Hand sample available </span></label>
                         <input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />
                    </div>
-                   <div class="filter">
-                        <label for="thinSectionNumberSearch"><span>Min # of thin sections </span></label>
-                        <input type="number" name="thinSectionAvailability" id="thinSectionNumberSearch" min="1" />
+                    <div class="filter">
+                        <label for="thinSectionCheckbox"><span>Thin section available </span></label>
+                        <input type="checkbox" name="thinSectionAvailability" id="thinSectionCheckbox" />
                    </div>
+                 <!--  <div class="filter">
+                        <label for="thinSectionNumberSearch"><span>Min # of thin sections </span></label>
+                        <input type="number" name="thinSectionCount" id="thinSectionNumberSearch" min="1" />
+                   </div>
+                    -->
                     <div class="filter">
                         <label for="rockTypeSearch"><span>Field description </span></label>
                         <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" />
@@ -129,38 +133,7 @@
                         <label for="catalogNumberSearch"><span>Hand sample number </span></label>
                         <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
                    </div>
-                   
-                   
-      <!--              <div class='filter'>
-                       <label><p><span class="bold">Rock Type </span></p>
-                       <input type="search" class="searchBox" name="rockTypeSearch" id="rockTypeSearch" placeholder="try 'chert' or 'granite'" /></label>
-                   </div>
-                   <div class='filter'>
-                       <p><span class="bold">Sample availability</span></p>
-                       <label class='block'><input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />Hand sample available</label>
-                       <label class='block'><input type="checkbox" name="thinSectionAvailability" id="thinSectionCheckbox" />Thin section available</label>
-                   </div>
-                  <div id="mapfilters">
-                       <div class='filter'>
-                           <p><span class="bold">Search by area </span></p>
-                                <div id="mapInteractionButtons">
-                                        <img  class="button" id="mapFilterButton" src="images/mapSelection.png" alt="select on map" title="select area on map"/> 
-                                        <img class="button" id="mapClearButton" src="images/clearMapSelection2.png" alt="clear map selection" title="clear map selection" /> 
-                                    </div>
-                                
-                       </div>
-                       <div class='filter'>
-                           <label><p><span class="bold">County</span></p>
-                           <input class="searchBox" type="search" name="countySearch" id="countySearch"  /></label>
-                        </div>
-                       <div class='filter'>
-                           <label><p><span class="bold">State</span></p>
-                           <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  /></label>
-                        </div>
-                    </div>
-             -->      
-                   
-                   
+           
                </div><!--end filters div-->
 
                
