@@ -210,7 +210,7 @@ var leafletMap = (function(){
             var plurality = "Results";
         }
 
-        var content = "<h3>" + sectionResults.length + " " + plurality + " in Section " + individualSection + "</h3>"
+        var content = "<h3>" + sectionResults.length + " " + plurality + " in this section </h3>"
         
         //establishes popup content variable, adding in header based on PlssId/SectionId
         content += "<ul>";
@@ -221,13 +221,13 @@ var leafletMap = (function(){
             var listedCatalogNumber = sectionResults[i].attributes.HandSampleCatalogNumber
             var listedSampleId = sectionResults[i].attributes.SampleId;
             var listedRockType = sectionResults[i].attributes.RockType;
-            if (listedRockType == null){ listedRockType = "Unknown";} //checks for null value
+            if (listedRockType == null){ listedRockType = "";} //checks for null value
 
-            content = content + "<li><a href='hand-sample.html#" + listedCatalogNumber + "' target='_blank' >" + listedCatalogNumber + " " + listedRockType + "</a></li>";
+            content = content + "<li><a href='hand-sample.html#" + listedCatalogNumber + "' target='_blank' >Sample " + listedCatalogNumber + " " + listedRockType + "</a></li>";
 
         }
 
-        content = content + "</ul>"
+        content = content + "</ul>";
 
         return content;
 

@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
    <HEAD>
-      <TITLE>LSLC Sample Record</TITLE>
+      <TITLE>LSLC Hand Sample</TITLE>
        <meta charset="UTF-8">
        
         <!--Google font-->
@@ -129,14 +129,14 @@
             "fieldDate": null,
             
             lithologies:[{
-                "lithNotebookId": "none",
+                "lithLedgerId": "none",
                 "lithPage": null,
                 
-                "lithNotebookTitle": null,
+                "lithLedgerTitle": null,
                 "lithDate": null, 
                 "lithAuthor":null,
-                "lithNotebookUrl": "http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=header&id=EcoNatRes.LithDescV&isize=M",
-                "lithNotebookThumb":"images/notebooks/lithBookV_thumb.jpg"
+                "lithLedgerUrl": "http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=header&id=EcoNatRes.LithDescV&isize=M",
+                "lithLedgerThumb":"images/notebooks/lithBookV_thumb.jpg"
                 }],
             "WGNHSId": null,
             "sampleNotes":""
@@ -370,7 +370,7 @@
                    for (i in lithResponse.features){
                         var lithDetails = {};
                       // console.log("lith info", lithResponse.features[i].attributes);
-                        lithDetails.lithNotebookId = lithResponse.features[i].attributes.BookId;
+                        lithDetails.lithLedgerId = lithResponse.features[i].attributes.BookId;
                         lithDetails.lithPage = lithResponse.features[i].attributes.Page;
                         lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
                         lithDetails.lithNotes = lithResponse.features[i].attributes.Notes;
@@ -395,18 +395,18 @@
 //                    for(i in sampleRecordData.lithologies){
                         
                         var ledgerQuery = L.esri.query({url:ledgerTableURL});
-                        ledgerQuery.where("BookId = "+ sampleRecordData.lithologies[lithologyindex].lithNotebookId); 
+                        ledgerQuery.where("BookId = "+ sampleRecordData.lithologies[lithologyindex].lithLedgerId); 
                         ledgerQuery.fields(["*"]);
                         
                        // var ledgerDetails = [];
-                        console.log("search for ledger book #", sampleRecordData.lithologies[lithologyindex].lithNotebookId); 
+                        console.log("search for ledger book #", sampleRecordData.lithologies[lithologyindex].lithLedgerId); 
 
                         ledgerQuery.run(function(err, result, ledgerResponse){
                            console.log("ledger info: ", ledgerResponse.features[0].attributes);
                             
                             
-                           sampleRecordData.lithologies[lithologyindex].lithNotebookTitle =  ledgerResponse.features[0].attributes.Title; 
-                           sampleRecordData.lithologies[lithologyindex].lithNotebookUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
+                           sampleRecordData.lithologies[lithologyindex].lithLedgerTitle =  ledgerResponse.features[0].attributes.Title; 
+                           sampleRecordData.lithologies[lithologyindex].lithLedgerUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
                            sampleRecordData.lithologies[lithologyindex].lithDate =  ledgerResponse.features[0].attributes.Year;
                            sampleRecordData.lithologies[lithologyindex].lithAuthor =  ledgerResponse.features[0].attributes.Author;
                            resolve(ledgerResponse.features[0]);
@@ -649,12 +649,14 @@
                     
                     lith+='<div>';      
                     //thumbnail in link
-                    if (sampleRecordData.lithologies[i].lithNotebookUrl){lith += "<a style='clear: left;' href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"}; 
+                    if (sampleRecordData.lithologies[i].lithLedgerUrl){lith += "<a style='clear: left;' href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"}; 
                     lith += "<img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
                     //details
-                    lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>" 
-                    lith += "<p>Book "+sampleRecordData.lithologies[i].lithNotebookId+"</p>"
-                    if (sampleRecordData.lithologies[i].lithNotebookUrl){lith+=   "<a href='"+sampleRecordData.lithologies[i].lithNotebookUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithNotebookTitle+"</a><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"};
+                    lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>"; 
+                    //lith += "<p>Ledger "+sampleRecordData.lithologies[i].lithLedgerId+"</p>"
+                    if (sampleRecordData.lithologies[i].lithLedgerUrl){
+                        lith+=   "<p><a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithLedgerTitle+"</a> (ledger #"+sampleRecordData.lithologies[i].lithLedgerId+")</p><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
+                    };
                     
                     lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p></div>";
                     lith+='</div>';

@@ -11,7 +11,7 @@ var tableAttributes = [
         {"field": "RockType", "label": "Field description"},  
         {"field": "HandSampleCount", "label": "Hand sample available"}, 
         {"field": "ThinSectionCount", "label": "Thin sections"}, 
-        {"field": "State", "label": "State"},
+        {"field": "State", "label": "State / province"},
         // {"field": "County", "label": "County"},
         //  {"field": "Township", "label": "Township"},
         // {"field": "Range", "label": "Range"},
@@ -35,11 +35,12 @@ var tableAttributes = [
 
 
 function initializeResultsTable(){
+    //called once during the page build. 
     
     resultsTable = document.getElementById('resultsTable');
     
      
-    
+    //build the table's header row
     var headerRow = '<thead><tr>';
     for (attr in tableAttributes){
         headerRow += '<td>'+tableAttributes[attr].label+'</td>' ;

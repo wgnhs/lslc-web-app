@@ -35,6 +35,7 @@ p{ padding: 0; margin: 0;}
 
 .leaflet-popup-content ul{
   list-style: none;
+    padding: 0;
 }
 
 .leaflet-popup-content li:nth-child(even){

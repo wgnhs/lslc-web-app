@@ -63,6 +63,21 @@ h3 {
     cursor: pointer;
     background-color: dimgrey;
 }
+.messageBar{
+    
+    TEXT-ALIGN: center;
+}
+.messageBar span{
+    padding: 2px 5px;
+    background-color: white;
+}
+
+.striped-1{
+ 
+  background: -webkit-repeating-linear-gradient(45deg, #e6e6e6, #e6e6e6 10px, #FFF 10px, #FFF 20px);
+  background: repeating-linear-gradient(45deg, #e6e6e6, #e6e6e6 10px, #FFF 10px, #FFF 20px);
+}
+
 
 /*----- end HEADER -----*/
 
