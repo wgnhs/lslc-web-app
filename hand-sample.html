@@ -556,6 +556,7 @@
              //add a note explaining that there might be more specific location info in the field notebook. 
             $('#location').append('<div><span>Some of the location information has been digitized, but some has not. The scanned field notes, if there are any, can often provide more specific location information. </span></div>');
             
+            $('#location').append("<div class='divisionEntry'></div>");
             if (sampleRecordData.location.PLSSSectionNum){
                 addMap();
             }   
@@ -571,13 +572,13 @@
             }
             loc+="</table></div>"; //end details div
 
-            $('#location').append(loc);
+            $('#location .divisionEntry').append(loc);
         }
        
        function addMap(){
            
            var mapDiv = $("<div id='map' style='width: 300px; height: 200px; display: inline-block;'>");
-            $('#location').append(mapDiv);
+            $('#location .divisionEntry').append(mapDiv);
             var map = L.map('map').setView([48, -89.5], 4);
             
             var CartoDB_PositronNoLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
@@ -617,15 +618,17 @@
             ); 
 
        
-       }
+       } //end addMap
    
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
             if (sampleRecordData.fieldNotebookNum){
                 if(sampleRecordData.fieldNotebookTitle === null){sampleRecordData.fieldNotebookTitle = "untitled"}; 
 
+                fieldNotebookreport +="<div class='divisionEntry'>";
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.fieldNotebookThumbnail+"' alt='notebook cover'/></a>";
                 fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNum+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+                fieldNotebookreport +="</div>";
      
             } else if (sampleRecordData.fieldDesc){
                 
@@ -647,7 +650,7 @@
                 for (i in sampleRecordData.lithologies){
                     //console.log("lith data", sampleRecordData.lithologies[i]);
                     
-                    lith+='<div>';      
+                    lith+="<div class='divisionEntry'>";      
                     //thumbnail in link
                     if (sampleRecordData.lithologies[i].lithLedgerUrl){lith += "<a style='clear: left;' href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"}; 
                     lith += "<img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
@@ -684,6 +687,7 @@
 //        }
 //        
         function addDataTable(){
+            
             $("#allData").append('<table id="dataTable">'); 
             
             for (prop in sampleRecordData){
