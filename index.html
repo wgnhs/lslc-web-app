@@ -35,6 +35,28 @@
         <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
       <![endif]-->
        
+       <style>
+           #mapLink{
+               background-image: url(images/InteractiveMapClip4.png);
+            background-size: cover;
+           }
+           .grid-item{
+               display: inline-block;
+               width: calc((100% - 24px * 4) / 4);
+               height: 200px;
+               margin: 10px;
+               border: solid 2px #e6e6e6;
+               float: left;
+               text-align: center; 
+               vertical-align: center;
+           }
+           .four-col-grid {
+               overflow: hidden;
+           }
+         
+       
+       </style>
+       
 </HEAD>
 <BODY>
   
@@ -43,10 +65,58 @@
         
        <div id="header"></div>
        
-       Home page
-   
+       <p>The Lake Superior Legacy Collection documents geological research on the Lake Superior area performed by USGS between 1882 and 1922.</p>
        
+       <div class='reportDivision'><h3>Browse the Collection</h3>
+           <div class='divisionContent'>
+                <div class='four-col-grid'>
+                   <div id='mapLink' class='grid-item'>
+                   <!--<img src='images/InteractiveMapClip4.png' alt='interactive map'>-->
+                        Interactive map
+                   </div>
+                   <div class="grid-item">
+                       Notebooks
+
+                   </div>
+                   <div class="grid-item">
+                      Samples
+
+                   </div>
+                   <div class="grid-item">
+                       Downloads
+
+                   </div>
+               </div>
+               <div>
+               The collection contains: 
+               <ul>
+                   <li>more than 30,000 hand samples (metadata records)</li>
+                   <li>over 13,000 thin sections (photographed in plain and cross-polar light)</li>
+                   <li>491 field notebooks (321 of which have been scanned)</li>
+                   <li>67 maps</li>
+               </ul>
+                   </div>
+           
+           </div>
+       </div>
+       
+        <div class='reportDivision'><h3>History</h3>
+           <div class='divisionContent'>
+            For 40 years, beginning in 1882, the Lake Superior Division of the USGS in Madison, Wisconsin, documented the geology of the Lake Superior area. The project primarily covered Wisconsin, Minnesota, Michigan’s Upper Peninsula, and Ontario. Over the course of the project, the group produced a number of publications on the region’s Precambrian geology. R.D. Irving, the first director of the division, did pioneering work in the field of microscopic petrography and was the first to use thin sections in a large-scale survey. 
+
+        </div></div>
+       
+       <div class='reportDivision'><h3>Credits</h3>
+           <div class='divisionContent'>
+           This work has been supported by the Wisconsin Geological and Natural History Survey with matching grants from the <a href='https://datapreservation.usgs.gov/' target="_blank">USGS National Geological and Geophysical Data Preservation Program (NGGDPP).</a> <br>
+Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.edu/collections/EcoNatRes/WGNHS/' target="_blank">University of Wisconsin-Madison Digital Collections</a>.
+ 
+
+        </div></div>
+       
+   
        <div id="footer"></div>
+       
    </div><!--end wrapper div-->
    
    <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->

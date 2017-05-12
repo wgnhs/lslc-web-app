@@ -37,7 +37,8 @@
        
        <style>
            .downloadlayerimg{
-               box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+              /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+              /* outline: 3px solid #e6e6e6; */
            }
            .downloadLink{
                margin-left: 5px;
@@ -57,8 +58,29 @@
        <h2>Data Downloads</h2> 
        
        <p>explanation paragraph...</p>
-        <img class='downloadlayerimg' src='images/sectionsLayer.jpg' alt='sections layer'/> <div class='detailsDiv'><p>Sections (map layer) </p><span>Polygons for each section </span><a class='downloadLink' href='#'>Shapefile</a><a class='downloadLink' href='#'>GeoJSON</a><a class='downloadLink' href='#'>KML</a></div>
-   
+       
+       <div class='reportDivision'>
+           <h3>Geographic data</h3>
+           <div class='divisionContent'>
+               <div class='divisionEntry'>
+                    <img class='downloadlayerimg' src='images/sectionsLayer.jpg' alt='sections layer'/> 
+                   <div class='detailsDiv'><p>Sections (map layer) </p><span>Polygons for each section </span><a class='downloadLink' href='#'>Shapefile</a><a class='downloadLink' href='#'>GeoJSON</a><a class='downloadLink' href='#'>KML</a>
+                   </div>
+               </div>
+
+           </div>
+       </div>
+       <div class='reportDivision'>
+           <h3>Tables</h3>
+           <div class='divisionContent'>
+               <div class='divisionEntry'>
+                    <img class='downloadlayerimg' src='images/sectionsLayer.jpg' alt='sections layer'/> 
+                   <div class='detailsDiv'><p>Samples </p><span>Table </span><a class='downloadLink' href='#'>CSV</a><a class='downloadLink' href='#'>JSON</a>
+                   </div>
+               </div>
+
+           </div>
+       </div>
        
        <div id="footer"></div>
    </div><!--end wrapper div-->
