@@ -113,19 +113,28 @@ h3 {
 .reportDivision{
     padding-top: 20px;
 }
+
+
+.reportDivision img{
+   
+    height: 200px;
+}
+
 .divisionContent{
     border-top: 1px solid #e6e6e6;
     padding-top: 4px;
+   
 }
-
-.reportDivision img{
-    padding-right: 8px;
-    height: 200px;
+.divisionEntry{
+    display: table; 
+    padding-bottom: 4px;
 }
 
 .detailsDiv {
     display: inline-block; 
     vertical-align: top;
+    display: table-cell;
+    padding-left: 10px;
 }
 .reportDivision p {
      margin: 3px 0;
@@ -142,6 +151,17 @@ h3 {
     
     opacity: 1;
 }
+
+/*~~~~~~~~~~~~~~~~~~ note (like a post-it note) ~~~~~~~~~~~~~~~~~~~*/
+
+.note {
+    width: 50%; 
+    margin: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 10px;
+}
+
+
 
 /*============== tooltips ==============*/
 /* Tooltip container */
