@@ -32,9 +32,14 @@ $(window).on("load", function(){
     //initialize table
     initializeResultsTable();
     
+    //hashParameters
+    setFiltersFromHash();
+
+    
     //call whenever the filters object has changed (EXCEPT map filter). 
     resetFilters();   
-
+    
+    
 });
 
 var delay = (function(){
@@ -48,6 +53,9 @@ var delay = (function(){
 function initFiltersListeners(){
     //called once on load
     //set an event listener for a filter input 
+    //always leads to the resetFilters function being called. 
+    
+    
     //delay helps with performance 
     $("#filters input:not([type=checkbox])").on("input", function(){
        // console.log('non-checkbox input event');
@@ -83,7 +91,7 @@ function initFiltersListeners(){
         } else {
             //reset the value in the input / searchbar
             if (this.getAttribute('data') == 'mappedInput'){document.getElementById("mappedCheckbox").checked = false;};
-            if (this.getAttribute('data') == 'rockTypeInput'){$("#rockTypeSearch").val('');};
+            if (this.getAttribute('data') == 'rockTypeInput'){$("#fieldDescriptionSearch").val('');};
             if (this.getAttribute('data') == 'countyInput'){$("#countySearch").val('');};
             if (this.getAttribute('data') == 'stateInput'){$("#stateSearch").val('');};
             if (this.getAttribute('data') == 'notesInput'){$("#notesSearch").val('');};
@@ -106,7 +114,7 @@ function resetFilters() {
 
     //reset for every filter that's based on an input in the #filters div (everything except the map filter). 
         filters.mappedInput = document.getElementById("mappedCheckbox").checked;
-        filters.rockTypeInput = $("#rockTypeSearch").val();
+        filters.rockTypeInput = $("#fieldDescriptionSearch").val();
         filters.countyInput = $("#countySearch").val(); 
         filters.stateInput = $("#stateSearch").val();
         filters.notesInput = $("#notesSearch").val();
@@ -119,6 +127,19 @@ function resetFilters() {
         
        // console.log("filters set:", filters);
         queryTableForFilters();
+}
+
+function setFiltersFromHash(){
+    var hash = window.location.hash.replace("#", ""); // substr(1) to remove the #hashParameters
+    var hashParameters = hash.split('&'); 
+    console.log("hash params:", hashParameters);
+    
+    for(var i = 0; i < hashParameters.length; i++){
+        var p = hashParameters[i].split('=');
+        document.getElementById(p[0]).value = decodeURIComponent(p[1]);
+    }
+    
+    
 }
     
     
