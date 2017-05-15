@@ -304,12 +304,12 @@ a.export:hover{
     
     border-bottom: 0.5px solid lightgrey;
 }
-
-#resultsTableBody tr:hover{
+/*
+#resultsTableBody .detailsLink:hover{
     background-color: #e6e6e6;
     cursor: pointer;
 }
-
+*/
 #resultsTable td{
    /* width: 16.67%; */
     padding: 3px 10px 1px 3px;

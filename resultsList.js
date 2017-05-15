@@ -4,8 +4,9 @@ var sample;
 var resultsTableBody;
 
 var tableAttributes = [
-           
-        {"field": "HandSampleCatalogNumber", "label": "Hand sample number"}, 
+           //add manually before the view link.
+        //{"field": "HandSampleCatalogNumber", "label": "Hand sample number"}, 
+       
     
    //     {"field": "SampleId", "label": "SampleID"}, 
         {"field": "RockType", "label": "Field description"},  
@@ -29,8 +30,8 @@ var tableAttributes = [
 
     //not sure why, but it doesn't work without this format
     //calls function
-    exportTableToCSV.apply(this);
-    //exportTableToCSV();
+    exportResultsToCSV.apply(this);
+    //exportResultsToCSV();
   });
 
 
@@ -41,7 +42,7 @@ function initializeResultsTable(){
     
      
     //build the table's header row
-    var headerRow = '<thead><tr>';
+    var headerRow = '<thead><tr><td>Hand sample number</td><td>View details</td>';
     for (attr in tableAttributes){
         headerRow += '<td>'+tableAttributes[attr].label+'</td>' ;
       
@@ -56,11 +57,11 @@ function initializeResultsTable(){
    // console.log('body', resultsTableBody);
     
     //delegated event handler for click event on tr elements in resultsTableBody
-    $("#resultsTableBody").on("click", "tr", function () {
-        //console.log("this is ", this);
-        onSampleClick(this);
-       
-    });
+//    $("#resultsTableBody").on("click", ".detailsLink", function () {
+//        //console.log("this is ", this);
+//        onSampleClick(this);
+//       
+//    });
     
 }
 
@@ -84,12 +85,17 @@ function listResults (dataObjects){
         
         var tr = "";
         tr+= "<tr data-ID="+samCat+">"; 
+        //add hand sample number in the first column: 
+        tr+="<td>"+samCat+"</td>";
+        
+        //add a link to the sample's details in the second column: 
+        tr+="<td class='detailsLink'><a href='hand-sample.html#"+samCat+"' target='_blank'>view</a></td>";
         
         for (attr in tableAttributes){
             
             var field = tableAttributes[attr].field;
             var val = dataObjects[obj].attributes[field];
-            
+                
             //only add the val if it's not null. if null, add an empty cell.  
             if(val === null){
                 tr+= "<td></td>";
@@ -130,7 +136,7 @@ function onSampleClick(item){
 
 
 
-function exportTableToCSV() {
+function exportResultsToCSV() {
     
     //build a date and time stamp for the filename: 
     var date = new Date(); 
