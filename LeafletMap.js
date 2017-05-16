@@ -25,6 +25,7 @@ function scaleMapHeight(height){
     document.getElementById("map").style.height = matchHeight + "px";
 }
 
+
 var leafletMap = (function(){
 
     var leafletFeatureLayer;
@@ -60,6 +61,10 @@ var leafletMap = (function(){
 //            , 
 //            pane: 'B-PLSSSections'
         }).addTo(map);
+
+        map.on('zoom', function(e){
+        	changeMapDesign(map, leafletFeatureLayer)
+        })
         
         //set up leaflet draw layer: 
         // FeatureGroup is to store drawn shapes
@@ -379,6 +384,7 @@ var leafletMap = (function(){
 //        console.log("class 4 array:", classes.class4Array);
         
         leafletFeatureLayer.setStyle(function (feature){
+
             var fillColor; //blank variable for fill color
             var strokeColor = "#8c2d04"; //this applies to all except where it's re-set below
             var fillOpacity = 0.8; //this applies to all except where it's re-set below
@@ -392,14 +398,13 @@ var leafletMap = (function(){
             else {fillColor = "#ece7f2", strokeColor = "#444", fillOpacity = 0.2};  // opposite hue, low saturation, slightly diverging to show seperation
            
             //actual style declaration for each feature using assignment from above
-            return { color: strokeColor, weight: 0.35, fillColor: fillColor, fillOpacity: fillOpacity };
+            return { color: strokeColor, weight: 0.1, fillColor: fillColor, fillOpacity: fillOpacity };
             
            
         });//end setStyle
 
 
         $("#loading").remove(); //stops loading feedback
-
 
         
     } //end highlight function
@@ -412,3 +417,20 @@ var leafletMap = (function(){
     }
     
 })();
+
+function changeMapDesign(map, layer){
+	var zoomLevel = map.getZoom()
+	console.log(zoomLevel)
+
+	if (zoomLevel > 7){
+		var strokeWeight = (zoomLevel - 7) * 0.1
+	} else {
+		var strokeWeight = 0.1
+	}
+
+	layer.setStyle({weight: strokeWeight})
+	//color: "#c1c1c1", 
+}
+
+
+
