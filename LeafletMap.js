@@ -57,7 +57,7 @@ var leafletMap = (function(){
         //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
             url: PLSSSectionsLayerURL, 
-            style: {color: "#000", weight: 0.35, fillColor: "#ece7f2"}
+            style: {color: "#000", weight: 0.1, fillColor: "#ece7f2"}
 //            , 
 //            pane: 'B-PLSSSections'
         }).addTo(map);
@@ -398,7 +398,7 @@ var leafletMap = (function(){
             else {fillColor = "#ece7f2", strokeColor = "#444", fillOpacity = 0.2};  // opposite hue, low saturation, slightly diverging to show seperation
            
             //actual style declaration for each feature using assignment from above
-            return { color: strokeColor, weight: 0.1, fillColor: fillColor, fillOpacity: fillOpacity };
+            return { color: strokeColor, fillColor: fillColor, fillOpacity: fillOpacity };
             
            
         });//end setStyle
