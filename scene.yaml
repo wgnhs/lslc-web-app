@@ -1,0 +1,26 @@
+cameras:
+    camera1:
+        type: perspective
+
+lights:
+    light1:
+        type: directional
+        direction: [0, 0, -.5]
+        diffuse: .2
+        ambient: 1
+
+sources:
+    stamen-terrain:
+        type: Raster
+        url: http://a.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg
+
+styles:
+    grayscale:
+        base: raster
+
+layers:
+    terrain:
+        data: { source: stamen-terrain }
+        draw:
+            grayscale:
+                order: 0

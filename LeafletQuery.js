@@ -33,7 +33,7 @@ $(window).on("load", function(){
     initializeResultsTable();
     
     //hashParameters
-    setFiltersFromHash();
+    //setFiltersFromHash();
 
     
     //call whenever the filters object has changed (EXCEPT map filter). 
