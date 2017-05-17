@@ -51,7 +51,7 @@
        <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
        
        <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
-       <div id='notebooksContent'></div>
+       <div class='divisioncontent' id='notebooksContent'></div>
    
        
        <div id="footer"></div>
@@ -78,23 +78,87 @@
     		console.log(response);
     		console.log(featureCollection);
 
-    		notebooksManager.add(response.features)
+    		for (i in response.features){
+    			notebooksManager.add(response.features[i].attributes)
+    		}
+
     		console.log(globalNotebookContentArray)
 
     		indicator();
     	});
 
+    } 
+
+    function replaceURL(notebookNumber){
+
+    	var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook" + notebookNumber + "_cover_thumb.jpg";
+
+    	var img = new Image();
+
+    	img.onload = function(resp){
+    			console.log('found')
+    			$("#coverImage_" + notebookNumber).attr("src", thumbURL)
+
+    			for (i in globalNotebookContentArray){
+    				if (globalNotebookContentArray[i].Number === notebookNumber){
+    					globalNotebookContentArray[i].coverURL = thumbURL;
+    				}
+    			}
+
+    			console.log(globalNotebookContentArray)
+
+    		}
+
+    	img.src = thumbURL
+
     }
 
-    function runsAfter(){
+    function replaceImages(indicator){
+
+    	for (i in globalNotebookContentArray){
+    		replaceURL(globalNotebookContentArray[i].Number)
+    	}
+
+    	indicator();
+    }
+
+    function buildNotebooksList(indicator){
     	console.log("ran now")
+
+    	for (i in globalNotebookContentArray){
+
+    		var divisionEntry = "<div class='divisionEntry'>";
+    		divisionEntry += "<img src='" + globalNotebookContentArray[i].coverURL + "' alt='Notebook Cover Photo' id='coverImage_" + globalNotebookContentArray[i].Number + "'>"
+    		divisionEntry += "<div class='detailsDiv'>"
+    		divisionEntry += "<p>Field Notebook #" + globalNotebookContentArray[i].Number + "</p>";
+    		if (globalNotebookContentArray[i].Title){
+    			divisionEntry += "<p>" + globalNotebookContentArray[i].Title + "</p>";
+    		} else {
+    			divisionEntry += "<p>[Untitled]</p>";
+    		}
+    		divisionEntry += "<p>by " + globalNotebookContentArray[i].Author + "</p>";
+    		divisionEntry += "<p>" + globalNotebookContentArray[i].Year + "</p>";
+    		if (globalNotebookContentArray[i].Notes){
+    			divisionEntry += "<p>Notes: " + globalNotebookContentArray[i].Notes + "</p>";
+    		}
+    		if (globalNotebookContentArray[i].UwdcUrl){
+    			divisionEntry += "<p>Scan at UW digital Collections: <a href='" + globalNotebookContentArray[i].UwdcUrl + "' target=_blank>" + globalNotebookContentArray[i].UwdcUrl + "</a></p>";
+    		}
+    		divisionEntry += "</div>";
+    		divisionEntry += "</div>";
+
+    		$("#notebooksContent").append($(divisionEntry))
+    	}
+
+
+    	indicator();
     }
 
     var notebooksManager = (function(){
 
     	var add = function(array){
-
-    		globalNotebookContentArray = globalNotebookContentArray.concat(array)
+    		array.coverURL = "images/notebooks/notebook-icon.jpg";
+    		globalNotebookContentArray = globalNotebookContentArray.concat(array);
 
     	};
 
@@ -113,7 +177,7 @@
 
     })();
 
-    async.series([retrieveNotebooks, runsAfter])
+    async.series([retrieveNotebooks, buildNotebooksList, replaceImages])
 
 
 
