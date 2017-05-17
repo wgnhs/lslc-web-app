@@ -33,7 +33,7 @@ $(window).on("load", function(){
     initializeResultsTable();
     
     //hashParameters
-    setFiltersFromHash();
+   // setFiltersFromHash();
 
     
     //call whenever the filters object has changed (EXCEPT map filter). 
@@ -129,6 +129,7 @@ function resetFilters() {
         queryTableForFilters();
 }
 
+/*
 function setFiltersFromHash(){
     var hash = window.location.hash.replace("#", ""); // substr(1) to remove the #hashParameters
     var hashParameters = hash.split('&'); 
@@ -141,7 +142,7 @@ function setFiltersFromHash(){
     
     
 }
-    
+ */   
     
 function queryTableForFilters(){
     queryCount += 1; 
