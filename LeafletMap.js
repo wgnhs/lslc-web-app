@@ -340,6 +340,8 @@ var leafletMap = (function(){
         var break3 = filteredValuesArray[Math.round((filteredValuesArray.length / (4/3)) - 1)];
         var breakTop = filteredValuesArray[filteredValuesArray.length - 1];
 
+        var breaks = [break0,break1,break2,break3,breakTop]
+
         //defines arrays to be populated with section ids in each class
         var class1Array = [];
         var class2Array = [];
@@ -363,6 +365,9 @@ var leafletMap = (function(){
         //tests out how the choropleth system is working
        // console.log("filtered values array -->", filteredValuesArray)
         console.log("class breaks -->", break0,break1,break2,break3,breakTop)
+
+        createLegend(breaks)
+        console.log("here")
 
        return {"class1Array": class1Array, "class2Array": class2Array, "class3Array": class3Array, "class4Array": class4Array};
 
@@ -403,6 +408,7 @@ var leafletMap = (function(){
 
         
     } //end highlight function
+
     
     return {
         "initialize": initialize,
@@ -412,3 +418,26 @@ var leafletMap = (function(){
     }
     
 })();
+
+function createLegend(breaksArray){
+
+        $("#legend").remove();
+        $("#map").append($("<div id='legend'><div>"));
+        $("#legend").append($("<div id='legendTitleContainer'><p class='legendTitle'><strong>Results per Section</strong></p></div>"));
+
+        for (i in breaksArray){
+
+            var idValue = parseInt(i) + 1;
+            var lowEnd = breaksArray[i - 1];
+            var highEnd = parseInt(breaksArray[i]) - 1;
+            $("#legend").append($("<div class='legendBox' id='legendBox" + idValue + "'></div>"));
+            $("#legend").append($("<div class='legendLabel' id='legendLabel" + idValue + "'></div>"));
+            
+            if (i == 0){
+                $("#legendLabel" + idValue).append($("<p class='legendText'>0</p>"));
+            } else {
+                $("#legendLabel" + idValue).append($("<p class='legendText'>" + lowEnd + "–" + highEnd + "</p>"));
+            }
+        }
+
+}
