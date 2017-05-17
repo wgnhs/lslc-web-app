@@ -6,9 +6,13 @@
        <meta charset="UTF-8">
 
  
-        <!--Google font-->
+       <!--Google font-->
             <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
-       
+
+       <!-- Async -->
+            <script src="https://unpkg.com/async@2.4.0/dist/async.min.js"></script>
+       <!-- docs  caolan.github.io/async/docs.html -->
+
        <!-- Load Leaflet from CDN-->
            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
            <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
@@ -46,7 +50,8 @@
        <h2>Notebooks</h2> 
        <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
        
-       <div class='reportDivision'><div id="fieldNotebooksList"></div></div>
+       <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
+       <div id='notebooksContent'></div>
    
        
        <div id="footer"></div>
@@ -64,93 +69,55 @@
     
     <!-- javascript for building the notebook list -->
     <script>
-        function retrieveAllNotebooks(){
-            var notebookQuery = L.esri.query({url: notebooksTableURL}); 
-            notebookQuery.fields(["*"]); 
-                     
-            notebookQuery.run(function(error, featureCollection, notebooksResponse){
-                console.log("notebooks: ", notebooksResponse.features);
-               for(i in notebooksResponse.features){
-                  
-//                   console.log("Notebook: ", notebooksResponse.features[i].attributes);
-                   findThumbnail(notebooksResponse.features[i].attributes);
-               }
-
-            }); //end run 
-            
-        }
-        function findThumbnail(notebookAttributes){
-            
-            var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.Number+"_cover_thumb.jpg"; 
-            
-            
-            var img = new Image();
-            img.onload = function(resp){
-               console.log(notebookAttributes.Number+" found"); 
-               buildListItem(notebookAttributes, thumbURL); 
-            }
-            img.onerror = function(){
-                console.log(notebookAttributes.Number+" not found.");
-                buildListItem(notebookAttributes, 'images/notebooks/notebook-icon.jpg');
-            }
-            img.src = thumbURL; 
- 
-            
-        }
+    var globalNotebookContentArray = [];
         
-        function buildListItem(notebookAttributes, thumbnailsrc){
-            
-            
-            bookDiv = "<div class='divisionEntry'>"; 
-            
-            
-            
-            // First, add the thumbnail: 
-            
-             bookDiv += "<img src='"+thumbnailsrc+"' alt='notebook cover' style='height: 200px;'/>"
-            
-//            if(thumbnailFound) {
-//                    bookDiv += "<img src='http://mp-web2t/lslc/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.Number+"_cover_thumb.jpg' alt='notebook cover' style='height: 200px;'/>";
-//            } else {
-//                bookDiv += "<img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover' style='height: 200px;'/>"
-//            }
+    function retrieveNotebooks(indicator){
+    	var notebooksQuery = L.esri.query({url: notebooksTableURL});
+    	notebooksQuery.fields(["*"]);
+    	notebooksQuery.run(function(err, featureCollection, response){
+    		console.log(response);
+    		console.log(featureCollection);
 
-            //if there's a UWDC Link:
-//            if (notebookAttributes.UwdcUrl){
-//                bookDiv += "<a href='"+notebookAttributes.UwdcUrl+"' target=_blank>"; 
-//                
-//                bookDiv += "</a>";
-//            } else {
-//                //if no UWDC link
-//                
-//                
-//            }
-            
-            
-            
-            bookDiv += "<div class='detailsDiv'>";
-            bookDiv += "<p>Field Notebook #"+notebookAttributes.Number+"</p>";
-                if (notebookAttributes.Title){bookDiv += "<p>"+notebookAttributes.Title+"</p>"}
-                else {bookDiv += "<p>[Untitled]</p>"};
-                bookDiv += "<p>by "+notebookAttributes.Author+"</p>";
-                bookDiv += "<p>"+notebookAttributes.Year+"</p>";
-                if (notebookAttributes.Notes){
-                    bookDiv += "<p>Notes: "+notebookAttributes.Notes+"</p>";
-                }
-            
-                if (notebookAttributes.UwdcUrl){
-                    bookDiv += "Scan at UW Digital Collections: <a href='"+notebookAttributes.UwdcUrl+"' target=_blank>"+ notebookAttributes.UwdcUrl +"</a>";
-                } 
-            bookDiv += "</div>";
-            
-            bookDiv += "</div>";
-            
-            $("#fieldNotebooksList").append(bookDiv); 
-            
-        } //end buildListItem function
-        
-        retrieveAllNotebooks();
-    
+    		notebooksManager.add(response.features)
+    		console.log(globalNotebookContentArray)
+
+    		indicator();
+    	});
+
+    }
+
+    function runsAfter(){
+    	console.log("ran now")
+    }
+
+    var notebooksManager = (function(){
+
+    	var add = function(array){
+
+    		globalNotebookContentArray = globalNotebookContentArray.concat(array)
+
+    	};
+
+    	var sort = function(attr, ascending){
+    		var direction;
+    		if (ascending){
+    			direction = "ascending";
+    		} else {
+    			direction = "decending";
+    		};
+
+    		console.log("sort by " + attr + "in " + direction + " order")
+    	};
+
+    	return {"add":add,"sort":sort,}
+
+    })();
+
+    async.series([retrieveNotebooks, runsAfter])
+
+
+
+
     </script><!-- end javascript for building the notebook list -->
    
    
