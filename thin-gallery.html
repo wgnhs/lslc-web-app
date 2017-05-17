@@ -51,7 +51,7 @@
        <span>Mouse-over to view cross-polarized images</span>
        
      <!--  <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
-       <div id="thinGallery"></div>
+       <div id="thinGallery" class="divisionContent"></div>
    
        
        <div id="footer"></div>
@@ -69,8 +69,7 @@
     
     <!-- javascript for building the thin section gallery -->
     <script>
-        
-       
+
         //global variables: 
         var globalThinSectionsArray = []; 
         
@@ -80,23 +79,20 @@
            thinImagesQuery.fields(["*"]); 
            
            thinImagesQuery.run(function(err, featureCollection, response){
-               console.log('response', response);
-               console.log('feature coll', featureCollection);
+//               console.log('response', response);
+//               console.log('feature coll', featureCollection);
+                         
+               console.log("Query returned. global array: ", globalThinSectionsArray);
                
-               thinSectionsManager.add(response.features);
-               
-               console.log("global array: ", globalThinSectionsArray);
-               
-//               for (i in response.features){
-//                   
-//                   console.log('thin number', response.features[i].attributes);
-//                   
-//                   
-//               }
+               for (i in response.features){
+                   
+                  thinSectionsManager.add(response.features[i].attributes);
+                   
+                   
+               }
                callback();
                
            });
-           
 
        }
         
@@ -109,22 +105,25 @@
         var thinSectionsManager = (function(){
             
             var add = function(array){
-                
+                array.PPLthumbURL = 'images/notebooks/notebook-icon.jpg'; 
                 globalThinSectionsArray = globalThinSectionsArray.concat(array);
                 
             }
             
-            var sort = function(attr, ascending){
-                //attr 
-                var direction; 
-                
-                if (ascending){
-                    direction = "ascending";
-                } else {
-                     direction = "descending";
-                }
-                
+            
+            var sort = function(attr, direction){
+                               
                 console.log("sort by "+attr+" in "+direction+" order."); 
+                
+                globalThinSectionsArray.sort(function (a,b){
+                  
+                    if(Number(a[attr]) < Number(b[attr])) return -1; 
+                    if(Number(a[attr]) > Number(b[attr])) return 1; 
+                    return 0;
+                                                         
+                });
+                
+                console.log(globalThinSectionsArray);
             }
             
             return {
@@ -133,10 +132,93 @@
             }
             
         })();   
-           
-        async.series([retrieveThinSectionImages, consoleAfter], function(){
-            console.log("all done");
+        
+         
+        
+        function replaceThumbnailImage(number){
+            var PPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+number+'ppl_thumb.jpg';
+            
+            var testImage = new Image(); 
+            
+            
+            testImage.onload = function(){
+                //successfully found the new image.  
+                console.log("image found");
+                //replace the image in the html page. 
+                console.log("element", $("#pplthumb_"+number));
+                
+                
+               $("#pplthumb_"+number).attr('src', testImage.src);
+                
+                
+                //replace the data attribute in the global data array
+                for(i in globalThinSectionsArray){
+                    if (globalThinSectionsArray[i].CatalogNumber === number){
+                        globalThinSectionsArray[i].PPLthumbURL = testImage.src;
+                    }
+                }
+                console.log("global array: ", globalThinSectionsArray);
+                
+                
+            }
+            
+            testImage.src= PPLthumbURL; 
+            
+        }
+        
+        function replaceDataAttribute(){
+            
+        }
+        
+        function replaceImages(){
+            
+            var subset = [{"CatalogNumber": "1"}, {"CatalogNumber": "11"}, {"CatalogNumber": "12"}, {"CatalogNumber": "13"}];
+            
+            for (i in subset){
+               // thinNumber = globalThinSectionsArray[i].CatalogNumber;
+                thinNumber = subset[i].CatalogNumber;
+                replaceThumbnailImage(thinNumber);
+               
+            }
+                
+            
+        }
+        
+        function buildThinGallery(callback) {
+            var divisionContent= '';
+            
+            //for every thin section...
+            for (i in globalThinSectionsArray.slice(0,10)){
+               // console.log("item", globalThinSectionsArray[i]);
+                
+                var thinDiv = '<div>';
+                
+                thinDiv += "<img src='images/notebooks/notebook-icon.jpg' id='pplthumb_"+globalThinSectionsArray[i].CatalogNumber+"'/>";
+                
+                thinDiv += globalThinSectionsArray[i].CatalogNumber;
+                
+                thinDiv += "</div>";
+                
+                divisionContent += thinDiv;
+                
+                
+            }
+            
+            
+            $("#thinGallery").append(divisionContent);
+            
+            callback();
+        }
+        
+        function sort(callback){
+            thinSectionsManager.sort("CatalogNumber", "ascending"); 
+            callback();
+        }
+        
+        async.series([retrieveThinSectionImages, sort, buildThinGallery, replaceImages, consoleAfter], function(){
+            console.log("all done. global data array: ", globalThinSectionsArray);
         });
+        
         
     </script><!-- end javascript for building the notebook list -->
    
