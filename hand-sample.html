@@ -326,7 +326,7 @@
         function retrieveThinSections(){
             console.log("6.")
             return new Promise(function(resolve, reject){
-                var thinSectionQuery = L.esri.query({url: thinSectonsTableURL}); 
+                var thinSectionQuery = L.esri.query({url: thinSectionsTableURL}); 
                 thinSectionQuery.where("SampleId = "+sampleRecordData.sampleId); 
                 thinSectionQuery.fields(["*"]); 
                 
