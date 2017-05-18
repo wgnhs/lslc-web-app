@@ -314,3 +314,85 @@ a.export:hover{
    /* width: 16.67%; */
     padding: 3px 10px 1px 3px;
 }
+
+/*--------------Legend---------------*/
+
+#legend{
+  position: absolute;
+  z-index: 1000;
+  bottom: 20px;
+  right: 10px;
+  width: 17%;
+  height: 34%;
+  background-color: #fff;
+  box-shadow: 0px 0px 6px 3px rgba(0,0,0,0.35);
+  border-radius: 6px;
+}
+
+.legendBox{
+  position: absolute;
+  z-index: 1500;
+  left: 6%;
+  width: 24%;
+  height: 12%;
+}
+
+#legendTitleContainer{
+  position: absolute;
+  width: 80%;
+  left: 10%;
+  top: 3%;
+  height: 19%;
+  z-index: 1500;
+}
+
+#legendBox1{
+  top: 25%;
+  background-color: #ece7f2;
+}
+#legendBox2{
+  top: 40%;
+  background-color: #fe9929;
+}
+#legendBox3{
+  top: 55%;
+  background-color: #ec7014;
+}
+#legendBox4{
+  top: 70%;
+  background-color: #cc4c02;
+}
+#legendBox5{
+  top: 85%;
+  background-color: #8c2d04;
+}
+
+.legendLabel{
+  position: absolute;
+  z-index: 1500;
+  right: 6%;
+  width: 58%;
+  height: 12%;
+}
+
+#legendLabel1{
+  top: 25%;
+}
+#legendLabel2{
+  top: 40%;
+}
+#legendLabel3{
+  top: 55%;
+}
+#legendLabel4{
+  top: 70%;
+}
+#legendLabel5{
+  top: 85%;
+}
+
+p.legendTitle{
+  position: absolute;
+  top: 0px;
+  line-height: 12px;
+}
