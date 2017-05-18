@@ -39,6 +39,18 @@
         <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
       <![endif]-->
        
+       <!-- Google analytics: place in the head tag after other script links -->
+       <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-50757423-2', 'auto');
+          ga('send', 'pageview');
+
+       </script>
+       
    </HEAD>
    <BODY>
   
@@ -63,10 +75,12 @@
            <div id="leftPanel">
                <div id="filters">
                    
-                   <h3>Filter by map area</h3>
+                   <h3>Filter by map area</h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext"> This map only shows samples that we were able to locate to a one-square-mile section of the Public Land Survey System. There may be more location information in the scanned field notebooks. </span></div>
+                   
                    
                    
                    <div class="filter">
+                       
                        <div class="filter">
                             <label for="mappedCheckbox"><span>Must have map location </span></label>
                             <input type="checkbox" name="mappedCheckbox" id="mappedCheckbox" />
@@ -117,7 +131,7 @@
                         <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  />
                    </div>
                    <div class="filter">
-                        <label for="notebookSearch"><span>Notebook number </span></label>
+                        <label for="notebookSearch"><span>Field notebook number </span></label>
                         <input class="searchBox" type="search" name="notebookSearch" id="notebookSearch"  />
                    </div>
                   <!-- <div class="filter">
