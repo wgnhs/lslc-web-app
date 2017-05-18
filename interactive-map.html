@@ -75,10 +75,12 @@
            <div id="leftPanel">
                <div id="filters">
                    
-                   <h3>Filter by map area</h3>
+                   <h3>Filter by map area</h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext"> This map only shows samples that we were able to locate to a one-square-mile section of the Public Land Survey System. There may be more location information in the scanned field notebooks. </span></div>
+                   
                    
                    
                    <div class="filter">
+                       
                        <div class="filter">
                             <label for="mappedCheckbox"><span>Must have map location </span></label>
                             <input type="checkbox" name="mappedCheckbox" id="mappedCheckbox" />
@@ -129,7 +131,7 @@
                         <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  />
                    </div>
                    <div class="filter">
-                        <label for="notebookSearch"><span>Notebook number </span></label>
+                        <label for="notebookSearch"><span>Field notebook number </span></label>
                         <input class="searchBox" type="search" name="notebookSearch" id="notebookSearch"  />
                    </div>
                   <!-- <div class="filter">
