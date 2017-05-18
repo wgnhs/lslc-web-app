@@ -105,8 +105,6 @@
     				}
     			}
 
-    			console.log(globalNotebookContentArray)
-
     		}
 
     	img.src = thumbURL
@@ -154,6 +152,12 @@
     	indicator();
     }
 
+    function callSort(indicator){
+    	notebooksManager.sortByNumber("Number","descending")
+    	console.log(globalNotebookContentArray)
+    	indicator();
+    }
+
     var notebooksManager = (function(){
 
     	var add = function(array){
@@ -162,22 +166,34 @@
 
     	};
 
-    	var sort = function(attr, ascending){
-    		var direction;
-    		if (ascending){
-    			direction = "ascending";
-    		} else {
-    			direction = "decending";
-    		};
+    	var sortByNumber = function(attr, direction){
 
     		console.log("sort by " + attr + "in " + direction + " order")
+
+    		if (direction == "ascending"){
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(parseInt(a[attr]) < parseInt(b[attr])) return -1;
+	    			if(parseInt(a[attr]) > parseInt(b[attr])) return 1;
+	    			return 0;
+	    		});
+
+	    	} else if (direction == "descending") {
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(parseInt(a[attr]) > parseInt(b[attr])) return -1;
+	    			if(parseInt(a[attr]) < parseInt(b[attr])) return 1;
+	    			return 0;
+	    		});
+	    		
+	    	}
     	};
 
-    	return {"add":add,"sort":sort,}
+    	return {"add":add,"sortByNumber":sortByNumber,}
 
     })();
 
-    async.series([retrieveNotebooks, buildNotebooksList, replaceImages])
+    async.series([retrieveNotebooks, callSort, buildNotebooksList, replaceImages])
 
 
 
