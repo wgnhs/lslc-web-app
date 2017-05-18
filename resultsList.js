@@ -18,7 +18,7 @@ var tableAttributes = [
         // {"field": "Range", "label": "Range"},
         // {"field": "Direction", "label": "Range Direction"},
        
-        {"field": "NotebookNum", "label": "Notebook number"},
+        {"field": "NotebookNum", "label": "Field notebook number"},
        // {"field": "NotebookPage", "label": "Notebook page"},
         {"field": "WgnhsId", "label": "WGNHS ID"},
         {"field": "Notes", "label": "Notes"},
