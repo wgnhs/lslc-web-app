@@ -110,6 +110,10 @@ h3 {
 
 /* =================== end dropdowns =================== */
 
+.blogStyle p {
+    padding: 10px 0;
+}
+
 .reportDivision{
     padding-top: 20px;
 }
