@@ -5,7 +5,17 @@ var header = "<a href='index.html'><img src='images/LSLCLogo_v3_lightLake.png' a
 
 header += "<div class='striped-1 messageBar'><span>This webpage is currently under construction. You may encounter broken hyperlinks or other errors.</span></div>";
 
-header += "<nav><a id='navHome' href='index.html' class='navMainLink'>Home</a><div id='navCollection' href='#' class='navMainLink dropdownContainer'>Collection<div class='dropdown-content'><a id='navFilter'href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html'>Hand Sample </a><a href='notebooks.html'>Notebooks</a><a href='downloads.html'>Data Downloads</a></div></div><div id='navAbout' href='#' class='navMainLink dropdownContainer'>About<div class='dropdown-content'><a href='about-history.html'>History</a><a href='about-wgnhs.html'>WGNHS and the LSLC</a></div></div><a id='navContact' href='contact.html' class='navMainLink'>Contact</a></nav>";
+header += "<nav>";
+
+header+="<a id='navHome' href='index.html' class='navMainLink'>Home</a>";
+
+header+="<div id='navCollection' href='#' class='navMainLink dropdownContainer'>Collection<div class='dropdown-content'><a id='navFilter'href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html'>Hand Sample </a><a href='notebooks.html'>Notebooks</a><a href='downloads.html'>Data Downloads</a></div>";
+
+header+="</div><div id='navAbout' href='#' class='navMainLink dropdownContainer'>About<div class='dropdown-content'><a href='about-history.html'>History</a><a href='about-wgnhs.html'>WGNHS and the LSLC</a><a href='about-collection.html'>The collection</a></div></div>";
+
+header += "<a id='navContact' href='contact.html' class='navMainLink'>Contact</a>";
+
+header+="</nav>";
 
 $("#header").append(header);
 
