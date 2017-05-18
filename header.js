@@ -7,7 +7,6 @@ header += "<div class='striped-1 messageBar'><span>This webpage is currently und
 
 header += "<nav><a id='navHome' href='index.html' class='navMainLink'>Home</a><div id='navCollection' href='#' class='navMainLink dropdownContainer'>Collection<div class='dropdown-content'><a id='navFilter'href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html'>Hand Sample </a><a href='notebooks.html'>Notebooks</a><a href='downloads.html'>Data Downloads</a></div></div><div id='navAbout' href='#' class='navMainLink dropdownContainer'>About<div class='dropdown-content'><a href='about-history.html'>History</a><a href='about-wgnhs.html'>WGNHS and the LSLC</a></div></div><a id='navContact' href='contact.html' class='navMainLink'>Contact</a></nav>";
 
-
 $("#header").append(header);
 
 //may need to work on this header's responsiveness in narrow windows... figure out how to collapse to a simple list or a menu button. 
