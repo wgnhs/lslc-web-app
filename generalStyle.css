@@ -81,6 +81,7 @@ h3 {
 
 /*----- end HEADER -----*/
 
+
 /* =================== dropdowns =================== */
 
 .dropdown-content {
@@ -154,6 +155,36 @@ h3 {
 .helpIcon:hover{
     
     opacity: 1;
+}
+
+/* ^^^^^^^^^^^^^^ TABLES ^^^^^^^^^^^^^^^^^^^^^ */
+
+.lslcTable {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x:auto;
+}
+
+.lslcTable thead td{
+    background-color: #e6e6e6;
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+    vertical-align: bottom;
+}
+
+.lslcTable tr{
+    
+    border-bottom: 0.5px solid lightgrey;
+}
+/*
+#resultsTableBody .detailsLink:hover{
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+*/
+.lslcTable td{
+   /* width: 16.67%; */
+    padding: 3px 10px 1px 3px;
 }
 
 /*~~~~~~~~~~~~~~~~~~ note (like a post-it note) ~~~~~~~~~~~~~~~~~~~*/
