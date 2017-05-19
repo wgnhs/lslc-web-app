@@ -111,24 +111,35 @@
             }
             
             
-            var sort = function(attr, direction){
+            var sortByNumber = function(attr, direction){
                                
                 console.log("sort by "+attr+" in "+direction+" order."); 
                 
-                globalThinSectionsArray.sort(function (a,b){
-                  
-                    if(Number(a[attr]) < Number(b[attr])) return -1; 
-                    if(Number(a[attr]) > Number(b[attr])) return 1; 
-                    return 0;
-                                                         
-                });
+                if (direction === 'ascending'){
+                
+                    globalThinSectionsArray.sort(function (a,b){
+
+                        if(parseInt(a[attr]) < parseInt(b[attr])) return -1; 
+                        if(parseInt(a[attr]) > parseInt(b[attr])) return 1; 
+                        return 0;
+
+                    });
+                } else if (direction === 'descending'){
+                    globalThinSectionsArray.sort(function (a,b){
+
+                        if(parseInt(a[attr]) > parseInt(b[attr])) return -1; 
+                        if(parseInt(a[attr]) < parseInt(b[attr])) return 1; 
+                        return 0;
+
+                    });
+                }
                 
                 console.log(globalThinSectionsArray);
             }
             
             return {
                 "add": add, 
-                "sort": sort,
+                "sortByNumber": sortByNumber,
             }
             
         })();   
@@ -210,12 +221,12 @@
             callback();
         }
         
-        function sort(callback){
-            thinSectionsManager.sort("CatalogNumber", "ascending"); 
+        function callSort(callback){
+            thinSectionsManager.sortByNumber("CatalogNumber", "descending"); 
             callback();
         }
         
-        async.series([retrieveThinSectionImages, sort, buildThinGallery, replaceImages, consoleAfter], function(){
+        async.series([retrieveThinSectionImages, callSort, buildThinGallery, replaceImages, consoleAfter], function(){
             console.log("all done. global data array: ", globalThinSectionsArray);
         });
         
