@@ -1,3 +1,18 @@
+/*
+body, html, #wrapper{
+    height:100%;
+}
+*/
+
+/*
+
+h2 {
+    margin: 0 7px 7px 0;
+}
+
+p { padding: 0; margin: 0;}
+*/
+
 body, input {
     font-family: 'Source Sans Pro', sans-serif;
 }
@@ -14,7 +29,13 @@ label, span {
 /*.green{
     color:#18846f; 
 }*/
+a {
+    color: #18846f;
+}
 
+.block{
+    display: block;
+}
 .inline{
     display: inline;
 }
@@ -166,7 +187,7 @@ h3 {
 }
 
 .lslcTable thead td{
-    background-color: #e6e6e6;
+    background-color: lightblue;
     border-left: solid 1px white;
     border-right: solid 1px white;
     vertical-align: bottom;
@@ -174,7 +195,11 @@ h3 {
 
 .lslcTable tr{
     
-    border-bottom: 0.5px solid lightgrey;
+    border-bottom: 2px solid white;
+    background-color: #e6e6e6;
+}
+.lslcTable td {
+    padding: 3px; 
 }
 /*
 #resultsTableBody .detailsLink:hover{
