@@ -77,6 +77,10 @@
         
        <div id="header"></div>
        <div id="menus">Sort By</div>
+       <input type="text" id="AuthorSearch" value="Search by Author">
+       <input type="text" id="TitleSearch" value="Search by Title">
+       <input type="text" id="YearSearch" value="Search by Year">
+       <input type="text" id="NumberSearch" value="Search by Notebook Number">
        
        	<h2>Notebooks</h2> 
        <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
@@ -100,6 +104,7 @@
     
     <!-- javascript for building the notebook list -->
     <script>
+    //globals
     var globalNotebookContentArray = [];
     var menuOn = false;
     var sortMethod = "Number";
@@ -109,7 +114,7 @@
     $("#menus").click(function(){
     	if (!menuOn){
     		menuOn = true;
-    		$(this).append($("<div id='menu_year' class='menuItem'>Year</div><div id='menu_number' class='menuItem'>Notebook Number</div><div id='menu_author' class='menuItem'>Author</div>"));
+    		$(this).append($("<div id='menu_year' class='menuItem'>Year</div><div id='menu_number' class='menuItem'>Notebook Number</div><div id='menu_author' class='menuItem'>Author</div><div id='menu_title' class='menuItem'>Title</div>"));
 
 	    		$("#menu_year").click(function(){
 			    	console.log("ran")
@@ -127,25 +132,48 @@
 			    	async.series([callSort, buildNotebooksList, replaceImages]);
 			    })
 
+			    $("#menu_title").click(function(){
+			    	sortMethod = "Title";
+			    	async.series([callSort, buildNotebooksList, replaceImages]);
+			    })
+
     	} else {
     		menuOn = false;
     		$(".menuItem").remove();
     	};
     });
+
+    $("#AuthorSearch").keyup(function(e){
+    	console.log("ran")
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    	}, 1000);
+    })
+	$("#NumberSearch").keyup(function(e){
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    	}, 1000);
+    })
+    $("#YearSearch").keyup(function(e){
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    	}, 1000);
+    })
+    $("#TitleSearch").keyup(function(e){
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    	}, 1000);
+    })
  
         
     function retrieveNotebooks(indicator){
     	var notebooksQuery = L.esri.query({url: notebooksTableURL});
     	notebooksQuery.fields(["*"]);
     	notebooksQuery.run(function(err, featureCollection, response){
-    		console.log(response);
-    		console.log(featureCollection);
 
     		for (i in response.features){
     			notebooksManager.add(response.features[i].attributes)
     		}
-
-    		console.log(globalNotebookContentArray)
 
     		indicator();
     	});
@@ -159,7 +187,6 @@
     	var img = new Image();
 
     	img.onload = function(resp){
-    			console.log('found')
     			$("#coverImage_" + notebookNumber).attr("src", thumbURL)
 
     			for (i in globalNotebookContentArray){
@@ -184,60 +211,75 @@
     }
 
     function buildNotebooksList(indicator){
-    	console.log("ran now")
 
     	$(".divisionEntry").remove();
 
+    	console.log(globalNotebookContentArray)
+
     	for (i in globalNotebookContentArray){
 
-    		var divisionEntry = "<div class='divisionEntry'>";
-    		divisionEntry += "<img src='" + globalNotebookContentArray[i].coverURL + "' alt='Notebook Cover Photo' id='coverImage_" + globalNotebookContentArray[i].Number + "'>"
-    		divisionEntry += "<div class='detailsDiv'>"
-    		divisionEntry += "<p>Field Notebook #" + globalNotebookContentArray[i].Number + "</p>";
-    		if (globalNotebookContentArray[i].Title){
-    			divisionEntry += "<p>" + globalNotebookContentArray[i].Title + "</p>";
-    		} else {
-    			divisionEntry += "<p>[Untitled]</p>";
-    		}
-    		divisionEntry += "<p>by " + globalNotebookContentArray[i].Author + "</p>";
-    		divisionEntry += "<p>" + globalNotebookContentArray[i].Year + "</p>";
-    		if (globalNotebookContentArray[i].Notes){
-    			divisionEntry += "<p>Notes: " + globalNotebookContentArray[i].Notes + "</p>";
-    		}
-    		if (globalNotebookContentArray[i].UwdcUrl){
-    			divisionEntry += "<p>Scan at UW digital Collections: <a href='" + globalNotebookContentArray[i].UwdcUrl + "' target=_blank>" + globalNotebookContentArray[i].UwdcUrl + "</a></p>";
-    		}
-    		divisionEntry += "</div>";
-    		divisionEntry += "</div>";
+    		if (globalNotebookContentArray[i].show = true){
 
-    		$("#notebooksContent").append($(divisionEntry))
-    	}
+	    		var divisionEntry = "<div class='divisionEntry'>";
+	    		divisionEntry += "<img src='" + globalNotebookContentArray[i].coverURL + "' alt='Notebook Cover Photo' id='coverImage_" + globalNotebookContentArray[i].Number + "'>"
+	    		divisionEntry += "<div class='detailsDiv'>"
+	    		divisionEntry += "<p>Field Notebook #" + globalNotebookContentArray[i].Number + "</p>";
+	    		if (globalNotebookContentArray[i].Title){
+	    			divisionEntry += "<p>" + globalNotebookContentArray[i].Title + "</p>";
+	    		} else {
+	    			divisionEntry += "<p>[Untitled]</p>";
+	    		}
+	    		divisionEntry += "<p>by " + globalNotebookContentArray[i].Author + "</p>";
+	    		divisionEntry += "<p>" + globalNotebookContentArray[i].Year + "</p>";
+	    		if (globalNotebookContentArray[i].Notes){
+	    			divisionEntry += "<p>Notes: " + globalNotebookContentArray[i].Notes + "</p>";
+	    		}
+	    		if (globalNotebookContentArray[i].UwdcUrl){
+	    			divisionEntry += "<p>Scan at UW digital Collections: <a href='" + globalNotebookContentArray[i].UwdcUrl + "' target=_blank>" + globalNotebookContentArray[i].UwdcUrl + "</a></p>";
+	    		}
+	    		divisionEntry += "</div>";
+	    		divisionEntry += "</div>";
+
+	    		$("#notebooksContent").append($(divisionEntry))
+	    	};
+    	};
 
 
     	indicator();
     }
 
     function callSort(indicator){
-    	if (sortMethod == "Author"){
+    	if (sortMethod == "Author" || sortMethod == "Title"){
     		notebooksManager.sortByLetter(sortMethod,sortOrder)
     	} else {
     		notebooksManager.sortByNumber(sortMethod,sortOrder)
     	}
-    	console.log(globalNotebookContentArray)
+
+    	indicator();
+    }
+
+    function callfilter(indicator){
+    	var searchText = {};
+    	searchText.authorKey = document.getElementById("AuthorSearch").value;
+    	searchText.titleKey = document.getElementById("TitleSearch").value;
+    	searchText.numberKey = document.getElementById("NumberSearch").value;
+    	searchText.yearKey = document.getElementById("YearSearch").value;
+    	notebooksManager.filterBySearch(searchText)
     	indicator();
     }
 
     var notebooksManager = (function(){
 
-    	var add = function(array){
-    		array.coverURL = "images/notebooks/notebook-icon.jpg";
-    		globalNotebookContentArray = globalNotebookContentArray.concat(array);
+    	var add = function(object){
+    		object.coverURL = "images/notebooks/notebook-icon.jpg";
+    		object.show = true
+    		globalNotebookContentArray = globalNotebookContentArray.concat(object);
 
     	};
 
     	var sortByNumber = function(attr, direction){
 
-    		console.log("sort by " + attr + "in " + direction + " order")
+    		console.log("sort by " + attr + " in " + direction + " order")
 
     		if (direction == "ascending"){
 
@@ -281,7 +323,31 @@
 	    	}
     	};
 
-    	return {"add":add,"sortByNumber":sortByNumber,"sortByLetter":sortByLetter}
+    	var filterBySearch = function(searchTextObject){
+
+    		for (i in globalNotebookContentArray){
+
+    			if (globalNotebookContentArray[i].Author != searchTextObject.authorKey){
+    				console.log("ran")
+    				globalNotebookContentArray[i].show = false;
+    			} else if (globalNotebookContentArray[i].Title != searchTextObject.titleKey) {
+    				globalNotebookContentArray[i].show = false;
+    			} else if (globalNotebookContentArray[i].Number != searchTextObject.numberKey) {
+    				globalNotebookContentArray[i].show = false;
+    			} else if (globalNotebookContentArray[i].Year != searchTextObject.yearKey) {
+    				globalNotebookContentArray[i].show = false;
+    			} else {
+    				globalNotebookContentArray[i].show = true;
+    			}
+    		}; 
+
+    	};
+
+    	return {"add":add,
+    		"sortByNumber":sortByNumber,
+    		"sortByLetter":sortByLetter,
+    		"filterBySearch":filterBySearch
+    	}
 
     })();
 
