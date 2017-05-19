@@ -33,6 +33,36 @@
            <LINK href="recordStyle.css" rel='stylesheet'/> 
            <LINK href="modalStyle.css" rel='stylesheet'/>
 
+           <style>
+           #menus{
+           	height: 30px;
+           	width: 20%;
+           	background-color: #e6e6e6;
+           	text-align: center;
+
+           }
+           #menus:hover{
+			    cursor: pointer;
+			    background-color: dimgrey;
+			}
+
+			.menuItem{
+				height: 30px;
+				width: 100%;
+				position: relative;
+				top: 20px;
+				background-color: #fff;
+				text-align: center;
+			}
+
+			.menuItem:hover{
+				background-color: #e6e6e6;
+			}
+           
+
+
+           </style>
+
        
       <!-- Enable media queries for old IE -->
       <!--[if lt IE 9]>
@@ -46,8 +76,9 @@
    <div id="wrapper">
         
        <div id="header"></div>
+       <div id="menus">Sort By</div>
        
-       <h2>Notebooks</h2> 
+       	<h2>Notebooks</h2> 
        <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
        
        <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
@@ -70,6 +101,38 @@
     <!-- javascript for building the notebook list -->
     <script>
     var globalNotebookContentArray = [];
+    var menuOn = false;
+    var sortMethod = "Number";
+    var sortOrder = "ascending";
+
+
+    $("#menus").click(function(){
+    	if (!menuOn){
+    		menuOn = true;
+    		$(this).append($("<div id='menu_year' class='menuItem'>Year</div><div id='menu_number' class='menuItem'>Notebook Number</div><div id='menu_author' class='menuItem'>Author</div>"));
+
+	    		$("#menu_year").click(function(){
+			    	console.log("ran")
+			    	sortMethod = "Year";
+			    	async.series([callSort, buildNotebooksList, replaceImages]);
+			    })
+
+			    $("#menu_number").click(function(){
+			    	sortMethod = "Number";
+			    	async.series([callSort, buildNotebooksList, replaceImages]);
+			    })
+
+			    $("#menu_author").click(function(){
+			    	sortMethod = "Author";
+			    	async.series([callSort, buildNotebooksList, replaceImages]);
+			    })
+
+    	} else {
+    		menuOn = false;
+    		$(".menuItem").remove();
+    	};
+    });
+ 
         
     function retrieveNotebooks(indicator){
     	var notebooksQuery = L.esri.query({url: notebooksTableURL});
@@ -123,6 +186,8 @@
     function buildNotebooksList(indicator){
     	console.log("ran now")
 
+    	$(".divisionEntry").remove();
+
     	for (i in globalNotebookContentArray){
 
     		var divisionEntry = "<div class='divisionEntry'>";
@@ -153,7 +218,11 @@
     }
 
     function callSort(indicator){
-    	notebooksManager.sortByNumber("Number","descending")
+    	if (sortMethod == "Author"){
+    		notebooksManager.sortByLetter(sortMethod,sortOrder)
+    	} else {
+    		notebooksManager.sortByNumber(sortMethod,sortOrder)
+    	}
     	console.log(globalNotebookContentArray)
     	indicator();
     }
@@ -189,7 +258,30 @@
 	    	}
     	};
 
-    	return {"add":add,"sortByNumber":sortByNumber,}
+    	var sortByLetter = function(attr, direction){
+
+    		console.log("sort by " + attr + "in " + direction + " order")
+
+    		if (direction == "ascending"){
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(a[attr] < b[attr]) return -1;
+	    			if(a[attr] > b[attr]) return 1;
+	    			return 0;
+	    		});
+
+	    	} else if (direction == "descending") {
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(a[attr] > b[attr]) return -1;
+	    			if(a[attr] < b[attr]) return 1;
+	    			return 0;
+	    		});
+	    		
+	    	}
+    	};
+
+    	return {"add":add,"sortByNumber":sortByNumber,"sortByLetter":sortByLetter}
 
     })();
 
