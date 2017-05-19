@@ -247,7 +247,7 @@ section {
   display: block;
 }
 
-/*++++++++++++++++++ RESULTS TABLE +++++++++++++++++++++*/
+/*++++++++++++++++++ RESULTS +++++++++++++++++++++*/
 
 /*download button*/
 
@@ -287,33 +287,6 @@ a.export:hover{
     width: 24px;
 }
 
-#resultsTable {
-    width: 100%;
-    border-collapse: collapse;
-    overflow-x:auto;
-}
-
-#resultsTable thead td{
-    background-color: #e6e6e6;
-    border-left: solid 1px white;
-    border-right: solid 1px white;
-    vertical-align: bottom;
-}
-
-#resultsTable tr{
-    
-    border-bottom: 0.5px solid lightgrey;
-}
-/*
-#resultsTableBody .detailsLink:hover{
-    background-color: #e6e6e6;
-    cursor: pointer;
-}
-*/
-#resultsTable td{
-   /* width: 16.67%; */
-    padding: 3px 10px 1px 3px;
-}
 
 /*--------------Legend---------------*/
 
