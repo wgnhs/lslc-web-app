@@ -140,22 +140,22 @@
                </div>
                <div>
                    <div class='four-col-grid'>
-                       <div class='grid-item' id='mapThumb'>
+                       <a href='interactive-map.html'><div class='grid-item' id='mapThumb'>
                        <!-- <img src='images/interactive-thumbnail.png' class='indexThumbnail' alt='interactive map thumbnail'> -->
 
                             <p class="thumbText">Interactive Map</p>
-                       </div>
-                       <div class="grid-item" id="thingalleryThumb">
+                       </div></a>
+                       <a href='#'><div class="grid-item" id="thingalleryThumb">
                            <p class="thumbText">Thin Section Gallery</p> 
 
-                       </div>
-                       <div class="grid-item" id="notebooksThumb">
+                       </div></a>
+                       <a href='notebooks.html'><div class="grid-item" id="notebooksThumb">
                           <p class="thumbText">Notebooks Catalog</p>
 
-                       </div>
-                       <div class="grid-item" id="downloadsThumb">
+                       </div></a>
+                       <a href='downloads.html'><div class="grid-item" id="downloadsThumb">
                            <p class="thumbText">Data Downloads</p>
-                        </div>
+                        </div></a>
                     </div>
                
                
@@ -188,20 +188,6 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
    <script>
            //indicate the current page in the nav bar. 
            $("#navHome").css("background-color", "#848484");
-
-
-           $("#mapThumb").click(function(){
-            window.location = "interactive-map.html";
-           })
-           $("#thingalleryThumb").click(function(){
-            window.location = "thin-gallery.html";
-           })
-           $("#notebooksThumb").click(function(){
-            window.location = "notebooks.html";
-           })
-           $("#downloadsThumb").click(function(){
-            window.location = "downloads.html"
-           })
 
            $("#mapThumb").hover(function(){
             console.log("ran")
