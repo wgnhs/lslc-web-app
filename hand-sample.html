@@ -47,6 +47,30 @@
 
        </script>
        
+       <style>
+           
+            #searchArea{
+               /* aligns better with other pages if not centered. */
+                padding: 5px 0px;
+            }
+
+            #sampleRecord .thinSectionContainer{
+                display: inline-block;
+                margin-right: 10px;
+                padding: 5px;
+            }
+
+            #sampleRecord .thinSectionContainer:hover {
+                cursor: pointer;
+                background-color: #e6e6e6;
+            }
+
+            .thinSectionContainer img {
+                padding-right: 3px;
+            }
+
+       </style>
+       
    </HEAD>
    <BODY>
        <div id="modalBackground" class="modalBackground">
@@ -700,7 +724,7 @@
 //        
         function addDataTable(){
             
-            $("#allData").append('<table id="dataTable">'); 
+            $("#allData").append('<table id="dataTable" class="lslcTable">'); 
             
             for (prop in sampleRecordData){
                 if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Array){
