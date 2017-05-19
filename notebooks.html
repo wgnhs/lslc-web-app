@@ -69,6 +69,18 @@
         <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
       <![endif]-->
        
+       <!-- Google analytics: place in the head tag after other script links -->
+       <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-50757423-2', 'auto');
+          ga('send', 'pageview');
+
+       </script>
+       
 </HEAD>
 <BODY>
   
@@ -109,6 +121,10 @@
     var menuOn = false;
     var sortMethod = "Number";
     var sortOrder = "ascending";
+    var authorSearchOn = false;
+    var titleSearchOn = false;
+    var numberSearchOn = false;
+    var yearSearchOn = false;
 
 
     $("#menus").click(function(){
@@ -117,7 +133,6 @@
     		$(this).append($("<div id='menu_year' class='menuItem'>Year</div><div id='menu_number' class='menuItem'>Notebook Number</div><div id='menu_author' class='menuItem'>Author</div><div id='menu_title' class='menuItem'>Title</div>"));
 
 	    		$("#menu_year").click(function(){
-			    	console.log("ran")
 			    	sortMethod = "Year";
 			    	async.series([callSort, buildNotebooksList, replaceImages]);
 			    })
@@ -144,22 +159,25 @@
     });
 
     $("#AuthorSearch").keyup(function(e){
-    	console.log("ran")
+    	authorSearchOn = true;
     	window.setTimeout(function(){
     		async.series([callfilter, buildNotebooksList, replaceImages]);
     	}, 1000);
     })
 	$("#NumberSearch").keyup(function(e){
+		numberSearchOn = true;
     	window.setTimeout(function(){
     		async.series([callfilter, buildNotebooksList, replaceImages]);
     	}, 1000);
     })
     $("#YearSearch").keyup(function(e){
+    	yearSearchOn = true;
     	window.setTimeout(function(){
     		async.series([callfilter, buildNotebooksList, replaceImages]);
     	}, 1000);
     })
     $("#TitleSearch").keyup(function(e){
+    	titleSearchOn = true;
     	window.setTimeout(function(){
     		async.series([callfilter, buildNotebooksList, replaceImages]);
     	}, 1000);
@@ -218,7 +236,7 @@
 
     	for (i in globalNotebookContentArray){
 
-    		if (globalNotebookContentArray[i].show = true){
+    		if (globalNotebookContentArray[i].show){
 
 	    		var divisionEntry = "<div class='divisionEntry'>";
 	    		divisionEntry += "<img src='" + globalNotebookContentArray[i].coverURL + "' alt='Notebook Cover Photo' id='coverImage_" + globalNotebookContentArray[i].Number + "'>"
@@ -325,20 +343,31 @@
 
     	var filterBySearch = function(searchTextObject){
 
+    		globalNotebookContentArray[204].Title = "";
+
     		for (i in globalNotebookContentArray){
 
-    			if (globalNotebookContentArray[i].Author != searchTextObject.authorKey){
-    				console.log("ran")
-    				globalNotebookContentArray[i].show = false;
-    			} else if (globalNotebookContentArray[i].Title != searchTextObject.titleKey) {
-    				globalNotebookContentArray[i].show = false;
-    			} else if (globalNotebookContentArray[i].Number != searchTextObject.numberKey) {
-    				globalNotebookContentArray[i].show = false;
-    			} else if (globalNotebookContentArray[i].Year != searchTextObject.yearKey) {
-    				globalNotebookContentArray[i].show = false;
-    			} else {
-    				globalNotebookContentArray[i].show = true;
-    			}
+    			console.log(i)
+
+    			var showTheNotebook = true;
+
+    			if (!globalNotebookContentArray[i]["Author"].includes(searchTextObject.authorKey) && authorSearchOn){
+    				showTheNotebook = false;
+    			};
+
+    			// if (!globalNotebookContentArray[i]["Title"].includes(searchTextObject.titleKey) && titleSearchOn) {
+    			// 	showTheNotebook = false;
+    			// };
+
+    			if (!globalNotebookContentArray[i]["Number"].includes(searchTextObject.numberKey) && numberSearchOn) {
+    				showTheNotebook = false;
+    			};
+
+    			if (!globalNotebookContentArray[i]["Year"].includes(searchTextObject.yearKey) && yearSearchOn){
+    				showTheNotebook = false;
+    			};
+
+    			globalNotebookContentArray[i].show = showTheNotebook;
     		}; 
 
     	};
