@@ -1,0 +1,39 @@
+
+sources:
+    mapzen:
+        type: TopoJSON
+        url:  https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key=vector-tiles-VyYjZGS
+        max_zoom: 16
+        url_params:
+          api_key: 'mapzen-ekzhA5x'
+layers:
+    water:
+        data: { source: mapzen }
+        filter:
+            not:
+                - boundary: true
+                - kind: playa
+        draw:
+            waves:
+                order: 100
+                color: gray
+    earth:
+        data: { source: mapzen }
+        filter: { not: { boundary: true } }
+        draw:
+          polygons:
+            color: '#E8DEC6'
+styles:
+    roads:
+        base: lines
+        lighting: false
+    waves:
+        base: polygons
+        material:
+            diffuse:
+                texture: 'img/seigaiha_blue.png'
+                mapping: planar
+                scale: 0.0000003
+    dash:
+        base: lines
+        dash: [1, 2]

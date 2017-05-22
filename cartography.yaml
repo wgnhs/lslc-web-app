@@ -1,0 +1,51 @@
+sources:
+    mapzen:
+        type: TopoJSON
+        url: https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key=vector-tiles-VyYjZGS
+scene:
+    background:
+        color: [1.000,0.923,0.844,0.0]
+fonts:
+    Lora:
+        - style: normal
+          url: https://fonts.gstatic.com/s/lora/v9/mlTYdpdDwCepOR2s5kS2CwLUuEpTyoUstqEm5AMlJo4.woff2
+        - style: italic
+          url: https://fonts.gstatic.com/s/lora/v9/_IxjUs2lbQSu0MyFEAfa7ZBw1xU1rKptJj_0jans920.woff2
+textures:
+    city:
+        url: https://raw.githubusercontent.com/tangrams/cartography-docs/master/img/sprite/bubble-wrap-style/2x/townspot-s-rev.png
+    capital:
+        url: https://raw.githubusercontent.com/tangrams/cartography-docs/master/img/sprite/bubble-wrap-style/2x/capital-m.png
+layers:
+    _waterLayer:
+        data:
+            source: mapzen
+            layer: water
+        filter:
+            kind: [ocean, river, sea, lake]
+        draw:
+            polygons:
+                order: 1
+                color: [0.337, 0.463, 0.537, 0.89]
+        _waterlines:
+            filter:
+                all:
+                    - boundary: true
+                    - kind: [ocean]
+            draw:
+                lines:
+                    order: 2
+                    color: [0.400,0.515,0.574,1.0]
+                    width: 3px
+                    join: round
+                    cap: round
+        _oceanLabel:
+            filter: { kind: ocean }
+            draw:
+                text:
+                    font:
+                        family: Lora
+                        size: [[1,12px],[3,24px],[7,36px]]
+                        style: italic
+                        fill: [0.308,0.396,0.441,1.0]
+    

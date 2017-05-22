@@ -40,11 +40,23 @@ var leafletMap = (function(){
             scrollWheelPan: determineScroll(), 
             zoomControl: false //will add zoom control in the top right corner next
         }).setView([ 47, -90], 6); //setview actually triggers the on load event.
+
+        var terrainLayer = Tangram.leafletLayer({
+            scene: 'terrain.yaml',
+            attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
+        });
+        terrainLayer.addTo(map);
+
+        var otherLayer = Tangram.leafletLayer({
+            scene: 'cartography.yaml',
+            attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
+        });
+        //otherLayer.addTo(map);
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
-        L.esri.basemapLayer('Gray').addTo(map); 
-        L.esri.basemapLayer('GrayLabels').addTo(map);
+        //L.esri.basemapLayer('Gray').addTo(map); 
+        //L.esri.basemapLayer('GrayLabels').addTo(map);
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
 //        map.createPane('B-PLSSSections');
