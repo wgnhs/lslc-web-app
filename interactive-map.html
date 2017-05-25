@@ -41,21 +41,15 @@
        
    </HEAD>
    <BODY>
-  
-       <div id="modalBackground" class="modalBackground">
-           <div class="modal-content">
-            <span id="closemodal" class="close">x</span>
-                <div id="infoBox">
-                
-                    <p>Information about thin sections... <br/> info info info</p>
-                </div>
-              
-           </div>
-       </div><!--close modal div-->
-       
-       <div id="wrapper">
-           <div id="header"></div>
-            <div id="filterHeader">
+
+    <div id="map">
+     <div class="topNav" id="homeNav"><p class='navText'>Home</p></div>
+    <div class="topNav" id="collectionNav"><p class='navText'>Collection</p></div>
+    <div class="topNav" id="aboutNav"><p class='navText'>About</p></div>
+    <div class="topNav" id="contactNav"><p class='navText'>Contact</p></div>            
+
+   <!--  <div id='mapHeader'></div> -->
+    <div id="filterHeader">
                 <!--<h1>Filter Samples</h1>-->
                 <span>Select a map area or apply other filters.</span>
             </div>
@@ -63,7 +57,10 @@
            <div id="leftPanel">
                <div id="filters">
                    
+                <div class='outterFilterBox'>  
+                  <div class='filtersTitle'>
                    <h3>Filter by map area</h3>
+                  </div>
                    
                    
                    <div class="filter">
@@ -78,12 +75,13 @@
                             <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clearMapSelection2.png"><span>Clear map selection</span></div>
                        </div>
                    </div>
+                </div>
                    
                    
-
-               
+                <div class='outterFilterBox'>
+                  <div class='filtersTitle'>
                    <h3>Filter by content </h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span></div>
-
+                  </div>
                    
                   
                    <div class="filter">
@@ -133,26 +131,26 @@
                         <label for="catalogNumberSearch"><span>Hand sample number </span></label>
                         <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
                    </div>
+                </div>
+                <div id="filterFeedback"></div>
            
                </div><!--end filters div-->
 
-               
+          </div>     
 
                 
            </div><!--end left Panel div-->
-           
-           <div id="rightPanel">
-               
-              <div id="filterFeedback"></div>
-               
-               <div id="map">
-               </div>
-            </div><!--end right Panel div-->   
+
+           <div id="resultsTitle">
+              <h2 class="inline">Results</h2>
+            </div> 
            
            <div id="resultsPanel">
+
             
                <div id="resultsHeader">
-                   <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span>
+
+                   <span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span>
                    <span id="downloadButtonContainer"><a href="#" class="export"><img src="images/download_gw.png"> <span>Download as CSV</span></a></span>
                    
                    <p>Showing the first 1000 results.</p>
@@ -174,17 +172,17 @@
                    </section>
                 -->
                
-               <div><table id="resultsTable"></table></div>
+               <div id="tableContainer"><table id="resultsTable"></table></div>
                
            </div>
           
            <!-- add a project footer... -->
             <div id='footer'></div> 
-           
-       </div><!-- end wrapper div-->
+
+          
        
        <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
-       <script src="header.js"></script>
+       
       
        
        <!-- javascript links -->

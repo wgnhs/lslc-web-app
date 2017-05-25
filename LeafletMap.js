@@ -1,11 +1,11 @@
 //function called anonymously 
-$(function(){
-    scaleMapHeight($(this).height()) 
-    //called on window resize
-    $(window).resize(function() {
-        scaleMapHeight($(this).height())
-    });
-});
+// $(function(){
+//     scaleMapHeight($(this).height()) 
+//     //called on window resize
+//     $(window).resize(function() {
+//         scaleMapHeight($(this).height())
+//     });
+// });
 
 //function matches map height to filters
 function scaleMapHeight(height){
@@ -39,7 +39,7 @@ var leafletMap = (function(){
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
             scrollWheelPan: determineScroll(), 
             zoomControl: false //will add zoom control in the top right corner next
-        }).setView([ 47, -90], 6); //setview actually triggers the on load event. 
+        }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
             
         
         
@@ -78,6 +78,7 @@ var leafletMap = (function(){
             return initPopup(individualSection.feature.properties[sectionsLayerPlssField]);
             
         });
+
     } //end initialize function
 
     //called in map properties during the initialize function

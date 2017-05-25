@@ -1,5 +1,6 @@
 body, html, #wrapper{
     height:100%;
+    margin: 0px;
 }
 h2{
     margin: 0 7px 7px 0;
@@ -8,14 +9,58 @@ h2{
 p{ padding: 0; margin: 0;}
 
 #map{
-    height: calc(50vh);
+    position: absolute;
+    width: 100%;
+    height: 70%;
+    top: 0%;
+}
+
+#mapHeader{
+  position: absolute;
+  width: 100%;
+  height: 35px;
+  top: 0px;
+}
+
+.topNav{
+  position: absolute;
+  top: 0px;
+  width: 25%;
+  height: 30px;
+  z-index: 1500;
+  /*background-color: rgba(0,0,0,0.2);*/
+  text-align: center;
+  background: linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.4));
+}
+.topNav:hover{
+  background-color: rgba(0,0,0,0.5);
+}
+
+#homeNav{
+  left: 0%;
+  border-right: 1px solid #6d6d6d;
+}
+#collectionNav{
+  left: 25%;
+  border-right: 1px solid #6d6d6d;
+}
+#aboutNav{
+  left: 50%;
+  border-right: 1px solid #6d6d6d;
+}
+#contactNav{
+  left: 75%;
+}
+
+p.navText{
+  font-size: 16px;
 }
 
 #loading{
   width:100%;
   height:100%;
   position: absolute;
-  z-index: 1000;
+  z-index: 500;
   background-image: url("images/loading.gif");
   background-repeat: no-repeat;
   background-position: center;
@@ -82,13 +127,22 @@ p{ padding: 0; margin: 0;}
 #leftPanel{
     width:30%;
     float: left;
+    position: absolute;
+    top: 33px;
+    left: 3px;
+    z-index: 1000;
+    background-color: #fff;
+    box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.3)
     
 }
-#rightPanel{
-    width:69.5%;
-    float: right;
-    display: inline-block;
-    
+
+.outterFilterBox{
+  background-color: #e2e2e2;
+  margin: 2px;
+}
+
+.filtersTitle{
+  background-color: #b74226;
 }
 
 @media only screen and (max-width: 925px) {
@@ -122,7 +176,7 @@ p{ padding: 0; margin: 0;}
 }
 
 #filters {
-    padding-bottom: 10px;
+    padding: 5px;
     position: relative;
     max-width: 350px;
 }
@@ -169,10 +223,29 @@ p{ padding: 0; margin: 0;}
     
 }
 /*------------------------ Results List ----------------------*/
-#resultsPanel{
-    clear: both;
-    padding-top: 20px;
+#resultsTitle{
+  background-color: #b74226;
+  position: absolute;
+  top: 70%;
+  width: 100%;
+  height: 5%;
+  margin-bottom: 5px;
+  z-index: 1800;
+  box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.4)
 }
+
+#resultsPanel{
+    /*clear: both;*/
+    /*padding-top: 20px;*/
+    position: absolute;
+    width: 100%;
+    height: 25%;
+    bottom: 0%;
+    overflow: scroll;
+    z-index: 2000;
+    background-color: #fff;
+}
+
 /*
 #viewOptions{
     padding: 5px 0 10px 0;
@@ -204,6 +277,7 @@ p{ padding: 0; margin: 0;}
 
 #resultsHeader{
     padding-bottom: 10px;
+    
 }
 
 section {
@@ -287,10 +361,12 @@ a.export:hover{
     width: 24px;
 }
 
+
 #resultsTable {
-    width: 100%;
-    border-collapse: collapse;
-    overflow-x:auto;
+  position: relative;
+  width: 100%;
+  border-collapse: collapse;
+  overflow-y: scroll;
 }
 
 #resultsTable thead td{
