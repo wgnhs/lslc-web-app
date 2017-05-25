@@ -287,6 +287,7 @@ a.export:hover{
   z-index: 1500;
 }
 
+
 #legendBox1{
   top: 25%;
   background-color: #ece7f2;
@@ -334,6 +335,12 @@ a.export:hover{
 
 p.legendTitle{
   position: absolute;
-  top: 0px;
+  top: -10px;
+  line-height: 12px;
+}
+
+p.legendText{
+  position: absolute;
+  top: -8px;
   line-height: 12px;
 }
