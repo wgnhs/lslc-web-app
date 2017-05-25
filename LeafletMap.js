@@ -51,6 +51,9 @@ var leafletMap = (function(){
             scene: 'cartography.yaml',
             attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
         });
+
+        macrostratTiles = L.tileLayer('https://macrostrat.org/api/v2/maps/burwell/emphasized/{z}/{x}/{y}/tile.png').addTo(map);
+        macrostratTiles.setOpacity(0.25);
         //otherLayer.addTo(map);
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);

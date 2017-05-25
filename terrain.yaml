@@ -21,7 +21,7 @@ textures:
         url: img/seigaiha.png
 scene:
     background:
-      color: rgb(188, 140, 126)
+      color: grey
 
 layers:
     water:
@@ -62,8 +62,6 @@ styles:
     dash:
         base: lines
         dash: [1, 2]
-    water:
-        color: rgb(0, 0, 0)
     terrain:
         base: polygons
         lighting: false
