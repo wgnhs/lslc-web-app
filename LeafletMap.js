@@ -342,7 +342,15 @@ var leafletMap = (function(){
         var break3 = filteredValuesArray[Math.round((filteredValuesArray.length / (4/3)) - 1)];
         var breakTop = filteredValuesArray[filteredValuesArray.length - 1];
 
-        var breaks = [break0,break1,break2,break3,breakTop]
+        var allBreaks = [break0,break1,break2,break3,breakTop]
+        var breaks = [];
+
+        for (i in allBreaks){
+            if (allBreaks[i] != allBreaks[i-1] && allBreaks[i]){
+                breaks.push(allBreaks[i])
+            }
+        }
+
 
         //defines arrays to be populated with section ids in each class
         var class1Array = [];
@@ -350,19 +358,30 @@ var leafletMap = (function(){
         var class3Array = [];
         var class4Array = [];
 
+        var classesArray = [null,class1Array,class2Array,class3Array,class4Array]
+
         //populates each class array by checking how many samples they each have, evaluating via breaks
         //makes use of the 2D choroplethStructureArray
+        // for (i = 0; i < choroplethStructureArray.length; i++){
+        //   if (choroplethStructureArray[i][1] <= break1){
+        //     class1Array.push(choroplethStructureArray[i][0]);
+        //   } else if (choroplethStructureArray[i][1] <= break2) {
+        //     class2Array.push(choroplethStructureArray[i][0]);
+        //   } else if (choroplethStructureArray[i][1] <= break3) {
+        //     class3Array.push(choroplethStructureArray[i][0]);
+        //   } else {
+        //     class4Array.push(choroplethStructureArray[i][0]);
+        //   }; 
+        // } 
+
         for (i = 0; i < choroplethStructureArray.length; i++){
-          if (choroplethStructureArray[i][1] <= break1){
-            class1Array.push(choroplethStructureArray[i][0]);
-          } else if (choroplethStructureArray[i][1] <= break2) {
-            class2Array.push(choroplethStructureArray[i][0]);
-          } else if (choroplethStructureArray[i][1] <= break3) {
-            class3Array.push(choroplethStructureArray[i][0]);
-          } else {
-            class4Array.push(choroplethStructureArray[i][0]);
-          }; 
-        } 
+            for (j in breaks){
+                if (choroplethStructureArray[i][1] <= breaks[j] && j != 0){
+                    classesArray[j].push(choroplethStructureArray[i][0])
+                    break;
+                }
+            }
+        }
 
         //tests out how the choropleth system is working
        // console.log("filtered values array -->", filteredValuesArray)
@@ -371,7 +390,7 @@ var leafletMap = (function(){
         createLegend(breaks)
         console.log("here")
 
-       return {"class1Array": class1Array, "class2Array": class2Array, "class3Array": class3Array, "class4Array": class4Array};
+       return {"class1Array": classesArray[1], "class2Array": classesArray[2], "class3Array": classesArray[3], "class4Array": classesArray[4]};
 
     } //end calculateClasses
     
@@ -380,10 +399,10 @@ var leafletMap = (function(){
       //  console.log("highlight via Leaflet");
         var classes = calculateClasses(array); 
         
-//        console.log("class 1 array:", classes.class1Array);
-//        console.log("class 2 array:", classes.class2Array);
-//        console.log("class 3 array:", classes.class3Array);
-//        console.log("class 4 array:", classes.class4Array);
+       console.log("class 1 array:", classes.class1Array);
+       console.log("class 2 array:", classes.class2Array);
+       console.log("class 3 array:", classes.class3Array);
+       console.log("class 4 array:", classes.class4Array);
         
         leafletFeatureLayer.setStyle(function (feature){
             var fillColor; //blank variable for fill color
@@ -421,20 +440,8 @@ var leafletMap = (function(){
     
 })();
 
-function createLegend(rawBreaksArray){
+function createLegend(breaksArray){
 
-    var breaksArray = [];
-    var pushUpOne = false
-
-    for (i in rawBreaksArray){
-        if (rawBreaksArray[i] != rawBreaksArray[i-1] && rawBreaksArray[i]){
-            breaksArray.push(rawBreaksArray[i])
-        } else {
-            //pushUpOne = true
-        }
-    }
-
-    console.log(rawBreaksArray)
     console.log(breaksArray)
 
         $("#legend").remove();
@@ -455,10 +462,6 @@ function createLegend(rawBreaksArray){
                 if (idValue != 1 && idValue != 2 && lowEnd != highEnd){
                     lowEnd += 1;
                 };
-
-                if (pushUpOne && i != 0){
-                    idValue += 1
-                }
 
                 $("#legend").append($("<div class='legendBox' id='legendBox" + idValue + "'></div>"));
                 $("#legend").append($("<div class='legendLabel' id='legendLabel" + idValue + "'></div>"));
