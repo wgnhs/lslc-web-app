@@ -22,6 +22,9 @@ body {
 body, input {
     font-family: 'Source Sans Pro', sans-serif;
 }
+a {
+    color: #b74226;
+}
 
 label, span {
     /*color: grey;*/
@@ -52,11 +55,12 @@ h3 {
 }
 #wrapper{
     width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 20px;
+    margin-left: auto; /* center */
+    margin-right: auto; /* center */
+ 
     background-color: white;
-    padding: 10px;
+    
+    clear: both;
 }
 
 .button:hover{ 
@@ -78,46 +82,36 @@ h3 {
 }
 
 #homeLogo {
-/*    background-color: #cf6032;*/
     max-width: 280px;
     position: relative; /* so we can move it up */
     top: -20px; /* move it up */
-    width: 22%; /* one quarter of the 90% width of the page content. */
+    width: 22%; /* one quarter of the 90% width of the page content. correlates with the #header nav rule below */
     margin-left: 5%; 
     border-bottom: solid 3px #b74226;
+/*    border-top: solid 3px #b74226;*/
     float: left;
     background-color: white;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-/*
-    border-right: solid 0.5px #b74226;
-    border-left: solid 0.5px #b74226;
-*/
-    
+    padding: 2px;
+ 
 }
+#homeLogo:hover {
+    background-color: #e6e6e6;
+}
+
 #header nav {
-   
     margin-right: 5%;
-    width: 67%;
+    width: 67%; /* three quarter of the 90% width of the page content. correlates with the #homeLogo rule above */
     display: inline-block; 
-/*    height: 50px;*/
-/*    height: 100%;*/
-/*    background-color: #b74226;*/
-    vertical-align: top;
-   
-    
+
 }
+
 #header nav h3{
     margin: 0;
-/*    font-weight: 600;*/
-/*    font-family: serif; */
-/*    text-transform: uppercase;*/
-    vertical-align: text-top;
+    color: white;
 }
 
 .navMainLink {
-/*    vertical-align: middle;*/
-/*   dark: #a43122 */
-/*    float: right;*/
     color: black;
     text-decoration: none;
     padding: 2px 0px;
@@ -129,7 +123,7 @@ h3 {
 }
 .navMainLink:hover{
     cursor: pointer;
-    background-color: #ef8362;
+    background-color: #842d1a;
 }
 /* message across the top of the screen, above nav */
 .messageBar{
@@ -236,6 +230,7 @@ h3 {
 
 .lslcTable thead td{
     background-color: #b74226;
+    color: white;
     border-left: solid 1px white;
     border-right: solid 1px white;
     vertical-align: bottom;
@@ -256,7 +251,6 @@ h3 {
 }
 */
 .lslcTable td{
-   /* width: 16.67%; */
     padding: 3px 10px 1px 3px;
 }
 
