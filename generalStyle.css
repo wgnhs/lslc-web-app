@@ -62,19 +62,27 @@ h3 {
 }
 
 /*----- HEADER -----*/
+#homeLogo {
+/*    height: 50px;*/
+    width: 25%;
+}
 #header nav {
-    margin: 5px 0px 15px 0px;
-    width: 100%;
+    margin: 5px 0px 0 0px;
+    width: 75%;
     display: inline-block; 
+/*    height: 50px;*/
+    height: 100%;
+    background-color: #b74226;
 }
 
 .navMainLink {
-    background-color: #e6e6e6;
+    
+/*   dark: #a43122 */
     float: left;
-    color: black;
+    color: white;
     text-decoration: none;
     padding: 2px 0px;
-    width: 25%; /* this must change when the number of links in the nav bar changes. */
+    width: 33%; /* this must change when the number of links in the nav bar changes. */
     display: inline-block;
     text-align: center;
     position: relative; /* parent container for .dropdown-content divs, which are absolute */
@@ -84,6 +92,7 @@ h3 {
     cursor: pointer;
     background-color: dimgrey;
 }
+/* message across the top of the screen, above nav */
 .messageBar{
     
     TEXT-ALIGN: center;
