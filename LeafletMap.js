@@ -421,31 +421,47 @@ var leafletMap = (function(){
     
 })();
 
-function createLegend(breaksArray){
+function createLegend(rawBreaksArray){
 
+    var breaksArray = [];
+    var pushUpOne = false
+
+    for (i in rawBreaksArray){
+        if (rawBreaksArray[i] != rawBreaksArray[i-1] && rawBreaksArray[i]){
+            breaksArray.push(rawBreaksArray[i])
+        } else {
+            //pushUpOne = true
+        }
+    }
+
+    console.log(rawBreaksArray)
     console.log(breaksArray)
 
         $("#legend").remove();
         $("#map").append($("<div id='legend'><div>"));
         $("#legend").append($("<div id='legendTitleContainer'><p class='legendTitle'><strong>Results per Section</strong></p></div>"));
 
-        if (breaksArray[1]){
+        if (breaksArray.length == 0){
+            $("#legend").append($("<div class='legendBox' id='legendBox1'></div>"));
+            $("#legend").append($("<div class='legendLabel' id='legendLabel1'><p class='legendText'>0</p></div>"));
+        }
 
             for (i in breaksArray){
 
                 var idValue = parseInt(i) + 1;
                 var lowEnd = breaksArray[i - 1];
                 var highEnd = parseInt(breaksArray[i]);
-                $("#legend").append($("<div class='legendBox' id='legendBox" + idValue + "'></div>"));
-                $("#legend").append($("<div class='legendLabel' id='legendLabel" + idValue + "'></div>"));
 
                 if (idValue != 1 && idValue != 2 && lowEnd != highEnd){
                     lowEnd += 1;
                 };
 
-                if (i == 3){
-                    console.log(lowEnd, highEnd)
+                if (pushUpOne && i != 0){
+                    idValue += 1
                 }
+
+                $("#legend").append($("<div class='legendBox' id='legendBox" + idValue + "'></div>"));
+                $("#legend").append($("<div class='legendLabel' id='legendLabel" + idValue + "'></div>"));
 
                 if (i == 0){
                     $("#legendLabel" + idValue).append($("<p class='legendText'>0</p>"));
@@ -454,23 +470,7 @@ function createLegend(breaksArray){
                 } else {
                     $("#legendLabel" + idValue).append($("<p class='legendText'>" + lowEnd + "–" + highEnd + "</p>"));
                 }
+
             }
-
-        } else {
-            console.log("ran")
-            for (i in breaksArray){
-
-                var idValue = parseInt(i) + 1;
-
-                $("#legend").append($("<div class='legendBox' id='legendBox" + idValue + "'></div>"));
-                $("#legend").append($("<div class='legendLabel' id='legendLabel" + idValue + "'></div>"));
-
-                if (i == 0){
-                    $("#legendLabel" + idValue).append($("<p class='legendText'>0</p>"));
-                } else {
-                    $("#legendLabel" + idValue).append($("<p class='legendText'>1</p>"));
-                }
-            }
-        }
 
 }
