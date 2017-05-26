@@ -12,6 +12,9 @@ h2 {
 
 p { padding: 0; margin: 0;}
 */
+body {
+    background-color: grey;
+}
 
 body, input {
     font-family: 'Source Sans Pro', sans-serif;
@@ -25,12 +28,6 @@ label, span {
 .bold{
     font-weight: 600;
     color: black;
-}
-/*.green{
-    color:#18846f; 
-}*/
-a {
-    color: #18846f;
 }
 
 .block{
@@ -54,6 +51,9 @@ h3 {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 20px;
+    background-color: white;
+    padding: 10px;
 }
 
 .button:hover{ 
@@ -62,24 +62,60 @@ h3 {
 }
 
 /*----- HEADER -----*/
+#header {
+/*     margin: 20px 0 0 0;*/
+    width: 100%;
+    
+    padding-bottom: 10px;
+     
+}
+#headerWrapper {
+    background-color: #b74226;
+    margin-top: 20px;
+}
+
 #homeLogo {
-/*    height: 50px;*/
-    width: 25%;
+/*    background-color: #cf6032;*/
+    max-width: 280px;
+    position: relative; /* so we can move it up */
+    top: -20px; /* move it up */
+    width: 22%; /* one quarter of the 90% width of the page content. */
+    margin-left: 5%; 
+    border-bottom: solid 3px #b74226;
+    float: left;
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+/*
+    border-right: solid 0.5px #b74226;
+    border-left: solid 0.5px #b74226;
+*/
+    
 }
 #header nav {
-    margin: 5px 0px 0 0px;
-    width: 75%;
+   
+    margin-right: 5%;
+    width: 67%;
     display: inline-block; 
 /*    height: 50px;*/
-    height: 100%;
-    background-color: #b74226;
+/*    height: 100%;*/
+/*    background-color: #b74226;*/
+    vertical-align: top;
+   
+    
+}
+#header nav h3{
+    margin: 0;
+/*    font-weight: 600;*/
+/*    font-family: serif; */
+/*    text-transform: uppercase;*/
+    vertical-align: text-top;
 }
 
 .navMainLink {
-    
+/*    vertical-align: middle;*/
 /*   dark: #a43122 */
-    float: left;
-    color: white;
+/*    float: right;*/
+    color: black;
     text-decoration: none;
     padding: 2px 0px;
     width: 33%; /* this must change when the number of links in the nav bar changes. */
@@ -196,7 +232,7 @@ h3 {
 }
 
 .lslcTable thead td{
-    background-color: lightblue;
+    background-color: #b74226;
     border-left: solid 1px white;
     border-right: solid 1px white;
     vertical-align: bottom;
