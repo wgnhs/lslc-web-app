@@ -35,6 +35,9 @@ label, span {
     font-weight: 600;
     color: black;
 }
+.italic {
+    font-style: italic;
+}
 
 .block{
     display: block;

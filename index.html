@@ -59,10 +59,13 @@
            /* four square links to the collection pages */
            .collectionLink {
                background-color: #b74226;
-               padding: 5px;
+               padding: 10px;
                color: white;
+               
+/*
                width: 150px;
                height: 150px;
+*/
                margin: 0 3px 5px 0;
            }
            .collectionLink:hover {
@@ -187,10 +190,25 @@
               </li>
               <li>
                   <div class="banner-slide">
-                        <!--<h3>View thin sections in detail</h3>--> <!-- why does this not show up in the right slide??? -->
                       
                         <img src="design-inspiration-images/thin-section9401_sample14766_thumbnails.png" alt="thin sections sample 14766"/>
-                        <h3>Browse thin section images</h3>
+                        <h3>View thin sections in detail</h3>
+                  </div>
+              </li>
+<!--
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="design-inspiration-images/USGSMonograph52_page753_crossSections.png" alt="thin sections sample 14766"/>
+                        <h3>Text</h3>
+                  </div>
+              </li>
+-->
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="design-inspiration-images/notebook7-page19-rock-sketch.png" alt="thin sections sample 14766"/>
+                        <p class="italic">"Never a moment out of sight of these massive ledges of coarse gabbro. The whole of these lakes are held and formed by this great formation, layer upon layer of great thickness. The whole country is burnt and the shoulders of bare rock rise on all sides." -- Chauvenet, W.M. </p>
                   </div>
               </li>
           
@@ -232,12 +250,12 @@
                     </div>
 -->             
                    <div class="inline-block">
-                       <div class="collectionLink inline-block">Interactive Map</div>
-                       <div class="collectionLink inline-block">List of Notebooks</div>
+                       <a href="interactive-map.html"><div class="collectionLink inline-block">Interactive Map</div></a>
+                       <a href="notebooks.html"><div class="collectionLink inline-block">List of Notebooks</div></a>
                    </div>
                    <div class="inline-block">
-                       <div class="collectionLink inline-block">Thin Section Gallery</div>
-                       <div class="collectionLink inline-block">Data Downloads</div>
+                       <a href="#"><div class="collectionLink inline-block">Thin Section Gallery</div></a>
+                       <a href="downloads.html"><div class="collectionLink inline-block">Data Downloads</div></a>
                    </div>
                
                
@@ -273,7 +291,7 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
                 $('.my-slider').unslider({
                    
                     autoplay: true, 
-                    delay: 7000, 
+                    delay: 10000, 
 //                    animation: 'fade', //doesn't work - the whole slideshow just doesn't show up at all. 
                     infinite: true //cycles straight from end to beginning
                 });
