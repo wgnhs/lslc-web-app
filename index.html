@@ -95,10 +95,11 @@
             }
            
            
-            .unslider a:hover{
+           /* ARROWS  - add images instead of the default slider links 'next' and 'prev' */
+           .unslider a:hover{
                 opacity: 0.7;
             }
-           /* add images instead of the default slider links 'next' and 'prev' */
+           
            .unslider-arrow {
                visibility: hidden;
                position: absolute;
@@ -112,41 +113,48 @@
             .unslider-arrow.prev:before{
                 content: url('images/chevron_left_gw.png');
                 float: left;
+               
             }
             .unslider-arrow.next:before{
                 content: url('images/chevron_right_gw.png');
                 float: right;
                
             }
+           .unslider-arrow.prev {
+               left: 2px; /* move to the left edge */
+           }
+           .unslider-arrow.next {
+               right: 2px; /* move to the right edge */ 
+           }
            
+           /* ++++ individual slides ++++ */
             .banner-slide {
+               position: relative; /* to contain the h3 and p elements within*/
                display: flex; 
                justify-content: center; 
-               overflow: hidden;
-               
+               overflow: hidden; /* no scroll bar */
+
             }
 
             .banner-slide img {
                 height: 400px; 
             }
-           .banner-slide h3 {
+           
+           .banner-slide h3, .banner-slide p {
                
-               position: absolute; /* puts it on top of image */
-               
-               top: 10px;
-               left: 10px;
-               
-               padding: 3px;
-               background-color: white; 
+                position: absolute; /* puts it on top of image */
+                bottom: 20%;
+                left: 0;
+                max-width: 50%;
+              
+                margin-left: 10px;
+                padding: 3px;
+                background-color: #842d1a; /* Dark shade of orange. lighter shade: #b74226 */
+                opacity: 0.8;
+                color: white;
 
            }
-           .banner-slide p {
-               position: absolute; /* puts it on top of image */ 
-               padding: 3px;
-               background-color: white;
-               
-              
-           }
+       
        
        </style>
        
@@ -172,7 +180,7 @@
               </li>
               <li>
                   <div class="banner-slide">
-                      <p>paragraph with image 2</p>
+                      <p>paragraph with image 2: lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation.</p>
                         <img src="design-inspiration-images/ore-docks-two-harbors-usgs-monograph52.png" alt="Ore docks at Two Harbors, MN"/>
                         
                   </div>
@@ -182,7 +190,7 @@
                         <!--<h3>View thin sections in detail</h3>--> <!-- why does this not show up in the right slide??? -->
                       
                         <img src="design-inspiration-images/thin-section9401_sample14766_thumbnails.png" alt="thin sections sample 14766"/>
-                        <p>paragraph with image 3</p>
+                        <h3>Browse thin section images</h3>
                   </div>
               </li>
           
@@ -263,8 +271,11 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
    <script>
             jQuery(document).ready(function($){
                 $('.my-slider').unslider({
+                   
                     autoplay: true, 
-                    delay: 6000
+                    delay: 7000, 
+//                    animation: 'fade', //doesn't work - the whole slideshow just doesn't show up at all. 
+                    infinite: true //cycles straight from end to beginning
                 });
             });     
        
