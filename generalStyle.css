@@ -42,6 +42,9 @@ label, span {
 .inline{
     display: inline;
 }
+.inline-block{
+    display: inline-block;
+}
 .align-right{
     text-align: right;
 }
@@ -78,18 +81,23 @@ h3 {
 }
 #headerWrapper {
     background-color: #b74226;
-    margin-top: 20px;
+    margin-top: 12px; /* should match the amount the logo is being pushed up */
 }
 
 #homeLogo {
-    max-width: 280px;
-    position: relative; /* so we can move it up */
-    top: -20px; /* move it up */
-    width: 22%; /* one quarter of the 90% width of the page content. correlates with the #header nav rule below */
-    margin-left: 5%; 
-    border-bottom: solid 3px #b74226;
-/*    border-top: solid 3px #b74226;*/
+    /* POSITION */
     float: left;
+    margin-left: 5%; /* from the edge of the window */
+    width: 22%; /* one quarter of the 90% width of the page content. correlates with the #header nav rule below */
+    max-width: 280px;
+    min-width: 180px;
+    position: relative; /* so we can move it up */
+    /* replace this with a vertical centering rule? */
+    top: -12px; /* move it up. should match the amount the #headerWrapper is pushed down by margin-top */
+    
+    /* APPEARANCE */
+    border-bottom: solid 3px #b74226; /* orange stripe across the bottom */
+/*    border-top: solid 3px #b74226;*/
     background-color: white;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding: 2px;
@@ -101,7 +109,8 @@ h3 {
 
 #header nav {
     margin-right: 5%;
-    width: 67%; /* three quarter of the 90% width of the page content. correlates with the #homeLogo rule above */
+    margin-left: 1%; /* a tiny bit of space to separate the dropdown from the LSLC logo */
+    width: 66%; /* three quarters of the 90% width of the page content. correlates with the #homeLogo rule above */
     display: inline-block; 
 
 }
@@ -112,14 +121,17 @@ h3 {
 }
 
 .navMainLink {
+    /* POSITION */
+    width: 33%; /* this must change when the number of links in the nav bar changes. */
+    display: inline-block;
+    position: relative; /* parent container for .dropdown-content divs, which are absolute */
+    min-width: 100px;
+    
+    /* APPEARANCE */
     color: black;
     text-decoration: none;
     padding: 2px 0px;
-    width: 33%; /* this must change when the number of links in the nav bar changes. */
-    display: inline-block;
     text-align: center;
-    position: relative; /* parent container for .dropdown-content divs, which are absolute */
-    
 }
 .navMainLink:hover{
     cursor: pointer;
@@ -166,7 +178,7 @@ h3 {
     
 }
 /* Show the dropdown menu on hover */
-.dropdownContainer:hover .dropdown-content {
+.dropdownContainer:hover .dropdown-content, .dropdownContainer:focus .dropdown-content {
     display: block;
 }
 /* Change color of dropdown links on hover */
@@ -299,16 +311,18 @@ h3 {
 }
 
 #footer{
-    padding-top: 10px;
     clear: both;
+    margin-top: 30px;
+    border-top: solid 2px #b74226; /* orange stripe */
     text-align: center;
     font-size: 10pt;
-    padding-bottom: 10px;
+    margin-bottom: 10px;
+    
 }
 
 /*============= Media Queries ===============*/
 
-@media only screen and (max-width : 800px) {
+@media only screen and (max-width : 830px) {
     #wrapper{
         width:100%;
     }
@@ -316,4 +330,28 @@ h3 {
        /* width: 85%;*/
         padding: 1%;
     }
+    
+    /* Header */
+    #headerWrapper {
+        margin-top: 0px; /* should match the amount the logo is being pushed up */
+    }
+    #homeLogo {
+        top: 0px;
+    }
+    #header nav, .navMainLink {
+        width: 100%;
+        margin: 0;
+    }
+    .dropdown-content {
+        position: static; 
+/*        display: block;*/ /* if you want the dropdowns automatically open */
+       
+    }
+    #homeLogo {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* end Header */
 }

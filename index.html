@@ -24,6 +24,10 @@
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
     
+       <!-- Unslider -->
+            <script src="https://unpkg.com/unslider@2.0.3"></script>
+            <link rel="stylesheet" href="https://unpkg.com/unslider@2.0.3/dist/css/unslider.css">
+            <link rel="stylesheet" href="https://unpkg.com/unslider@2.0.3/dist/css/unslider-dots.css">
        
        <!-- local stylesheets -->
            <LINK href="generalStyle.css" rel='stylesheet'/>
@@ -50,72 +54,97 @@
  
        
        <style>
-           #mapLink{
-               background-image: url(images/InteractiveMapClip4.png);
-            background-size: cover;
+          
+           /* four square links to the collection pages */
+           .collectionLink {
+               background-color: #b74226;
+               padding: 5px;
+               color: white;
+               width: 150px;
+               height: 150px;
+               margin: 0 3px 5px 0;
            }
-           .grid-item{
-               display: inline-block;
-               width: 234px;
-               height: 200px;
-               margin: 10px;
-               border: solid 3px #595959;
-               float: left;
-               text-align: center; 
-               vertical-align: center;
-           }
-           .grid-item:hover{
-            box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.3);
-          /*border: solid 5px #000;
-          background-color: rgba(219, 93, 43, 0.3);
-          background-blend-mode: color-burn;*/
-           }
-           #mapThumb{
-            background-image: url(images/interactive-thumbnail.png)
-           }
-           #mapThumb:hover{
-            background-image: url(images/interactive-thumbnail-hover.png)
-
-           }
-           #thingalleryThumb{
-            background-image: url(images/thinGallery-thumbnail.png)
-           }
-           #thingalleryThumb:hover{
-            background-image: url(images/thinGallery-thumbnail-hover.png)
-           }
-           #notebooksThumb{
-            background-image: url(images/notebooks-thumbnail.png)
-           }
-           #notebooksThumb:hover{
-            background-image: url(images/notebooks-thumbnail-hover.png)
-           }
-           #downloadsThumb{
-            background-image: url(images/download-thumbnail.png)
-           }
-           #downloadsThumb:hover{
-            background-image: url(images/download-thumbnail-hover.png)
-           }
-           p.thumbText{
-            
-            color: #fff;
+           .collectionLink:hover {
+               /* matches the nav colors */
+                cursor: pointer;
+                background-color: #842d1a;
            }
 
-
-           .four-col-grid {
-               overflow: hidden;
-           }
-
-           .indexThumbnail {
-            width: 234px;
-            height: 200px;
-           }
-         
-           #mainBlock {
-               padding: 4px;
-             
-           }
-           #banner img {
+           /* slider area (banner is the container) */
+           #banner {
                width: 100%;
+
+           }
+
+          
+            .unslider {
+               position: relative; /* set the positioning context for the dots */
+               overflow: hidden; /* no scroll bars */
+            }
+           
+            /* Style the dots*/
+            .unslider-nav { 
+               /* position the navigation dots over the slides */
+               position: absolute;
+               left: 0;
+               right: 0;
+               top: 95%;
+
+               z-index: 1000; /* Make sure the dots show over the images */
+            }
+           
+           
+            .unslider a:hover{
+                opacity: 0.7;
+            }
+           /* add images instead of the default slider links 'next' and 'prev' */
+           .unslider-arrow {
+               visibility: hidden;
+               position: absolute;
+               top: 180px;
+            }
+           
+            .unslider-arrow:before{
+                visibility: visible;
+               
+            }
+            .unslider-arrow.prev:before{
+                content: url('images/chevron_left_gw.png');
+                float: left;
+            }
+            .unslider-arrow.next:before{
+                content: url('images/chevron_right_gw.png');
+                float: right;
+               
+            }
+           
+            .banner-slide {
+               display: flex; 
+               justify-content: center; 
+               overflow: hidden;
+               
+            }
+
+            .banner-slide img {
+                height: 400px; 
+            }
+           .banner-slide h3 {
+               
+               position: absolute; /* puts it on top of image */
+               
+               top: 10px;
+               left: 10px;
+               
+               padding: 3px;
+               background-color: white; 
+
+           }
+           .banner-slide p {
+               position: absolute; /* puts it on top of image */ 
+               padding: 3px;
+               background-color: white;
+               
+              
            }
        
        </style>
@@ -129,30 +158,39 @@
       <!-- <p>The Lake Superior Legacy Collection documents geological research on the Lake Superior area performed by USGS between 1882 and 1922.</p> -->
 
        
-        <h3 id="mainBlock">Geologic research from the Lake Superior Division of the USGS, 1882-1922</h3>
+<!--        <h3 id="mainBlock">Geologic research from the Lake Superior Division of the USGS, 1882-1922</h3>-->
        
-              <div id="banner"><img src="design-inspiration-images/USGSMonograph52_page205_map.png" /></div>
+      <div id="banner" class="my-slider">
+          <ul>
+              <li>
+                  <div class="banner-slide">
+                      <h3>Geologic research from the Lake Superior Division of the USGS, 1882-1922</h3>
+                      <img src="design-inspiration-images/USGSMonograph52_page205_map.png" alt="Map of geology of Pigeon Point, MN"/>
+                        
+                  </div>
+              </li>
+              <li>
+                  <div class="banner-slide">
+                      <p>paragraph with image 2</p>
+                        <img src="design-inspiration-images/ore-docks-two-harbors-usgs-monograph52.png" alt="Ore docks at Two Harbors, MN"/>
+                        
+                  </div>
+              </li>
+              <li>
+                  <div class="banner-slide">
+                        <!--<h3>View thin sections in detail</h3>--> <!-- why does this not show up in the right slide??? -->
+                      
+                        <img src="design-inspiration-images/thin-section9401_sample14766_thumbnails.png" alt="thin sections sample 14766"/>
+                        <p>paragraph with image 3</p>
+                  </div>
+              </li>
+          
+          </ul>
+       </div>
+       
        
        <div class='reportDivision'><h3>Browse the Collection</h3>
            <div class='divisionContent'>
-                <!--<div class='four-col-grid'>
-                   <div id='mapLink' class='grid-item'>
-                   
-                        Interactive map
-                   </div>
-                   <div class="grid-item">
-                       Thin Sections? 
-
-                   </div>
-                   <div class="grid-item">
-                      Notebooks
-
-                   </div>
-                   <div class="grid-item">
-                       Downloads
-
-                   </div>
-               </div>-->
                <div>
                    The collection contains: 
                    <ul>
@@ -162,10 +200,12 @@
                        <li>67 maps</li>
                    </ul>
                </div>
-               <div>
+               <div> <!--   four links to pages featuring the collection     -->
+                   
+<!--
                    <div class='four-col-grid'>
                        <a href='interactive-map.html'><div class='grid-item' id='mapThumb'>
-                       <!-- <img src='images/interactive-thumbnail.png' class='indexThumbnail' alt='interactive map thumbnail'> -->
+                        <img src='images/interactive-thumbnail.png' class='indexThumbnail' alt='interactive map thumbnail'> 
 
                             <p class="thumbText">Interactive Map</p>
                        </div></a>
@@ -181,11 +221,20 @@
                            <p class="thumbText">Data Downloads</p>
                         </div></a>
                     </div>
+-->             
+                   <div class="inline-block">
+                       <div class="collectionLink inline-block">Interactive Map</div>
+                       <div class="collectionLink inline-block">List of Notebooks</div>
+                   </div>
+                   <div class="inline-block">
+                       <div class="collectionLink inline-block">Thin Section Gallery</div>
+                       <div class="collectionLink inline-block">Data Downloads</div>
+                   </div>
                
                
                </div>
            
-           </div>
+           </div> <!-- end .divisionContent div-->
        </div>
        
         <div class='reportDivision'><h3>History</h3>
@@ -209,36 +258,44 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
    
    <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
    <script src="header.js"></script>
+    
    <script>
+            jQuery(document).ready(function($){
+                $('.my-slider').unslider({
+                    autoplay: true, 
+                    delay: 6000
+                });
+            });     
+       
            //indicate the current page in the nav bar. 
            $("#navHome").css("background-color", "#848484");
 
-           $("#mapThumb").hover(function(){
-            console.log("ran")
-            $(this).empty();
-           })
-           $("#thingalleryThumb").hover(function(){
-            $(this).empty();
-           })
-           $("#notebooksThumb").hover(function(){
-            $(this).empty();
-           })
-           $("#downloadsThumb").hover(function(){
-            $(this).empty();
-           })
-
-           $("#mapThumb").mouseout(function(){
-            $(this).append($("<p class='thumbText'>Interactive Map</p>"))
-           })
-           $("#thingalleryThumb").mouseout(function(){
-            $(this).append($("<p class='thumbText'>Thin Section Gallery</p>"))
-           })
-           $("#notebooksThumb").mouseout(function(){
-            $(this).append($("<p class='thumbText'>Notebooks Catalog</p>"))
-           })
-           $("#downloadsThumb").mouseout(function(){
-            $(this).append($("<p class='thumbText'>Data Downloads</p>"))
-           })
+//           $("#mapThumb").hover(function(){
+//            console.log("ran")
+//            $(this).empty();
+//           })
+//           $("#thingalleryThumb").hover(function(){
+//            $(this).empty();
+//           })
+//           $("#notebooksThumb").hover(function(){
+//            $(this).empty();
+//           })
+//           $("#downloadsThumb").hover(function(){
+//            $(this).empty();
+//           })
+//
+//           $("#mapThumb").mouseout(function(){
+//            $(this).append($("<p class='thumbText'>Interactive Map</p>"))
+//           })
+//           $("#thingalleryThumb").mouseout(function(){
+//            $(this).append($("<p class='thumbText'>Thin Section Gallery</p>"))
+//           })
+//           $("#notebooksThumb").mouseout(function(){
+//            $(this).append($("<p class='thumbText'>Notebooks Catalog</p>"))
+//           })
+//           $("#downloadsThumb").mouseout(function(){
+//            $(this).append($("<p class='thumbText'>Data Downloads</p>"))
+//           })
 
 
    </script>
