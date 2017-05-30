@@ -80,8 +80,10 @@ h3 {
      
 }
 #headerWrapper {
+
     background-color: #b74226;
     margin-top: 12px; /* should match the amount the logo is being pushed up */
+
 }
 
 #homeLogo {
@@ -92,15 +94,17 @@ h3 {
     max-width: 280px;
     min-width: 180px;
     position: relative; /* so we can move it up */
+
     /* replace this with a vertical centering rule? */
     top: -12px; /* move it up. should match the amount the #headerWrapper is pushed down by margin-top */
     
     /* APPEARANCE */
     border-bottom: solid 3px #b74226; /* orange stripe across the bottom */
+
 /*    border-top: solid 3px #b74226;*/
     background-color: white;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 2px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+    padding: 4px;
  
 }
 #homeLogo:hover {
@@ -109,8 +113,10 @@ h3 {
 
 #header nav {
     margin-right: 5%;
+
     margin-left: 1%; /* a tiny bit of space to separate the dropdown from the LSLC logo */
     width: 66%; /* three quarters of the 90% width of the page content. correlates with the #homeLogo rule above */
+
     display: inline-block; 
 
 }
