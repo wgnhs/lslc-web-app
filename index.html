@@ -167,6 +167,8 @@
                 color: white;*/
 
            }
+           
+           
        
        
        </style>
@@ -239,7 +241,7 @@
                </div>
                <div> <!--   four links to pages featuring the collection     -->
                    
-<!--
+
                    <div class='four-col-grid'>
                        <a href='interactive-map.html'><div class='grid-item' id='mapThumb'>
                         <img src='images/interactive-thumbnail.png' class='indexThumbnail' alt='interactive map thumbnail'> 
@@ -258,8 +260,8 @@
                            <p class="thumbText">Data Downloads</p>
                         </div></a>
                     </div>
--->             
-                   <div class="inline-block">
+            
+    <!--               <div class="inline-block">
                        <a href="interactive-map.html"><div class="collectionLink inline-block">Interactive Map</div></a>
                        <a href="notebooks.html"><div class="collectionLink inline-block">List of Notebooks</div></a>
                    </div>
@@ -270,7 +272,7 @@
                
                
                </div>
-           
+     -->      
            </div> <!-- end .divisionContent div-->
        </div>
        
@@ -310,32 +312,32 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
            //indicate the current page in the nav bar. 
            $("#navHome").css("background-color", "#848484");
 
-//           $("#mapThumb").hover(function(){
-//            console.log("ran")
-//            $(this).empty();
-//           })
-//           $("#thingalleryThumb").hover(function(){
-//            $(this).empty();
-//           })
-//           $("#notebooksThumb").hover(function(){
-//            $(this).empty();
-//           })
-//           $("#downloadsThumb").hover(function(){
-//            $(this).empty();
-//           })
-//
-//           $("#mapThumb").mouseout(function(){
-//            $(this).append($("<p class='thumbText'>Interactive Map</p>"))
-//           })
-//           $("#thingalleryThumb").mouseout(function(){
-//            $(this).append($("<p class='thumbText'>Thin Section Gallery</p>"))
-//           })
-//           $("#notebooksThumb").mouseout(function(){
-//            $(this).append($("<p class='thumbText'>Notebooks Catalog</p>"))
-//           })
-//           $("#downloadsThumb").mouseout(function(){
-//            $(this).append($("<p class='thumbText'>Data Downloads</p>"))
-//           })
+           $("#mapThumb").hover(function(){
+            console.log("ran")
+            $(this).empty();
+           })
+           $("#thingalleryThumb").hover(function(){
+            $(this).empty();
+           })
+           $("#notebooksThumb").hover(function(){
+            $(this).empty();
+           })
+           $("#downloadsThumb").hover(function(){
+            $(this).empty();
+           })
+
+           $("#mapThumb").mouseout(function(){
+            $(this).append($("<p class='thumbText'>Interactive Map</p>"))
+           })
+           $("#thingalleryThumb").mouseout(function(){
+            $(this).append($("<p class='thumbText'>Thin Section Gallery</p>"))
+           })
+           $("#notebooksThumb").mouseout(function(){
+            $(this).append($("<p class='thumbText'>Notebooks Catalog</p>"))
+           })
+           $("#downloadsThumb").mouseout(function(){
+            $(this).append($("<p class='thumbText'>Data Downloads</p>"))
+           })
 
 
    </script>
