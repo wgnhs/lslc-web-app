@@ -317,7 +317,7 @@ a.export:hover{
   height: 12%;
 }
 .legendLabel p {
-    margin: 0;
+    /*margin: 0;*/
 }
 
 #legendLabel1{

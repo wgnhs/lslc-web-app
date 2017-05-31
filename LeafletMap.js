@@ -345,6 +345,7 @@ var leafletMap = (function(){
         var allBreaks = [break0,break1,break2,break3,breakTop]
         var breaks = [];
 
+        //filters out duplicate and undefined values from the breaks array
         for (i in allBreaks){
             if (allBreaks[i] != allBreaks[i-1] && allBreaks[i]){
                 breaks.push(allBreaks[i])
@@ -358,6 +359,7 @@ var leafletMap = (function(){
         var class3Array = [];
         var class4Array = [];
 
+        //sticks all class arrays (to be populated with section ids) in an outter array for iteration below
         var classesArray = [null,class1Array,class2Array,class3Array,class4Array]
 
         //populates each class array by checking how many samples they each have, evaluating via breaks
@@ -374,6 +376,10 @@ var leafletMap = (function(){
         //   }; 
         // } 
 
+        //populates each class array by checking how many samples they each have, evaluating via breaks
+        //makes use of the 2D choroplethStructureArray
+        //loops through classesArray on each one. 
+        //this overcomes issue of less than 4 breaks
         for (i = 0; i < choroplethStructureArray.length; i++){
             for (j in breaks){
                 if (choroplethStructureArray[i][1] <= breaks[j] && j != 0){
