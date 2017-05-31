@@ -261,12 +261,7 @@ h3 {
 .lslcTable td {
     padding: 3px; 
 }
-/*
-#resultsTableBody .detailsLink:hover{
-    background-color: #e6e6e6;
-    cursor: pointer;
-}
-*/
+
 .lslcTable td{
     padding: 3px 10px 1px 3px;
 }
