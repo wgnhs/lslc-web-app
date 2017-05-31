@@ -168,7 +168,75 @@
 
            }
            
-           
+            #mapLink{
+               background-image: url(images/InteractiveMapClip4.png);
+            background-size: cover;
+
+           }
+          .grid-item{
+               display: inline-block;
+               width: 234px;
+               height: 200px;
+               margin: 10px;
+               border: solid 3px #595959;
+               float: left;
+               text-align: center; 
+               vertical-align: center;
+           }
+           .grid-item:hover{
+            box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.3);
+
+          /*border: solid 5px #000;
+          background-color: rgba(219, 93, 43, 0.3);
+          background-blend-mode: color-burn;*/
+           } 
+           #mapThumb{
+            background-image: url(images/interactive-thumbnail.png)
+           }
+           #mapThumb:hover{
+            background-image: url(images/interactive-thumbnail-hover.png)
+
+           }
+           #thingalleryThumb{
+            background-image: url(images/thinGallery-thumbnail.png)
+           }
+           #thingalleryThumb:hover{
+            background-image: url(images/thinGallery-thumbnail-hover.png)
+           }
+           #notebooksThumb{
+            background-image: url(images/notebooks-thumbnail.png)
+           }
+           #notebooksThumb:hover{
+            background-image: url(images/notebooks-thumbnail-hover.png)
+           }
+           #downloadsThumb{
+            background-image: url(images/download-thumbnail.png)
+           }
+           #downloadsThumb:hover{
+            background-image: url(images/download-thumbnail-hover.png)
+           }
+           p.thumbText{
+            
+            color: #fff;
+           }
+
+
+           .four-col-grid {
+               overflow: hidden;
+           }
+
+           .indexThumbnail {
+            width: 234px;
+            height: 200px;
+           }
+         
+/*
+           #mainBlock {
+               padding: 4px;
+             
+           }
+*/
+       
        
        
        </style>
@@ -243,6 +311,7 @@
                    
 
                    <div class='four-col-grid'>
+                   <div class="inline-block">
                        <a href='interactive-map.html'><div class='grid-item' id='mapThumb'>
                         <img src='images/interactive-thumbnail.png' class='indexThumbnail' alt='interactive map thumbnail'> 
 
@@ -252,6 +321,8 @@
                            <p class="thumbText">Thin Section Gallery</p> 
 
                        </div></a>
+                   </div>
+                   <div class="inline-block">
                        <a href='notebooks.html'><div class="grid-item" id="notebooksThumb">
                           <p class="thumbText">Notebooks Catalog</p>
 
@@ -259,6 +330,7 @@
                        <a href='downloads.html'><div class="grid-item" id="downloadsThumb">
                            <p class="thumbText">Data Downloads</p>
                         </div></a>
+                   </div>
                     </div>
             
     <!--               <div class="inline-block">
@@ -302,7 +374,7 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
             jQuery(document).ready(function($){
                 $('.my-slider').unslider({
                    
-                    autoplay: true, 
+                    autoplay: false, 
                     delay: 10000, 
 //                    animation: 'fade', //doesn't work - the whole slideshow just doesn't show up at all. 
                     infinite: true //cycles straight from end to beginning
