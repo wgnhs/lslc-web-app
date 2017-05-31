@@ -1,3 +1,5 @@
+var globalLayer;
+
 //function called anonymously 
 $(function(){
     scaleMapHeight($(this).height()) 
@@ -78,6 +80,10 @@ var leafletMap = (function(){
             return initPopup(individualSection.feature.properties[sectionsLayerPlssField]);
             
         });
+
+        $("#zoomToSelectionButton").click(function(){
+            zoomToSelection(map)
+        })
     } //end initialize function
 
     //called in map properties during the initialize function
@@ -402,6 +408,14 @@ var leafletMap = (function(){
            
         });//end setStyle
 
+    globalLayer = leafletFeatureLayer;
+
+    leafletFeatureLayer.eachFeature(function(lyr){
+        console.log(lyr.options.style.fillColor);
+        //var layerBounds = lyr.getBounds();
+
+    })   
+
 
         $("#loading").remove(); //stops loading feedback
 
@@ -441,3 +455,26 @@ function createLegend(breaksArray){
         }
 
 }
+
+function zoomToSelection(map){
+    var bounds = L.latLngBounds([]);
+
+    globalLayer.eachFeature(function(lyr){
+        var layerBounds = lyr.getBounds();
+        if (lyr.options.fillColor != "#ece7f2"){
+            bounds.extend(layerBounds)
+        }
+
+    })
+
+    map.fitBounds(bounds)
+}
+
+
+
+
+
+
+
+
+
