@@ -59,7 +59,7 @@
    <BODY>
        
        <div id="header"></div>
-       <div id="wrapper">
+<!--       <div id="wrapper">-->
            
             <div id="filterHeader">
                 <!--<h1>Filter Samples</h1>-->
@@ -150,6 +150,7 @@
                    </div>
 
                    <div id="zoomToSelectionButton"></div>
+                   <div id="filterFeedback"></div>
            
                </div><!--end filters div-->
 
@@ -158,13 +159,12 @@
                 
            </div><!--end left Panel div-->
            
-           <div id="rightPanel">
+           <!--<div id="rightPanel">-->
                
-              <div id="filterFeedback"></div>
+              
                
-               <div id="map">
-               </div>
-            </div><!--end right Panel div-->   
+           <div id="mapWrapper"><div id="map"></div></div>
+            <!--</div>--><!--end right Panel div-->   
            
            <div id="resultsPanel">
             
@@ -198,7 +198,7 @@
            <!-- add a project footer... -->
             <div id='footer'></div> 
            
-       </div><!-- end wrapper div-->
+       <!--</div>--><!-- end wrapper div-->
        
        <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
        <script src="header.js"></script>
