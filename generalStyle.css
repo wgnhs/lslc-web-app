@@ -43,6 +43,9 @@ label, span {
 .align-right{
     text-align: right;
 }
+.float-right {
+    float: right;
+}
 h1{
     display: inline-block;
     margin: 5px 10px 5px 0px;

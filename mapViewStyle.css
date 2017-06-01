@@ -37,6 +37,8 @@
 
 #leftPanel{
     width:30%;
+    max-width: 350px;
+    
     float: left;
     clear: left;
     position: relative; /* for z-index */
@@ -56,6 +58,13 @@
     
 }
 */
+
+.mapViewButton {
+    border: 1px solid #777;
+}
+.mapViewButton:hover {
+    cursor: pointer;
+}
 
 /* ++++++++++++ MEDIA QUERIES +++++++++++ */
 
@@ -89,12 +98,14 @@
 
 /*=============== Filters ===============*/
 
+/*
 
 #filters {
     padding-bottom: 10px;
     position: relative;
-    max-width: 350px;
+    
 }
+*/
 #filters h2{
     display: inline;
 }
@@ -203,6 +214,8 @@ section {
   /*border-top: 2px solid grey;*/
   border-bottom: 1px solid #fff;
 }
+
+
 #tab1content{
     display: block;
     
@@ -218,6 +231,12 @@ section {
 #resultsHeader{
     padding-bottom: 10px;
 }
+#resultsHeader p {
+    margin: 0;
+}
+#zoomToSelectionButton {
+    display: inline-block;
+}
 
 /*download button*/
 
@@ -229,15 +248,11 @@ a.export{
  
 }
 a.export:hover{
-    background-color: #f4f4f4;
+    background-color: #842d1a;
     cursor: pointer;
     border: 1px solid #ccc;
 }
 
-#downloadButtonContainer{
-    margin-left: 10px; 
-    
-}
 
 #downloadButtonContainer img {
     vertical-align: middle;

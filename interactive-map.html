@@ -79,7 +79,7 @@
                        </div>
                         
                        <div  id="mapSelectionButtonsContainer">
-                            <div class="mapSelectionButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
+                            <div class="mapSelectionButton mapViewButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
                             <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/mapSelection_poly.png"/><span>Select by polygon</span></div>
                             <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clearMapSelection2.png"><span>Clear map selection</span></div>
                        </div>
@@ -153,7 +153,7 @@
                         <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
                    </div>
 
-                   <div id="zoomToSelectionButton"></div>
+                   
                    <div id="filterFeedback"></div>
            
                </div><!--end filters div-->
@@ -170,9 +170,13 @@
            <div id="resultsPanel">
             
                <div id="resultsHeader">
-                 <div class='orangeBar'> <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span>
-                   <span id="downloadButtonContainer"><a href="#" class="export"><img src="images/download_gw.png"> <span>Download as CSV</span></a></span>
-                     </div> 
+                 <div class='orangeBar'> 
+                     <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span> 
+                     
+                     <div id="zoomToSelectionButton" class="float-right"></div>
+                   
+                     <span id="downloadButtonContainer" class="float-right"><a href="#" class="export"><img src="images/download_gw.png"> <span>Download as CSV</span></a></span>
+                 </div> 
                    
                    <p>Showing the first 1000 results.</p>
                                
