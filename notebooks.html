@@ -127,6 +127,14 @@
     var yearSearchOn = false;
     var x;
 
+    var delay = (function(){
+      var timer = 0;
+      return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
+
 
     $("#menus").click(function(){
     	if (!menuOn){
@@ -159,25 +167,25 @@
     	};
     });
 
-    $("#AuthorSearch").keyup(function(e){
+    $("#AuthorSearch").on('input', function(){
     	authorSearchOn = true;
-    	window.setTimeout(function(){
+    	delay(function(){
     		async.series([callfilter, buildNotebooksList, replaceImages]);
     	}, 1000);
     })
-	$("#NumberSearch").keyup(function(e){
+	$("#NumberSearch").on('input', function(e){
 		numberSearchOn = true;
     	window.setTimeout(function(){
     		async.series([callfilter, buildNotebooksList, replaceImages]);
     	}, 1000);
     })
-    $("#YearSearch").keyup(function(e){
+    $("#YearSearch").on('input', function(e){
     	yearSearchOn = true;
     	window.setTimeout(function(){
     		async.series([callfilter, buildNotebooksList, replaceImages]);
     	}, 1000);
     })
-    $("#TitleSearch").keyup(function(e){
+    $("#TitleSearch").on('input', function(e){
     	titleSearchOn = true;
     	window.setTimeout(function(){
     		async.series([callfilter, buildNotebooksList, replaceImages]);
@@ -344,11 +352,7 @@
 
     	var filterBySearch = function(searchTextObject){
 
-    		globalNotebookContentArray[204].Title = "";
-
     		for (i in globalNotebookContentArray){
-
-    			console.log(i)
 
     			var showTheNotebook = true;
 
@@ -356,9 +360,13 @@
     				showTheNotebook = false;
     			};
 
-    			// if (!globalNotebookContentArray[i]["Title"].includes(searchTextObject.titleKey) && titleSearchOn) {
-    			// 	showTheNotebook = false;
-    			// };
+      		if (globalNotebookContentArray[i]["Title"]){
+            if (!globalNotebookContentArray[i]["Title"].includes(searchTextObject.titleKey) && titleSearchOn) {
+      				showTheNotebook = false;
+      			};
+          } else {
+              showTheNotebook = false;
+          }
 
     			if (!globalNotebookContentArray[i]["Number"].includes(searchTextObject.numberKey) && numberSearchOn) {
     				showTheNotebook = false;
