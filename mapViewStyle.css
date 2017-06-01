@@ -127,7 +127,7 @@
     margin: 5px 8px 0 0;
     
 }
-.filter input {
+.filter input, .filter select { /* select refers to the state/province dropdown. */
     float: right;
 }
 
