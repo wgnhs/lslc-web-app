@@ -60,6 +60,14 @@ h3 {
     
     clear: both;
 }
+.orangeBar {
+    background-color: #b74226;
+    color: white;
+    padding: 3px;
+}
+.orangeBar a {
+    color: white;
+}
 
 .button:hover{ 
      background-color: #e6e6e6;
@@ -222,11 +230,11 @@ h3 {
 
 .helpIcon {
     width:15px; 
-    opacity:0.7;
+   
 }
 .helpIcon:hover{
     
-    opacity: 1;
+    opacity:0.7;
 }
 
 /* ^^^^^^^^^^^^^^ TABLES ^^^^^^^^^^^^^^^^^^^^^ */

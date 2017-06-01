@@ -1,5 +1,7 @@
 #header {
    margin-bottom: 0;
+    position: relative; /*to add into the z-index context */
+    z-index: 2000;
 }
 
 #mapWrapper {
@@ -8,7 +10,7 @@
     
     position: absolute;
 /*    top: 0;*/ /* move above the top of the header... causes problems with the zoom control going behind the header */
-    z-index: -1;
+   /* z-index: -1;*/ /* doesn't allow map interaction */
 }
 
 #map{
@@ -37,11 +39,14 @@
     width:30%;
     float: left;
     clear: left;
+    position: relative; /* for z-index */
+    
+    overflow-y: scroll;
+    height: calc(50vh);
+    z-index: 2000;
    
-/*    z-index: 2000;*/
-   
-    border: dashed 1px red;
-    background-color: white;
+    border: solid 4px white;
+    background-color: #e6e6e6;
 }
 /*
 #rightPanel{
@@ -134,7 +139,12 @@
 /*------------------------ Results List ----------------------*/
 #resultsPanel{
     clear: both;
-    padding-top: 20px;
+    margin-top: 20px;
+    
+    position: relative;
+    z-index: 2000;
+    
+    background-color: white;
 }
 #resultCountStatement{
     padding-left: 5px;
@@ -235,6 +245,11 @@ a.export:hover{
     width: 24px;
 }
 
+#resultsTable thead td {
+    background-color: #777;
+    
+    
+}
 
 /*--------------Legend---------------*/
 
