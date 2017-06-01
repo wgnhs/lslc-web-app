@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
    <HEAD>
-      <TITLE>LSLC Hand Sample</TITLE>
+      <TITLE>LSLC Hand Sample</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
        <meta charset="UTF-8">
        
         <!--Google font-->
@@ -47,15 +47,40 @@
 
        </script>
        
+       <style>
+           
+            #searchArea{
+               /* aligns better with other pages if not centered. */
+                padding: 20px 0px 5px 0;
+            }
+
+            #sampleRecord .thinSectionContainer{
+                display: inline-block;
+                margin-right: 10px;
+                padding: 5px;
+            }
+
+            #sampleRecord .thinSectionContainer:hover {
+                cursor: pointer;
+                background-color: #e6e6e6;
+            }
+
+            .thinSectionContainer img {
+                padding-right: 3px;
+                height: 140px;
+            }
+
+       </style>
+       
    </HEAD>
    <BODY>
        <div id="modalBackground" class="modalBackground">
            <div id="modal-content"></div>
        </div>   
        
-  
+    <div id="header"></div>
     <div id="wrapper">
-        <div id="header"></div>
+        
         <!--<h2>Hand Sample Details</h2>-->
         <div id="searchArea">
           <!--  <h1>Sample Search</h1>-->
@@ -700,7 +725,7 @@
 //        
         function addDataTable(){
             
-            $("#allData").append('<table id="dataTable">'); 
+            $("#allData").append('<table id="dataTable" class="lslcTable">'); 
             
             for (prop in sampleRecordData){
                 if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Array){

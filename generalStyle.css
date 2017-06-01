@@ -1,5 +1,29 @@
+/*
+body, html, #wrapper{
+    height:100%;
+}
+*/
+
+/*
+
+h2 {
+    margin: 0 7px 7px 0;
+}
+
+p { padding: 0; margin: 0;}
+*/
+body {
+/*    background-color: grey;*/
+/*    background-image: url("images/historic-rock-texture2.png"); */
+    
+    
+}
+
 body, input {
     font-family: 'Source Sans Pro', sans-serif;
+}
+a {
+    color: #b74226;
 }
 
 label, span {
@@ -11,12 +35,18 @@ label, span {
     font-weight: 600;
     color: black;
 }
-/*.green{
-    color:#18846f; 
-}*/
+.italic {
+    font-style: italic;
+}
 
+.block{
+    display: block;
+}
 .inline{
     display: inline;
+}
+.inline-block{
+    display: inline-block;
 }
 .align-right{
     text-align: right;
@@ -31,8 +61,12 @@ h3 {
 }
 #wrapper{
     width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: auto; /* center */
+    margin-right: auto; /* center */
+ 
+    background-color: white;
+    
+    clear: both;
 }
 
 .button:hover{ 
@@ -41,28 +75,74 @@ h3 {
 }
 
 /*----- HEADER -----*/
-#header nav {
-    margin: 5px 0px 15px 0px;
+#header {
     width: 100%;
+    margin-bottom: 10px;
+     
+}
+#headerWrapper {
+
+    background-color: #b74226;
+    margin-top: 12px; /* should match the amount the logo is being pushed up */
+
+}
+
+#homeLogo {
+    /* POSITION */
+    float: left;
+    margin-left: 5%; /* from the edge of the window */
+    width: 22%; /* one quarter of the 90% width of the page content. correlates with the #header nav rule below */
+    max-width: 280px;
+    min-width: 200px;
+    position: relative; /* so we can move it up */
+
+    /* replace this with a vertical centering rule? */
+    top: -12px; /* move it up. should match the amount the #headerWrapper is pushed down by margin-top */
+    
+    /* APPEARANCE */
+    border-bottom: solid 3px #b74226; /* orange stripe across the bottom */
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+    padding: 4px;
+ 
+}
+#homeLogo:hover {
+    background-color: #e6e6e6;
+}
+
+#header nav {
+    margin-right: 5%;
+
+    margin-left: 1%; /* a tiny bit of space to separate the dropdown from the LSLC logo */
+    width: 66%; /* three quarters of the 90% width of the page content. correlates with the #homeLogo rule above */
+
     display: inline-block; 
+
+}
+
+#header nav h3{
+    margin: 0;
+    color: white;
 }
 
 .navMainLink {
-    background-color: #e6e6e6;
-    float: left;
+    /* POSITION */
+    width: 33%; /* this must change when the number of links in the nav bar changes. */
+    display: inline-block;
+    position: relative; /* parent container for .dropdown-content divs, which are absolute */
+    min-width: 100px;
+    
+    /* APPEARANCE */
     color: black;
     text-decoration: none;
     padding: 2px 0px;
-    width: 25%; /* this must change when the number of links in the nav bar changes. */
-    display: inline-block;
     text-align: center;
-    position: relative; /* parent container for .dropdown-content divs, which are absolute */
-    
 }
 .navMainLink:hover{
     cursor: pointer;
-    background-color: dimgrey;
+    background-color: #842d1a;
 }
+/* message across the top of the screen, above nav */
 .messageBar{
     
     TEXT-ALIGN: center;
@@ -103,7 +183,7 @@ h3 {
     
 }
 /* Show the dropdown menu on hover */
-.dropdownContainer:hover .dropdown-content {
+.dropdownContainer:hover .dropdown-content, .dropdownContainer:focus .dropdown-content {
     display: block;
 }
 /* Change color of dropdown links on hover */
@@ -166,7 +246,8 @@ h3 {
 }
 
 .lslcTable thead td{
-    background-color: #e6e6e6;
+    background-color: #b74226;
+    color: white;
     border-left: solid 1px white;
     border-right: solid 1px white;
     vertical-align: bottom;
@@ -174,28 +255,16 @@ h3 {
 
 .lslcTable tr{
     
-    border-bottom: 0.5px solid lightgrey;
-}
-/*
-#resultsTableBody .detailsLink:hover{
+    border-bottom: 2px solid white;
     background-color: #e6e6e6;
-    cursor: pointer;
 }
-*/
+.lslcTable td {
+    padding: 3px; 
+}
+
 .lslcTable td{
-   /* width: 16.67%; */
     padding: 3px 10px 1px 3px;
 }
-
-/*~~~~~~~~~~~~~~~~~~ note (like a post-it note) ~~~~~~~~~~~~~~~~~~~*/
-
-.note {
-    width: 50%; 
-    margin: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 10px;
-}
-
 
 
 /*============== tooltips ==============*/
@@ -241,65 +310,19 @@ h3 {
     border-color: transparent transparent black transparent;
 }
 
-
-/*---------------- modal --------------*/ 
-.modalBackground {
-   /* display: none; */   /* Hidden by default */
-    visibility: hidden;
-    position: fixed; /* Stay in place */
-    z-index: 1001; /* Sit on top. This number puts the modal on top of leaflet classes .leaflet-top and .leaflet-bottom, which have a z-index of 1000 */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-#modal-content {
-    background-color: #fefefe; /* very light grey */
-    margin: 10px auto 0 auto; /* centered */
-    padding: 10px;
-    border: 1px solid #888;
-    width: 80%; 
-    max-width: 1000px;
-}
-
-#modal-content h2{
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    position: relative;
-    top: -10px;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
 #footer{
-    padding-top: 10px;
     clear: both;
+    margin-top: 30px;
+    border-top: solid 2px #b74226; /* orange stripe */
     text-align: center;
     font-size: 10pt;
-    padding-bottom: 10px;
+    margin-bottom: 10px;
+    
 }
 
 /*============= Media Queries ===============*/
 
-@media only screen and (max-width : 800px) {
+@media only screen and (max-width : 830px) {
     #wrapper{
         width:100%;
     }
@@ -307,4 +330,28 @@ h3 {
        /* width: 85%;*/
         padding: 1%;
     }
+    
+    /* Header */
+    #headerWrapper {
+        margin-top: 0px; /* should match the amount the logo is being pushed up */
+    }
+    #homeLogo {
+        top: 0px;
+    }
+    #header nav, .navMainLink {
+        width: 100%;
+        margin: 0;
+    }
+    .dropdown-content {
+        position: static; 
+/*        display: block;*/ /* if you want the dropdowns automatically open */
+       
+    }
+    #homeLogo {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* end Header */
 }
