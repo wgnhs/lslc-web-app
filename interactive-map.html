@@ -2,8 +2,9 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
    <HEAD>
-      <TITLE>LSLC Interactive Map</TITLE>
+      <TITLE>LSLC Interactive Map</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
        <meta charset="UTF-8">
+       
        
         <!--Google font-->
             <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
@@ -56,11 +57,12 @@
    </HEAD>
    <BODY>
        
+       <div id="header"></div>
        <div id="wrapper">
-           <div id="header"></div>
+           
             <div id="filterHeader">
                 <!--<h1>Filter Samples</h1>-->
-                <span>Select a map area or apply other filters.</span>
+<!--                <span>Select a map area or apply other filters.</span>-->
             </div>
             
            <div id="leftPanel">
@@ -119,7 +121,14 @@
                     -->
                    <div class="filter">
                         <label for="stateSearch"><span>State / province</span></label>
-                        <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  />
+<!--                        <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  />-->
+                       <select class="searchBox" name="stateSearch" id="stateSearch">
+                          <option value=''></option>
+                          <option value="Michigan">Michigan</option>
+                          <option value="Minnesota">Minnesota</option>
+                          <option value="Ontario">Ontario</option>
+                          <option value="Wisconsin">Wisconsin</option>
+                        </select>
                    </div>
                    <div class="filter">
                         <label for="notebookSearch"><span>Field notebook number </span></label>

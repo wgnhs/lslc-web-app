@@ -3,8 +3,11 @@
 <HTML>
    <HEAD>
       <TITLE>Lake Superior Legacy Collection</TITLE>
+
        <meta charset="UTF-8">
-       
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <link rel='icon' type='image/x-icon' href='favicon.ico'/>
+
        
         <!--Google font-->
             <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
@@ -24,6 +27,10 @@
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
     
+       <!-- Unslider -->
+            <script src="https://unpkg.com/unslider@2.0.3"></script>
+            <link rel="stylesheet" href="https://unpkg.com/unslider@2.0.3/dist/css/unslider.css">
+            <link rel="stylesheet" href="https://unpkg.com/unslider@2.0.3/dist/css/unslider-dots.css">
        
        <!-- local stylesheets -->
            <LINK href="generalStyle.css" rel='stylesheet'/>
@@ -50,11 +57,123 @@
  
        
        <style>
-           #mapLink{
+          
+           /* four square links to the collection pages */
+           .collectionLink {
+               background-color: #b74226;
+               padding: 10px;
+               color: white;
+               
+/*
+               width: 150px;
+               height: 150px;
+*/
+               margin: 0 3px 5px 0;
+           }
+           .collectionLink:hover {
+               /* matches the nav colors */
+                cursor: pointer;
+                background-color: #842d1a;
+           }
+
+           /* slider area (banner is the container) */
+           #banner {
+               width: 100%;
+
+           }
+            .unslider {
+               position: relative; /* set the positioning context for the dots */
+               overflow: hidden; /* no scroll bars */
+            }
+           
+            /* Style the dots*/
+            .unslider-nav { 
+               /* position the navigation dots over the slides */
+               position: absolute;
+               left: 0;
+               right: 0;
+               top: 95%;
+
+               z-index: 1000; /* Make sure the dots show over the images */
+            }
+           .unslider-nav ol li {
+               border: 2px solid #b74226; 
+           }
+           .unslider-nav ol li.unslider-active {
+               background-color: #b74226;
+           }
+           
+           
+           /* ARROWS  - add images instead of the default slider links 'next' and 'prev' */
+           .unslider a:hover{
+                opacity: 0.7;
+            }
+           
+           .unslider-arrow {
+               visibility: hidden;
+               position: absolute;
+               top: 180px;
+            }
+           
+            .unslider-arrow:before{
+                visibility: visible;
+               
+            }
+            .unslider-arrow.prev:before{
+                content: url('images/chevron_left_gw.png');
+                float: left;
+               
+            }
+            .unslider-arrow.next:before{
+                content: url('images/chevron_right_gw.png');
+                float: right;
+               
+            }
+           .unslider-arrow.prev {
+               left: 2px; /* move to the left edge */
+           }
+           .unslider-arrow.next {
+               right: 2px; /* move to the right edge */ 
+           }
+           
+           /* ++++ individual slides ++++ */
+            .banner-slide {
+               position: relative; /* to contain the h3 and p elements within*/
+               display: flex; 
+               justify-content: center; /* center the images */
+               overflow: hidden; /* no scroll bar */
+
+            }
+
+            .banner-slide img {
+                height: 350px; 
+                margin-bottom: 50px; /* space for the text */
+            }
+           
+           .banner-slide h3, .banner-slide p {
+               position: absolute; /* position within the banner-slide. */
+               bottom: 0;
+               left: 5px;
+                
+                /*bottom: 10%;*/
+               
+               /* right: 0; 
+                margin-right: 10px;*/ 
+               
+/*                max-width: 40%;*/
+                padding: 5px;
+                /*background-color: #842d1a;*/ /* Dark shade of orange. lighter shade: #b74226 */
+               /* opacity: 0.8;
+                color: white;*/
+
+           }
+           
+            #mapLink{
                background-image: url(images/InteractiveMapClip4.png);
             background-size: cover;
+
            }
-           .grid-item{
+          .grid-item{
                display: inline-block;
                width: 234px;
                height: 200px;
@@ -66,10 +185,11 @@
            }
            .grid-item:hover{
             box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.3);
+
           /*border: solid 5px #000;
           background-color: rgba(219, 93, 43, 0.3);
           background-blend-mode: color-burn;*/
-           }
+           } 
            #mapThumb{
             background-image: url(images/interactive-thumbnail.png)
            }
@@ -110,44 +230,74 @@
             height: 200px;
            }
          
+/*
            #mainBlock {
                padding: 4px;
              
            }
+*/
+       
+       
        
        </style>
        
 </HEAD>
 <BODY>
   
-   
+   <div id="header"></div>
    <div id="wrapper">
-        
-       <div id="header"></div>
        
       <!-- <p>The Lake Superior Legacy Collection documents geological research on the Lake Superior area performed by USGS between 1882 and 1922.</p> -->
-       <h2 id="mainBlock">Geologic research from the Lake Superior Division of the USGS, 1882-1922</h2>
+
+       
+<!--        <h3 id="mainBlock">Geologic research from the Lake Superior Division of the USGS, 1882-1922</h3>-->
+       
+      <div id="banner" class="my-slider">
+          <ul>
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="design-inspiration-images/USGSMonograph52_page205_map.png" alt="Map of geology of Pigeon Point, MN"/>
+                        <p>Geologic research from the Lake Superior Division of the USGS, 1882-1922</p>    
+                  </div>
+              </li>
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="design-inspiration-images/ore-docks-two-harbors-usgs-monograph52.png" alt="Ore docks at Two Harbors, MN"/>
+                        <p>Iron ore deposits... lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation.</p>
+                  </div>
+              </li>
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="design-inspiration-images/thin-section9401_sample14766_thumbnails.png" alt="thin sections sample 14766"/>
+                        <p>View thin sections in detail</p>
+                  </div>
+              </li>
+<!--
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="design-inspiration-images/USGSMonograph52_page753_crossSections.png" alt="thin sections sample 14766"/>
+                        <h3>Text</h3>
+                  </div>
+              </li>
+-->
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="design-inspiration-images/notebook7-page19-rock-sketch.png" alt="thin sections sample 14766"/>
+                        <p class="italic">"Never a moment out of sight of these massive ledges of coarse gabbro. The whole of these lakes are held and formed by this great formation, layer upon layer of great thickness. The whole country is burnt and the shoulders of bare rock rise on all sides." -- Chauvenet, W.M. </p>
+                  </div>
+              </li>
+          
+          </ul>
+       </div>
+       
        
        <div class='reportDivision'><h3>Browse the Collection</h3>
            <div class='divisionContent'>
-                <!--<div class='four-col-grid'>
-                   <div id='mapLink' class='grid-item'>
-                   
-                        Interactive map
-                   </div>
-                   <div class="grid-item">
-                       Thin Sections? 
-
-                   </div>
-                   <div class="grid-item">
-                      Notebooks
-
-                   </div>
-                   <div class="grid-item">
-                       Downloads
-
-                   </div>
-               </div>-->
                <div>
                    The collection contains: 
                    <ul>
@@ -157,10 +307,13 @@
                        <li>67 maps</li>
                    </ul>
                </div>
-               <div>
+               <div> <!--   four links to pages featuring the collection     -->
+                   
+
                    <div class='four-col-grid'>
+                   <div class="inline-block">
                        <a href='interactive-map.html'><div class='grid-item' id='mapThumb'>
-                       <!-- <img src='images/interactive-thumbnail.png' class='indexThumbnail' alt='interactive map thumbnail'> -->
+                        <img src='images/interactive-thumbnail.png' class='indexThumbnail' alt='interactive map thumbnail'> 
 
                             <p class="thumbText">Interactive Map</p>
                        </div></a>
@@ -168,6 +321,8 @@
                            <p class="thumbText">Thin Section Gallery</p> 
 
                        </div></a>
+                   </div>
+                   <div class="inline-block">
                        <a href='notebooks.html'><div class="grid-item" id="notebooksThumb">
                           <p class="thumbText">Notebooks Catalog</p>
 
@@ -175,12 +330,22 @@
                        <a href='downloads.html'><div class="grid-item" id="downloadsThumb">
                            <p class="thumbText">Data Downloads</p>
                         </div></a>
+                   </div>
                     </div>
+            
+    <!--               <div class="inline-block">
+                       <a href="interactive-map.html"><div class="collectionLink inline-block">Interactive Map</div></a>
+                       <a href="notebooks.html"><div class="collectionLink inline-block">List of Notebooks</div></a>
+                   </div>
+                   <div class="inline-block">
+                       <a href="#"><div class="collectionLink inline-block">Thin Section Gallery</div></a>
+                       <a href="downloads.html"><div class="collectionLink inline-block">Data Downloads</div></a>
+                   </div>
                
                
                </div>
-           
-           </div>
+     -->      
+           </div> <!-- end .divisionContent div-->
        </div>
        
         <div class='reportDivision'><h3>History</h3>
@@ -204,7 +369,18 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
    
    <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
    <script src="header.js"></script>
+    
    <script>
+            jQuery(document).ready(function($){
+                $('.my-slider').unslider({
+                   
+                    autoplay: false, 
+                    delay: 10000, 
+//                    animation: 'fade', //doesn't work - the whole slideshow just doesn't show up at all. 
+                    infinite: true //cycles straight from end to beginning
+                });
+            });     
+       
            //indicate the current page in the nav bar. 
            $("#navHome").css("background-color", "#848484");
 

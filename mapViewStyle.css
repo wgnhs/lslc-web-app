@@ -127,7 +127,7 @@
     margin: 5px 8px 0 0;
     
 }
-.filter input {
+.filter input, .filter select { /* select refers to the state/province dropdown. */
     float: right;
 }
 
@@ -293,6 +293,7 @@ a.export:hover{
   z-index: 1500;
 }
 
+
 #legendBox1{
   top: 25%;
   background-color: #ece7f2;
@@ -322,7 +323,7 @@ a.export:hover{
   height: 12%;
 }
 .legendLabel p {
-    margin: 0;
+    /*margin: 0;*/
 }
 
 #legendLabel1{
@@ -343,6 +344,12 @@ a.export:hover{
 
 p.legendTitle{
   position: absolute;
-  top: 0px;
+  top: -10px;
+  line-height: 12px;
+}
+
+p.legendText{
+  position: absolute;
+  top: -8px;
   line-height: 12px;
 }
