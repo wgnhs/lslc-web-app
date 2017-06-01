@@ -201,7 +201,13 @@ h3 {
 .reportDivision{
     padding-top: 20px;
 }
-
+.reportDivision h3 {
+    background-color: #b74226;
+    width: 100%;
+    padding-left: 5px;
+    color: white;
+   
+}
 
 .reportDivision img{
    
@@ -209,7 +215,7 @@ h3 {
 }
 
 .divisionContent{
-    border-top: 1px solid #e6e6e6;
+    /*border-top: 1px solid #e6e6e6;*/
     padding-top: 4px;
    
 }
@@ -249,7 +255,7 @@ h3 {
 }
 
 .lslcTable thead td{
-    background-color: #b74226;
+    background-color: #999;
     color: white;
     border-left: solid 1px white;
     border-right: solid 1px white;
