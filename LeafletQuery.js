@@ -72,6 +72,11 @@ function initFiltersListeners(){
 
             resetFilters();
       //  }, 1000);
+    }); 
+    
+    //state/province dropdown: 
+    $('#filters select').on('change', function(){
+        resetFilters();
     })
 
 	//set a listener for when the user clicks on a filter indicator (to cancel a filter)... 
