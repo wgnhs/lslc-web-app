@@ -61,16 +61,14 @@
        <div id="header"></div>
        <div id="wrapper">
            
-            <div id="filterHeader">
-                <!--<h1>Filter Samples</h1>-->
-<!--                <span>Select a map area or apply other filters.</span>-->
-            </div>
+
+            
             
            <div id="leftPanel">
                <div id="filters">
-                   
+                   <div class='orangeBar'>
                    <h3>Filter by map area</h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext"> This map only shows samples that we were able to locate to a one-square-mile section of the Public Land Survey System. There may be more location information in the scanned field notebooks. </span></div>
-                   
+                   </div>
                    
                    
                    <div class="filter">
@@ -81,7 +79,7 @@
                        </div>
                         
                        <div  id="mapSelectionButtonsContainer">
-                            <div class="mapSelectionButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
+                            <div class="mapSelectionButton mapViewButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
                             <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/mapSelection_poly.png"/><span>Select by polygon</span></div>
                             <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clearMapSelection2.png"><span>Clear map selection</span></div>
                        </div>
@@ -90,7 +88,13 @@
                    
 
                
-                   <h3>Filter by content </h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span></div>
+                   <div class='orangeBar'>
+                       <h3>Filter by content </h3>
+                       <div class="tooltip">
+                           <img src="images/question_wg.png" class="helpIcon"/>
+                           <span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span>
+                       </div>
+                   </div>
 
                    
                   
@@ -149,7 +153,8 @@
                         <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
                    </div>
 
-                   <div id="zoomToSelectionButton"></div>
+                   
+                   <div id="filterFeedback"></div>
            
                </div><!--end filters div-->
 
@@ -157,20 +162,21 @@
 
                 
            </div><!--end left Panel div-->
-           
-           <div id="rightPanel">
+     
                
-              <div id="filterFeedback"></div>
-               
-               <div id="map">
-               </div>
-            </div><!--end right Panel div-->   
+           <div id="mapWrapper"><div id="map"></div></div>
+     
            
            <div id="resultsPanel">
             
                <div id="resultsHeader">
-                   <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span>
-                   <span id="downloadButtonContainer"><a href="#" class="export"><img src="images/download_gw.png"> <span>Download as CSV</span></a></span>
+                 <div class='orangeBar'> 
+                     <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span> 
+                     
+                     <div id="zoomToSelectionButton" class="float-right mapViewButton">zoom to results</div>
+                   
+                     <span id="downloadButtonContainer" class="float-right"><a href="#" class="export"><img src="images/download_gw.png"> <span>Download as CSV</span></a></span>
+                 </div> 
                    
                    <p>Showing the first 1000 results.</p>
                                
