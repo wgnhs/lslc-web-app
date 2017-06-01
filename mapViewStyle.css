@@ -3,13 +3,17 @@
     position: relative; /*to add into the z-index context */
     z-index: 2000;
 }
+#wrapper {
+    clear: none; 
+    width: 100%
+}
 
 #mapWrapper {
     width: 100%; 
 /*    border: 1px dashed black;*/
     
     position: absolute;
-/*    top: 0;*/ /* move above the top of the header... causes problems with the zoom control going behind the header */
+    top: 0; /* move above the top of the header... causes problems with the zoom control going behind the header */
    /* z-index: -1;*/ /* doesn't allow map interaction */
 }
 
