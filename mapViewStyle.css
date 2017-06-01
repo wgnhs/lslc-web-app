@@ -142,11 +142,13 @@
     
 }
 
+/*
 #zoomToSelectionButton{
   height: 30px;
   width: 30px;
   background-color: #000;
 }
+*/
 /*------------------------ Results List ----------------------*/
 #resultsPanel{
     clear: both;
