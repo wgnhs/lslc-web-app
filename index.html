@@ -60,21 +60,46 @@
           
            /* four square links to the collection pages */
            .collectionLink {
-               background-color: #b74226;
-               padding: 10px;
-               color: white;
-               
-/*
-               width: 150px;
-               height: 150px;
-*/
-               margin: 0 3px 5px 0;
+               width: calc(20vw);
+               position: relative;
+               min-width: 150px; /* just wide enough for "Thin Section Gallery" to stay on one line */
+               max-width: 250px;
+               display: inline-block;
+               margin: calc(0.5vw);
+               border: 1px solid #e6e6e6;
+   
+           }
+           /* makes the collection link divs stay square */
+           .collectionLink:before {
+                content: "";
+                display: block;
+                padding-bottom: 100%;
+            }
+           
+           .collectionLink img {
+               position: absolute; 
+               top: 0; 
+               width: 100%;
+               height: auto; /*overrides the .reportDivision img rule for 200px height */
+           }
+            .collectionLinkText {
+                position: absolute;
+                top: 0; right: 0; left: 0;
+                
+                background-color: #b74226;
+                padding: 3px;
+                color: white;
            }
            .collectionLink:hover {
-               /* matches the nav colors */
+               box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
                 cursor: pointer;
-                background-color: #842d1a;
+                
            }
+           .collectionLink:hover > .collectionLinkText {
+               /* matches the nav colors */
+               background-color: #842d1a;
+           }
+          
 
            /* slider area (banner is the container) */
            #banner {
@@ -167,12 +192,13 @@
                 color: white;*/
 
            }
-           
+ /*          
             #mapLink{
                background-image: url(images/InteractiveMapClip4.png);
             background-size: cover;
 
            }
+
           .grid-item{
                display: inline-block;
                width: 234px;
@@ -186,9 +212,9 @@
            .grid-item:hover{
             box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.3);
 
-          /*border: solid 5px #000;
+          border: solid 5px #000;
           background-color: rgba(219, 93, 43, 0.3);
-          background-blend-mode: color-burn;*/
+          background-blend-mode: color-burn;
            } 
            #mapThumb{
             background-image: url(images/interactive-thumbnail.png)
@@ -230,6 +256,7 @@
             height: 200px;
            }
          
+*/
 /*
            #mainBlock {
                padding: 4px;
@@ -310,7 +337,7 @@
                <div> <!--   four links to pages featuring the collection     -->
                    
 
-                   <div class='four-col-grid'>
+   <!--                <div class='four-col-grid'>
                    <div class="inline-block">
                        <a href='interactive-map.html'><div class='grid-item' id='mapThumb'>
                         <img src='images/interactive-thumbnail.png' class='indexThumbnail' alt='interactive map thumbnail'> 
@@ -332,19 +359,32 @@
                         </div></a>
                    </div>
                     </div>
+-->
             
-    <!--               <div class="inline-block">
-                       <a href="interactive-map.html"><div class="collectionLink inline-block">Interactive Map</div></a>
-                       <a href="notebooks.html"><div class="collectionLink inline-block">List of Notebooks</div></a>
+                   <div class="inline-block">
+                       <a href="interactive-map.html"><div class="collectionLink inline-block">
+                           <img src="images/interactive-map-clip4.png" alt="thumbnail of map" />
+                           <div class="collectionLinkText">Interactive Map</div>
+                       </div></a>
+                       <a href="notebooks.html"><div class="collectionLink inline-block">
+                           <img src="images/notebook-list-thumb.png" alt="notebooks list" />
+                           <div class="collectionLinkText">List of Notebooks</div>
+                       </div></a>
                    </div>
                    <div class="inline-block">
-                       <a href="#"><div class="collectionLink inline-block">Thin Section Gallery</div></a>
-                       <a href="downloads.html"><div class="collectionLink inline-block">Data Downloads</div></a>
+                       <a href="thin-gallery.html"><div class="collectionLink inline-block">
+                           <img src="images/thin-gallery.png" alt="thin section gallery" />
+                           <div class="collectionLinkText">Thin Section Gallery</div>
+                       </div></a>
+                       <a href="downloads.html"><div class="collectionLink inline-block">
+                           <img src="images/er-diagram.png" alt="downloads" />
+                           <div class="collectionLinkText">Data Downloads</div>
+                       </div></a>
                    </div>
                
                
                </div>
-     -->      
+           
            </div> <!-- end .divisionContent div-->
        </div>
        
@@ -384,32 +424,32 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
            //indicate the current page in the nav bar. 
            $("#navHome").css("background-color", "#848484");
 
-           $("#mapThumb").hover(function(){
-            console.log("ran")
-            $(this).empty();
-           })
-           $("#thingalleryThumb").hover(function(){
-            $(this).empty();
-           })
-           $("#notebooksThumb").hover(function(){
-            $(this).empty();
-           })
-           $("#downloadsThumb").hover(function(){
-            $(this).empty();
-           })
-
-           $("#mapThumb").mouseout(function(){
-            $(this).append($("<p class='thumbText'>Interactive Map</p>"))
-           })
-           $("#thingalleryThumb").mouseout(function(){
-            $(this).append($("<p class='thumbText'>Thin Section Gallery</p>"))
-           })
-           $("#notebooksThumb").mouseout(function(){
-            $(this).append($("<p class='thumbText'>Notebooks Catalog</p>"))
-           })
-           $("#downloadsThumb").mouseout(function(){
-            $(this).append($("<p class='thumbText'>Data Downloads</p>"))
-           })
+//           $("#mapThumb").hover(function(){
+//            console.log("ran")
+//            $(this).empty();
+//           })
+//           $("#thingalleryThumb").hover(function(){
+//            $(this).empty();
+//           })
+//           $("#notebooksThumb").hover(function(){
+//            $(this).empty();
+//           })
+//           $("#downloadsThumb").hover(function(){
+//            $(this).empty();
+//           })
+//
+//           $("#mapThumb").mouseout(function(){
+//            $(this).append($("<p class='thumbText'>Interactive Map</p>"))
+//           })
+//           $("#thingalleryThumb").mouseout(function(){
+//            $(this).append($("<p class='thumbText'>Thin Section Gallery</p>"))
+//           })
+//           $("#notebooksThumb").mouseout(function(){
+//            $(this).append($("<p class='thumbText'>Notebooks Catalog</p>"))
+//           })
+//           $("#downloadsThumb").mouseout(function(){
+//            $(this).append($("<p class='thumbText'>Data Downloads</p>"))
+//           })
 
 
    </script>
