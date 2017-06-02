@@ -44,7 +44,7 @@ var leafletMap = (function(){
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
             scrollWheelPan: determineScroll(), 
             zoomControl: false //will add zoom control in the top right corner next
-        }).setView([ 47, -90], 6); //setview actually triggers the on load event. 
+        }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
             
         
         

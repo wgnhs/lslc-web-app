@@ -54,9 +54,16 @@
           ga('send', 'pageview');
 
        </script>
+
+       <script>
+        var headerHeight = $("#headerWrapper").height();
+        $(".leaflet-control").css("top", headerHeight + "px")
+       </script>
        
    </HEAD>
    <BODY>
+
+    <div id='wrapAll'>
        
        <div id="header"></div>
        <div id="wrapper">
@@ -197,7 +204,7 @@
                    </section>
                 -->
                
-               <div><table id="resultsTable" class="lslcTable"></table></div>
+               <div id='tableHolder'><table id="resultsTable" class="lslcTable"></table></div>
                
            </div>
           
@@ -205,6 +212,8 @@
             <div id='footer'></div> 
            
        </div><!-- end wrapper div-->
+
+      </div>
        
        <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
        <script src="header.js"></script>
