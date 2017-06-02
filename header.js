@@ -1,7 +1,7 @@
 //add html content for the header (nhome link, nav bar) and the footer. 
 //each html page must have a header and a footer div. 
 
-var header = "<div id='headerWrapper'>"
+var header = "<div id='navWrapper'>"
 
 header += "<div id='logoContainer'> <a href='index.html'><img id='homeLogo' src='images/lslc-logo_v4_light-lake_smaller.png' alt='The Lake Superior Legacy Collection Logo'/></a></div><!--<span>geologic samples from the Lake Superior Division of the USGS, 1882-1922</span>-->";
 

@@ -83,7 +83,7 @@ h3 {
     margin-bottom: 10px;
      
 }
-#headerWrapper {
+#navWrapper {
 
     background-color: #b74226;
     margin-top: 12px; /* should match the amount the logo is being pushed up */
@@ -96,11 +96,11 @@ h3 {
     margin-left: 5%; /* from the edge of the window */
     width: 22%; /* one quarter of the 90% width of the page content. correlates with the #header nav rule below */
     max-width: 280px;
-    min-width: 200px;
+    min-width: 160px;
     position: relative; /* so we can move it up */
 
     /* replace this with a vertical centering rule? */
-    top: -12px; /* move it up. should match the amount the #headerWrapper is pushed down by margin-top */
+    top: -12px; /* move it up. should match the amount the #navWrapper is pushed down by margin-top */
     
     /* APPEARANCE */
     border-bottom: solid 3px #b74226; /* orange stripe across the bottom */
@@ -133,7 +133,7 @@ h3 {
     width: 33%; /* this must change when the number of links in the nav bar changes. */
     display: inline-block;
     position: relative; /* parent container for .dropdown-content divs, which are absolute */
-    min-width: 100px;
+    
     
     /* APPEARANCE */
     color: black;
@@ -331,7 +331,7 @@ h3 {
 
 /*============= Media Queries ===============*/
 
-@media only screen and (max-width : 830px) {
+@media only screen and (max-width : 650px) {
     #wrapper{
         width:100%;
     }
@@ -341,8 +341,12 @@ h3 {
     }
     
     /* Header */
-    #headerWrapper {
+    #navWrapper {
         margin-top: 0px; /* should match the amount the logo is being pushed up */
+    }
+    #logoContainer {
+        display: flex;
+        justify-content: center;
     }
     #homeLogo {
         top: 0px;
