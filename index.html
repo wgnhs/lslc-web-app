@@ -77,6 +77,7 @@
                top: 95%;
 
                z-index: 1000; /* Make sure the dots show over the images */
+                background-color: white;
             }
            .unslider-nav ol li {
                border: 2px solid #b74226; 
@@ -86,18 +87,8 @@
            }
            
            
-           /* ARROWS  - add images instead of the default slider links 'next' and 'prev' */
-           .unslider a:hover{
-                opacity: 0.7;
-            }
-           
-           .unslider-arrow {
-               visibility: hidden;
-               position: absolute;
-               top: 180px;
-            }
-           
-            .unslider-arrow:before{
+           /* ARROWS  - using images instead of the default slider links 'next' and 'prev' */
+           .unslider-arrow:before{
                 visibility: visible;
                
             }
@@ -111,6 +102,16 @@
                 float: right;
                
             }
+           .unslider-arrow {
+               visibility: hidden;
+               position: absolute;
+               top: 180px; /* fixed height from the top of the slider */
+            }
+           .unslider-arrow:hover{
+                opacity: 0.7;
+            }
+           
+            
            .unslider-arrow.prev {
                left: 2px; /* move to the left edge */
            }
@@ -129,26 +130,21 @@
 
             .banner-slide img {
                 height: 350px; 
-                margin-bottom: 50px; /* space for the text */
+               
             }
            
-           .banner-slide h3, .banner-slide p {
-               position: absolute; /* position within the banner-slide. */
-               bottom: 0;
-               left: 5px;
-                
-                /*bottom: 10%;*/
+           .banner-slide .caption {
                
-               /* right: 0; 
-                margin-right: 10px;*/ 
-               
-/*                max-width: 40%;*/
-                padding: 5px;
-                /*background-color: #842d1a;*/ /* Dark shade of orange. lighter shade: #b74226 */
-               /* opacity: 0.8;
-                color: white;*/
-
+                position: absolute; /* position within the banner-slide. */
+                bottom: 0;
+                left: 0;
+                width: 100%;
+ 
+                padding: 3px 8px;
+                background-color: white;
+                opacity: 0.85;
            }
+          
            
     /* four square links to the collection pages */
            .collectionLink {
@@ -210,38 +206,38 @@
               <li>
                   <div class="banner-slide">
                       
-                        <img src="design-inspiration-images/USGSMonograph52_page205_map.png" alt="Map of geology of Pigeon Point, MN"/>
-                        <p>Geologic research from the Lake Superior Division of the USGS, 1882-1922</p>    
+                        <img src="images/pigeon-point-map.png" alt="Map of geology of Pigeon Point, MN"/>
+                        <p class="caption">Geologic research from the Lake Superior Division of the USGS, 1882-1922 <br><a href="interactive-map.html">View the interactive map of geologic samples</a></p>    
                   </div>
               </li>
               <li>
                   <div class="banner-slide">
                       
                         <img src="design-inspiration-images/ore-docks-two-harbors-usgs-monograph52.png" alt="Ore docks at Two Harbors, MN"/>
-                        <p>Iron ore deposits... lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation.</p>
+                        <p class="caption">Iron ore </p>
+                  </div>
+              </li>
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="images/knife-lake.jpg" alt="Knife Lake, MN"/>
+                        <p class="caption"><span class="italic">Going westward on Knife Lake probably means going with the strike of the quartzite and slate beds..."</span> -- W.M. Chauvenet, 1883 <br> <a href="notebooks.html" >Browse field notes from the area now known as the BWCA Wilderness</a></p>
+                      
                   </div>
               </li>
               <li>
                   <div class="banner-slide">
                       
                         <img src="design-inspiration-images/thin-section9401_sample14766_thumbnails.png" alt="thin sections sample 14766"/>
-                        <p>View thin sections in detail</p>
+                        <p class="caption">View thin sections in detail</p>
                   </div>
               </li>
-<!--
-              <li>
-                  <div class="banner-slide">
-                      
-                        <img src="design-inspiration-images/USGSMonograph52_page753_crossSections.png" alt="thin sections sample 14766"/>
-                        <h3>Text</h3>
-                  </div>
-              </li>
--->
+
               <li>
                   <div class="banner-slide">
                       
                         <img src="design-inspiration-images/notebook7-page19-rock-sketch.png" alt="thin sections sample 14766"/>
-                        <p class="italic">"Never a moment out of sight of these massive ledges of coarse gabbro. The whole of these lakes are held and formed by this great formation, layer upon layer of great thickness. The whole country is burnt and the shoulders of bare rock rise on all sides." -- Chauvenet, W.M. </p>
+                        <p class="caption"><span class="italic" >"Never a moment out of sight of these massive ledges of coarse gabbro. The whole of these lakes are held and formed by this great formation, layer upon layer of great thickness. The whole country is burnt and the shoulders of bare rock rise on all sides."</span> -- Chauvenet, W.M. </p>
                   </div>
               </li>
           
@@ -317,7 +313,7 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
             jQuery(document).ready(function($){
                 $('.my-slider').unslider({
                    
-                    autoplay: true, 
+                    autoplay: false, 
                     delay: 10000, 
 //                    animation: 'fade', //doesn't work - the whole slideshow just doesn't show up at all. 
                     infinite: true //cycles straight from end to beginning 
