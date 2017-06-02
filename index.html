@@ -57,15 +57,29 @@
  
        
        <style>
-          
+            
+           #header {
+               /* styles for pushing the slider to the top above the header... */
+               position: absolute;  /* toggle this on to put the slider behind the header. */
+               z-index: 1;  
+           }
+           @media only screen and (max-width : 650px) {
+               /* when the header goes to one-column: */
+               #header {
+                   position: static;
+               }
+           }
+           
            /* slider area (banner is the container) */
+/*
            #banner {
                width: 100%;
-
            }
+*/
             .unslider {
                position: relative; /* set the positioning context for the dots */
                overflow: hidden; /* no scroll bars */
+                clear: both;
             }
            
             /* Style the dots*/
@@ -74,7 +88,7 @@
                position: absolute;
                left: 0;
                right: 0;
-               top: 95%;
+               bottom: 0;
 
                z-index: 1000; /* Make sure the dots show over the images */
                 background-color: white;
@@ -129,7 +143,9 @@
             }
 
             .banner-slide img {
-                height: 350px; 
+                height: calc(50vh); /* half the view height is image, except where it hits the limits */
+                max-height: 400px; 
+                min-height: 200px;
                 margin-bottom: 65px; /* space for the text below. When the text exceeds this height, it goes over the image. */
             }
            
@@ -137,7 +153,7 @@
                
                 position: absolute; /* position within the banner-slide. */
                 bottom: 0;
-                left: 0;
+                left: 5%;
                 width: 100%;
  
                 padding: 3px 8px;
@@ -194,14 +210,7 @@
 <BODY>
   
    <div id="header"></div>
-   <div id="wrapper">
-       
-      <!-- <p>The Lake Superior Legacy Collection documents geological research on the Lake Superior area performed by USGS between 1882 and 1922.</p> -->
-
-       
-<!--        <h3 id="mainBlock">Geologic research from the Lake Superior Division of the USGS, 1882-1922</h3>-->
-       
-      <div id="banner" class="my-slider">
+    <div id="banner" class="my-slider">
           <ul>
               <li>
                   <div class="banner-slide">
@@ -245,6 +254,14 @@
        </div>
        
        
+   <div id="wrapper">
+       
+      <!-- <p>The Lake Superior Legacy Collection documents geological research on the Lake Superior area performed by USGS between 1882 and 1922.</p> -->
+
+       
+<!--        <h3 id="mainBlock">Geologic research from the Lake Superior Division of the USGS, 1882-1922</h3>-->
+       
+      
        <div class='reportDivision'><h3>Browse the Collection</h3>
            <div class='divisionContent'>
                <div>
