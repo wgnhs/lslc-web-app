@@ -65,6 +65,7 @@
            }
            @media only screen and (max-width : 650px) {
                /* when the header goes to one-column: */
+               /* make the image appear below the header, not overlapping with it. */
                #header {
                    position: static;
                }
@@ -143,10 +144,10 @@
             }
 
             .banner-slide img {
-                height: calc(50vh); /* half the view height is image, except where it hits the limits */
-                max-height: 400px; 
+                height: calc(60vh); /* over half the view height is image, except where it hits the limits */
+                max-height: 500px; 
                 min-height: 200px;
-                margin-bottom: 65px; /* space for the text below. When the text exceeds this height, it goes over the image. */
+                margin-bottom: 67px; /* space for the text below. When the text exceeds this height, it goes over the image. */
             }
            
            .banner-slide .caption {
@@ -237,7 +238,7 @@
                   <div class="banner-slide">
                       
                         <img src="images/knife-lake.jpg" alt="Knife Lake, MN"/>
-                        <p class="caption"><span class="italic">Going westward on Knife Lake probably means going with the strike of the quartzite and slate beds..."</span> -- W.M. Chauvenet, 1883 <br> <a href="notebooks.html" >Browse field notes from the area now known as the BWCA Wilderness</a></p>
+                        <p class="caption"><span class="italic">"Going westward on Knife Lake probably means going with the strike of the quartzite and slate beds..."</span> -- W.M. Chauvenet, 1883 <br> <a href="notebooks.html" >Field notebooks</a></p>
                       
                   </div>
               </li>
