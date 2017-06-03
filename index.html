@@ -147,28 +147,54 @@
                 height: calc(60vh); /* over half the view height is image, except where it hits the limits */
                 max-height: 500px; 
                 min-height: 200px;
-                margin-bottom: 67px; /* space for the text below. When the text exceeds this height, it goes over the image. */
+                /*margin-bottom: 67px;*/ /* space for the text below. When the text exceeds this height, it goes over the image. */
             }
            
-           .banner-slide .caption {
-               
+           .banner-slide .captionContainer {
+               /* sets up a container near the bottom of the picture, approx. 90% width */
                 position: absolute; /* position within the banner-slide. */
-                bottom: 0;
+                bottom: 21px; /* height of the slider nav dots */
                 left: calc(5vw);
                 width: calc(88.5vw); /*not sure why 90vw won't line up with the wrapper below. */
- 
-                padding: 3px 8px;
-                background-color: #e6e6e6;
-                opacity: 0.85;
+/*                border: 2px dashed red;*/
+                text-align: right;
            }
-          
+           .captionContainer .float-right {
+/*               border: 2pt dashed blue;*/
+               
+           }
+           .caption {
+                display: inline-block;
+                padding: 3px 8px;
+                margin-right: 5px;
+                background-color: white;
+                opacity: 0.9;
+                max-width: 83%;
+               text-align: left;
+           }
+           .captionContainer .sliderButton {
+               /* orange buttons. a tags */
+               display: inline-block;
+               color: white; 
+               text-decoration: none; /* no underline */
+               background-color: #b74226;
+               padding: 5px;
+               border-radius: 3px;
+               border: solid 1px white;
+               max-width: 15%;
+               text-align: center;
+           }
+           .captionContainer .sliderButton:hover{
+               background-color: #842d1a; 
+               cursor: pointer;
+           }
            
     /* four square links to the collection pages */
            .collectionLink {
                width: calc(20vw);
                position: relative;
                min-width: 150px; /* just wide enough for "Thin Section Gallery" to stay on one line */
-               max-width: 250px;
+               max-width: 230px;
                display: inline-block;
                margin: calc(0.5vw);
                border: 1px solid #e6e6e6;
@@ -216,22 +242,37 @@
               <li>
                   <div class="banner-slide">
                       
-                        <img src="images/pigeon-point-map-crop.png" alt="Map of geology of Pigeon Point, MN"/>
-                        <p class="caption">Geologic research from the Lake Superior Division of the USGS, 1882-1922 <br><a href="interactive-map.html">View the interactive map of geologic samples</a></p>    
+                        <img src="design-inspiration-images/pigeon-point-map-wide.png" alt="Map of geology of Pigeon Point, MN"/>
+                        <div class="captionContainer">
+                            <div class="float-right">
+                            <p class="caption">Geologic research from the Lake Superior Division of the USGS, 1882-1922 </p>
+                            <a class=sliderButton href="interactive-map.html">View the interactive map of geologic samples</a>
+                            </div>
+                      </div>    
                   </div>
               </li>
               <li>
                   <div class="banner-slide">
                       
                         <img src="design-inspiration-images/ore-docks-two-harbors-usgs-monograph52.png" alt="Ore docks at Two Harbors, MN"/>
-                        <p class="caption">Iron ore </p>
+                        <div class="captionContainer">
+                            <div class="float-right">
+                            <p class="caption">Iron ore long text lorem ipsum dolor sit amet </p> 
+                            <a class="sliderButton" href="notebooks.html">button </a>
+                            </div>
+                      </div>
                   </div>
               </li>
               <li>
                   <div class="banner-slide">
                       
                         <img src="images/knife-lake.jpg" alt="Knife Lake, MN"/>
-                        <p class="caption"><span class="italic">"Going westward on Knife Lake probably means going with the strike of the quartzite and slate beds..."</span> -- W.M. Chauvenet, 1883 <br> <a href="notebooks.html" >Field notebooks</a></p>
+                        <div class="captionContainer">
+                            <div class="float-right">
+                            <p class="caption"><span class="italic">"Going westward on Knife Lake probably means going with the strike of the quartzite and slate beds..."</span> -- W.M. Chauvenet, 1883 </p>
+                            <a class="sliderButton" href="notebooks.html">Field notebooks</a>
+                            </div>
+                      </div>
                       
                   </div>
               </li>
@@ -239,7 +280,12 @@
                   <div class="banner-slide">
                       
                         <img src="design-inspiration-images/thin-section9401_sample14766_thumbnails.png" alt="thin sections sample 14766"/>
-                        <p class="caption">View thin sections in detail</p>
+                        <div class="captionContainer">
+                            <div class="float-right">
+                            <p class="caption">View thin sections in detail</p>
+                            <a class="sliderButton" href="thin-gallery.html" >Gallery</a>
+                            </div>
+                      </div>
                   </div>
               </li>
 
@@ -247,7 +293,12 @@
                   <div class="banner-slide">
                       
                         <img src="design-inspiration-images/notebook7-page19-rock-sketch.png" alt="thin sections sample 14766"/>
-                        <p class="caption"><span class="italic" >"Never a moment out of sight of these massive ledges of coarse gabbro. The whole of these lakes are held and formed by this great formation, layer upon layer of great thickness. The whole country is burnt and the shoulders of bare rock rise on all sides."</span> -- Chauvenet, W.M. </p>
+                        <div class="captionContainer">
+                            <div class="float-right">
+                            <p class="caption"><span class="italic" >"Never a moment out of sight of these massive ledges of coarse gabbro. The whole of these lakes are held and formed by this great formation, layer upon layer of great thickness. The whole country is burnt and the shoulders of bare rock rise on all sides."</span> -- Chauvenet, W.M. </p>
+                            <a class="sliderButton" href="notebooks.html">button</a>
+                            </div>
+                      </div>
                   </div>
               </li>
           
