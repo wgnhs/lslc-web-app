@@ -58,7 +58,25 @@
 			.menuItem:hover{
 				background-color: #e6e6e6;
 			}
-           
+               
+          #notebookFilters {
+               background-color: #e6e6e6;
+              max-width: 33%;
+              
+           }
+           #notebookFilters h3 {
+               width: 100%;
+           }
+           #notebookFilters .filter {
+                overflow: hidden;
+                display: block;
+                vertical-align: top;
+                margin: 5px 8px 0 5px;
+
+           }
+           #notebookFilters input {
+               float: right;
+           }
 
 
            </style>
@@ -90,20 +108,36 @@
         
 
        <div id="header"></div>
-       <div id="menus">Sort By</div>
-       <input type="text" id="AuthorSearch" placeholder="Search by Author">
-       <input type="text" id="TitleSearch" placeholder="Search by Title">
-       <input type="text" id="YearSearch" placeholder="Search by Year">
-       <input type="text" id="NumberSearch" placeholder="Search by Notebook Number">
+       <div id="notebookFilters">
+           <h3 class="orangeBar">Filter notebooks</h3>
+           <div class="filter">
+               <label for="AuthorSearch"><span>Author</span></label>
+               <input type="text" id="AuthorSearch" name="AuthorSearch">
+           </div>
+           <div class="filter">
+               <label for="TitleSearch"><span>Title</span></label>
+               <input type="text" id="TitleSearch" name="TitleSearch">
+           </div>
+           <div class="filter">
+               <label for="YearSearch"><span>Year</span></label>
+               <input type="text" id="YearSearch" name="YearSearch">
+           </div>
+           <div class="filter">
+               <label for="NumberSearch"><span>Notebook number</span></label>
+               <input type="text" id="NumberSearch" name="NumberSearch">
+           </div>
+           <div id="menus">Sort By</div>
+       </div>
 
+       <div class="reportDivision">
+           <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
+       	<h3>Notebooks</h3> 
        
-       	<h2>Notebooks</h2> 
-       <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
        
        <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
        <div class='divisioncontent' id='notebooksContent'></div>
    
-       
+       </div>
        <div id="footer"></div>
    </div><!--end wrapper div-->
    
