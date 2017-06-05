@@ -9,7 +9,7 @@ var tableAttributes = [
        
     
    //     {"field": "SampleId", "label": "SampleID"}, 
-        {"field": "RockType", "label": "Field description"},  
+        {"field": "RockType", "label": "Rock type"},  
         {"field": "HandSampleCount", "label": "Hand sample available"}, 
         {"field": "ThinSectionCount", "label": "Thin sections"}, 
         {"field": "State", "label": "State / province"},
@@ -17,7 +17,7 @@ var tableAttributes = [
         //  {"field": "Township", "label": "Township"},
         // {"field": "Range", "label": "Range"},
         // {"field": "Direction", "label": "Range Direction"},
-       
+        {"field": "LocNote", "label": "Location note"},
         {"field": "NotebookNum", "label": "Field notebook number"},
        // {"field": "NotebookPage", "label": "Notebook page"},
         {"field": "WgnhsId", "label": "WGNHS ID"},
