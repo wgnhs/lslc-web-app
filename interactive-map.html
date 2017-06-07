@@ -54,11 +54,6 @@
           ga('send', 'pageview');
 
        </script>
-
-       <script>
-        var headerHeight = $("#headerWrapper").height();
-        $(".leaflet-control").css("top", headerHeight + "px")
-       </script>
        
    </HEAD>
    <BODY>
@@ -73,12 +68,16 @@
             
            <div id="leftPanel">
                <div id="filters">
-                   <div class='orangeBar'>
+
+                <div id="filterFeedback"></div>
+
+                   <div class='orangeBar' id='mapFiltersOB'>
                    <h3>Filter by map area</h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext"> This map only shows samples that we were able to locate to a one-square-mile section of the Public Land Survey System. There may be more location information in the scanned field notebooks. </span></div>
+                   <div class='filtersHideButton' id='mapAreaFiltersButton'><img src="images/downChevron-01.png" class='chevron' id='mapFilterChevron'/></div>
                    </div>
                    
                    
-                   <div class="filter">
+                   <div class="filterHolder" id='mapAreaFilters'>
                        
                        <div class="filter">
                             <label for="mappedCheckbox"><span>Must have map location </span></label>
@@ -86,25 +85,26 @@
                        </div>
                         
                        <div  id="mapSelectionButtonsContainer">
-                            <div class="mapSelectionButton mapViewButton" id="selectRectangleButton"><img src="images/mapSelection.png"/><span>Select by rectangle</span></div>
-                            <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/mapSelection_poly.png"/><span>Select by polygon</span></div>
-                            <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clearMapSelection2.png"><span>Clear map selection</span></div>
+                            <div class="mapSelectionButton mapViewButton" id="selectRectangleButton"><img src="images/mapSelection-01.png"/><span id='greyButtonText'>Select by rectangle</span></div>
+                            <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/mapSelection_poly-01.png"/><span id='greyButtonText'>Select by polygon</span></div>
+                            <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clearMapSelection2-01.png"><span id='greyButtonText'>Clear map selection</span></div>
                        </div>
                    </div>
                    
                    
 
                
-                   <div class='orangeBar'>
+                   <div class='orangeBar' id='contentFiltersOB'>
                        <h3>Filter by content </h3>
                        <div class="tooltip">
                            <img src="images/question_wg.png" class="helpIcon"/>
                            <span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span>
                        </div>
+                       <div class='filtersHideButton' id='contentFiltersButton'><img src="images/downChevron-01.png" class='chevron' id='contentFilterChevron'/></div>
                    </div>
 
                    
-                  
+                  <div class='filterHolder' id='contentAreaFilters'>
                    <div class="filter">
                         <label for="handSampleCheckbox"><span>Hand sample available </span></label>
                         <input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />
@@ -159,9 +159,9 @@
                         <label for="catalogNumberSearch"><span>Hand sample number </span></label>
                         <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
                    </div>
-
+                  </div>
                    
-                   <div id="filterFeedback"></div>
+                   
            
                </div><!--end filters div-->
 
@@ -180,9 +180,9 @@
                  <div class='orangeBar'> 
                      <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span> 
                      
-                     <div id="zoomToSelectionButton" class="float-right mapViewButton">zoom to results</div>
-                   
-                     <span id="downloadButtonContainer" class="float-right"><a href="#" class="export"><img src="images/download_gw.png"> <span>Download as CSV</span></a></span>
+                     <span id="downloadButtonContainer" class="float-right"><a href="#" class="export"><img src="images/download_gw.png"> <span id='greyButtonText'>Download as CSV</span></a></span>
+
+                     <div id="zoomToSelectionButton" class="mapViewButton"><img src="images/zoomTo-01.png" id='zoomToPNG'><span id='greyButtonText'>Zoom to Results</span></div>
                  </div> 
                    
                    <p>Showing the first 1000 results.</p>
@@ -214,6 +214,98 @@
        </div><!-- end wrapper div-->
 
       </div>
+
+      <script>
+      var mapFiltersShowing = true
+      var contentFiltersShowing = true
+
+        $("#mapAreaFiltersButton").click(function(){
+
+            if(mapFiltersShowing){
+              mapFiltersShowing = false
+              $("#mapAreaFilters").css("display","none")
+              $("#mapFiltersOB").css("margin-bottom","5px")
+              $("#mapFilterChevron").remove()
+              $(this).append($("<img src='images/upChevron-01.png' class='chevron' id='mapFilterChevron'/>"))
+              resizeFilters(true);
+            } else {
+              mapFiltersShowing = true
+              $("#mapAreaFilters").css("display","block")
+              $("#mapFiltersOB").css("margin-bottom","0px")
+              $("#mapFilterChevron").remove()
+              $(this).append($("<img src='images/downChevron-01.png' class='chevron' id='mapFilterChevron'/>"))
+              resizeFilters(false);
+            }
+          })
+
+        $("#contentFiltersButton").click(function(){
+
+            if(contentFiltersShowing){
+              contentFiltersShowing = false
+              $("#contentAreaFilters").css("display","none")
+              $("#contentFiltersOB").css("margin-bottom","5px")
+              $("#contentFilterChevron").remove()
+              $(this).append($("<img src='images/upChevron-01.png' class='chevron' id='contentFilterChevron'/>"))
+              resizeFilters(true);
+            } else {
+              contentFiltersShowing = true
+              $("#contentAreaFilters").css("display","block")
+              $("#contentFiltersOB").css("margin-bottom","0px")
+              $("#contentFilterChevron").remove()
+              $(this).append($("<img src='images/downChevron-01.png' class='chevron' id='contentFilterChevron'/>"))
+              resizeFilters(false);
+            }
+            
+          })
+
+        function resizeFilters(switchUp){
+          var OB1height = $("#contentFiltersOB").height()
+          var OB2height = $("#mapFiltersOB").height()
+          var filters1Height = $("#contentAreaFilters").height()
+          var filters2Height = $("#mapAreaFilters").height()
+          var extraHeight = $("#filterFeedback").height() + 20
+
+          var newHeight;
+          if (mapFiltersShowing && contentFiltersButton){
+            newHeight = OB1height + OB2height + filters1Height + filters2Height + extraHeight
+          } else if (mapFiltersShowing && !contentFiltersShowing) {
+            newHeight = OB2height + OB1height + filters2Height + extraHeight
+          } else if (!mapFiltersShowing && contentFiltersShowing) {
+            newHeight = OB1height + OB2height + filters1Height + extraHeight
+          } else if (!mapFiltersShowing && !contentFiltersShowing) {
+            newHeight = OB2height + OB1height + extraHeight
+          }
+
+          var gap = $("#resultsPanel").offset().top - $("#resultsPanel").offset().top - 5
+
+          console.log(newHeight, $("#leftPanel").height())
+          if (switchUp && newHeight < $("#leftPanel").height()){
+            $("#leftPanel").height(newHeight)
+          }
+          if (!switchUp){
+            if (newHeight < $("#leftPanel").height() && newHeight < gap){
+              $("#leftPanel").height(newHeight)
+            } else {
+              wrapperHeight = $('#wrapAll').height();
+              bodyHeight = $('body').height();
+              panelHeight = $('#resultsPanel').height();
+              var mapHeight = wrapperHeight - panelHeight;
+              console.log(mapHeight, panelHeight, wrapperHeight, bodyHeight);
+              $("#map").css("height", mapHeight + "px");
+              var leftPanelHeight = mapHeight - 100;
+              $("#leftPanel").css("height", leftPanelHeight + "px");
+            }
+          }
+          
+
+
+
+          if (!switchUp && newHeight < $("#leftPanel").height()){
+            $("#leftPanel").height(newHeight)
+          }
+
+        }
+      </script>
        
        <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
        <script src="header.js"></script>

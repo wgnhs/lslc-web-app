@@ -25,7 +25,7 @@
 }
 
 #map{
-/*    height: calc(50vh);*/
+    height: calc(50vh);
     width: 100%;
 }
 
@@ -59,7 +59,7 @@
     z-index: 2000;
    
     border: solid 4px white;
-    background-color: #e6e6e6;
+    background-color: #fff;
     margin-left: 5px;
 }
 /*
@@ -71,8 +71,12 @@
 }
 */
 
+.orangeBar{
+  position: relative;
+}
+
 .mapViewButton {
-    border: 1px solid #777;
+    /*border: 1px solid #777;*/
 }
 .mapViewButton:hover {
     cursor: pointer;
@@ -122,11 +126,17 @@
     display: inline;
 }
 
+.filterHolder{
+  margin-bottom: 5px;
+  margin-top: 0px;
+  background-color: #e6e6e6;
+}
+
 .filter{
     overflow: hidden; /*keeps the inputs from being pushed outside the div*/
     display: block;
     vertical-align: top;
-    margin: 5px 8px 0 0;
+    margin-bottom: 3px;
     
 }
 .filter input, .filter select { /* select refers to the state/province dropdown. */
@@ -152,6 +162,15 @@
     height: 21px; 
     margin-bottom: -5px;
     
+}
+
+.filtersHideButton{
+  background-color: #adadad;
+  position: absolute;
+  height: 50%;
+  width: 5%;
+  top: 25%;
+  right: 2.5%;
 }
 
 /*
@@ -260,6 +279,18 @@ section {
 }
 #zoomToSelectionButton {
     display: inline-block;
+    text-decoration: none;
+    padding: 1px 6px 1px 1px;
+    margin-right: 20px;
+    margin-top: 2px;
+    background-color: #c1c1c1; 
+    box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.4);
+    float: right;
+}
+#zoomToSelectionButton:hover {
+    cursor: pointer;
+    background-color: #aaa19d;
+    box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.6);
 }
 
 /*download button*/
@@ -267,14 +298,17 @@ section {
 a.export{
   display: inline-block;
   text-decoration: none;
-  border: 1px solid #e6e6e6;
+  margin-top: 2px;
+  margin-right: 5px;
   padding: 1px 6px 1px 1px;
+  background-color: #c1c1c1; 
+  box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.4);
  
 }
 a.export:hover{
-    background-color: #842d1a;
     cursor: pointer;
-    border: 1px solid #ccc;
+    background-color: #aaa19d;
+    box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.6);
 }
 
 
@@ -408,22 +442,24 @@ p.legendText{
     
 }
 .mapSelectionButton {
-    margin-bottom: 5px;
+    margin: 10px;
     padding: 3px;
-   /* color: grey; */
+   background-color: #c1c1c1;
+   box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.4);
     
 }
 
 .mapSelectionButton:hover {
-    background-color: #f4f4f4;
+    background-color: #aaa19d;
     cursor: pointer;
+    box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.6);
 }
 
 .mapSelectionButton img {
     vertical-align: middle;
     padding-right: 3px;
     width: 24px;
-    height: 24px;    
+    height: 24px;   
 }
 .mapSelectionButton.active {
     background-color: #f4f4f4;
@@ -433,4 +469,19 @@ p.legendText{
 
 .leaflet-control{
   top: 40px;
+}
+
+span#greyButtonText {
+  color: grey;
+}
+
+.chevron{
+  max-width: 17px;
+  max-height: 17px;
+}
+
+#zoomToPNG{
+  max-height: 24px;
+  max-width: 24px;
+  vertical-align: middle;
 }
