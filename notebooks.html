@@ -60,22 +60,25 @@
 			}
                
           #notebookFilters {
-               background-color: #e6e6e6;
-              max-width: 33%;
+              background-color: #e6e6e6;
+              position: relative;
+/*              max-width: 33%;*/
               
            }
            #notebookFilters h3 {
+               /* not sure why this exceeds the width of the #notebookFilters div */
                width: 100%;
+/*               position: absolute;*/
+/*               top: 0; left: 0; right: 0;*/
            }
            #notebookFilters .filter {
-                overflow: hidden;
-                display: block;
-                vertical-align: top;
-                margin: 5px 8px 0 5px;
+               display: inline-block;
+               margin: 5px 8px 0 5px;   
 
            }
            #notebookFilters input {
-               float: right;
+/*               float: right;*/
+               margin-left: 5px;
            }
 
 
@@ -111,26 +114,38 @@
        <div id="notebookFilters">
            <h3 class="orangeBar">Filter notebooks</h3>
            <div class="filter">
-               <label for="AuthorSearch"><span>Author</span></label>
+               <label for="AuthorSearch"><span>Author:</span></label>
                <input type="text" id="AuthorSearch" name="AuthorSearch">
            </div>
            <div class="filter">
-               <label for="TitleSearch"><span>Title</span></label>
+               <label for="TitleSearch"><span>Title:</span></label>
                <input type="text" id="TitleSearch" name="TitleSearch">
            </div>
            <div class="filter">
-               <label for="YearSearch"><span>Year</span></label>
+               <label for="YearSearch"><span>Year:</span></label>
                <input type="text" id="YearSearch" name="YearSearch">
            </div>
            <div class="filter">
-               <label for="NumberSearch"><span>Notebook number</span></label>
+               <label for="NumberSearch"><span>Notebook number:</span></label>
                <input type="text" id="NumberSearch" name="NumberSearch">
            </div>
-           <div id="menus">Sort By</div>
-           <select name="sortDirection">
-                <option value="ascending">ascending</option>
-               <option value="descending">descending</option>
-           </select>
+<!--           <div id="menus">Sort By</div>-->
+           <div class="filter">
+               <label for="sortBy"><span>Sort by:</span></label>
+               <select name="sortBy" id="sortBy">
+                   <option value=""></option>
+                   <option value="Author">Author</option>
+                   <option value="Year">Year</option>
+                   <option value="Title">Title</option>
+                   <option value="Number">Notebook number</option>
+               </select>
+<!--
+               <select name="sortDirection" id="sortDirection">
+                    <option value="ascending">ascending</option>
+                   <option value="descending">descending</option>
+               </select>
+-->
+           </div>
        </div>
 
        <div class="reportDivision">
@@ -139,7 +154,7 @@
        
        
        <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
-       <div class='divisioncontent' id='notebooksContent'></div>
+       <div class='divisionContent' id='notebooksContent'></div>
    
        </div>
        <div id="footer"></div>
@@ -175,7 +190,13 @@
         timer = setTimeout(callback, ms);
       };
     })();
-
+        
+    //set up an event listener for changes to the dropdowns for sort by and for order
+    $("#notebookFilters select").on('change', function(){
+        sortMethod = $("#sortBy").val();
+        console.log("change to ", sortMethod);
+        
+    })    
 
     $("#menus").click(function(){
     	if (!menuOn){
