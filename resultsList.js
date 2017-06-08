@@ -62,6 +62,7 @@ function initializeResultsTable(){
 //        onSampleClick(this);
 //       
 //    });
+  initResize();
     
 }
 
@@ -249,6 +250,38 @@ function exportResultsToCSV() {
           'target': '_blank'
         });
     } //end if... else if... else
+}
+
+function initResize(){
+
+  var barHeight = $(".orangeBar").height()
+  var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55) //16 due to attribution on leaflet map
+  console.log(legendVisibility)
+
+  $('#resultsPanel').resizable({
+      distance: 2,
+      handles: 'n,w,s,e',
+      minHeight: barHeight,
+      maxHeight: legendVisibility,
+      create: function(event, ui){
+        wrapperHeight = $('#wrapAll').height();
+        panelHeight = $('#resultsPanel').height();
+        var mapHeight = wrapperHeight - panelHeight;
+        $("#map").css("height", mapHeight + "px");
+        var leftPanelHeight = mapHeight - 100;
+        $("#leftPanel").css("height", leftPanelHeight + "px");
+      },
+      resize: function(event, ui){
+        wrapperHeight = $('#wrapAll').height();
+        bodyHeight = $('body').height();
+        panelHeight = $('#resultsPanel').height();
+        var mapHeight = wrapperHeight - panelHeight;
+        console.log(mapHeight, panelHeight, wrapperHeight, bodyHeight);
+        $("#map").css("height", mapHeight + "px");
+        var leftPanelHeight = mapHeight - 100;
+        $("#leftPanel").css("height", leftPanelHeight + "px");
+      }
+  });
 }
 
 
