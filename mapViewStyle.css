@@ -61,6 +61,7 @@
     border: solid 4px white;
     background-color: #fff;
     margin-left: 5px;
+    box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.3);
 }
 /*
 #rightPanel{
@@ -167,8 +168,8 @@
 .filtersHideButton{
   background-color: #adadad;
   position: absolute;
-  height: 50%;
-  width: 5%;
+  height: 17px;
+  width: 17px;
   top: 25%;
   right: 2.5%;
 }
@@ -328,10 +329,12 @@ a.export:hover{
   right: 10px;
   width: 17%;
   height: 34%;
-  background-color: #fff;
+  background-color: #e6e6e6;
   box-shadow: 0px 0px 6px 3px rgba(0,0,0,0.35);
-  border-radius: 6px;
-  min-height: calc(25vh)
+  min-height: calc(25vh);
+  max-width: 100px;
+  min-width: 90px;
+  border: solid 2px white;
 }
 
 .legendBox{
@@ -340,6 +343,8 @@ a.export:hover{
   left: 6%;
   width: 24%;
   height: 12%;
+  border-color: #000;
+  border-width: 1px; 
 }
 
 #legendTitleContainer{
@@ -484,4 +489,12 @@ span#greyButtonText {
   max-height: 24px;
   max-width: 24px;
   vertical-align: middle;
+}
+
+.leaflet-bar{
+  border-radius: 0px;
+}
+.leaflet-bar a:last-child{
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius-radius: 0px;
 }
