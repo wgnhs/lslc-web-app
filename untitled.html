@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<HEAD>
+      <TITLE>LSLC Interactive Map</TITLE>
+       <meta charset="UTF-8">
+       
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+
+       
+        <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+
+        <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+       
+        <!-- Leaflet Draw -->
+            <script src="https://unpkg.com/leaflet-draw@0.4.9/dist/leaflet.draw-src.js"></script>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.9/dist/leaflet.draw-src.css">
+       
+        <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+        <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+       
+        <!-- TABLESORTER -->
+             <script type="text/javascript" src="lib/jquery.tablesorter.js"></script>
+       
+        <!-- local stylesheets -->
+            <!-- <LINK href="generalStyle.css" rel='stylesheet'/>
+            <LINK href="mapViewStyle.css" rel='stylesheet'/> -->
+
+            <style>
+              #wrapper{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+              }
+              #map{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+              }
+              #panel{
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 30%;        
+                background: #ccc;
+                z-index: 3000;
+              }
+              #panelHeader{
+                width: 100%;
+                height: 30px;
+                background-color: #000;
+
+              }
+            </style>
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+   </HEAD>
+<body>
+<div id='wrapper'>
+  <div id="map"></div>
+  <div id="panel">
+    <div id="panelHeader"></div>
+  </div>
+
+  </div>
+  <script>
+    var map = L.map('map', {
+            scrollWheelZoom: true, //calls determineScroll() to return true or false
+            scrollWheelPan: true, 
+            zoomControl: false //will add zoom control in the top right corner next
+        }).setView([ 47, -92], 7);
+
+    divHeight = $('#wrapper').height()
+
+
+
+    $('#panel').resizable({
+      distance: 90,
+      handles: 'n,w,s,e',
+      minHeight: 30,
+      maxHeight: divHeight * .65,
+      create: function(event, ui){
+        console.log("ran")
+        wrapperHeight = $('#wrapper').height()
+        panelHeight = $('#panel').height()
+        var mapHeight = wrapperHeight - panelHeight
+        $("#map").css("height", mapHeight + "px")
+      },
+      resize: function(event, ui){
+        console.log("ran")
+        wrapperHeight = $('#wrapper').height()
+        panelHeight = $('#panel').height()
+        var mapHeight = wrapperHeight - panelHeight
+        $("#map").css("height", mapHeight + "px")
+      }
+  });
+
+
+  </script>
+</body>
+</html>

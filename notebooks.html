@@ -4,11 +4,15 @@
    <HEAD>
       <TITLE>LSLC Notebooks</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
        <meta charset="UTF-8">
-
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
-        <!--Google font-->
+       <!--Google font-->
             <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
-       
+
+       <!-- Async -->
+            <script src="https://unpkg.com/async@2.4.0/dist/async.min.js"></script>
+       <!-- docs  caolan.github.io/async/docs.html -->
+
        <!-- Load Leaflet from CDN-->
            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
            <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
@@ -28,6 +32,56 @@
            <LINK href="generalStyle.css" rel='stylesheet'/>
            <LINK href="recordStyle.css" rel='stylesheet'/> 
            <LINK href="modalStyle.css" rel='stylesheet'/>
+
+           <style>
+/*
+           #menus{
+           	height: 30px;
+           	width: 20%;
+           	background-color: #e6e6e6;
+           	text-align: center;
+
+           }
+           #menus:hover{
+			    cursor: pointer;
+			    background-color: dimgrey;
+			}
+
+			.menuItem{
+				height: 30px;
+				width: 100%;
+				position: relative;
+				top: 20px;
+				background-color: #fff;
+				text-align: center;
+			}
+
+			.menuItem:hover{
+				background-color: #e6e6e6;
+			}
+*/
+               
+          #notebookFilters {
+              background-color: #e6e6e6;
+              position: relative;
+
+           }
+           #notebookFilters h3 {
+               /* not sure why this exceeds the width of the #notebookFilters div */
+               width: 100%;
+
+           }
+           #notebookFilters .filter {
+               display: inline-block;
+               margin: 5px 8px 5px 5px;   
+
+           }
+           #notebookFilters label {
+               margin-right: 5px;
+           }
+
+
+           </style>
 
        
       <!-- Enable media queries for old IE -->
@@ -54,14 +108,52 @@
     
    <div id="wrapper">
         
+
+       <div id="header"></div>
+       <div id="notebookFilters">
+           <h3 class="orangeBar">Filter notebooks</h3>
+           <div class="filter">
+               <label for="AuthorSearch"><span>Author:</span></label>
+               <input type="text" id="AuthorSearch" name="AuthorSearch">
+           </div>
+           <div class="filter">
+               <label for="TitleSearch"><span>Title:</span></label>
+               <input type="text" id="TitleSearch" name="TitleSearch">
+           </div>
+           <div class="filter">
+               <label for="YearSearch"><span>Year:</span></label>
+               <input type="text" id="YearSearch" name="YearSearch">
+           </div>
+           <div class="filter">
+               <label for="NumberSearch"><span>Notebook number:</span></label>
+               <input type="text" id="NumberSearch" name="NumberSearch">
+           </div>
+<!--           <div id="menus">Sort By</div>-->
+           <div class="filter">
+               <label for="sortBy"><span>Sort by:</span></label>
+               <select name="sortBy" id="sortBy">
+                   <option selected="selected" value="Number">Notebook number</option>
+                   <option value="Author">Author</option>
+                   <option value="Year">Year</option>
+                   <option value="Title">Title</option>
+                   
+               </select>
+               <select name="sortDirection" id="sortDirection">
+                    <option value="ascending">ascending</option>
+                   <option value="descending">descending</option>
+               </select>
+           </div>
+       </div>
+
+       <div class="reportDivision">
+           <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
+       	<h3>Notebooks</h3> 
        
        
-       <h2>Notebooks</h2> 
-       <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
-       
-       <div class='reportDivision'><div id="fieldNotebooksList"></div></div>
+       <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
+       <div class='divisionContent' id='notebooksContent'></div>
    
-       
+       </div>
        <div id="footer"></div>
    </div><!--end wrapper div-->
    
@@ -77,93 +169,305 @@
     
     <!-- javascript for building the notebook list -->
     <script>
-        function retrieveAllNotebooks(){
-            var notebookQuery = L.esri.query({url: notebooksTableURL}); 
-            notebookQuery.fields(["*"]); 
-                     
-            notebookQuery.run(function(error, featureCollection, notebooksResponse){
-                console.log("notebooks: ", notebooksResponse.features);
-               for(i in notebooksResponse.features){
-                  
-//                   console.log("Notebook: ", notebooksResponse.features[i].attributes);
-                   findThumbnail(notebooksResponse.features[i].attributes);
-               }
+    //globals
+    var globalNotebookContentArray = [];
+    var menuOn = false;
+    var sortMethod = $("#sortBy").val();
+    var sortOrder = $("#sortDirection").val();
+    var authorSearchOn = false;
+    var titleSearchOn = false;
+    var numberSearchOn = false;
+    var yearSearchOn = false;
+    var x;
+        
 
-            }); //end run 
-            
-        }
-        function findThumbnail(notebookAttributes){
-            
-            var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.Number+"_cover_thumb.jpg"; 
-            
-            
-            var img = new Image();
-            img.onload = function(resp){
-               console.log(notebookAttributes.Number+" found"); 
-               buildListItem(notebookAttributes, thumbURL); 
-            }
-            img.onerror = function(){
-                console.log(notebookAttributes.Number+" not found.");
-                buildListItem(notebookAttributes, 'images/notebooks/notebook-icon.jpg');
-            }
-            img.src = thumbURL; 
- 
+    var delay = (function(){
+      var timer = 0;
+      return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
+        
+    //set up an event listener for changes to the dropdowns for sort-by and for order: 
+    $("#notebookFilters select").on('change', function(){
+        //reset the global vars 
+        sortMethod = $("#sortBy").val();
+        sortOrder = $("#sortDirection").val();
+        
+        console.log("change to sort by ", sortMethod," in ", sortOrder, "order.");
+        
+        //call the function if both arguments have values. 
+        if (sortMethod && sortOrder){
+            async.series([callSort, buildNotebooksList]);
             
         }
         
-        function buildListItem(notebookAttributes, thumbnailsrc){
-            
-            
-            bookDiv = "<div class='divisionEntry'>"; 
-            
-            
-            
-            // First, add the thumbnail: 
-            
-             bookDiv += "<img src='"+thumbnailsrc+"' alt='notebook cover' style='height: 200px;'/>"
-            
-//            if(thumbnailFound) {
-//                    bookDiv += "<img src='http://mp-web2t/lslc/assets/notebook-thumbs/fieldNotebook"+notebookAttributes.Number+"_cover_thumb.jpg' alt='notebook cover' style='height: 200px;'/>";
-//            } else {
-//                bookDiv += "<img src='images/notebooks/ExampleNotebook1.jpg' alt='notebook cover' style='height: 200px;'/>"
-//            }
-
-            //if there's a UWDC Link:
-//            if (notebookAttributes.UwdcUrl){
-//                bookDiv += "<a href='"+notebookAttributes.UwdcUrl+"' target=_blank>"; 
-//                
-//                bookDiv += "</a>";
-//            } else {
-//                //if no UWDC link
-//                
-//                
-//            }
-            
-            
-            
-            bookDiv += "<div class='detailsDiv'>";
-            bookDiv += "<p>Field Notebook #"+notebookAttributes.Number+"</p>";
-                if (notebookAttributes.Title){bookDiv += "<p>"+notebookAttributes.Title+"</p>"}
-                else {bookDiv += "<p>[Untitled]</p>"};
-                bookDiv += "<p>by "+notebookAttributes.Author+"</p>";
-                bookDiv += "<p>"+notebookAttributes.Year+"</p>";
-                if (notebookAttributes.Notes){
-                    bookDiv += "<p>Notes: "+notebookAttributes.Notes+"</p>";
-                }
-            
-                if (notebookAttributes.UwdcUrl){
-                    bookDiv += "Scan at UW Digital Collections: <a href='"+notebookAttributes.UwdcUrl+"' target=_blank>"+ notebookAttributes.UwdcUrl +"</a>";
-                } 
-            bookDiv += "</div>";
-            
-            bookDiv += "</div>";
-            
-            $("#fieldNotebooksList").append(bookDiv); 
-            
-        } //end buildListItem function
-        
-        retrieveAllNotebooks();
+    });    
     
+    //Listener for the sort by input: 
+    
+//    $("#menus").click(function(){
+//    	if (!menuOn){
+//    		menuOn = true;
+//    		$(this).append($("<div id='menu_year' class='menuItem'>Year</div><div id='menu_number' class='menuItem'>Notebook Number</div><div id='menu_author' class='menuItem'>Author</div><div id='menu_title' class='menuItem'>Title</div>"));
+//
+//	    		$("#menu_year").click(function(){
+//			    	sortMethod = "Year";
+//			    	async.series([callSort, buildNotebooksList, replaceImages]);
+//			    })
+//
+//			    $("#menu_number").click(function(){
+//			    	sortMethod = "Number";
+//			    	async.series([callSort, buildNotebooksList, replaceImages]);
+//			    })
+//
+//			    $("#menu_author").click(function(){
+//			    	sortMethod = "Author";
+//			    	async.series([callSort, buildNotebooksList, replaceImages]);
+//			    })
+//
+//			    $("#menu_title").click(function(){
+//			    	sortMethod = "Title";
+//			    	async.series([callSort, buildNotebooksList, replaceImages]);
+//			    })
+//
+//    	} else {
+//    		menuOn = false;
+//    		$(".menuItem").remove();
+//    	};
+//    });
+
+        
+    //Listeners for filtering the notebooks list: 
+        
+    $("#AuthorSearch").on('input', function(){
+    	authorSearchOn = true;
+    	delay(function(){
+    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    	}, 1000);
+    })
+	$("#NumberSearch").on('input', function(e){
+		numberSearchOn = true;
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    	}, 1000);
+    })
+    $("#YearSearch").on('input', function(e){
+    	yearSearchOn = true;
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    	}, 1000);
+    })
+    $("#TitleSearch").on('input', function(e){
+    	titleSearchOn = true;
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    	}, 1000);
+    })
+ 
+        
+    function retrieveNotebooks(indicator){
+    	var notebooksQuery = L.esri.query({url: notebooksTableURL});
+    	notebooksQuery.fields(["*"]);
+    	notebooksQuery.run(function(err, featureCollection, response){
+
+    		for (i in response.features){
+    			notebooksManager.add(response.features[i].attributes)
+    		}
+
+    		indicator();
+    	});
+
+    } 
+
+    function replaceURL(notebookNumber){
+
+    	var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook" + notebookNumber + "_cover_thumb.jpg";
+
+    	var img = new Image();
+
+    	img.onload = function(resp){
+    			$("#coverImage_" + notebookNumber).attr("src", thumbURL)
+
+    			for (i in globalNotebookContentArray){
+    				if (globalNotebookContentArray[i].Number === notebookNumber){
+    					globalNotebookContentArray[i].coverURL = thumbURL;
+    				}
+    			}
+
+    		}
+
+    	img.src = thumbURL
+
+    }
+
+    function replaceImages(indicator){
+
+    	for (i in globalNotebookContentArray){
+    		replaceURL(globalNotebookContentArray[i].Number)
+    	}
+
+    	indicator();
+    }
+
+    function buildNotebooksList(indicator){
+
+    	$(".divisionEntry").remove();
+
+    	console.log(globalNotebookContentArray)
+
+    	for (i in globalNotebookContentArray){
+
+    		if (globalNotebookContentArray[i].show){
+
+	    		var divisionEntry = "<div class='divisionEntry'>";
+	    		divisionEntry += "<img src='" + globalNotebookContentArray[i].coverURL + "' alt='Notebook Cover Photo' id='coverImage_" + globalNotebookContentArray[i].Number + "'>"
+	    		divisionEntry += "<div class='detailsDiv'>"
+	    		divisionEntry += "<p>Field Notebook #" + globalNotebookContentArray[i].Number + "</p>";
+	    		if (globalNotebookContentArray[i].Title){
+	    			divisionEntry += "<p>" + globalNotebookContentArray[i].Title + "</p>";
+	    		} else {
+	    			divisionEntry += "<p>[Untitled]</p>";
+	    		}
+	    		divisionEntry += "<p>by " + globalNotebookContentArray[i].Author + "</p>";
+	    		divisionEntry += "<p>" + globalNotebookContentArray[i].Year + "</p>";
+	    		if (globalNotebookContentArray[i].Notes){
+	    			divisionEntry += "<p>Notes: " + globalNotebookContentArray[i].Notes + "</p>";
+	    		}
+	    		if (globalNotebookContentArray[i].UwdcUrl){
+	    			divisionEntry += "<p>Scan at UW digital Collections: <a href='" + globalNotebookContentArray[i].UwdcUrl + "' target=_blank>" + globalNotebookContentArray[i].UwdcUrl + "</a></p>";
+	    		}
+	    		divisionEntry += "</div>";
+	    		divisionEntry += "</div>";
+
+	    		$("#notebooksContent").append($(divisionEntry))
+	    	};
+    	};
+
+
+    	indicator();
+    }
+
+    function callSort(indicator){
+    	if (sortMethod == "Author" || sortMethod == "Title"){
+    		notebooksManager.sortByLetter(sortMethod,sortOrder)
+    	} else {
+    		notebooksManager.sortByNumber(sortMethod,sortOrder)
+    	}
+
+    	indicator();
+    }
+
+    function callfilter(indicator){
+    	var searchText = {};
+    	searchText.authorKey = document.getElementById("AuthorSearch").value;
+    	searchText.titleKey = document.getElementById("TitleSearch").value;
+    	searchText.numberKey = document.getElementById("NumberSearch").value;
+    	searchText.yearKey = document.getElementById("YearSearch").value;
+    	notebooksManager.filterBySearch(searchText)
+    	indicator();
+    }
+
+    var notebooksManager = (function(){
+
+    	var add = function(object){
+    		object.coverURL = "images/notebooks/notebook-icon.jpg";
+    		object.show = true
+    		globalNotebookContentArray = globalNotebookContentArray.concat(object);
+
+    	};
+
+    	var sortByNumber = function(attr, direction){
+
+    		console.log("sort by " + attr + " in " + direction + " order");
+
+    		if (direction == "ascending"){
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(parseInt(a[attr]) < parseInt(b[attr])) return -1;
+	    			if(parseInt(a[attr]) > parseInt(b[attr])) return 1;
+	    			return 0;
+	    		});
+
+	    	} else if (direction == "descending") {
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(parseInt(a[attr]) > parseInt(b[attr])) return -1;
+	    			if(parseInt(a[attr]) < parseInt(b[attr])) return 1;
+	    			return 0;
+	    		});
+	    		
+	    	}
+    	};
+
+    	var sortByLetter = function(attr, direction){
+
+    		console.log("sort by " + attr + "in " + direction + " order")
+
+    		if (direction == "ascending"){
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(a[attr] < b[attr]) return -1;
+	    			if(a[attr] > b[attr]) return 1;
+	    			return 0;
+	    		});
+
+	    	} else if (direction == "descending") {
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(a[attr] > b[attr]) return -1;
+	    			if(a[attr] < b[attr]) return 1;
+	    			return 0;
+	    		});
+	    		
+	    	}
+    	};
+
+    	var filterBySearch = function(searchTextObject){
+
+    		for (i in globalNotebookContentArray){
+
+    			var showTheNotebook = true;
+
+    			if (!globalNotebookContentArray[i]["Author"].includes(searchTextObject.authorKey) && authorSearchOn){
+    				showTheNotebook = false;
+    			};
+
+      		if (globalNotebookContentArray[i]["Title"]){
+            if (!globalNotebookContentArray[i]["Title"].includes(searchTextObject.titleKey) && titleSearchOn) {
+      				showTheNotebook = false;
+      			};
+          } else {
+              showTheNotebook = false;
+          }
+
+    			if (!globalNotebookContentArray[i]["Number"].includes(searchTextObject.numberKey) && numberSearchOn) {
+    				showTheNotebook = false;
+    			};
+
+    			if (!globalNotebookContentArray[i]["Year"].includes(searchTextObject.yearKey) && yearSearchOn){
+    				showTheNotebook = false;
+    			};
+
+    			globalNotebookContentArray[i].show = showTheNotebook;
+    		}; 
+
+    	};
+
+    	return {"add":add,
+    		"sortByNumber":sortByNumber,
+    		"sortByLetter":sortByLetter,
+    		"filterBySearch":filterBySearch
+    	}
+
+    })();
+
+    async.series([retrieveNotebooks, callSort, buildNotebooksList, replaceImages]);
+
+
+
+
     </script><!-- end javascript for building the notebook list -->
    
    
