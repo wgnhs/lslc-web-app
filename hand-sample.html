@@ -501,7 +501,7 @@
                 //create a new div element.
                 var reportDiv = $('<div class="reportDivision"></div>');
                 var rd = reportDivisions[r];
-                if (rd.divisionTitle){reportDiv.append($('<h3 class="inline"></h3>').html(rd.divisionTitle))};
+                if (rd.divisionTitle){reportDiv.append($('<h3></h3>').html(rd.divisionTitle))};
                 var newdiv = $('<div class="divisionContent"></div>');
                 //give it an id property and add a title h3 to it. 
                 newdiv.attr("id", rd.divisionId);
@@ -544,7 +544,7 @@
            
             if (sampleRecordData.thinSections.length > 0){
                 
-                $("#thinSections").before('<span> ('+sampleRecordData.thinSections.length+' found)</span>');
+                $("#thinSections").before('<span> ('+sampleRecordData.thinSections.length+' found) Click to view in detail.</span>');
                 
                 
                 for (i in sampleRecordData.thinSections){

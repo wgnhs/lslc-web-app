@@ -1,37 +1,8 @@
 var globalLayer;
 
-console.log("running1")
-
-
-//function called anonymously 
-// $(function(){
-//     scaleMapHeight($(this).height()) 
-//     //called on window resize
-//     $(window).resize(function() {
-//         scaleMapHeight($(this).height())
-//     });
-// });
-
-// //function matches map height to filters
-// function scaleMapHeight(height){
-    
-//     var matchHeight = $("#filters").height(); //references height of filters div
-    
-//     //checks for height less than 545px, because that's where the map starts getting distorted
-// //    if (height < 545){
-// //       
-// //        matchHeight = String(matchHeight) //converts to string for css format
-// //        console.log(matchHeight)
-// //
-// //        //sets map to height of filters div
-// //        document.getElementById("map").style.height = matchHeight + "px";
-// //    }
-    
-//     document.getElementById("map").style.height = matchHeight + "px";
-// }
 
 var leafletMap = (function(){
-
+    var map;
     var leafletFeatureLayer;
     var drawnItems; 
     //var customDeleteButton;
@@ -40,13 +11,13 @@ var leafletMap = (function(){
     
     var initialize = function(){
         
-        var map = L.map('map', {
+         map = L.map('map', {
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
             scrollWheelPan: determineScroll(), 
             zoomControl: false //will add zoom control in the top right corner next
         }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
-            
         
+
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
@@ -85,10 +56,15 @@ var leafletMap = (function(){
         });
 
         $("#zoomToSelectionButton").click(function(){
-            zoomToSelection(map)
-        })
+            zoomToSelection(map);
+        });
+        
+       
+       
+        
     } //end initialize function
-
+    
+   
     //called in map properties during the initialize function
     function determineScroll(){
         
@@ -141,7 +117,6 @@ var leafletMap = (function(){
             $("#selectPolygonButton").addClass("active");
             polygon.enable();
         });
-        
        
     } //end setupMapButtons function 
     
@@ -304,6 +279,7 @@ var leafletMap = (function(){
     }
     
     function calculateClasses(array){
+        
     
     //filters out redundant section ids 
     var sortedArray = array.sort(function(a,b){return a-b});
@@ -400,8 +376,8 @@ var leafletMap = (function(){
        // console.log("filtered values array -->", filteredValuesArray)
         console.log("class breaks -->", break0,break1,break2,break3,breakTop)
 
-        createLegend(breaks)
-        console.log("here")
+        createLegend(breaks);
+        console.log("create legend breaks.");
 
        return {"class1Array": classesArray[1], "class2Array": classesArray[2], "class3Array": classesArray[3], "class4Array": classesArray[4]};
 
@@ -439,13 +415,16 @@ var leafletMap = (function(){
     globalLayer = leafletFeatureLayer;
 
     leafletFeatureLayer.eachFeature(function(lyr){
-        console.log(lyr.options.style.fillColor);
+        console.log("individual layer fill color: ", lyr.options.style.fillColor);
         //var layerBounds = lyr.getBounds();
 
     })   
 
 
         $("#loading").remove(); //stops loading feedback
+        
+        //reset the map size; this prevents it from skipping the bottom row of tiles. 
+        map.invalidateSize();
 
 
         

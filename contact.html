@@ -121,7 +121,7 @@
                 //create a new div element.
                 var contactDiv = $('<div class="reportDivision"></div>');
                 
-                if (rd.divisionTitle){contactDiv.append($('<h3 class="inline"></h3>').html(rd.divisionTitle))};
+                if (rd.divisionTitle){contactDiv.append($('<h3></h3>').html(rd.divisionTitle))};
                 
                 contactDiv.append('<div class="divisionContent"><p>'+rd.name+'<br>'+rd.title+', <br>'+rd.affiliation+'<br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p></div>');
                 //append it to the html page. 

@@ -34,6 +34,7 @@
            <LINK href="modalStyle.css" rel='stylesheet'/>
 
            <style>
+/*
            #menus{
            	height: 30px;
            	width: 20%;
@@ -58,7 +59,26 @@
 			.menuItem:hover{
 				background-color: #e6e6e6;
 			}
-           
+*/
+               
+          #notebookFilters {
+              background-color: #e6e6e6;
+              position: relative;
+
+           }
+           #notebookFilters h3 {
+               /* not sure why this exceeds the width of the #notebookFilters div */
+               width: 100%;
+
+           }
+           #notebookFilters .filter {
+               display: inline-block;
+               margin: 5px 8px 5px 5px;   
+
+           }
+           #notebookFilters label {
+               margin-right: 5px;
+           }
 
 
            </style>
@@ -90,20 +110,50 @@
         
 
        <div id="header"></div>
-       <div id="menus">Sort By</div>
-       <input type="text" id="AuthorSearch" value="Search by Author">
-       <input type="text" id="TitleSearch" value="Search by Title">
-       <input type="text" id="YearSearch" value="Search by Year">
-       <input type="text" id="NumberSearch" value="Search by Notebook Number">
+       <div id="notebookFilters">
+           <h3 class="orangeBar">Filter notebooks</h3>
+           <div class="filter">
+               <label for="AuthorSearch"><span>Author:</span></label>
+               <input type="text" id="AuthorSearch" name="AuthorSearch">
+           </div>
+           <div class="filter">
+               <label for="TitleSearch"><span>Title:</span></label>
+               <input type="text" id="TitleSearch" name="TitleSearch">
+           </div>
+           <div class="filter">
+               <label for="YearSearch"><span>Year:</span></label>
+               <input type="text" id="YearSearch" name="YearSearch">
+           </div>
+           <div class="filter">
+               <label for="NumberSearch"><span>Notebook number:</span></label>
+               <input type="text" id="NumberSearch" name="NumberSearch">
+           </div>
+<!--           <div id="menus">Sort By</div>-->
+           <div class="filter">
+               <label for="sortBy"><span>Sort by:</span></label>
+               <select name="sortBy" id="sortBy">
+                   <option selected="selected" value="Number">Notebook number</option>
+                   <option value="Author">Author</option>
+                   <option value="Year">Year</option>
+                   <option value="Title">Title</option>
+                   
+               </select>
+               <select name="sortDirection" id="sortDirection">
+                    <option value="ascending">ascending</option>
+                   <option value="descending">descending</option>
+               </select>
+           </div>
+       </div>
 
+       <div class="reportDivision">
+           <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
+       	<h3>Notebooks</h3> 
        
-       	<h2>Notebooks</h2> 
-       <span>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</span>
        
        <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
-       <div class='divisioncontent' id='notebooksContent'></div>
+       <div class='divisionContent' id='notebooksContent'></div>
    
-       
+       </div>
        <div id="footer"></div>
    </div><!--end wrapper div-->
    
@@ -122,13 +172,14 @@
     //globals
     var globalNotebookContentArray = [];
     var menuOn = false;
-    var sortMethod = "Number";
-    var sortOrder = "ascending";
+    var sortMethod = $("#sortBy").val();
+    var sortOrder = $("#sortDirection").val();
     var authorSearchOn = false;
     var titleSearchOn = false;
     var numberSearchOn = false;
     var yearSearchOn = false;
     var x;
+        
 
     var delay = (function(){
       var timer = 0;
@@ -137,39 +188,59 @@
         timer = setTimeout(callback, ms);
       };
     })();
+        
+    //set up an event listener for changes to the dropdowns for sort-by and for order: 
+    $("#notebookFilters select").on('change', function(){
+        //reset the global vars 
+        sortMethod = $("#sortBy").val();
+        sortOrder = $("#sortDirection").val();
+        
+        console.log("change to sort by ", sortMethod," in ", sortOrder, "order.");
+        
+        //call the function if both arguments have values. 
+        if (sortMethod && sortOrder){
+            async.series([callSort, buildNotebooksList]);
+            
+        }
+        
+    });    
+    
+    //Listener for the sort by input: 
+    
+//    $("#menus").click(function(){
+//    	if (!menuOn){
+//    		menuOn = true;
+//    		$(this).append($("<div id='menu_year' class='menuItem'>Year</div><div id='menu_number' class='menuItem'>Notebook Number</div><div id='menu_author' class='menuItem'>Author</div><div id='menu_title' class='menuItem'>Title</div>"));
+//
+//	    		$("#menu_year").click(function(){
+//			    	sortMethod = "Year";
+//			    	async.series([callSort, buildNotebooksList, replaceImages]);
+//			    })
+//
+//			    $("#menu_number").click(function(){
+//			    	sortMethod = "Number";
+//			    	async.series([callSort, buildNotebooksList, replaceImages]);
+//			    })
+//
+//			    $("#menu_author").click(function(){
+//			    	sortMethod = "Author";
+//			    	async.series([callSort, buildNotebooksList, replaceImages]);
+//			    })
+//
+//			    $("#menu_title").click(function(){
+//			    	sortMethod = "Title";
+//			    	async.series([callSort, buildNotebooksList, replaceImages]);
+//			    })
+//
+//    	} else {
+//    		menuOn = false;
+//    		$(".menuItem").remove();
+//    	};
+//    });
 
-
-    $("#menus").click(function(){
-    	if (!menuOn){
-    		menuOn = true;
-    		$(this).append($("<div id='menu_year' class='menuItem'>Year</div><div id='menu_number' class='menuItem'>Notebook Number</div><div id='menu_author' class='menuItem'>Author</div><div id='menu_title' class='menuItem'>Title</div>"));
-
-	    		$("#menu_year").click(function(){
-			    	sortMethod = "Year";
-			    	async.series([callSort, buildNotebooksList, replaceImages]);
-			    })
-
-			    $("#menu_number").click(function(){
-			    	sortMethod = "Number";
-			    	async.series([callSort, buildNotebooksList, replaceImages]);
-			    })
-
-			    $("#menu_author").click(function(){
-			    	sortMethod = "Author";
-			    	async.series([callSort, buildNotebooksList, replaceImages]);
-			    })
-
-			    $("#menu_title").click(function(){
-			    	sortMethod = "Title";
-			    	async.series([callSort, buildNotebooksList, replaceImages]);
-			    })
-
-    	} else {
-    		menuOn = false;
-    		$(".menuItem").remove();
-    	};
-    });
-
+        
+    //Listeners for filtering the notebooks list: 
+        
     $("#AuthorSearch").on('input', function(){
     	authorSearchOn = true;
     	delay(function(){
@@ -309,7 +380,7 @@
 
     	var sortByNumber = function(attr, direction){
 
-    		console.log("sort by " + attr + " in " + direction + " order")
+    		console.log("sort by " + attr + " in " + direction + " order");
 
     		if (direction == "ascending"){
 
@@ -392,7 +463,7 @@
 
     })();
 
-    async.series([retrieveNotebooks, callSort, buildNotebooksList, replaceImages])
+    async.series([retrieveNotebooks, callSort, buildNotebooksList, replaceImages]);
 
 
 
