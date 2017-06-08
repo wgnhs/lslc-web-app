@@ -132,18 +132,16 @@
            <div class="filter">
                <label for="sortBy"><span>Sort by:</span></label>
                <select name="sortBy" id="sortBy">
-                   <option value="Number">Notebook number</option>
+                   <option selected="selected" value="Number">Notebook number</option>
                    <option value="Author">Author</option>
                    <option value="Year">Year</option>
                    <option value="Title">Title</option>
                    
                </select>
-<!--
                <select name="sortDirection" id="sortDirection">
                     <option value="ascending">ascending</option>
                    <option value="descending">descending</option>
                </select>
--->
            </div>
        </div>
 
@@ -174,13 +172,14 @@
     //globals
     var globalNotebookContentArray = [];
     var menuOn = false;
-    var sortMethod = "Number";
-    var sortOrder = "ascending";
+    var sortMethod = $("#sortBy").val();
+    var sortOrder = $("#sortDirection").val();
     var authorSearchOn = false;
     var titleSearchOn = false;
     var numberSearchOn = false;
     var yearSearchOn = false;
     var x;
+        
 
     var delay = (function(){
       var timer = 0;
@@ -192,11 +191,15 @@
         
     //set up an event listener for changes to the dropdowns for sort-by and for order: 
     $("#notebookFilters select").on('change', function(){
+        //reset the global vars 
         sortMethod = $("#sortBy").val();
-        console.log("change to sort by ", sortMethod);
+        sortOrder = $("#sortDirection").val();
         
-        if (sortMethod){
-            async.series([callSort, buildNotebooksList, replaceImages]);
+        console.log("change to sort by ", sortMethod," in ", sortOrder, "order.");
+        
+        //call the function if both arguments have values. 
+        if (sortMethod && sortOrder){
+            async.series([callSort, buildNotebooksList]);
             
         }
         
@@ -377,7 +380,7 @@
 
     	var sortByNumber = function(attr, direction){
 
-    		console.log("sort by " + attr + " in " + direction + " order")
+    		console.log("sort by " + attr + " in " + direction + " order");
 
     		if (direction == "ascending"){
 
