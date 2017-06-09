@@ -14,7 +14,7 @@ header += "<nav>";
 header+="<div id='navCollection' href='#' class='navMainLink dropdownContainer'><h3>Collection</h3><div class='dropdown-content'><a id='navFilter'href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html'>Hand Sample </a><a href='notebooks.html'>Notebooks</a><a href='downloads.html'>Data Downloads</a></div></div>";
 
 
-header+="<div id='navAbout' href='#' class='navMainLink dropdownContainer'><h3>About</h3><div class='dropdown-content'><a href='about-history.html'>Lake Superior Division, 1882-1922</a><a href='about-wgnhs.html'>WGNHS and the LSLC</a><a href='about-collection.html'>The collection</a></div></div>";
+header+="<div id='navAbout' href='#' class='navMainLink dropdownContainer'><h3>About</h3><div class='dropdown-content'><a href='about-history.html'>Lake Superior Division, 1882–1922</a><a href='about-wgnhs.html'>WGNHS and the LSLC</a><a href='about-collection.html'>The collection</a></div></div>";
 
 
 header += "<a id='navContact' href='contact.html' class='navMainLink'><h3>Contact</h3></a>";
@@ -25,6 +25,6 @@ $("#header").append(header);
 
 //may need to work on this header's responsiveness in narrow windows... figure out how to collapse to a simple list or a menu button. 
 
-var footer = "<p> Lake Superior Legacy Collection <br/> Wisconsin Geological and Natural History Survey <br/>University of Wisconsin Extension </p>";
+var footer = "<p> Lake Superior Legacy Collection <br/> <a href='http://wgnhs.uwex.edu' target='_blank'>Wisconsin Geological and Natural History Survey</a> <br/><a href='http://uwex.edu' target='_blank'>University of Wisconsin-Extension</a></p>";
 
 $("#footer").append(footer);
