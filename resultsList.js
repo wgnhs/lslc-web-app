@@ -55,13 +55,7 @@ function initializeResultsTable(){
    // console.log("table", resultsTable);
     resultsTableBody = resultsTable.getElementsByTagName('tbody')[0];
    // console.log('body', resultsTableBody);
-    
-    //delegated event handler for click event on tr elements in resultsTableBody
-//    $("#resultsTableBody").on("click", ".detailsLink", function () {
-//        //console.log("this is ", this);
-//        onSampleClick(this);
-//       
-//    });
+
   initResize();
     
 }
@@ -72,9 +66,6 @@ function listResults (dataObjects){
     //dataObjects is an array of objects. 
    
     //Clear the results list before re-populating. 
-   // console.log("clear results.");
-
-    //$("#resultsCount").html('0');
     resultsTableBody.innerHTML = '';
     
 
@@ -118,23 +109,6 @@ function listResults (dataObjects){
     
 
 }; //end getResults function
-
-
- 
-    
-function onSampleClick(item){
-    //this function is called when any list item in resultsUL is clicked. 
-    
-    var clickedId = item.getAttribute('data-ID');
-   //why does this sometimes console log twice?
-    console.log("You selected sample ", clickedId, ". sample data is: ", $(item).data());
-    
-
-    window.open("hand-sample.html#"+clickedId, "_blank");
-
-}
-
-
 
 
 function exportResultsToCSV() {
@@ -253,14 +227,15 @@ function exportResultsToCSV() {
 }
 
 function initResize(){
+    //called once from the initializeResultsTable function. 
 
   var barHeight = $(".orangeBar").height()
   var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55) //16 due to attribution on leaflet map
   console.log(legendVisibility)
 
   $('#resultsPanel').resizable({
-      distance: 2,
-      handles: 'n,w,s,e',
+      
+      handles: 'n, s',
       minHeight: barHeight,
       maxHeight: legendVisibility,
       create: function(event, ui){
@@ -283,9 +258,3 @@ function initResize(){
       }
   });
 }
-
-
-
-
-
-
