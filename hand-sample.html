@@ -69,6 +69,11 @@
                 padding-right: 3px;
                 height: 140px;
             }
+           #location #map{
+               width: 300px; 
+               height: 200px;
+               position: relative;
+           }
 
        </style>
        
@@ -526,7 +531,7 @@
             if(sampleRecordData.catalogNumber){
                 var sampleIDh2 = $('<h2></h2>').html("Hand Sample #"+sampleRecordData.catalogNumber); 
                 $("#sampleRecord").append(sampleIDh2);
-                //$("#sampleRecord").append('<img src="images/download_gw.png" alt="download" style="display: inline;">');
+               
                 
             } else {console.log("samID is false.");}
         }
@@ -614,7 +619,7 @@
        
        function addMap(){
            
-           var mapDiv = $("<div id='map' style='width: 300px; height: 200px; display: inline-block;'>");
+           var mapDiv = $("<div id='map'>");
             $('#location .divisionEntry').append(mapDiv);
             var map = L.map('map').setView([48, -89.5], 4);
             
@@ -689,7 +694,7 @@
                     
                     lith+="<div class='divisionEntry'>";      
                     //thumbnail in link
-                    if (sampleRecordData.lithologies[i].lithLedgerUrl){lith += "<a style='clear: left;' href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"}; 
+                    if (sampleRecordData.lithologies[i].lithLedgerUrl){lith += "<a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"}; 
                     lith += "<img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
                     //details
                     lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>"; 
@@ -698,8 +703,10 @@
                         lith+=   "<p><a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithLedgerTitle+"</a> (ledger #"+sampleRecordData.lithologies[i].lithLedgerId+")</p><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
                     };
                     
-                    lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p></div>";
-                    lith+='</div>';
+                    if (sampleRecordData.lithologies[i].lithNotes){
+                        lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p>"
+                    };
+                    lith+='</div></div>';
                 }
             } else {
                 lith = "<p>none</p>";
