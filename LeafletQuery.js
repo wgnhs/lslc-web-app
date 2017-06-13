@@ -178,7 +178,7 @@ function queryTableForFilters(){
    //only try to run query if there is something to search on.
     if (sampleIdsQuery.where.length > 0){
         
-        if (whereString === "1=1"){ console.log("Narrow the results by applying filters above.")};
+        //if (whereString === "1=1"){ console.log("Narrow the results by applying filters above.")};
 
         sampleIdsQuery.ids(function(error, result){
            //console.log("query for ids error", error);
@@ -341,7 +341,7 @@ function sliceResult(allResultOBJECTIDs, queryNum){
     }
     
     var allQueries = Promise.all(sliceQueriesQueue).then(function(data){
-        console.log("allqueries data:", data); 
+       
         for (i in data){
             resultsManager.add(data[i]); //concatenate each slice's results to the global var. 
         }
