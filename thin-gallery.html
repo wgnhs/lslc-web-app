@@ -42,6 +42,9 @@
            .galleryPageLinks{
                background-color: #e6e6e6;
            }
+           .galleryPageLink {
+               background-color: orange;
+           }
            .galleryItemDiv {
                display: inline-block;
                margin: 5px;
@@ -53,6 +56,7 @@
            .galleryThumb{ 
                 height: 150px;
            }
+           
        </style>
        
 </HEAD>
@@ -63,7 +67,7 @@
         
 
        <h2>Thin Sections Gallery</h2> 
-        <div class="galleryPageLinks">Page:</div>
+        <div class="galleryPageLinks">Page:<div class="galleryPageLink">1</div></div>
        
      <!--  <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
        <div id="thinGallery" class="divisionContent"></div>
@@ -84,6 +88,21 @@
 
         //global variables: 
         var globalThinSectionGalleryArray = []; 
+        
+         //happens right away on page load: 
+        async.series([retrieveThinSections, callSort, /*callBuild,*/ buildThinGallery.bind(null, 1, 12), initGallery], function(){
+            console.log("all done. global data array: ", globalThinSectionGalleryArray);
+        });
+        
+        function initGallery (){
+            var done =  function(){console.log("done");}
+            //click listeners 
+            $(".galleryPageLink").on('click', function(){
+                console.log("click");
+                buildThinGallery(2,12,done);
+            });
+            
+        }
         
         var thinSectionsManager = (function(){
             
@@ -167,11 +186,14 @@
        } //end retrieveThinSections
         
         
-        function buildThinGallery(callback) {
+        
+        function buildThinGallery(pageNumber, pageSize, callback) {
+          
+            
             //reset the varible representing the contents of the gallery. 
             var divisionContent= '';
             
-            var dataForDisplay = thinSectionsManager.page(1, 12); // .page accepts two arguments: page number then page size
+            var dataForDisplay = thinSectionsManager.page(pageNumber, pageSize); // .page accepts two arguments: page number then page size
             
             
             //for every thin section...
@@ -195,16 +217,17 @@
             callback();
         }
         
+        function callBuild(callback){
+            buildThinGallery(1,12); 
+            callback();
+        }
+        
         function callSort(callback){
             thinSectionsManager.sortByNumber("CatalogNumber", "ascending"); 
             callback();
         }
         
-        //happens right away on page load: 
-        async.series([retrieveThinSections, callSort, buildThinGallery], function(){
-            console.log("all done. global data array: ", globalThinSectionGalleryArray);
-        });
-        
+       
         
     </script><!-- end javascript for building the thin section gallery -->
    
