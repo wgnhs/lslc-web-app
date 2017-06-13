@@ -26,7 +26,6 @@
        
        <!-- local stylesheets -->
            <LINK href="generalStyle.css" rel='stylesheet'/>
-           <LINK href="recordStyle.css" rel='stylesheet'/> 
            <LINK href="modalStyle.css" rel='stylesheet'/>
 
        
@@ -56,6 +55,21 @@
            .downloadLink{
                margin-left: 5px;
            }
+           .downloadButton {
+               /* styles match the buttons on the map page */
+               background-color: #c1c1c1;
+               box-shadow: 0px 0px 2px 2px rgba(0,0,0,0.4);
+               padding: 2px;
+               text-decoration: none;
+               color: black; 
+               font-weight: 300;
+               margin: 5px;
+               
+           }
+           .downloadButton:hover{
+               background-color: #aaa19d;
+               box-shadow: 0px 0px 2px 2px rgba(0,0,0,0.6);
+           }
            
        </style>
        
@@ -67,15 +81,14 @@
    <div id="wrapper">
         
         <h2>Data Downloads</h2> 
-       
-       <p>explanation paragraph...</p>
+
        
        <div class='reportDivision'>
            <h3>Geographic data</h3>
            <div class='divisionContent'>
                <div class='divisionEntry'>
-                    <img class='downloadlayerimg' src='images/sectionsLayer.jpg' alt='sections layer'/> 
-                   <div class='detailsDiv'><p>Sections (map layer) </p><span>Polygons for each section </span><a class='downloadLink' href='#'>Shapefile</a><a class='downloadLink' href='#'>GeoJSON</a><a class='downloadLink' href='#'>KML</a>
+                   <img class='downloadlayerimg' src='images/sectionsLayer.jpg' alt='sections layer'/> 
+                   <div class='detailsDiv'><p>Sections (map layer) </p><p>Polygons for each section </p><a class="downloadButton" href="https://data.wgnhs.uwex.edu/lake-superior-legacy/data/Lake_Superior_Legacy_Sections.zip">Download sections layer</a>
                    </div>
                </div>
 
@@ -86,7 +99,8 @@
            <div class='divisionContent'>
                <div class='divisionEntry'>
                     <img class='downloadlayerimg' src='images/sectionsLayer.jpg' alt='sections layer'/> 
-                   <div class='detailsDiv'><p>Samples </p><span>Table </span><a class='downloadLink' href='#'>CSV</a><a class='downloadLink' href='#'>JSON</a>
+                   <div class='detailsDiv'><p>Tables</p> 
+                       <a class="downloadButton" href="downloads/LSLC_download_all_tables_ver1_06-13-17.zip">Download tables</a>
                    </div>
                </div>
 
@@ -98,21 +112,11 @@
    
    <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
    <script src="header.js"></script>
-   <script>
-           //indicate the current page in the nav bar. 
-          // $("#navHome").css("background-color", "#848484");
-   </script>
+  
     
     <!-- javascript links -->
     <script src="mapServiceUrls.js"></script>
     
-    <!-- javascript for building the page content -->
-    <script>
-        
-        
-     
-    </script><!-- end javascript for building the page content -->
-   
    
 </BODY> 
 </HTML>
