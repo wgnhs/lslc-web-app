@@ -477,9 +477,11 @@ p.legendText{
     
 }
 
+/*
 .leaflet-control{
   top: 40px;
 }
+*/
 
 span#greyButtonText {
     /* I think this needs more contrast, so changed it to black text instead of grey. */

@@ -231,7 +231,7 @@ function initResize(){
 
   var barHeight = $(".orangeBar").height()
   var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55); //16 due to attribution on leaflet map
-  console.log(legendVisibility);
+  console.log($("#leftPanel").offset().top);
 
   $('#resultsPanel').resizable({
       
@@ -246,6 +246,8 @@ function initResize(){
         $("#map").css("height", mapHeight + "px");
         var leftPanelHeight = mapHeight - 100;
         $("#leftPanel").css("height", leftPanelHeight + "px");
+          
+        $(".leaflet-top").css("top", $("#leftPanel").offset().top);
       },
       resize: function(){
         resizeAll();
@@ -253,9 +255,6 @@ function initResize(){
   });
     
     function resizeAll (){
-        console.log("resize panels.");
-        
-//        bodyHeight = $('body').height();
         
         //store height of total window wrapper and results panel as variables. 
         wrapperHeight = $('#wrapAll').height();
@@ -263,7 +262,7 @@ function initResize(){
         //change the map height to be the difference between the two. 
         var mapHeight = wrapperHeight - panelHeight;
         
-        console.log("map", mapHeight, "panel", panelHeight, "wrapper", wrapperHeight/*, "body", bodyHeight*/);
+        //console.log("map", mapHeight, "panel", panelHeight, "wrapper", wrapperHeight);
        
         $("#map").css("height", mapHeight + "px");
         //set the left panel to be 100 px less tall than the map. 
@@ -272,16 +271,18 @@ function initResize(){
         
         //reposition the results panel to match the height of the map. 
         $("#resultsPanel").css("top", mapHeight+"px");
+        
+        $(".leaflet-top").css("top", $("#leftPanel").offset().top);
     }
     
-    
+    /* Listener for window resize */
     $(window).on("resize", function(){
         //reset the allowable min and max height for the results panel. 
         $("#resultsPanel").css("minHeight", $(".orangeBar").height());
-        legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55);
+        legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55); //16 due to attribution on leaflet map
         $("#resultsPanel").css("maxHeight", legendVisibility);
         
         resizeAll();
-   
+     
     });
 }
