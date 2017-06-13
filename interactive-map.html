@@ -216,13 +216,13 @@
       </div>
 
       <script>
-      var filtersHideButtonHeight = $(".filtersHideButton").height()
-      $(".filtersHideButton").css("min-width",filtersHideButtonHeight + "px")  
+      var filtersHideButtonHeight = $(".filtersHideButton").height();
+      $(".filtersHideButton").css("min-width",filtersHideButtonHeight + "px");  
 
 
 
-      var mapFiltersShowing = true
-      var contentFiltersShowing = true
+      var mapFiltersShowing = true;
+      var contentFiltersShowing = true;
 
         $("#mapAreaFiltersButton").click(function(){
 
@@ -264,15 +264,18 @@
           })
 
         function resizeFilters(switchUp){
-          var OB1height = $("#contentFiltersOB").height()
-          var OB2height = $("#mapFiltersOB").height()
-          var filters1Height = $("#contentAreaFilters").height()
-          var filters2Height = $("#mapAreaFilters").height()
-          var extraHeight = $("#filterFeedback").height() + 20
+            console.log("resizeFilters: ", switchUp);
+            //swtichUp is true or false. 
+            
+          var OB1height = $("#contentFiltersOB").height();
+          var OB2height = $("#mapFiltersOB").height();
+          var filters1Height = $("#contentAreaFilters").height();
+          var filters2Height = $("#mapAreaFilters").height();
+          var extraHeight = $("#filterFeedback").height() + 20;
 
           var newHeight;
           if (mapFiltersShowing && contentFiltersButton){
-            newHeight = OB1height + OB2height + filters1Height + filters2Height + extraHeight
+            newHeight = OB1height + OB2height + filters1Height + filters2Height + extraHeight;
           } else if (mapFiltersShowing && !contentFiltersShowing) {
             newHeight = OB2height + OB1height + filters2Height + extraHeight
           } else if (!mapFiltersShowing && contentFiltersShowing) {
@@ -281,21 +284,24 @@
             newHeight = OB2height + OB1height + extraHeight
           }
 
-          var gap = $("#resultsPanel").offset().top - $("#resultsPanel").offset().top - 5
+          var gap = $("#resultsPanel").offset().top - $("#resultsPanel").offset().top - 5;
 
           console.log(newHeight, $("#leftPanel").height())
           if (switchUp && newHeight < $("#leftPanel").height()){
+              console.log("case 1");
             $("#leftPanel").height(newHeight)
           }
           if (!switchUp){
             if (newHeight < $("#leftPanel").height() && newHeight < gap){
+                console.log("case 2");
               $("#leftPanel").height(newHeight)
             } else {
+                console.log("case 3");
               wrapperHeight = $('#wrapAll').height();
               bodyHeight = $('body').height();
               panelHeight = $('#resultsPanel').height();
               var mapHeight = wrapperHeight - panelHeight;
-              console.log(mapHeight, panelHeight, wrapperHeight, bodyHeight);
+              console.log("HEIGHTS: map: ", mapHeight, "panel: ", panelHeight, "wrapper: ", wrapperHeight, "body: ", bodyHeight);
               $("#map").css("height", mapHeight + "px");
               var leftPanelHeight = mapHeight - 100;
               $("#leftPanel").css("height", leftPanelHeight + "px");
@@ -306,6 +312,7 @@
 
 
           if (!switchUp && newHeight < $("#leftPanel").height()){
+              console.log("case 4");
             $("#leftPanel").height(newHeight)
           }
 
