@@ -415,7 +415,7 @@ var leafletMap = (function(){
     globalLayer = leafletFeatureLayer;
 
     leafletFeatureLayer.eachFeature(function(lyr){
-        console.log("individual layer fill color: ", lyr.options.style.fillColor);
+       // console.log("individual layer fill color: ", lyr.options.style.fillColor);
         //var layerBounds = lyr.getBounds();
 
     })   
@@ -491,12 +491,3 @@ function zoomToSelection(map){
 
     map.fitBounds(bounds)
 }
-
-
-
-
-
-
-
-
-
