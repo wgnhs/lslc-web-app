@@ -230,12 +230,13 @@ function initResize(){
     //called once from the initializeResultsTable function. 
 
   var barHeight = $(".orangeBar").height()
-  var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55) //16 due to attribution on leaflet map
-  console.log(legendVisibility)
+  var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55); //16 due to attribution on leaflet map
+  console.log(legendVisibility);
 
   $('#resultsPanel').resizable({
       
-      handles: 'n, s',
+      handles: 'n', /* only need to resize from the top edge of the div */
+
       minHeight: barHeight,
       maxHeight: legendVisibility,
       create: function(event, ui){
@@ -246,15 +247,41 @@ function initResize(){
         var leftPanelHeight = mapHeight - 100;
         $("#leftPanel").css("height", leftPanelHeight + "px");
       },
-      resize: function(event, ui){
-        wrapperHeight = $('#wrapAll').height();
-        bodyHeight = $('body').height();
-        panelHeight = $('#resultsPanel').height();
-        var mapHeight = wrapperHeight - panelHeight;
-        console.log(mapHeight, panelHeight, wrapperHeight, bodyHeight);
-        $("#map").css("height", mapHeight + "px");
-        var leftPanelHeight = mapHeight - 100;
-        $("#leftPanel").css("height", leftPanelHeight + "px");
+      resize: function(){
+        resizeAll();
       }
   });
+    
+    function resizeAll (){
+        console.log("resize panels.");
+        
+//        bodyHeight = $('body').height();
+        
+        //store height of total window wrapper and results panel as variables. 
+        wrapperHeight = $('#wrapAll').height();
+        panelHeight = $('#resultsPanel').height();
+        //change the map height to be the difference between the two. 
+        var mapHeight = wrapperHeight - panelHeight;
+        
+        console.log("map", mapHeight, "panel", panelHeight, "wrapper", wrapperHeight/*, "body", bodyHeight*/);
+       
+        $("#map").css("height", mapHeight + "px");
+        //set the left panel to be 100 px less tall than the map. 
+        var leftPanelHeight = mapHeight - 100;
+        $("#leftPanel").css("height", leftPanelHeight + "px");
+        
+        //reposition the results panel to match the height of the map. 
+        $("#resultsPanel").css("top", mapHeight+"px");
+    }
+    
+    
+    $(window).on("resize", function(){
+        //reset the allowable min and max height for the results panel. 
+        $("#resultsPanel").css("minHeight", $(".orangeBar").height());
+        legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55);
+        $("#resultsPanel").css("maxHeight", legendVisibility);
+        
+        resizeAll();
+   
+    });
 }
