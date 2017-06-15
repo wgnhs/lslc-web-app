@@ -80,10 +80,12 @@
                text-align: center;
                width: 3em;
            }
-           .galleryNav button{
+           .galleryNav .button{
                background-color:  #b74226;
+               display: inline-block;
+               padding: 2px 10px;
            }
-           .galleryNav button:hover{
+           .galleryNav .button:hover{
                background-color:  #842d1a;
                cursor: pointer;
            }
@@ -101,10 +103,10 @@
 
        <h2 id="galleryTitle">Thin Sections Gallery</h2> 
        <div class="galleryNav">
-           <button id="galleryPrev">&laquo;</button>
+           <div id="galleryPrev" class='button'>&laquo;</div>
            <label>page </label>
            <input id="galleryPage" name="galleryPage" type="search" value="1">
-           <button id="galleryNext">&raquo;</button>
+           <div id="galleryNext" class='button'>&raquo;</div>
        </div>
 
        <div id="thinGallery" class="divisionContent"></div>
