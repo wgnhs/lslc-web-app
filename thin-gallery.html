@@ -64,9 +64,25 @@
            }
            .galleryThumb{ 
                 height: 150px;
+               width: 225px;
            }
            /*PAGINATION*/
-           
+           .galleryNav {
+               background-color: #e6e6e6;
+               text-align: center;
+           }
+           .galleryNav input{
+               display: inline-block;
+               text-align: center;
+               width: 3em;
+           }
+           .galleryNav button{
+               background-color:  #b74226;
+           }
+           .galleryNav button:hover{
+               background-color:  #842d1a;
+               cursor: pointer;
+           }
            
        </style>
        
@@ -80,19 +96,15 @@
        </div> 
 
        <h2 id="galleryTitle">Thin Sections Gallery</h2> 
-        <div class="galleryPageLinks">
-            Page:
-            <div class="galleryPageLink">Page 2</div>
-            <ul class="pagesList"></ul>
+       <div class="galleryNav">
+           <button id="galleryPrev">&laquo;</button>
+           <label>page </label>
+           <input id="galleryPage" name="galleryPage" type="search" value="1">
+           <button id="galleryNext">&raquo;</button>
        </div>
-       
-     <!--  <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
+
        <div id="thinGallery" class="divisionContent"></div>
    
-       <div class="galleryPageLinks">
-           Page:
-           <ul class="pagesList"></ul>
-       </div>
        <div id="footer"></div>
    </div><!--end wrapper div-->
    
@@ -109,7 +121,8 @@
 
         //global variables: 
         var globalThinSectionGalleryArray = []; 
-        var pageSize = 15; //the number of image pairs to show on each page of the gallery. 
+        var pageSize = 12; //the number of image pairs to show on each page of the gallery. 
+        var currentPage = 1; //this gets reset by the buildGallery function.
         
          //happens right away on page load: 
         async.series([retrieveThinSections, callSort, callBuild, /*buildThinGallery.bind(null, 1, 12),*/ initGallery], function(){
@@ -119,13 +132,9 @@
         function initGallery (){
             var done =  function(){console.log("done");}
             
-            
+            console.log("init gallery.");
             //click listeners 
-            $(".galleryPageLink").on('click', function(){
-                console.log("click");
-                buildThinGallery(1000,pageSize);
-            });
-            
+        
             $(".thinSection").on('click', function(){
                 console.log("view thin section #", $(this).data('thinID'));
                 
@@ -203,7 +212,7 @@
                
 //               console.log('response', response);
 //               console.log('feature coll', featureCollection);
-               buildPageList(response.features.length, pageSize); 
+               buildGalleryNav(response.features.length, pageSize); 
                
                for (i in response.features){ 
                    
@@ -215,24 +224,48 @@
 
        } //end retrieveThinSections
         
-        function buildPageList (resultsTotal, pageSize) {
+        function buildGalleryNav (resultsTotal, pageSize) {
+            //should be called once on page initialization. 
+             var numberOfPages = Math.ceil(resultsTotal/pageSize); 
             
             $("#galleryTitle").after("<span>("+resultsTotal+" found)</span>");
+            $("#galleryPage").after("<span> of "+numberOfPages+"</span>");
+
+            console.log("build a page nav for ", resultsTotal, "results.", numberOfPages, "pages."); 
             
-            var numberOfPages = Math.ceil(resultsTotal/pageSize); 
             
-            console.log("build a page list for ", resultsTotal, "results.", numberOfPages, "pages."); 
+            //input listener for page number input: 
+            $("#galleryPage").on("input", function(){
+                var newPage = $("#galleryPage").val();
+                
+                console.log("change to page", newPage);
+                buildThinGallery(newPage, pageSize);
+                
+            });
+            //input listener for next and previous buttons: 
+            $("#galleryNext").click(function(){
+                var newPage = parseInt(currentPage)+1;
+                
+                buildThinGallery(newPage, pageSize);
+     
+            });
+            $("#galleryPrev").click(function(){
+                var newPage = parseInt(currentPage)-1;
+                
+                buildThinGallery(newPage, pageSize);
+     
+            });
             
-            for (var i=0; i <numberOfPages; i++){
-                console.log(i);
-            }
             
-            //apend to class .pagesList (appears at the top and the bottom of the page.)
+
             
         }
         
         function buildThinGallery(pageNumber, pageSize) {
-          
+            //reset the global var representing the current page: 
+            currentPage = pageNumber;
+            //change the page input value: 
+            $("#galleryPage").val(currentPage);
             
             //reset the varible representing the contents of the gallery. 
             var galleryContent= $("<div></div>");
@@ -251,7 +284,7 @@
                 thinSec.addClass("galleryItemDiv");
                 thinSec.attr('title','click to view');
 
-                thinSec.data({"thinID": item.CatalogNumber, "handSampleCatalogNumber": 1});
+                thinSec.data({"thinID": item.CatalogNumber/*, "handSampleCatalogNumber": 1*/});
                 
                 galleryContent.append(thinSec);  
                 
@@ -274,7 +307,6 @@
         }
         
        
-        
     </script><!-- end javascript for building the thin section gallery -->
    
    
