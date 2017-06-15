@@ -66,6 +66,10 @@
                 height: 150px;
                width: 225px;
            }
+           #thinGallery .thinSection:hover{
+               background-color: #e6e6e6;
+               cursor: pointer;
+           }
            /*PAGINATION*/
            .galleryNav {
                background-color: #e6e6e6;
@@ -125,23 +129,19 @@
         var currentPage = 1; //this gets reset by the buildGallery function.
         
          //happens right away on page load: 
-        async.series([retrieveThinSections, callSort, callBuild, /*buildThinGallery.bind(null, 1, 12),*/ initGallery], function(){
+        async.series([retrieveThinSections, callSort, callBuild, initGallery], function(){
             console.log("all done. global data array: ", globalThinSectionGalleryArray);
         });
         
         function initGallery (){
-            var done =  function(){console.log("done");}
             
-            console.log("init gallery.");
-            //click listeners 
-        
-            $(".thinSection").on('click', function(){
-                console.log("view thin section #", $(this).data('thinID'));
+            //delegated click listener for launching the modal: 
+            $("#thinGallery").on('click','.thinSection', function(){
+                console.log("view modal for thin section #", $(this).data('thinID'));
                 
                 modal.thinSectionViewer($(this).data('thinID'));
             });
-            
-            
+              
         }
         
         var thinSectionsManager = (function(){
@@ -210,8 +210,6 @@
                
                //I think Pete changed the map server so we can get over 15000 results in one query. 
                
-//               console.log('response', response);
-//               console.log('feature coll', featureCollection);
                buildGalleryNav(response.features.length, pageSize); 
                
                for (i in response.features){ 
@@ -262,6 +260,8 @@
         }
         
         function buildThinGallery(pageNumber, pageSize) {
+            //called every time a new page is displayed
+            
             //reset the global var representing the current page: 
             currentPage = pageNumber;
             //change the page input value: 
@@ -292,8 +292,7 @@
             
             //replace the contents of the gallery div with the updated content variable. 
             $("#thinGallery").html(galleryContent);
-            
-            //callback();
+      
         }
         
         function callBuild(callback){

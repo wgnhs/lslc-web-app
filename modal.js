@@ -3,13 +3,13 @@ var modal = (function(){
     /* Functions for closing the modal */
     window.onclick = function(event) {
         if (event.target == modalBackground) {
-      //      console.log("clicked modalBackground.");
+            console.log("clicked modalBackground.");
             modal.close();
         }
     }
     /*for the closemodal button*/
      $('#modalBackground').on('click', '#closemodal', function() {
-            console.log("close modal.");
+            console.log("close modal via background.");
             modal.close();   
     });
     
@@ -53,7 +53,7 @@ var modal = (function(){
        
         
         //append the needed divs 
-        modalContent += " <h2 id='header'></h2>";
+        modalContent += " <h2 id='modalHeader'></h2>";
         modalContent += "<p>Drag the slider to shift from plane-polarized light to cross-polarized light. Zoom to view in detail. </p>"
        // modalContent += "<div id='topSection'>"
         modalContent += "<div id='sampleLink'></div>";
@@ -64,7 +64,7 @@ var modal = (function(){
         $("#modal-content").append(modalContent);
         
         
-        $('#header').text('Thin Section #' + id);
+        $('#modalHeader').text('Thin Section #' + id);
         $('#sampleLink').append("<div>part of Sample #"+ id +"<br/>(click here to view record)</div><img class='sampleChevron' src='images/chevron_right_gw.png' alt=''>");
         
         //populate the parts of the thin section viewer: 
@@ -75,7 +75,7 @@ var modal = (function(){
         modalBackground.style.visibility = "visible";
     };
     var close = function(){
-        console.log("close modal.");
+        console.log("close modal via close button.");
         
         //clear all contents of the modal... 
         $("#modal-content").html("");
