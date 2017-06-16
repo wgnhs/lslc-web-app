@@ -26,7 +26,7 @@
        <!-- JQuery UI  -->
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-    
+ 
        
        <!-- local stylesheets -->
            <LINK href="generalStyle.css" rel='stylesheet'/>
@@ -38,187 +38,288 @@
         <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
       <![endif]-->
        
+       <style>
+           h2 {
+               display: inline;
+               padding-right: 5px;
+           }
+           .galleryPageLinks{
+               background-color: #e6e6e6;
+           }
+           .galleryPageLink {
+               background-color: orange;
+               display: inline-block;
+           }
+           .galleryPageLink:hover {
+               background-color: darkgoldenrod;
+               cursor: pointer;
+           }
+           .galleryItemDiv {
+               display: inline-block;
+               margin: 5px;
+               padding: 3px;
+           }
+           .galleryItemDiv p{
+               margin: 0;
+           }
+           .galleryThumb{ 
+                height: 150px;
+               width: 225px;
+           }
+           #thinGallery .thinSection:hover{
+               background-color: #e6e6e6;
+               cursor: pointer;
+           }
+           /*PAGINATION*/
+           #navContainer {
+               text-align: center;
+               background-color: #e6e6e6; /* bar all the way across the page */
+           }
+           .galleryNav {
+               /*background-color: #e6e6e6;*/ /* just color between the next and previous buttons */
+               display: inline-block;
+           }
+           .galleryNav > label, .galleryNav>span {
+               margin: 0px 5px;
+           }
+           .galleryNav input{
+               display: inline-block;
+               text-align: center;
+               width: 3em;
+           }
+           .galleryNav .button{
+               background-color:  #b74226;
+               display: inline-block;
+               padding: 2px 10px;
+               color: white;
+           }
+           .galleryNav .button:hover{
+               background-color:  #842d1a;
+               cursor: pointer;
+           }
+           
+       </style>
+       
 </HEAD>
 <BODY>
   
    <div id="header"></div>
    <div id="wrapper">
-        
+        <div id="modalBackground" class="modalBackground">
+           <div id="modal-content"></div>
+       </div> 
 
-       <h2>Thin Sections Gallery</h2> 
-       <span>Mouse-over to view cross-polarized images</span>
-       
-     <!--  <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
+       <h2 id="galleryTitle">Thin Sections Gallery</h2> 
+       <p>Thin sections are pieces of rock, sliced thin and mounted on microscope slides. Each thin section in our collection was photographed in plane polarized and cross polarized light, as geologists in 1900 would have viewed these under a microscope. <br>Click on a thin section photo pair below to view it in detail. </p>
+       <div id="navContainer">
+           <div class="galleryNav">
+               <div id="galleryPrev" class='button'>&laquo;</div>
+               <label>page </label>
+               <input id="galleryPage" name="galleryPage" type="search" value="1">
+               <div id="galleryNext" class='button'>&raquo;</div>
+           </div>
+       </div>
+
        <div id="thinGallery" class="divisionContent"></div>
    
-       
        <div id="footer"></div>
    </div><!--end wrapper div-->
    
-   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
+   <!-- header js: must go after the wrapper div and header div -->
    <script src="header.js"></script>
-   <script>
-           //indicate the current page in the nav bar. 
-          // $("#navHome").css("background-color", "#848484");
-   </script>
+
     
     <!-- javascript links -->
     <script src="mapServiceUrls.js"></script>
+    <script src="modal.js"></script>
     
     <!-- javascript for building the thin section gallery -->
     <script>
 
         //global variables: 
-        var globalThinSectionsArray = []; 
+        var globalThinSectionGalleryArray = []; 
+        var pageSize = 12; //the number of image pairs to show on each page of the gallery. 
+        var currentPage = 1; //this gets reset by the buildGallery function.
         
-    
-       function retrieveThinSectionImages(callback){
-           var thinImagesQuery = L.esri.query({url: thinSectionsTableURL});
-           thinImagesQuery.fields(["*"]); 
-           
-           thinImagesQuery.run(function(err, featureCollection, response){
-//               console.log('response', response);
-//               console.log('feature coll', featureCollection);
-                         
-               console.log("Query returned. global array: ", globalThinSectionsArray);
-               
-               for (i in response.features){
-                   
-                  thinSectionsManager.add(response.features[i].attributes);
-                   
-                   
-               }
-               callback();
-               
-           });
-
-       }
+         //happens right away on page load: 
+        async.series([retrieveThinSections, callSort, callBuild, initGallery], function(){
+            console.log("all done. global data array: ", globalThinSectionGalleryArray);
+        });
         
-        function consoleAfter(callback) {
-            console.log("after query? ");
-            callback();
+        function initGallery (){
+            
+            //delegated click listener for launching the modal: 
+            $("#thinGallery").on('click','.thinSection', function(){
+                console.log("view modal for thin section #", $(this).data('thinID'));
+                
+                modal.thinSectionViewer($(this).data('thinID'));
+            });
+              
         }
-
         
         var thinSectionsManager = (function(){
             
             var add = function(array){
-                array.PPLthumbURL = 'images/notebooks/notebook-icon.jpg'; 
-                globalThinSectionsArray = globalThinSectionsArray.concat(array);
+                //construct the image URL properties from the catalog number. 
+                array.PPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array.CatalogNumber+'ppl_thumb.jpg'; 
+                array.XPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array.CatalogNumber+'xpl_thumb.jpg'; 
+                globalThinSectionGalleryArray = globalThinSectionGalleryArray.concat(array);
                 
             }
             
             
-            var sort = function(attr, direction){
+            var sortByNumber = function(attr, direction){
                                
                 console.log("sort by "+attr+" in "+direction+" order."); 
                 
-                globalThinSectionsArray.sort(function (a,b){
-                  
-                    if(Number(a[attr]) < Number(b[attr])) return -1; 
-                    if(Number(a[attr]) > Number(b[attr])) return 1; 
-                    return 0;
-                                                         
-                });
+                if (direction === 'ascending'){
                 
-                console.log(globalThinSectionsArray);
+                    globalThinSectionGalleryArray.sort(function (a,b){
+
+                        if(parseInt(a[attr]) < parseInt(b[attr])) return -1; 
+                        if(parseInt(a[attr]) > parseInt(b[attr])) return 1; 
+                        return 0;
+
+                    });
+                } else if (direction === 'descending'){
+                    globalThinSectionGalleryArray.sort(function (a,b){
+
+                        if(parseInt(a[attr]) > parseInt(b[attr])) return -1; 
+                        if(parseInt(a[attr]) < parseInt(b[attr])) return 1; 
+                        return 0;
+
+                    });
+                }
+                
+                console.log(globalThinSectionGalleryArray);
             }
             
+            var page = function(pageNumber, pageSize){
+                
+                //page number arguments start at page 1,so we need to correct for zero-indexing
+                var start = (pageNumber-1) * pageSize; 
+                var end = start + pageSize;
+                return globalThinSectionGalleryArray.slice(start,end);
+                
+            }
+            
+            //exposed methods: 
             return {
                 "add": add, 
-                "sort": sort,
+                "sortByNumber": sortByNumber,
+                "page": page,
             }
-            
-        })();   
+        })(); //end thinSectionManager
         
-         
         
-        function replaceThumbnailImage(number){
-            var PPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+number+'ppl_thumb.jpg';
-            
-            var testImage = new Image(); 
-            
-            
-            testImage.onload = function(){
-                //successfully found the new image.  
-                console.log("image found");
-                //replace the image in the html page. 
-                console.log("element", $("#pplthumb_"+number));
-                
-                
-               $("#pplthumb_"+number).attr('src', testImage.src);
-                
-                
-                //replace the data attribute in the global data array
-                for(i in globalThinSectionsArray){
-                    if (globalThinSectionsArray[i].CatalogNumber === number){
-                        globalThinSectionsArray[i].PPLthumbURL = testImage.src;
-                    }
-                }
-                console.log("global array: ", globalThinSectionsArray);
-                
-                
-            }
-            
-            testImage.src= PPLthumbURL; 
-            
-        }
-        
-        function replaceDataAttribute(){
-            
-        }
-        
-        function replaceImages(){
-            
-            var subset = [{"CatalogNumber": "1"}, {"CatalogNumber": "11"}, {"CatalogNumber": "12"}, {"CatalogNumber": "13"}];
-            
-            for (i in subset){
-               // thinNumber = globalThinSectionsArray[i].CatalogNumber;
-                thinNumber = subset[i].CatalogNumber;
-                replaceThumbnailImage(thinNumber);
+    
+       function retrieveThinSections(callback){
+           //this should happen once upon page load. 
+           
+           var thinImagesQuery = L.esri.query({url: thinSectionsTableURL});
+           thinImagesQuery.fields(["*"]); 
+           
+           thinImagesQuery.run(function(err, featureCollection, response){
                
-            }
+               //I think Pete changed the map server so we can get over 15000 results in one query. 
+               
+               buildGalleryNav(response.features.length, pageSize); 
+               
+               for (i in response.features){ 
+                   
+                  thinSectionsManager.add(response.features[i].attributes);
+               }
+               callback();
+               
+           }); //end query.run callback
+
+       } //end retrieveThinSections
+        
+        function buildGalleryNav (resultsTotal, pageSize) {
+            //should be called once on page initialization. 
+             var numberOfPages = Math.ceil(resultsTotal/pageSize); 
+            
+            $("#galleryTitle").after("<span>("+resultsTotal+" found)</span>");
+            $("#galleryPage").after("<span> of "+numberOfPages+"</span>");
+
+            console.log("build a page nav for ", resultsTotal, "results.", numberOfPages, "pages."); 
+            
+            
+            //input listener for page number input: 
+            $("#galleryPage").on("input", function(){
+                var newPage = $("#galleryPage").val();
                 
+                console.log("change to page", newPage);
+                buildThinGallery(newPage, pageSize);
+                
+            });
+            //input listener for next and previous buttons: 
+            $("#galleryNext").click(function(){
+                var newPage = parseInt(currentPage)+1;
+                
+                buildThinGallery(newPage, pageSize);
+     
+            });
+            $("#galleryPrev").click(function(){
+                var newPage = parseInt(currentPage)-1;
+                
+                buildThinGallery(newPage, pageSize);
+     
+            });
+            
+            
+
             
         }
         
-        function buildThinGallery(callback) {
-            var divisionContent= '';
+        function buildThinGallery(pageNumber, pageSize) {
+            //called every time a new page is displayed
+            
+            //reset the global var representing the current page: 
+            currentPage = pageNumber;
+            //change the page input value: 
+            $("#galleryPage").val(currentPage);
+            
+            //reset the varible representing the contents of the gallery. 
+            var galleryContent= $("<div></div>");
+            
+            var dataForDisplay = thinSectionsManager.page(pageNumber, pageSize); // .page accepts two arguments: page number then page size
+            
             
             //for every thin section...
-            for (i in globalThinSectionsArray.slice(0,10)){
-               // console.log("item", globalThinSectionsArray[i]);
+            for (i in dataForDisplay){
+                var item = dataForDisplay[i];
                 
-                var thinDiv = '<div>';
+                var thinSec = $('<div class="thinSection"></div>').html("<p>Thin Section #"+item.CatalogNumber+"</p>");
                 
-                thinDiv += "<img src='images/notebooks/notebook-icon.jpg' id='pplthumb_"+globalThinSectionsArray[i].CatalogNumber+"'/>";
+                thinSec.append("<img class='galleryThumb' src='"+item.PPLthumbURL+"'>");
+                thinSec.append("<img class='galleryThumb' src='"+item.XPLthumbURL+"'>");
+                thinSec.addClass("galleryItemDiv");
+                thinSec.attr('title','click to view');
+
+                thinSec.data({"thinID": item.CatalogNumber/*, "handSampleCatalogNumber": 1*/});
                 
-                thinDiv += globalThinSectionsArray[i].CatalogNumber;
-                
-                thinDiv += "</div>";
-                
-                divisionContent += thinDiv;
-                
+                galleryContent.append(thinSec);  
                 
             }
             
-            
-            $("#thinGallery").append(divisionContent);
-            
+            //replace the contents of the gallery div with the updated content variable. 
+            $("#thinGallery").html(galleryContent);
+      
+        }
+        
+        function callBuild(callback){
+            buildThinGallery(1,pageSize); 
             callback();
         }
         
-        function sort(callback){
-            thinSectionsManager.sort("CatalogNumber", "ascending"); 
+        function callSort(callback){
+            thinSectionsManager.sortByNumber("CatalogNumber", "ascending"); 
             callback();
         }
         
-        async.series([retrieveThinSectionImages, sort, buildThinGallery, replaceImages, consoleAfter], function(){
-            console.log("all done. global data array: ", globalThinSectionsArray);
-        });
-        
-        
-    </script><!-- end javascript for building the notebook list -->
+       
+    </script><!-- end javascript for building the thin section gallery -->
    
    
 </BODY> 
