@@ -71,9 +71,16 @@
                cursor: pointer;
            }
            /*PAGINATION*/
-           .galleryNav {
-               background-color: #e6e6e6;
+           #navContainer {
                text-align: center;
+               background-color: #e6e6e6; /* bar all the way across the page */
+           }
+           .galleryNav {
+               /*background-color: #e6e6e6;*/ /* just color between the next and previous buttons */
+               display: inline-block;
+           }
+           .galleryNav > label, .galleryNav>span {
+               margin: 0px 5px;
            }
            .galleryNav input{
                display: inline-block;
@@ -84,6 +91,7 @@
                background-color:  #b74226;
                display: inline-block;
                padding: 2px 10px;
+               color: white;
            }
            .galleryNav .button:hover{
                background-color:  #842d1a;
@@ -102,11 +110,14 @@
        </div> 
 
        <h2 id="galleryTitle">Thin Sections Gallery</h2> 
-       <div class="galleryNav">
-           <div id="galleryPrev" class='button'>&laquo;</div>
-           <label>page </label>
-           <input id="galleryPage" name="galleryPage" type="search" value="1">
-           <div id="galleryNext" class='button'>&raquo;</div>
+       <p>Thin sections are pieces of rock, sliced thin and mounted on microscope slides. Each thin section in our collection was photographed in plane polarized and cross polarized light, as geologists in 1900 would have viewed these under a microscope. <br>Click on a thin section photo pair below to view it in detail. </p>
+       <div id="navContainer">
+           <div class="galleryNav">
+               <div id="galleryPrev" class='button'>&laquo;</div>
+               <label>page </label>
+               <input id="galleryPage" name="galleryPage" type="search" value="1">
+               <div id="galleryNext" class='button'>&raquo;</div>
+           </div>
        </div>
 
        <div id="thinGallery" class="divisionContent"></div>
