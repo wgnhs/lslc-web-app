@@ -1,6 +1,15 @@
 //add html content for the header (nhome link, nav bar) and the footer. 
 //each html page must have a header and a footer div. 
 
+//'<svg version="1.1" id="hamburgerSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" enable-background="new 0 0 55 55" xml:space="preserve"><line fill="none" stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" x1="3" y1="16" x2="51" y2="16"/><line fill="none" stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" x1="3" y1="28" x2="51" y2="28"/><line fill="none" stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" x1="3" y1="40" x2="51" y2="40"/><circle stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" cx="18.4" cy="15.9" r="5.6"/><circle stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" cx="36.4" cy="39.9" r="5.6"/></svg>'
+
+var hamburgerIcon = '<svg version="1.1" id="hamburgerSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" enable-background="new 0 0 55 55" xml:space="preserve"><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="16" x2="51" y2="16"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="28" x2="51" y2="28"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="40" x2="51" y2="40"/></svg>'
+
+if ($(window).width() <= 800) {
+	$("body").append($("<div id='headerToggle'>" + hamburgerIcon + "</div>"));
+	$("body").append($("<div id='sidePanel'></div>"));
+}
+
 var header = "<div id='navWrapper'>"
 
 header += "<div id='logoContainer'> <a href='index.html'><img id='homeLogo' src='images/lslc-logo_v4_light-lake_smaller.png' alt='The Lake Superior Legacy Collection Logo'/></a></div><!--<span>geologic samples from the Lake Superior Division of the USGS, 1882-1922</span>-->";
@@ -21,10 +30,48 @@ header += "<a id='navContact' href='contact.html' class='navMainLink'><h3>Contac
 
 header+="</nav></div>";
 
-$("#header").append(header);
+if ($(window).width() <= 800){
+	$("#sidePanel").append(header);
+} else {
+	$("#header").append(header);
+}
+
 
 //may need to work on this header's responsiveness in narrow windows... figure out how to collapse to a simple list or a menu button. 
 
 var footer = "<p> Lake Superior Legacy Collection <br/> <a href='http://wgnhs.uwex.edu' target='_blank'>Wisconsin Geological and Natural History Survey</a> <br/><a href='http://uwex.edu' target='_blank'>University of Wisconsin-Extension</a></p>";
 
 $("#footer").append(footer);
+
+//------------------------collaspable button functionality
+var sidePanelOn = false;
+var hoverColorOff = "#828282";
+var hoverColorOn = "#773322";
+var onColor = "#b74226";
+var offColor = "#a8a8a8";
+
+var hoverShadow = "0px 0px 8px 4px rgba(0,0,0,0.7)";
+var regShadow = "0px 0px 5px 3px rgba(0,0,0,0.5)";
+
+$("#headerToggle").click(function(){
+	if (sidePanelOn){
+		sidePanelOn = false;
+		$("#sidePanel").css("visibility","hidden")
+			$(this).hover(function(){
+                    $(this).css({"background-color":hoverColorOff,"box-shadow":hoverShadow})
+            }, function(){
+                    $(this).css({"background-color":offColor,"box-shadow":regShadow})
+            })
+	} else {
+		sidePanelOn = true;
+		$("#sidePanel").css("visibility","visible")
+			$(this).hover(function(){
+                    $(this).css({"background-color":hoverColorOn,"box-shadow":"none"})
+            }, function(){
+                    $(this).css({"background-color":onColor,"box-shadow":"none"})
+            })
+	}
+})
+
+
+

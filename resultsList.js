@@ -248,6 +248,10 @@ function initResize(){
         $("#leftPanel").css("height", leftPanelHeight + "px");
           
         $(".leaflet-top").css("top", $("#leftPanel").offset().top);
+
+        if ($(window).width() <= 800){
+          $(".leaflet-top").css("top", "55px");
+        }
       },
       resize: function(){
         resizeAll();
@@ -273,6 +277,10 @@ function initResize(){
         $("#resultsPanel").css("top", mapHeight+"px");
         
         $(".leaflet-top").css("top", $("#leftPanel").offset().top);
+
+        if ($(window).width() <= 800){
+          $(".leaflet-top").css("top", "55px");
+        }
     }
     
     /* Listener for window resize */

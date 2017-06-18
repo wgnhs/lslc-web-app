@@ -332,9 +332,41 @@ h3 {
     
 }
 
+#headerToggle{
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background-color: #a8a8a8;
+    box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.5);
+    top: 5px;
+    right: 5px;
+    z-index: 3000;
+}
+#headerToggle:hover{
+   background-color: #828282;
+   box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.7); 
+}
+
+#hamburgerSvg{
+    max-width: 50px;
+    max-height: 50px;
+}
+
+#sidePanel{
+    position: absolute;
+    height: 1000px;
+    width: 60%;
+    background-color: #fff;
+    top: 60px;
+    right: 0px;
+    box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.5);
+    z-index: 3000; 
+    visibility: hidden;
+}
+
 /*============= Media Queries ===============*/
 
-@media only screen and (max-width : 650px) {
+@media only screen and (max-width : 800px) {
     #wrapper{
         width:100%;
     }
@@ -367,6 +399,10 @@ h3 {
         width: 100%;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    #header{
+        display: none;
     }
     
     /* end Header */
