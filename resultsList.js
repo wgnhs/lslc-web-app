@@ -245,12 +245,13 @@ function initResize(){
         var mapHeight = wrapperHeight - panelHeight;
         $("#map").css("height", mapHeight + "px");
         var leftPanelHeight = mapHeight - 100;
-        $("#leftPanel").css("height", leftPanelHeight + "px");
-          
-        $(".leaflet-top").css("top", $("#leftPanel").offset().top);
 
+        if ($(window).width() > 800){$("#leftPanel").css("height", leftPanelHeight + "px");}
+          
         if ($(window).width() <= 800){
           $(".leaflet-top").css("top", "55px");
+        } else {
+          $(".leaflet-top").css("top", $("#leftPanel").offset().top);
         }
       },
       resize: function(){
@@ -271,7 +272,7 @@ function initResize(){
         $("#map").css("height", mapHeight + "px");
         //set the left panel to be 100 px less tall than the map. 
         var leftPanelHeight = mapHeight - 100;
-        $("#leftPanel").css("height", leftPanelHeight + "px");
+        if ($(window).width() > 800){$("#leftPanel").css("height", leftPanelHeight + "px");}
         
         //reposition the results panel to match the height of the map. 
         $("#resultsPanel").css("top", mapHeight+"px");

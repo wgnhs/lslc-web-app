@@ -317,6 +317,15 @@
           }
 
         }
+
+        //filters minimization--------------------------------
+        var filtersIcon1 = '<svg version="1.1" id="filtersSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" enable-background="new 0 0 55 55" xml:space="preserve"><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="16" x2="51" y2="16"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="28" x2="51" y2="28"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="40" x2="51" y2="40"/><circle fill="#a8a8a8" stroke="#000000" stroke-width="4" stroke-miterlimit="10" cx="18.4" cy="15.9" r="5.6"/><circle fill="#a8a8a8" stroke="#000000" stroke-width="4" stroke-miterlimit="10" cx="36.4" cy="39.9" r="5.6"/></svg>'
+
+        if ($(window).width() <= 800) {
+          $("body").append($("<div id='filtersToggle'>" + filtersIcon1 + "</div>"));
+        }
+
+
       </script>
        
        <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->

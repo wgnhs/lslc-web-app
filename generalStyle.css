@@ -332,6 +332,7 @@ h3 {
     
 }
 
+/*headerToggle*/
 #headerToggle{
     position: absolute;
     height: 50px;
@@ -364,11 +365,36 @@ h3 {
     visibility: hidden;
 }
 
+
+#filtersToggle{
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background-color: #a8a8a8;
+    box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.5);
+    top: 5px;
+    left: 5px;
+    z-index: 3000;
+    visibility: hidden;
+}
+#filtersToggle:hover{
+   background-color: #828282;
+   box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.7); 
+}
+
+#filtersSvg{
+    max-width: 50px;
+    max-height: 50px;
+}
+
+
+
 /*============= Media Queries ===============*/
 
 @media only screen and (max-width : 800px) {
     #wrapper{
         width:100%;
+        margin-top: 60px;
     }
     .modal-content{
        /* width: 85%;*/
@@ -406,4 +432,5 @@ h3 {
     }
     
     /* end Header */
+}
 }

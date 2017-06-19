@@ -1,13 +1,17 @@
 //add html content for the header (nhome link, nav bar) and the footer. 
 //each html page must have a header and a footer div. 
 
-//'<svg version="1.1" id="hamburgerSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" enable-background="new 0 0 55 55" xml:space="preserve"><line fill="none" stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" x1="3" y1="16" x2="51" y2="16"/><line fill="none" stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" x1="3" y1="28" x2="51" y2="28"/><line fill="none" stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" x1="3" y1="40" x2="51" y2="40"/><circle stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" cx="18.4" cy="15.9" r="5.6"/><circle stroke="#FFFFFF" stroke-width="4" stroke-miterlimit="10" cx="36.4" cy="39.9" r="5.6"/></svg>'
+var filtersIcon1 = '<svg version="1.1" id="filtersSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" enable-background="new 0 0 55 55" xml:space="preserve"><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="16" x2="51" y2="16"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="28" x2="51" y2="28"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="40" x2="51" y2="40"/><circle fill="#a8a8a8" stroke="#000000" stroke-width="4" stroke-miterlimit="10" cx="18.4" cy="15.9" r="5.6"/><circle fill="#a8a8a8" stroke="#000000" stroke-width="4" stroke-miterlimit="10" cx="36.4" cy="39.9" r="5.6"/></svg>'
+
+var filtersIcon2 = '<svg version="1.1" id="filtersSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" enable-background="new 0 0 55 55" xml:space="preserve"><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="16" x2="51" y2="16"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="28" x2="51" y2="28"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="40" x2="51" y2="40"/><circle fill="#b74226" stroke="#000000" stroke-width="4" stroke-miterlimit="10" cx="18.4" cy="15.9" r="5.6"/><circle fill="#b74226" stroke="#000000" stroke-width="4" stroke-miterlimit="10" cx="36.4" cy="39.9" r="5.6"/></svg>'
 
 var hamburgerIcon = '<svg version="1.1" id="hamburgerSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" enable-background="new 0 0 55 55" xml:space="preserve"><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="16" x2="51" y2="16"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="28" x2="51" y2="28"/><line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="3" y1="40" x2="51" y2="40"/></svg>'
 
 if ($(window).width() <= 800) {
-	$("body").append($("<div id='headerToggle'>" + hamburgerIcon + "</div>"));
-	$("body").append($("<div id='sidePanel'></div>"));
+	$("body").append($("<div id='headerToggle'>" + hamburgerIcon + "</div></div>"));
+	$("body").append($("<div id='sidePanel'>"));
+
+	$("body").append($("<div id='filtersToggle'>" + filtersIcon1 + "</div>"));
 }
 
 var header = "<div id='navWrapper'>"
@@ -45,6 +49,8 @@ $("#footer").append(footer);
 
 //------------------------collaspable button functionality
 var sidePanelOn = false;
+var filtersPanelOn = false;
+
 var hoverColorOff = "#828282";
 var hoverColorOn = "#773322";
 var onColor = "#b74226";
@@ -54,10 +60,25 @@ var hoverShadow = "0px 0px 8px 4px rgba(0,0,0,0.7)";
 var regShadow = "0px 0px 5px 3px rgba(0,0,0,0.5)";
 
 $("#headerToggle").click(function(){
+	if (filtersPanelOn){
+		pressFiltersToggle()
+	}
+	pressHeaderToggle();
+})
+
+$("#filtersToggle").click(function(){
+	if (sidePanelOn){
+		pressHeaderToggle()
+	}
+	pressFiltersToggle();
+})
+
+function pressHeaderToggle(){
 	if (sidePanelOn){
 		sidePanelOn = false;
 		$("#sidePanel").css("visibility","hidden")
-			$(this).hover(function(){
+			$("#headerToggle").css({"background-color":offColor,"box-shadow":regShadow})
+			$("#headerToggle").hover(function(){
                     $(this).css({"background-color":hoverColorOff,"box-shadow":hoverShadow})
             }, function(){
                     $(this).css({"background-color":offColor,"box-shadow":regShadow})
@@ -65,13 +86,40 @@ $("#headerToggle").click(function(){
 	} else {
 		sidePanelOn = true;
 		$("#sidePanel").css("visibility","visible")
-			$(this).hover(function(){
+			$("#headerToggle").css({"background-color":onColor,"box-shadow":"none"})
+			$("#headerToggle").hover(function(){
                     $(this).css({"background-color":hoverColorOn,"box-shadow":"none"})
             }, function(){
                     $(this).css({"background-color":onColor,"box-shadow":"none"})
             })
 	}
-})
+}
+
+function pressFiltersToggle(){
+	if (filtersPanelOn){
+		filtersPanelOn = false;
+		$("#leftPanel").css("visibility","hidden")
+			$("#filtersSvg").remove()
+			$("#filtersToggle").append($(filtersIcon1))
+			$("#filtersToggle").css({"background-color":offColor,"box-shadow":regShadow})
+			$("#filtersToggle").hover(function(){
+                    $(this).css({"background-color":hoverColorOff,"box-shadow":hoverShadow})
+            }, function(){
+                    $(this).css({"background-color":offColor,"box-shadow":regShadow})
+            })
+	} else {
+		filtersPanelOn = true;
+		$("#leftPanel").css("visibility","visible")
+			$("#filtersSvg").remove()
+			$("#filtersToggle").append($(filtersIcon2))
+			$("#filtersToggle").css({"background-color":onColor,"box-shadow":"none"})
+			$("#filtersToggle").hover(function(){
+                    $(this).css({"background-color":hoverColorOn,"box-shadow":"none"})
+            }, function(){
+                    $(this).css({"background-color":onColor,"box-shadow":"none"})
+            })
+	}
+}
 
 
 

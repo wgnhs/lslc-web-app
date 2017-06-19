@@ -1,6 +1,5 @@
 var globalLayer;
 
-
 var leafletMap = (function(){
     var map;
     var leafletFeatureLayer;
@@ -10,6 +9,9 @@ var leafletMap = (function(){
     var polygon;
     
     var initialize = function(){
+
+        //set to invisible to hide on non- map pages
+        $("#filtersToggle").css("visibility","visible")
         
          map = L.map('map', {
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
