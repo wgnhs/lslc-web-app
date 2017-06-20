@@ -254,10 +254,9 @@ var leafletMap = (function(){
     
     
     function queryGeom(inputGeom){
-        //takes in a rectangle from a draw event 
-        
-        
-       // console.log ("input", inputGeom);
+        //takes in a rectangle or polygon from a draw event 
+
+        console.log ("input geometry", inputGeom);
         
         var query = L.esri.query({url:PLSSSectionsLayerURL}); 
         query.intersects(inputGeom);
