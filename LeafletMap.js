@@ -21,8 +21,15 @@ var leafletMap = (function(){
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
-        L.esri.basemapLayer('Gray').addTo(map); 
-        L.esri.basemapLayer('GrayLabels').addTo(map);
+//        L.esri.basemapLayer('Gray').addTo(map); 
+//        L.esri.basemapLayer('GrayLabels').addTo(map);
+        
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
+            {
+            attribution: 'Map data OSM',
+            id: 'mapbox.light',
+            accessToken: 'pk.eyJ1IjoiY2Fyb2xpbmVyb3NlIiwiYSI6Ik55TUFmMVEifQ.ybZm7IghE2N0ezsMfaDNFQ' 
+            }).addTo(map);
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
 //        map.createPane('B-PLSSSections');
