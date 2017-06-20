@@ -512,7 +512,6 @@ span#greyButtonText {
 @media only screen and (max-width : 800px) {
   #leftPanel{
         position: absolute;
-        height: 1000px;
         width: 60%;
         background-color: #fff;
         top: 60px;
