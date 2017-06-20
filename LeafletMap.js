@@ -77,7 +77,7 @@ var leafletMap = (function(){
         
         var width = $(this).width() //defines width
 
-        console.log("width:", width)
+        //console.log("width:", width)
 
         //return boolean based on width
         if (width < 926) {
@@ -147,6 +147,9 @@ var leafletMap = (function(){
              
              //clear all Leaflet Draw indicators and handlers.
              disableLeafletDraw();
+             
+             var type = e.layerType; //type is either rectangle or polygon
+             console.log("type: ", type);
              
          });
         
@@ -381,10 +384,10 @@ var leafletMap = (function(){
 
         //tests out how the choropleth system is working
        // console.log("filtered values array -->", filteredValuesArray)
-        console.log("class breaks -->", break0,break1,break2,break3,breakTop)
+       // console.log("class breaks -->", break0,break1,break2,break3,breakTop)
 
         createLegend(breaks);
-        console.log("create legend breaks.");
+        //console.log("create legend breaks.");
 
        return {"class1Array": classesArray[1], "class2Array": classesArray[2], "class3Array": classesArray[3], "class4Array": classesArray[4]};
 
@@ -395,10 +398,10 @@ var leafletMap = (function(){
       //  console.log("highlight via Leaflet");
         var classes = calculateClasses(array); 
         
-       console.log("class 1 array:", classes.class1Array);
-       console.log("class 2 array:", classes.class2Array);
-       console.log("class 3 array:", classes.class3Array);
-       console.log("class 4 array:", classes.class4Array);
+//       console.log("class 1 array:", classes.class1Array);
+//       console.log("class 2 array:", classes.class2Array);
+//       console.log("class 3 array:", classes.class3Array);
+//       console.log("class 4 array:", classes.class4Array);
         
         leafletFeatureLayer.setStyle(function (feature){
             var fillColor; //blank variable for fill color
@@ -445,11 +448,11 @@ var leafletMap = (function(){
         
     }
     
-})();
+})(); //end leafletMap module 
 
 function createLegend(breaksArray){
 
-    console.log(breaksArray)
+    //console.log(breaksArray)
 
         $("#legend").remove();
         $("#map").append($("<div id='legend'><div>"));
