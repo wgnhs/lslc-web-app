@@ -5,7 +5,6 @@ var header = "<div id='navWrapper'>"
 
 header += "<div id='logoContainer'> <a href='index.html'><img id='homeLogo' src='images/lslc-logo_v4_light-lake_smaller.png' alt='The Lake Superior Legacy Collection Logo'/></a></div><!--<span>geologic samples from the Lake Superior Division of the USGS, 1882-1922</span>-->";
 
-//header += "<div class='striped-1 messageBar'><span>This webpage is currently under construction. You may encounter broken hyperlinks or other errors.</span></div>";
 
 header += "<nav>";
 
