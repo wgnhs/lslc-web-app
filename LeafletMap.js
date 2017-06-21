@@ -106,7 +106,7 @@ var leafletMap = (function(){
             });
         
          polygon = new L.Draw.Polygon(map, {
-                shapeOptions: {color:'#529952'}, 
+                shapeOptions: {color:'#103762'}, 
                 repeatMode: false, 
                 allowIntersection: false
             });
@@ -154,10 +154,7 @@ var leafletMap = (function(){
              
              //clear all Leaflet Draw indicators and handlers.
              disableLeafletDraw();
-             
-             var type = e.layerType; //type is either rectangle or polygon
-             console.log("type: ", type);
-             
+              
          });
         
         //listener for draw created event: 
@@ -173,26 +170,21 @@ var leafletMap = (function(){
             }
 
             var type = e.layerType; //type is either rectangle or polygon
-           
+            console.log("type: ", type);
             
             //add new layer to the featureGroup
             var layer = e.layer;
             drawnItems.addLayer(layer);
             drawnItems.setStyle({fillOpacity: 0, color: "#000"});
             
-            //style the delete button to enable it: 
-            //document.getElementById('customDeleteButton').style.backgroundPosition = "-182px -2px";
-            
             //zoom to the selection
-            map.fitBounds(layer.getBounds().pad(0.1));
+            map.fitBounds(layer.getBounds().pad(0.2));
             
-            //bring sections to front? TEMPORARY, PARTIAL FIX for seeing the popups. 
-            leafletFeatureLayer.bringToFront();
-            
-            //pass on the layer to the function which will query it for section IDs
+             //pass on the layer to the function which will query it for section IDs
             queryGeom(layer);
             
             
+
         });
         
         
@@ -251,10 +243,6 @@ var leafletMap = (function(){
             
             //remove the item in filter feedback
 
-            //re-style the map tool as disabled. 
-            //document.getElementById('customDeleteButton').style.backgroundPosition = "-242px -2px"; //tool disabled style
-
-            //customDeleteButton.disable();
         } else {console.log("no selection to clear.");}
 
     }
@@ -263,7 +251,7 @@ var leafletMap = (function(){
     function queryGeom(inputGeom){
         //takes in a rectangle or polygon from a draw event 
 
-        console.log ("input geometry", inputGeom);
+        console.log ("query input geometry", inputGeom);
         
         var query = L.esri.query({url:PLSSSectionsLayerURL}); 
         query.intersects(inputGeom);
@@ -280,6 +268,10 @@ var leafletMap = (function(){
             }
            // console.log("filter based on these sections:", selectedSections);
             filterForSections(selectedSections);
+            
+            //bring sections to front? TEMPORARY, PARTIAL FIX for seeing the popups.
+            leafletFeatureLayer.bringToFront();
+            console.log("brought sections to front.");
         });
     }
     
