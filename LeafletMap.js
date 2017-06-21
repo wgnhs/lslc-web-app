@@ -24,12 +24,19 @@ var leafletMap = (function(){
 //        L.esri.basemapLayer('Gray').addTo(map); 
 //        L.esri.basemapLayer('GrayLabels').addTo(map);
         
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
-            {
-            attribution: 'Map data OSM',
-            id: 'mapbox.light',
-            accessToken: 'pk.eyJ1IjoiY2Fyb2xpbmVyb3NlIiwiYSI6Ik55TUFmMVEifQ.ybZm7IghE2N0ezsMfaDNFQ' 
-            }).addTo(map);
+            //mapbox light basemap: 
+//        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
+//            {
+//            attribution: 'Basemap © <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
+//            id: 'mapbox.light',
+//            accessToken: 'pk.eyJ1IjoiY2Fyb2xpbmVyb3NlIiwiYSI6Ik55TUFmMVEifQ.ybZm7IghE2N0ezsMfaDNFQ' 
+//            }).addTo(map);
+        
+        //Soren basemap: 
+        L.tileLayer('https://api.mapbox.com/styles/v1/swal94/cj479c37q0rfr2rql1msnz6sp/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
+            accessToken: 'pk.eyJ1Ijoic3dhbDk0IiwiYSI6ImNpZnk5aWdzcDR5dDl0ZWx5dDhwZW13ejAifQ.y18LYK4VbBo8evRHtqiEiw'
+        }).addTo(map);
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
 //        map.createPane('B-PLSSSections');
