@@ -165,7 +165,7 @@
             "fieldNotebookNum":"none",
             "fieldPage": "N/A",
             "fieldNotebookTitle": "N/A",
-            "fieldNotebookThumb":"images/notebooks/fieldNotebook31_thumb.jpg",
+            "fieldNotebookThumb":"images/notebook-icon.jpg",
             "fieldNotebookUrl":"http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=article&did=EcoNatRes.VHBook035.i0001&id=EcoNatRes.VHBook035&isize=M", 
             "fieldAuthor":null,
             "fieldDate": null,
@@ -178,7 +178,7 @@
                 "lithDate": null, 
                 "lithAuthor":null,
                 "lithLedgerUrl": "http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=header&id=EcoNatRes.LithDescV&isize=M",
-                "lithLedgerThumb":"images/notebooks/lithBookV_thumb.jpg"
+                "lithLedgerThumb":"images/notebook-icon.jpg"
                 }],
             "WGNHSId": null,
             "sampleNotes":""
@@ -413,7 +413,8 @@
                         lithDetails.lithLedgerUrl = lithResponse.features[i].attributes.UwdcUrl;
                         lithDetails.lithDate = lithResponse.features[i].attributes.Year;
                         lithDetails.lithAuthor = lithResponse.features[i].attributes.Author;
-                       sampleRecordData.lithologies.push(lithDetails);
+                        lithDetails.lithLedgerThumb = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/lithBook"+lithResponse.features[i].attributes.BookId+"_cover_thumb.jpg";
+                        sampleRecordData.lithologies.push(lithDetails);
   
                    } //end for
                    
@@ -442,8 +443,8 @@
             }
             img.onerror = function(){
                 console.log("notebook "+notebookNumber+" thumb not found.");
-                sampleRecordData.fieldNotebookThumbnail = 'images/notebooks/notebookIcon.jpg';
-                resolve('images/notebooks/notebookIcon.jpg');
+                sampleRecordData.fieldNotebookThumbnail = 'images/notebook-icon.jpg';
+                resolve('images/notebook-icon.jpg');
                
             }
             img.src = thumbURL; 
@@ -650,7 +651,7 @@
                     
                     lith+="<div class='divisionEntry'>";      
                     //thumbnail in link
-                    lith += "<a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank><img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>"; 
+                    lith += "<a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank><img src='"+sampleRecordData.lithologies[i].lithLedgerThumb+"' alt='notebook cover'/></a>"; 
                  
                     //details
                     lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>"; 
