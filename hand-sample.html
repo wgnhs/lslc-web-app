@@ -234,8 +234,7 @@
             } //end else
         } //end function resetSampleNumber
         
-        //var sampleNumberSQL = "Upper(HandSampleCatalogNumber) LIKE UPPER('"+number+"')";
-   
+
         function searchSample(number){
  
            queryForSample(number)
@@ -244,18 +243,14 @@
                
                //three tables can all be queried using the initial information...
                var threeTableResults = Promise.all([retrieveNotebookData(), retrieveThinSections(), retrieveLithology()]);
-               
-               
-//               retrieveNotebookData()
-//                   .then(function(resolved){
-//                       console.log("5. resolved notebook query. ", resolved);
-//                       retrieveThinSections()
-//                           .then(function(resolved){
-//                                console.log("7. thin section query done.", resolved);
-//                                retrieveLithology()
+ 
                
                //finding the ledgers must happen after finding the lithologies. 
                threeTableResults.then(function(){
+                   console.log("queries are done. all sample data: ", sampleRecordData);
+                   buildReport();
+                   
+   /*                
                                         console.log("9. lithologies:", sampleRecordData.lithologies);
 
                                         var ledgerQueryQueue = [];
@@ -273,18 +268,16 @@
                                             buildReport();
                                         });
 
-                                });
-//                            });
-//
-//                    });
+                                
+    */
+               });
+
             }).catch(function(error){
                console.log("error. ", error);
            })
        } //end testSample
         
         
-        
-        //needs to be called! 
         function queryForSample(number){
             console.log("1. query for sample #", number); 
             return new Promise (function(resolve, reject){
@@ -416,7 +409,10 @@
                         lithDetails.lithPage = lithResponse.features[i].attributes.Page;
                         lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
                         lithDetails.lithNotes = lithResponse.features[i].attributes.Notes;
-                                                                    
+                        lithDetails.lithLedgerTitle  =   lithResponse.features[i].attributes.Title;  
+                        lithDetails.lithLedgerUrl = lithResponse.features[i].attributes.UwdcUrl;
+                        lithDetails.lithDate = lithResponse.features[i].attributes.Year;
+                        lithDetails.lithAuthor = lithResponse.features[i].attributes.Author;
                        sampleRecordData.lithologies.push(lithDetails);
   
                    } //end for
@@ -430,43 +426,7 @@
        
        } //end retrieveLithology
         
-        function retrieveLedger(lithologyindex){
-            return new Promise(function(resolve, reject){
-
-//                if (lithDescriptions){
-//                    for(i in sampleRecordData.lithologies){
-                        
-                        var ledgerQuery = L.esri.query({url:ledgerTableURL});
-                        ledgerQuery.where("BookId = "+ sampleRecordData.lithologies[lithologyindex].lithLedgerId); 
-                        ledgerQuery.fields(["*"]);
-                        
-                       // var ledgerDetails = [];
-                        console.log("search for ledger book #", sampleRecordData.lithologies[lithologyindex].lithLedgerId); 
-
-                        ledgerQuery.run(function(err, result, ledgerResponse){
-                           console.log("ledger info: ", ledgerResponse.features[0].attributes);
-                            
-                            
-                           sampleRecordData.lithologies[lithologyindex].lithLedgerTitle =  ledgerResponse.features[0].attributes.Title; 
-                           sampleRecordData.lithologies[lithologyindex].lithLedgerUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
-                           sampleRecordData.lithologies[lithologyindex].lithDate =  ledgerResponse.features[0].attributes.Year;
-                           sampleRecordData.lithologies[lithologyindex].lithAuthor =  ledgerResponse.features[0].attributes.Author;
-                           resolve(ledgerResponse.features[0]);
-                           
-                           
-
-                        }); //end .run
-//                        
-                        
-//                    } //end for
-//                    
-//                    
-//                } //end if
-    
-            }); //end return Promise
-            
-        } //end function retrieveLedgers
-       
+     
        function retrieveFieldNotebookThumbnail(notebookNumber){
            return new Promise(function(resolve, reject){
                 var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookNumber+"_cover_thumb.jpg"; 
@@ -516,7 +476,7 @@
             };
             
             //populate the various fields in the report, using the values in the sampleRecordData object (global variable)
-           // addHandSamples();
+          
             addThinSections();
             addLocation();
             addFieldNotes();
@@ -536,12 +496,7 @@
             } else {console.log("samID is false.");}
         }
         
-        function addHandSamples(){
-            if (sampleRecordData.handSampleId){
-                $("#handSamples").append("Hand Sample # "+sampleRecordData.handSampleId);
-            } else {$("#handSamples").append('<p>none</p>');}
-        }
-        
+   
        function addThinSections(){
         //    console.log("sampleRecordData", sampleRecordData);
             //populate the thin section results:
@@ -691,22 +646,23 @@
             if(sampleRecordData.lithologies.length > 0){
                 for (i in sampleRecordData.lithologies){
                     //console.log("lith data", sampleRecordData.lithologies[i]);
+                    //there is always a URL for a lith book. 
                     
                     lith+="<div class='divisionEntry'>";      
                     //thumbnail in link
-                    if (sampleRecordData.lithologies[i].lithLedgerUrl){lith += "<a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"}; 
-                    lith += "<img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
+                    lith += "<a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank><img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>"; 
+                 
                     //details
                     lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>"; 
-                    //lith += "<p>Ledger "+sampleRecordData.lithologies[i].lithLedgerId+"</p>"
-                    if (sampleRecordData.lithologies[i].lithLedgerUrl){
-                        lith+=   "<p><a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithLedgerTitle+"</a> (ledger #"+sampleRecordData.lithologies[i].lithLedgerId+")</p><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
-                    };
+               
+                    
+                    lith+= "<p><a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithLedgerTitle+"</a> (ledger #"+sampleRecordData.lithologies[i].lithLedgerId+")</p><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>";
+                    
                     
                     if (sampleRecordData.lithologies[i].lithNotes){
                         lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p>"
                     };
-                    lith+='</div></div>';
+                    lith+='</div></div>'; //close divisionEntry and detailsDiv
                 }
             } else {
                 lith = "<p>none</p>";
