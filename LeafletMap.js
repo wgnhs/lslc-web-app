@@ -37,7 +37,7 @@ var leafletMap = (function(){
         //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
             url: PLSSSectionsLayerURL, 
-            style: {color: "#000", weight: 0.35, fillColor: "#ece7f2"}
+            style: {color: "#000", weight: 0.1, fillColor: "rgba(0,0,0,0)"}
 //            , 
 //            pane: 'B-PLSSSections'
         }).addTo(map);
@@ -63,6 +63,10 @@ var leafletMap = (function(){
         $("#zoomToSelectionButton").click(function(){
             zoomToSelection(map);
         });
+
+        map.on('zoom', function(e){
+            changeMapDesign(map, leafletFeatureLayer)
+        })
         
        
        
@@ -496,3 +500,18 @@ function zoomToSelection(map){
 
     map.fitBounds(bounds)
 }
+
+function changeMapDesign(map, layer){
+    var zoomLevel = map.getZoom()
+    console.log(zoomLevel)
+
+    if (zoomLevel > 7){
+        var strokeWeight = (zoomLevel - 7) * 0.1
+    } else {
+        var strokeWeight = 0.1
+    }
+
+    layer.setStyle({weight: strokeWeight})
+    //color: "#c1c1c1", 
+}
+
