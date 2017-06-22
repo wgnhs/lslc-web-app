@@ -16,13 +16,18 @@ var leafletMap = (function(){
             scrollWheelPan: determineScroll(), 
             zoomControl: false //will add zoom control in the top right corner next
         }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
+
+        L.tileLayer('https://api.mapbox.com/styles/v1/swal94/cj479c37q0rfr2rql1msnz6sp/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
+            accessToken: 'pk.eyJ1Ijoic3dhbDk0IiwiYSI6ImNpZnk5aWdzcDR5dDl0ZWx5dDhwZW13ejAifQ.y18LYK4VbBo8evRHtqiEiw'
+        }).addTo(map);
         
 
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
-        L.esri.basemapLayer('Gray').addTo(map); 
-        L.esri.basemapLayer('GrayLabels').addTo(map);
+        // L.esri.basemapLayer('Gray').addTo(map); 
+        // L.esri.basemapLayer('GrayLabels').addTo(map);
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
 //        map.createPane('B-PLSSSections');
