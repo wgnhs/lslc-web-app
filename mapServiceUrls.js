@@ -12,3 +12,6 @@ var PlssField = 'PlssId';
 var sectionsLayerPlssField = 'PlssId';
 var samplesOIDField = 'SampleId';
 var handSampleNumberField = 'HandSampleNumber'; 
+var locationNoteField = 'LocationNote'; 
+var notebookNumberField = 'NotebookNumber'; 
+var thinSectionNumberField = 'ThinSectionNumber'; 
