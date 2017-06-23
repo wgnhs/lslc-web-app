@@ -163,6 +163,9 @@
     margin: 1px 3px;
     display: inline-block;
 }
+#filterFeedback span:hover{
+    background-color: #aaa19d;
+}
 
 #filterFeedback img { /* close button (x) */
     height: 21px; 
@@ -171,12 +174,15 @@
 }
 
 .filtersHideButton{
-  background-color: #adadad;
+/*  background-color: #adadad;*/ /*grey background*/
   position: absolute;
   height: 17px;
   width: 17px;
   top: 25%;
   right: 2.5%;
+}
+.filtersHideButton:hover{
+    cursor: pointer;
 }
 
 /*
