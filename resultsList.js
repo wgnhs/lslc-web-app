@@ -11,7 +11,7 @@ var tableAttributes = [
    //     {"field": "SampleId", "label": "SampleID"}, 
         {"field": "RockType", "label": "Rock type"},  
         {"field": "HandSampleCount", "label": "Hand sample available"}, 
-        {"field": "ThinSectionCount", "label": "Thin sections"}, 
+        {"field": "ThinSectionPhotoCount", "label": "Thin section photos"}, 
         {"field": "State", "label": "State / province"},
         // {"field": "County", "label": "County"},
         //  {"field": "Township", "label": "Township"},

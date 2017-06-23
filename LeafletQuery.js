@@ -9,7 +9,7 @@ var filters = {
     "rockTypeInput": "",
     "countyInput": "",
     "handSampleAvailabilityInput": null,
-    "thinSectionAvailabilityInput": null,
+    "thinSectionPhotoAvailabilityInput": null,
     //would need to add another var for thin section count input if we wanted that filter back.
     "stateInput": null,
     "notesInput": null,
@@ -103,7 +103,7 @@ function initFiltersListeners(){
             if (this.getAttribute('data') == 'notebookInput'){$("#notebookSearch").val('');};
             if (this.getAttribute('data') == 'notebookPageInput'){$("#notebookPageSearch").val('');};
             if (this.getAttribute('data') == 'handSampleAvailabilityInput'){document.getElementById("handSampleCheckbox").checked = false;};
-            if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){document.getElementById("thinSectionCheckbox").checked = false;};
+            if (this.getAttribute('data') == 'thinSectionPhotoAvailabilityInput'){document.getElementById("thinSectionPhotoCheckbox").checked = false;};
             if (this.getAttribute('data') == 'WGNHSInput'){$("#WGNHSSearch").val('');};
             if (this.getAttribute('data') == 'handSampleNumberInput'){$("#handSampleNumberSearch").val('');};
 
@@ -125,7 +125,7 @@ function resetFilters() {
         filters.notesInput = $("#notesSearch").val();
         filters.notebookInput = $("#notebookSearch").val();
         filters.notebookPageInput = $("#notebookPageSearch").val();
-        filters.thinSectionAvailabilityInput =  document.getElementById("thinSectionCheckbox").checked;
+        filters.thinSectionPhotoAvailabilityInput =  document.getElementById("thinSectionPhotoCheckbox").checked;
         filters.WGNHSInput =  $("#WGNHSSearch").val();
         filters.handSampleNumberInput =  $("#handSampleNumberSearch").val();
         filters.handSampleAvailabilityInput = document.getElementById("handSampleCheckbox").checked;
@@ -258,9 +258,9 @@ function buildSqlAndAddIndicators() {
         newsqlArray.push("HandSampleCount > 0");
     	$("#filterFeedback").append($("<span id='handSampleOn' class='feedbackBar' data='handSampleAvailabilityInput'>Hand&nbspsample:&nbsp" + filters.handSampleAvailabilityInput + "<img src='images/close.png' /></span>"));
         }; 
-    if (filters.thinSectionAvailabilityInput) {
-        newsqlArray.push("ThinsectionCount > 0");
-        $("#filterFeedback").append($("<span id='thinSectionAvailabilityOn' class='feedbackBar' data='thinSectionAvailabilityInput'>Thin&nbspsection:&nbsp" + filters.thinSectionAvailabilityInput + " <img src='images/close.png'/></span>"));
+    if (filters.thinSectionPhotoAvailabilityInput) {
+        newsqlArray.push("ThinSectionPhotoCount > 0");
+        $("#filterFeedback").append($("<span id='thinSectionPhotoAvailabilityOn' class='feedbackBar' data='thinSectionPhotoAvailabilityInput'>Thin&nbspsection photo:&nbsp" + filters.thinSectionPhotoAvailabilityInput + " <img src='images/close.png'/></span>"));
         }; 
     if (filters.mapSectionsInput) {
         newsqlArray.push(PlssField+" IN ("+filters.mapSectionsInput+")"); 
