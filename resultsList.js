@@ -231,7 +231,7 @@ function initResize(){
 
   var barHeight = $(".orangeBar").height()
   var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55); //16 due to attribution on leaflet map
-  console.log($("#leftPanel").offset().top);
+  console.log("left panel offset: ", $("#leftPanel").offset().top);
 
   $('#resultsPanel').resizable({
       

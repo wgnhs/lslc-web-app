@@ -117,7 +117,7 @@ h3 {
 }
 
 #header nav {
-    margin-right: 5%;
+   /* margin-right: 5%;*/
 
     margin-left: 1%; /* a tiny bit of space to separate the dropdown from the LSLC logo */
     width: 66%; /* three quarters of the 90% width of the page content. correlates with the #homeLogo rule above */
@@ -147,21 +147,6 @@ h3 {
 .navMainLink:hover{
     cursor: pointer;
     background-color: #842d1a;
-}
-/* message across the top of the screen, above nav */
-.messageBar{
-    
-    TEXT-ALIGN: center;
-}
-.messageBar span{
-    padding: 2px 5px;
-    background-color: white;
-}
-
-.striped-1{
- 
-  background: -webkit-repeating-linear-gradient(45deg, #e6e6e6, #e6e6e6 10px, #FFF 10px, #FFF 20px);
-  background: repeating-linear-gradient(45deg, #e6e6e6, #e6e6e6 10px, #FFF 10px, #FFF 20px);
 }
 
 

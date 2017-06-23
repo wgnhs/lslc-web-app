@@ -96,35 +96,32 @@
            
            
            /* ARROWS  - using images instead of the default slider links 'next' and 'prev' */
-           .unslider-arrow:before{
-                visibility: visible;
+           .unslider-arrow{
+               background-color: white;
+               opacity: 0.6;
+               padding: 0 5px;
+              
+               top: 0; bottom: 0; 
+               z-index: 0;
                
-            }
-            .unslider-arrow.prev:before{
-                content: url('images/chevron_left_gw.png');
-                float: left;
-               
-            }
-            .unslider-arrow.next:before{
-                content: url('images/chevron_right_gw.png');
-                float: right;
-               
-            }
-           .unslider-arrow {
-               visibility: hidden;
-               position: absolute;
-               top: 180px; /* fixed height from the top of the slider */
-            }
-           .unslider-arrow:hover{
-                opacity: 0.7;
-            }
-           
-            
-           .unslider-arrow.prev {
-               left: 2px; /* move to the left edge */
            }
            .unslider-arrow.next {
-               right: 2px; /* move to the right edge */ 
+               right: 0;
+           }
+           .unslider-arrow.prev {
+               left: 0;
+           }
+           .position-helper { /* helps to get the next and prev arrow images vertically centered */
+               display: inline-block;
+               height: 100%;
+                vertical-align: middle;
+           }
+           .unslider-arrow img{
+               vertical-align: middle;
+           }
+           .unslider-arrow:hover{
+               opacity: 0.9;
+               
            }
            
            /* ++++ individual slides ++++ */
@@ -396,7 +393,11 @@ Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.
                     autoplay: false, 
                     delay: 10000, 
 //                    animation: 'fade', //doesn't work - the whole slideshow just doesn't show up at all. 
-                    infinite: true //cycles straight from end to beginning 
+                    infinite: true, //cycles straight from end to beginning 
+                    arrows: {
+                        next:'<div class="unslider-arrow next"><span class="position-helper"></span><img src="images/chevron_right_gw.png" ></div>',
+                        prev: '<div class="unslider-arrow prev"><span class="position-helper"></span><img src="images/chevron_left_gw.png" ></div>'
+                    }
                 });
             });     
        
