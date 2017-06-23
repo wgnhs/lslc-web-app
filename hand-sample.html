@@ -78,6 +78,11 @@
                height: 200px;
                position: relative;
            }
+           
+           /* if we are already on a sample page, don't show the sample link. */
+            #sampleLink {
+                display: none;
+            }
 
        </style>
        
@@ -521,7 +526,7 @@
                             "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
                         thinSec.addClass('thinSection');
                         thinSec.attr('title','click to view');
-                        thinSec.data({'thinID':sampleRecordData.thinSections[i].thinSectionId});
+                        thinSec.data({'thinSectionNumber':sampleRecordData.thinSections[i].thinSectionId, 'handSampleNumber':sampleRecordData.handSampleNumber});
                     } else {
                     
                         thinSec.append("<span>(no image available.)</span>");
@@ -545,9 +550,9 @@
 //            $('#thinSections').append(thinSectionsContainer);
             
             $(".thinSection").on('click', function(){
-                console.log("view thin section #", $(this).data('thinID'));
+                console.log("view thin section #", $(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
                 
-                modal.thinSectionViewer($(this).data('thinID'));
+                modal.thinSectionViewer($(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
             })
             
             

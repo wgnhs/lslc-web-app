@@ -173,7 +173,7 @@
             $("#thinGallery").on('click','.thinSection', function(){
                 console.log("view modal for thin section #", $(this).data('thinID'));
                 
-                modal.thinSectionViewer($(this).data('thinID'));
+                modal.thinSectionViewer($(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
             });
               
         }
@@ -320,7 +320,7 @@
                
                 thinSec.attr('title','click to view');
 
-                thinSec.data({"thinID": item[thinSectionNumberField], "handSampleNumber": item[handSampleNumberField]});
+                thinSec.data({"thinSectionNumber": item[thinSectionNumberField], "handSampleNumber": item[handSampleNumberField]});
                 
                 galleryItem.append(thinSec);
                 
