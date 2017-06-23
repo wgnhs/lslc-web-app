@@ -21,28 +21,41 @@ var leafletMap = (function(){
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
-//        L.esri.basemapLayer('Gray').addTo(map); 
-//        L.esri.basemapLayer('GrayLabels').addTo(map);
+        var esriGray =  L.esri.basemapLayer('Gray'); 
+        var esriGrayLabels =   L.esri.basemapLayer('GrayLabels');
         
             //mapbox light basemap: 
-//        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
-//            {
-//            attribution: 'Basemap © <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
-//            id: 'mapbox.light',
-//            accessToken: 'pk.eyJ1IjoiY2Fyb2xpbmVyb3NlIiwiYSI6Ik55TUFmMVEifQ.ybZm7IghE2N0ezsMfaDNFQ' 
-//            }).addTo(map);
+       var mapboxLight = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
+            {
+            attribution: 'Basemap © <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
+            id: 'mapbox.light',
+            accessToken: 'pk.eyJ1IjoiY2Fyb2xpbmVyb3NlIiwiYSI6Ik55TUFmMVEifQ.ybZm7IghE2N0ezsMfaDNFQ' 
+            });
         
         //Soren basemap: 
-        L.tileLayer('https://api.mapbox.com/styles/v1/swal94/{id}/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+        var sorenBasemap = L.tileLayer('https://api.mapbox.com/styles/v1/swal94/{id}/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
             attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
             id: 'cj48piva31ytj2ro9h2kgv0lx',
             accessToken: 'pk.eyJ1Ijoic3dhbDk0IiwiYSI6ImNpZnk5aWdzcDR5dDl0ZWx5dDhwZW13ejAifQ.y18LYK4VbBo8evRHtqiEiw'
         }).addTo(map);
         
+        var macrostratTiles = L.tileLayer('https://macrostrat.org/api/v2/maps/burwell/emphasized/{z}/{x}/{y}/tile.png').addTo(map);
+        macrostratTiles.setOpacity(0.25);
+        
         //panes are supposed to control drawing order... but this isn't working yet for me. 
 //        map.createPane('B-PLSSSections');
 //        map.createPane('A-drawnSelection');
         
+        var basemapOptions = {
+            
+            "Labels": mapboxLight, 
+            "Terrain": sorenBasemap, 
+            
+            
+        }
+        var overlayOptions={"Bedrock Geology from Macrostrat<br><a href='http://macrostrat.org' target='_blank'>macrostrat.org</a>": macrostratTiles}
+        
+        L.control.layers(null, overlayOptions).addTo(map);
        
         //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
