@@ -33,8 +33,9 @@ var leafletMap = (function(){
 //            }).addTo(map);
         
         //Soren basemap: 
-        L.tileLayer('https://api.mapbox.com/styles/v1/swal94/cj479c37q0rfr2rql1msnz6sp/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+        L.tileLayer('https://api.mapbox.com/styles/v1/swal94/{id}/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
             attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
+            id: 'cj48piva31ytj2ro9h2kgv0lx',
             accessToken: 'pk.eyJ1Ijoic3dhbDk0IiwiYSI6ImNpZnk5aWdzcDR5dDl0ZWx5dDhwZW13ejAifQ.y18LYK4VbBo8evRHtqiEiw'
         }).addTo(map);
         
