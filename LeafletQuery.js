@@ -168,7 +168,7 @@ function queryTableForFilters(){
     //sampleIdsQuery.returnGeometry(false);
     sampleIdsQuery.where(whereString);
     
-    console.log("1. query #"+queryCount+" where string is:", whereString);
+    //console.log("1. query #"+queryCount+" where string is:", whereString);
     
     //set the sections query where clause to the same where as the normal query.
     // sectionsQuery.where = sampleIdsQuery.where;
@@ -182,8 +182,7 @@ function queryTableForFilters(){
 
         sampleIdsQuery.ids(function(error, result){
            //console.log("query for ids error", error);
-            console.log('2. query #', queryCount, " result for ids: ", result);
-            //console.log("result for ids length", result.length);
+           // console.log('2. query #', queryCount, " result for ids: ", result);
             
              //reset the global variable of results. 
             resultsManager.clearAll();
@@ -305,7 +304,7 @@ function sliceResult(allResultOBJECTIDs, queryNum){
     
     //calculate how many pages.
     var numberOfSlices = Math.ceil(allResultOBJECTIDs.length/sliceSize);
-    console.log("3. query #", queryNum," ", allResultOBJECTIDs.length, "results are broken into ", numberOfSlices, "slices."); 
+    //console.log("3. query #", queryNum," ", allResultOBJECTIDs.length, "results are broken into ", numberOfSlices, "slices."); 
     
     //build a list of page limit indices. 
     var pageBreaks = [0];
@@ -323,7 +322,6 @@ function sliceResult(allResultOBJECTIDs, queryNum){
     
     var sliceQueriesQueue = []
     
-    //console.log("pageBreaks", pageBreaks);
     //for each page of objectIDs, call a query for that set of results. 
     for (j=1 ; j < pageBreaks.length; j++){
         
@@ -346,7 +344,7 @@ function sliceResult(allResultOBJECTIDs, queryNum){
             resultsManager.add(data[i]); //concatenate each slice's results to the global var. 
         }
         
-        console.log("5. global results: ", globalResultsArray); 
+        //console.log("5. global results: ", globalResultsArray); 
         
         listResults(resultsManager.resultsPage(1));
         
@@ -372,7 +370,7 @@ function slicePromise(resultSliceOBJECTIDs, queryNum){
             if (error){
                 reject("sliceDataQuery error.", error);
             } else {
-                console.log("4. query #",queryNum," slice response");
+                //console.log("4. query #",queryNum," slice response");
                 resolve (sliceResponse.features);
             }
         }); 
@@ -436,7 +434,7 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
 
 function highlightAll(){
  
-            console.log('6. highlight now.');
+            //console.log('6. highlight now.');
         
             //iterate through and output array of sections for the highlight function. 
             var highlightMapSections = []; 

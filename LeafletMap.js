@@ -21,8 +21,23 @@ var leafletMap = (function(){
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
-        L.esri.basemapLayer('Gray').addTo(map); 
-        L.esri.basemapLayer('GrayLabels').addTo(map);
+//        L.esri.basemapLayer('Gray').addTo(map); 
+//        L.esri.basemapLayer('GrayLabels').addTo(map);
+        
+            //mapbox light basemap: 
+//        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
+//            {
+//            attribution: 'Basemap © <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
+//            id: 'mapbox.light',
+//            accessToken: 'pk.eyJ1IjoiY2Fyb2xpbmVyb3NlIiwiYSI6Ik55TUFmMVEifQ.ybZm7IghE2N0ezsMfaDNFQ' 
+//            }).addTo(map);
+        
+        //Soren basemap: 
+        L.tileLayer('https://api.mapbox.com/styles/v1/swal94/{id}/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
+            id: 'cj48piva31ytj2ro9h2kgv0lx',
+            accessToken: 'pk.eyJ1Ijoic3dhbDk0IiwiYSI6ImNpZnk5aWdzcDR5dDl0ZWx5dDhwZW13ejAifQ.y18LYK4VbBo8evRHtqiEiw'
+        }).addTo(map);
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
 //        map.createPane('B-PLSSSections');
@@ -70,7 +85,7 @@ var leafletMap = (function(){
         
         var width = $(this).width() //defines width
 
-        console.log("width:", width)
+        //console.log("width:", width)
 
         //return boolean based on width
         if (width < 926) {
@@ -92,7 +107,7 @@ var leafletMap = (function(){
             });
         
          polygon = new L.Draw.Polygon(map, {
-                shapeOptions: {color:'#529952'}, 
+                shapeOptions: {color:'#103762'}, 
                 repeatMode: false, 
                 allowIntersection: false
             });
@@ -140,7 +155,7 @@ var leafletMap = (function(){
              
              //clear all Leaflet Draw indicators and handlers.
              disableLeafletDraw();
-             
+              
          });
         
         //listener for draw created event: 
@@ -156,26 +171,21 @@ var leafletMap = (function(){
             }
 
             var type = e.layerType; //type is either rectangle or polygon
-           
+            console.log("type: ", type);
             
             //add new layer to the featureGroup
             var layer = e.layer;
             drawnItems.addLayer(layer);
             drawnItems.setStyle({fillOpacity: 0, color: "#000"});
             
-            //style the delete button to enable it: 
-            //document.getElementById('customDeleteButton').style.backgroundPosition = "-182px -2px";
-            
             //zoom to the selection
-            map.fitBounds(layer.getBounds().pad(0.1));
+            map.fitBounds(layer.getBounds().pad(0.2));
             
-            //bring sections to front? TEMPORARY, PARTIAL FIX for seeing the popups. 
-            leafletFeatureLayer.bringToFront();
-            
-            //pass on the layer to the function which will query it for section IDs
+             //pass on the layer to the function which will query it for section IDs
             queryGeom(layer);
             
             
+
         });
         
         
@@ -234,20 +244,15 @@ var leafletMap = (function(){
             
             //remove the item in filter feedback
 
-            //re-style the map tool as disabled. 
-            //document.getElementById('customDeleteButton').style.backgroundPosition = "-242px -2px"; //tool disabled style
-
-            //customDeleteButton.disable();
         } else {console.log("no selection to clear.");}
 
     }
     
     
     function queryGeom(inputGeom){
-        //takes in a rectangle from a draw event 
-        
-        
-       // console.log ("input", inputGeom);
+        //takes in a rectangle or polygon from a draw event 
+
+        console.log ("query input geometry", inputGeom);
         
         var query = L.esri.query({url:PLSSSectionsLayerURL}); 
         query.intersects(inputGeom);
@@ -264,6 +269,10 @@ var leafletMap = (function(){
             }
            // console.log("filter based on these sections:", selectedSections);
             filterForSections(selectedSections);
+            
+            //bring sections to front? TEMPORARY, PARTIAL FIX for seeing the popups.
+            leafletFeatureLayer.bringToFront();
+            console.log("brought sections to front.");
         });
     }
     
@@ -374,10 +383,10 @@ var leafletMap = (function(){
 
         //tests out how the choropleth system is working
        // console.log("filtered values array -->", filteredValuesArray)
-        console.log("class breaks -->", break0,break1,break2,break3,breakTop)
+       // console.log("class breaks -->", break0,break1,break2,break3,breakTop)
 
         createLegend(breaks);
-        console.log("create legend breaks.");
+        //console.log("create legend breaks.");
 
        return {"class1Array": classesArray[1], "class2Array": classesArray[2], "class3Array": classesArray[3], "class4Array": classesArray[4]};
 
@@ -388,10 +397,10 @@ var leafletMap = (function(){
       //  console.log("highlight via Leaflet");
         var classes = calculateClasses(array); 
         
-       console.log("class 1 array:", classes.class1Array);
-       console.log("class 2 array:", classes.class2Array);
-       console.log("class 3 array:", classes.class3Array);
-       console.log("class 4 array:", classes.class4Array);
+//       console.log("class 1 array:", classes.class1Array);
+//       console.log("class 2 array:", classes.class2Array);
+//       console.log("class 3 array:", classes.class3Array);
+//       console.log("class 4 array:", classes.class4Array);
         
         leafletFeatureLayer.setStyle(function (feature){
             var fillColor; //blank variable for fill color
@@ -438,11 +447,11 @@ var leafletMap = (function(){
         
     }
     
-})();
+})(); //end leafletMap module 
 
 function createLegend(breaksArray){
 
-    console.log(breaksArray)
+    //console.log(breaksArray)
 
         $("#legend").remove();
         $("#map").append($("<div id='legend'><div>"));

@@ -31,6 +31,10 @@
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
        
+      <!-- Promises polyfill -->
+            <!-- source: https://www.npmjs.com/package/promise-polyfill -->
+            <script src="lib/promise-6.0.2.min.js"></script>
+       
         <!-- TABLESORTER -->
              <script type="text/javascript" src="lib/jquery.tablesorter.js"></script>
        
@@ -73,7 +77,7 @@
 
                    <div class='orangeBar' id='mapFiltersOB'>
                    <h3>Filter by map area</h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext"> This map only shows samples that we were able to locate to a one-square-mile section of the Public Land Survey System. There may be more location information in the scanned field notebooks. </span></div>
-                   <div class='filtersHideButton' id='mapAreaFiltersButton'><img src="images/downChevron-01.png" class='chevron' id='mapFilterChevron'/></div>
+                   <div class='filtersHideButton' id='mapAreaFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='mapFilterChevron'/></div>
                    </div>
                    
                    
@@ -100,7 +104,7 @@
                            <img src="images/question_wg.png" class="helpIcon"/>
                            <span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span>
                        </div>
-                       <div class='filtersHideButton' id='contentFiltersButton'><img src="images/downChevron-01.png" class='chevron' id='contentFilterChevron'/></div>
+                       <div class='filtersHideButton' id='contentFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='contentFilterChevron'/></div>
                    </div>
 
                    
@@ -120,7 +124,7 @@
                     -->
                     <div class="filter">
                         <label for="fieldDescriptionSearch"><span>Rock type </span></label>
-                        <input type="search" class="searchBox" name="fieldDescriptionSearch" id="fieldDescriptionSearch" placeholder="try 'chert' or 'granite'" />
+                        <input type="search" class="searchBox" name="fieldDescriptionSearch" id="fieldDescriptionSearch" placeholder="try 'granite' or 'slate'" />
                    </div>
                    <div class="filter">
                         <label for="noteSearch"><span>Sample notes </span></label>
@@ -231,14 +235,14 @@
               $("#mapAreaFilters").css("display","none")
               $("#mapFiltersOB").css("margin-bottom","5px")
               $("#mapFilterChevron").remove()
-              $(this).append($("<img src='images/upChevron-01.png' class='chevron' id='mapFilterChevron'/>"))
+              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='mapFilterChevron'/>"))
               resizeFilters(true);
             } else {
               mapFiltersShowing = true
               $("#mapAreaFilters").css("display","block")
               $("#mapFiltersOB").css("margin-bottom","0px")
               $("#mapFilterChevron").remove()
-              $(this).append($("<img src='images/downChevron-01.png' class='chevron' id='mapFilterChevron'/>"))
+              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='mapFilterChevron'/>"))
               resizeFilters(false);
             }
           })
@@ -250,14 +254,14 @@
               $("#contentAreaFilters").css("display","none")
               $("#contentFiltersOB").css("margin-bottom","5px")
               $("#contentFilterChevron").remove()
-              $(this).append($("<img src='images/upChevron-01.png' class='chevron' id='contentFilterChevron'/>"))
+              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='contentFilterChevron'/>"))
               resizeFilters(true);
             } else {
               contentFiltersShowing = true
               $("#contentAreaFilters").css("display","block")
               $("#contentFiltersOB").css("margin-bottom","0px")
               $("#contentFilterChevron").remove()
-              $(this).append($("<img src='images/downChevron-01.png' class='chevron' id='contentFilterChevron'/>"))
+              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='contentFilterChevron'/>"))
               resizeFilters(false);
             }
             
