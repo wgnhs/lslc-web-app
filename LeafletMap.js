@@ -39,7 +39,7 @@ var leafletMap = (function(){
             accessToken: 'pk.eyJ1Ijoic3dhbDk0IiwiYSI6ImNpZnk5aWdzcDR5dDl0ZWx5dDhwZW13ejAifQ.y18LYK4VbBo8evRHtqiEiw'
         }).addTo(map);
         
-        var macrostratTiles = L.tileLayer('https://macrostrat.org/api/v2/maps/burwell/emphasized/{z}/{x}/{y}/tile.png').addTo(map);
+        var macrostratTiles = L.tileLayer('https://macrostrat.org/api/v2/maps/burwell/emphasized/{z}/{x}/{y}/tile.png');
         macrostratTiles.setOpacity(0.25);
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
