@@ -213,9 +213,10 @@ h3 {
 }
 
 .detailsDiv {
-    display: inline-block; 
-    vertical-align: top;
+/*    display: inline-block; */
+    
     display: table-cell;
+    vertical-align: top;
     padding-left: 10px;
 }
 .detailsDiv p {
