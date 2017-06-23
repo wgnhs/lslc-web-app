@@ -9,14 +9,14 @@ var filters = {
     "rockTypeInput": "",
     "countyInput": "",
     "handSampleAvailabilityInput": null,
-    "thinSectionAvailabilityInput": null,
+    "thinSectionPhotoAvailabilityInput": null,
     //would need to add another var for thin section count input if we wanted that filter back.
     "stateInput": null,
     "notesInput": null,
     "notebookInput": null,
     "notebookPageInput": null,
     "WGNHSInput": null, 
-    "catalogNumberInput": null
+    "handSampleNumberInput": null
 };
 
 //global var for results
@@ -103,9 +103,9 @@ function initFiltersListeners(){
             if (this.getAttribute('data') == 'notebookInput'){$("#notebookSearch").val('');};
             if (this.getAttribute('data') == 'notebookPageInput'){$("#notebookPageSearch").val('');};
             if (this.getAttribute('data') == 'handSampleAvailabilityInput'){document.getElementById("handSampleCheckbox").checked = false;};
-            if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){document.getElementById("thinSectionCheckbox").checked = false;};
+            if (this.getAttribute('data') == 'thinSectionPhotoAvailabilityInput'){document.getElementById("thinSectionPhotoCheckbox").checked = false;};
             if (this.getAttribute('data') == 'WGNHSInput'){$("#WGNHSSearch").val('');};
-            if (this.getAttribute('data') == 'catalogNumberInput'){$("#catalogNumberSearch").val('');};
+            if (this.getAttribute('data') == 'handSampleNumberInput'){$("#handSampleNumberSearch").val('');};
 
             //resetFilters will call QueryTable. 
             resetFilters();
@@ -125,9 +125,9 @@ function resetFilters() {
         filters.notesInput = $("#notesSearch").val();
         filters.notebookInput = $("#notebookSearch").val();
         filters.notebookPageInput = $("#notebookPageSearch").val();
-        filters.thinSectionAvailabilityInput =  document.getElementById("thinSectionCheckbox").checked;
+        filters.thinSectionPhotoAvailabilityInput =  document.getElementById("thinSectionPhotoCheckbox").checked;
         filters.WGNHSInput =  $("#WGNHSSearch").val();
-        filters.catalogNumberInput =  $("#catalogNumberSearch").val();
+        filters.handSampleNumberInput =  $("#handSampleNumberSearch").val();
         filters.handSampleAvailabilityInput = document.getElementById("handSampleCheckbox").checked;
         
        // console.log("filters set:", filters);
@@ -247,7 +247,7 @@ function buildSqlAndAddIndicators() {
         $("#filterFeedback").append($("<span id='notesSearchOn' class='feedbackBar' data = 'notesInput'>Notes:&nbsp" + filters.notesInput +"<img src='images/close.png' /></span>"));
         }; 
     if (filters.notebookInput) {
-        newsqlArray.push("NotebookNum LIKE '"+filters.notebookInput+"'");
+        newsqlArray.push(notebookNumberField+" LIKE '"+filters.notebookInput+"'");
     	$("#filterFeedback").append($("<span id='notebookSearchOn' class='feedbackBar' data = 'notebookInput'>Notebook:&nbsp" + filters.notebookInput +"<img src='images/close.png' /></span>"));
         };
     if (filters.notebookPageInput) {
@@ -258,9 +258,9 @@ function buildSqlAndAddIndicators() {
         newsqlArray.push("HandSampleCount > 0");
     	$("#filterFeedback").append($("<span id='handSampleOn' class='feedbackBar' data='handSampleAvailabilityInput'>Hand&nbspsample:&nbsp" + filters.handSampleAvailabilityInput + "<img src='images/close.png' /></span>"));
         }; 
-    if (filters.thinSectionAvailabilityInput) {
-        newsqlArray.push("ThinsectionCount > 0");
-        $("#filterFeedback").append($("<span id='thinSectionAvailabilityOn' class='feedbackBar' data='thinSectionAvailabilityInput'>Thin&nbspsection:&nbsp" + filters.thinSectionAvailabilityInput + " <img src='images/close.png'/></span>"));
+    if (filters.thinSectionPhotoAvailabilityInput) {
+        newsqlArray.push("ThinSectionPhotoCount > 0");
+        $("#filterFeedback").append($("<span id='thinSectionPhotoAvailabilityOn' class='feedbackBar' data='thinSectionPhotoAvailabilityInput'>Thin&nbspsection photo:&nbsp" + filters.thinSectionPhotoAvailabilityInput + " <img src='images/close.png'/></span>"));
         }; 
     if (filters.mapSectionsInput) {
         newsqlArray.push(PlssField+" IN ("+filters.mapSectionsInput+")"); 
@@ -275,10 +275,10 @@ function buildSqlAndAddIndicators() {
         newsqlArray.push("cast(WgnhsId as char(1))  LIKE '"+filters.WGNHSInput+"'");
         $("#filterFeedback").append($("<span id='WGNHSOn' class='feedbackBar' data='WGNHSInput'>WGNHS ID:&nbsp" + filters.WGNHSInput + "<img src='images/close.png'/></span>"));
         };
-    if (filters.catalogNumberInput){
+    if (filters.handSampleNumberInput){
         //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
-        newsqlArray.push("Upper(HandSampleCatalogNumber)  LIKE Upper('"+filters.catalogNumberInput+"')");
-        $("#filterFeedback").append($("<span id='catalogNumberOn' class='feedbackBar' data='catalogNumberInput'>Hand sample number:&nbsp" + filters.catalogNumberInput + "<img src='images/close.png'/></span>"));
+        newsqlArray.push("Upper("+handSampleNumberField+")  LIKE Upper('"+filters.handSampleNumberInput+"')");
+        $("#filterFeedback").append($("<span id='handSampleNumberOn' class='feedbackBar' data='handSampleNumberInput'>Hand sample number:&nbsp" + filters.handSampleNumberInput + "<img src='images/close.png'/></span>"));
         };
     
    
