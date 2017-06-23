@@ -40,7 +40,7 @@ var leafletMap = (function(){
         //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
             url: PLSSSectionsLayerURL, 
-            style: {color: "rgba(0,0,0,0)", weight: 3, fillColor: "rgba(0,0,0,0)"}
+            style: {color: "rgba(0,0,0,0)", weight: 2, fillColor: "rgba(0,0,0,0)"}
 //            , 
 //            pane: 'B-PLSSSections'
         }).addTo(map);
@@ -410,7 +410,7 @@ var leafletMap = (function(){
             var strokeColor = "rgba(0,0,0,0)"; //this applies to all except where it's re-set below
             var fillOpacity = 0.6; //this applies to all except where it's re-set below
             var sectionID = feature.properties[sectionsLayerPlssField]; //pulls out section id from feature
-            var strokeOpacity = 1;
+            var strokeOpacity = 0.9;
             
             if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04", strokeColor = "#8c2d04"}
             else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02", strokeColor = "#cc4c02"}
@@ -510,7 +510,7 @@ function changeMapDesign(map, layer){
     console.log(zoomLevel)
 
     if (zoomLevel == 6 || zoomLevel == 7){
-        var strokeWeight = 3
+        var strokeWeight = 2
     } else if (zoomLevel == 8){
         var strokeWeight = 1
     }  else {
