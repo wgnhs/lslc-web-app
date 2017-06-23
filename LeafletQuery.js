@@ -247,7 +247,7 @@ function buildSqlAndAddIndicators() {
         $("#filterFeedback").append($("<span id='notesSearchOn' class='feedbackBar' data = 'notesInput'>Notes:&nbsp" + filters.notesInput +"<img src='images/close.png' /></span>"));
         }; 
     if (filters.notebookInput) {
-        newsqlArray.push("NotebookNum LIKE '"+filters.notebookInput+"'");
+        newsqlArray.push(notebookNumberField+" LIKE '"+filters.notebookInput+"'");
     	$("#filterFeedback").append($("<span id='notebookSearchOn' class='feedbackBar' data = 'notebookInput'>Notebook:&nbsp" + filters.notebookInput +"<img src='images/close.png' /></span>"));
         };
     if (filters.notebookPageInput) {
@@ -277,7 +277,7 @@ function buildSqlAndAddIndicators() {
         };
     if (filters.catalogNumberInput){
         //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
-        newsqlArray.push("Upper(HandSampleCatalogNumber)  LIKE Upper('"+filters.catalogNumberInput+"')");
+        newsqlArray.push("Upper("+handSampleNumberField+")  LIKE Upper('"+filters.catalogNumberInput+"')");
         $("#filterFeedback").append($("<span id='catalogNumberOn' class='feedbackBar' data='catalogNumberInput'>Hand sample number:&nbsp" + filters.catalogNumberInput + "<img src='images/close.png'/></span>"));
         };
     

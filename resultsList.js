@@ -5,7 +5,7 @@ var resultsTableBody;
 
 var tableAttributes = [
            //add manually before the view link.
-        //{"field": "HandSampleCatalogNumber", "label": "Hand sample number"}, 
+        //{"field": handSampleNumberField, "label": "Hand sample number"}, 
        
     
    //     {"field": "SampleId", "label": "SampleID"}, 
@@ -17,8 +17,8 @@ var tableAttributes = [
         //  {"field": "Township", "label": "Township"},
         // {"field": "Range", "label": "Range"},
         // {"field": "Direction", "label": "Range Direction"},
-        {"field": "LocNote", "label": "Location note"},
-        {"field": "NotebookNum", "label": "Field notebook number"},
+        {"field": locationNoteField, "label": "Location note"},
+        {"field": notebookNumberField, "label": "Field notebook number"},
        // {"field": "NotebookPage", "label": "Notebook page"},
         {"field": "WgnhsId", "label": "WGNHS ID"},
         {"field": "Notes", "label": "Notes"},
@@ -73,7 +73,7 @@ function listResults (dataObjects){
     for (obj in dataObjects){
        // console.log("dataObjects[obj].attributes.SampleId: ", dataObjects[obj].attributes.SampleId);
         
-        var samCat = dataObjects[obj].attributes.HandSampleCatalogNumber;
+        var samCat = dataObjects[obj].attributes[handSampleNumberField];
         
         var tr = "";
         tr+= "<tr data-ID="+samCat+">"; 

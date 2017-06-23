@@ -166,7 +166,7 @@
             },
             
             "fieldDesc":"unknown",
-            "fieldNotebookNum":"none",
+            "fieldNotebookNumber":"none",
             "fieldPage": "N/A",
             "fieldNotebookTitle": "N/A",
             "fieldNotebookThumb":"images/notebook-icon.jpg",
@@ -291,7 +291,7 @@
             
                 var sampleCatalogNumberQuery = L.esri.query({url: samplesTableURL}); 
                 sampleCatalogNumberQuery.fields(["*"]);
-                sampleCatalogNumberQuery.where("Upper(HandSampleCatalogNumber) LIKE UPPER('"+number+"')");
+                sampleCatalogNumberQuery.where("Upper("+handSampleNumberField+") LIKE UPPER('"+number+"')");
 
                 sampleCatalogNumberQuery.run(function(error, sampleTableResult, sampleTableResponse){
                    // console.log("sample table response:", sampleTableResponse.features[0].attributes);
@@ -304,7 +304,7 @@
                             //console.log("sample table info:", sampleTableResult.features[0].attributes);
                             //set the attributes that can be found in the samples table. 
 
-                            sampleRecordData.catalogNumber = sampleTableResponse.features[0].attributes.HandSampleCatalogNumber; //this resets to the correct code if the user entered a lowercase letter
+                            sampleRecordData.catalogNumber = sampleTableResponse.features[0].attributes[handSampleNumberField]; //this resets to the correct code if the user entered a lowercase letter
                             sampleRecordData.sampleId = sampleTableResponse.features[0].attributes.SampleId;
                             sampleRecordData.fieldDesc = sampleTableResponse.features[0].attributes.RockType;
                             sampleRecordData.thinSectionCount = sampleTableResponse.features[0].attributes.ThinSectionCount;
@@ -315,8 +315,8 @@
                             sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section;
                             sampleRecordData.location.quarterSection = sampleTableResponse.features[0].attributes.Quarter;
                             sampleRecordData.location.quarterQuarterSection = sampleTableResponse.features[0].attributes.QuarterQuarter;
-                            sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes.LocNote;
-                            sampleRecordData.fieldNotebookNum = sampleTableResponse.features[0].attributes.NotebookNum;
+                            sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes[locationNoteField];
+                            sampleRecordData.fieldNotebookNumber = sampleTableResponse.features[0].attributes[notebookNumberField];
                             sampleRecordData.fieldPage = sampleTableResponse.features[0].attributes.NotebookPage;
                             sampleRecordData.WGNHSId = sampleTableResponse.features[0].attributes.WgnhsId;
                             sampleRecordData.sampleNotes = sampleTableResponse.features[0].attributes.Notes;
@@ -337,13 +337,13 @@
         function retrieveNotebookData(){
            console.log("4.")
             return new Promise (function(resolve, reject){
-                if(sampleRecordData.fieldNotebookNum){
+                if(sampleRecordData.fieldNotebookNumber){
                     
-                    retrieveFieldNotebookThumbnail(sampleRecordData.fieldNotebookNum);
+                    retrieveFieldNotebookThumbnail(sampleRecordData.fieldNotebookNumber);
                     
                     var notebookQuery = L.esri.query({url: notebooksTableURL}); 
                     notebookQuery.fields(["*"]); 
-                    notebookQuery.where("Number LIKE '"+sampleRecordData.fieldNotebookNum+"'"); 
+                    notebookQuery.where("Number LIKE '"+sampleRecordData.fieldNotebookNumber+"'"); 
 
                     notebookQuery.run(function(error, featureCollection, notebooksResponse){
                         
@@ -378,12 +378,12 @@
                         var thinDetails = {};
                       //  console.log("thin section info", thinSectionsResponse.features[i].attributes);
                         //add attributes to the thin sections array. 
-                        thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes.CatalogNumber;
+                        thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes[thinSectionNumberField];
                         thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
-                        thinDetails.thinImgppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'ppl.jpg';
-                        thinDetails.thinImgxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'xpl.jpg';
-                        thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'ppl_thumb.jpg';
-                        thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'xpl_thumb.jpg';
+                        thinDetails.thinImgppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl.jpg';
+                        thinDetails.thinImgxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl.jpg';
+                        thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl_thumb.jpg';
+                        thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl_thumb.jpg';
 
                         sampleRecordData.thinSections.push(thinDetails);
                         
@@ -624,12 +624,12 @@
    
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
-            if (sampleRecordData.fieldNotebookNum){
+            if (sampleRecordData.fieldNotebookNumber){
                 if(sampleRecordData.fieldNotebookTitle === null){sampleRecordData.fieldNotebookTitle = "untitled"}; 
 
                 fieldNotebookreport +="<div class='divisionEntry'>";
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.fieldNotebookThumbnail+"' alt='notebook cover'/></a>";
-                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNum+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNumber+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
                 fieldNotebookreport +="</div>";
      
             } else if (sampleRecordData.fieldDesc){

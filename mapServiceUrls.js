@@ -11,6 +11,7 @@ var samplesTableURL = "https://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/
 var PlssField = 'PlssId'; 
 var sectionsLayerPlssField = 'PlssId';
 var samplesOIDField = 'SampleId';
-
-//THIN SECTIONS TABLE
-var thinSectionsPhotosField = 'Photos';
+var handSampleNumberField = 'HandSampleNumber'; 
+var locationNoteField = 'LocationNote'; 
+var notebookNumberField = 'NotebookNumber'; 
+var thinSectionNumberField = 'ThinSectionNumber'; 
