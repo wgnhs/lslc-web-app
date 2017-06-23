@@ -5,7 +5,7 @@ var resultsTableBody;
 
 var tableAttributes = [
            //add manually before the view link.
-        //{"field": "HandSampleCatalogNumber", "label": "Hand sample number"}, 
+        //{"field": handSampleNumberField, "label": "Hand sample number"}, 
        
     
    //     {"field": "SampleId", "label": "SampleID"}, 
@@ -73,7 +73,7 @@ function listResults (dataObjects){
     for (obj in dataObjects){
        // console.log("dataObjects[obj].attributes.SampleId: ", dataObjects[obj].attributes.SampleId);
         
-        var samCat = dataObjects[obj].attributes.HandSampleCatalogNumber;
+        var samCat = dataObjects[obj].attributes[handSampleNumberField];
         
         var tr = "";
         tr+= "<tr data-ID="+samCat+">"; 

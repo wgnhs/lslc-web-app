@@ -11,3 +11,4 @@ var samplesTableURL = "https://geodata.wgnhs.uwex.edu/arcgis/rest/services/lslc/
 var PlssField = 'PlssId'; 
 var sectionsLayerPlssField = 'PlssId';
 var samplesOIDField = 'SampleId';
+var handSampleNumberField = 'HandSampleNumber'; 

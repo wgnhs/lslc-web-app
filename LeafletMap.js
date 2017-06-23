@@ -202,7 +202,7 @@ var leafletMap = (function(){
         //loops through samples in the section adding a line for each of them
         for (i in sectionResults) {
 
-            var listedCatalogNumber = sectionResults[i].attributes.HandSampleCatalogNumber
+            var listedCatalogNumber = sectionResults[i].attributes[handSampleNumberField];
             var listedSampleId = sectionResults[i].attributes.SampleId;
             var listedRockType = sectionResults[i].attributes.RockType;
             if (listedRockType == null){ listedRockType = "";} //checks for null value
