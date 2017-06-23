@@ -16,7 +16,7 @@ var filters = {
     "notebookInput": null,
     "notebookPageInput": null,
     "WGNHSInput": null, 
-    "catalogNumberInput": null
+    "handSampleNumberInput": null
 };
 
 //global var for results
@@ -105,7 +105,7 @@ function initFiltersListeners(){
             if (this.getAttribute('data') == 'handSampleAvailabilityInput'){document.getElementById("handSampleCheckbox").checked = false;};
             if (this.getAttribute('data') == 'thinSectionAvailabilityInput'){document.getElementById("thinSectionCheckbox").checked = false;};
             if (this.getAttribute('data') == 'WGNHSInput'){$("#WGNHSSearch").val('');};
-            if (this.getAttribute('data') == 'catalogNumberInput'){$("#catalogNumberSearch").val('');};
+            if (this.getAttribute('data') == 'handSampleNumberInput'){$("#handSampleNumberSearch").val('');};
 
             //resetFilters will call QueryTable. 
             resetFilters();
@@ -127,7 +127,7 @@ function resetFilters() {
         filters.notebookPageInput = $("#notebookPageSearch").val();
         filters.thinSectionAvailabilityInput =  document.getElementById("thinSectionCheckbox").checked;
         filters.WGNHSInput =  $("#WGNHSSearch").val();
-        filters.catalogNumberInput =  $("#catalogNumberSearch").val();
+        filters.handSampleNumberInput =  $("#handSampleNumberSearch").val();
         filters.handSampleAvailabilityInput = document.getElementById("handSampleCheckbox").checked;
         
        // console.log("filters set:", filters);
@@ -275,10 +275,10 @@ function buildSqlAndAddIndicators() {
         newsqlArray.push("cast(WgnhsId as char(1))  LIKE '"+filters.WGNHSInput+"'");
         $("#filterFeedback").append($("<span id='WGNHSOn' class='feedbackBar' data='WGNHSInput'>WGNHS ID:&nbsp" + filters.WGNHSInput + "<img src='images/close.png'/></span>"));
         };
-    if (filters.catalogNumberInput){
+    if (filters.handSampleNumberInput){
         //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
-        newsqlArray.push("Upper("+handSampleNumberField+")  LIKE Upper('"+filters.catalogNumberInput+"')");
-        $("#filterFeedback").append($("<span id='catalogNumberOn' class='feedbackBar' data='catalogNumberInput'>Hand sample number:&nbsp" + filters.catalogNumberInput + "<img src='images/close.png'/></span>"));
+        newsqlArray.push("Upper("+handSampleNumberField+")  LIKE Upper('"+filters.handSampleNumberInput+"')");
+        $("#filterFeedback").append($("<span id='handSampleNumberOn' class='feedbackBar' data='handSampleNumberInput'>Hand sample number:&nbsp" + filters.handSampleNumberInput + "<img src='images/close.png'/></span>"));
         };
     
    

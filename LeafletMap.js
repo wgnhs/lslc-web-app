@@ -225,12 +225,12 @@ var leafletMap = (function(){
         //loops through samples in the section adding a line for each of them
         for (i in sectionResults) {
 
-            var listedCatalogNumber = sectionResults[i].attributes[handSampleNumberField];
+            var listedHandSampleNumber = sectionResults[i].attributes[handSampleNumberField];
             var listedSampleId = sectionResults[i].attributes.SampleId;
             var listedRockType = sectionResults[i].attributes.RockType;
             if (listedRockType == null){ listedRockType = "";} //checks for null value
 
-            content = content + "<li><a href='hand-sample.html#" + listedCatalogNumber + "' target='_blank' >Sample " + listedCatalogNumber + " " + listedRockType + "</a></li>";
+            content = content + "<li><a href='hand-sample.html#" + listedHandSampleNumber + "' target='_blank' >Sample " + listedHandSampleNumber + " " + listedRockType + "</a></li>";
 
         }
 
