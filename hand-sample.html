@@ -25,6 +25,10 @@
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
        
+        <!-- Promises polyfill -->
+           <!-- source: https://www.npmjs.com/package/promise-polyfill -->
+            <script src="lib/promise-6.0.2.min.js"></script>
+       
        
        <!-- local stylesheets -->
            <LINK href="generalStyle.css" rel='stylesheet'/>
@@ -162,7 +166,7 @@
             },
             
             "fieldDesc":"unknown",
-            "fieldNotebookNum":"none",
+            "fieldNotebookNumber":"none",
             "fieldPage": "N/A",
             "fieldNotebookTitle": "N/A",
             "fieldNotebookThumb":"images/notebook-icon.jpg",
@@ -311,8 +315,8 @@
                             sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section;
                             sampleRecordData.location.quarterSection = sampleTableResponse.features[0].attributes.Quarter;
                             sampleRecordData.location.quarterQuarterSection = sampleTableResponse.features[0].attributes.QuarterQuarter;
-                            sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes.LocNote;
-                            sampleRecordData.fieldNotebookNum = sampleTableResponse.features[0].attributes.NotebookNum;
+                            sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes[locationNoteField];
+                            sampleRecordData.fieldNotebookNumber = sampleTableResponse.features[0].attributes[notebookNumberField];
                             sampleRecordData.fieldPage = sampleTableResponse.features[0].attributes.NotebookPage;
                             sampleRecordData.WGNHSId = sampleTableResponse.features[0].attributes.WgnhsId;
                             sampleRecordData.sampleNotes = sampleTableResponse.features[0].attributes.Notes;
@@ -333,13 +337,13 @@
         function retrieveNotebookData(){
            console.log("4.")
             return new Promise (function(resolve, reject){
-                if(sampleRecordData.fieldNotebookNum){
+                if(sampleRecordData.fieldNotebookNumber){
                     
-                    retrieveFieldNotebookThumbnail(sampleRecordData.fieldNotebookNum);
+                    retrieveFieldNotebookThumbnail(sampleRecordData.fieldNotebookNumber);
                     
                     var notebookQuery = L.esri.query({url: notebooksTableURL}); 
                     notebookQuery.fields(["*"]); 
-                    notebookQuery.where("Number LIKE '"+sampleRecordData.fieldNotebookNum+"'"); 
+                    notebookQuery.where("Number LIKE '"+sampleRecordData.fieldNotebookNumber+"'"); 
 
                     notebookQuery.run(function(error, featureCollection, notebooksResponse){
                         
@@ -620,12 +624,12 @@
    
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
-            if (sampleRecordData.fieldNotebookNum){
+            if (sampleRecordData.fieldNotebookNumber){
                 if(sampleRecordData.fieldNotebookTitle === null){sampleRecordData.fieldNotebookTitle = "untitled"}; 
 
                 fieldNotebookreport +="<div class='divisionEntry'>";
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.fieldNotebookThumbnail+"' alt='notebook cover'/></a>";
-                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNum+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNumber+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
                 fieldNotebookreport +="</div>";
      
             } else if (sampleRecordData.fieldDesc){

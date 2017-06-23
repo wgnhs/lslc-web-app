@@ -17,8 +17,8 @@ var tableAttributes = [
         //  {"field": "Township", "label": "Township"},
         // {"field": "Range", "label": "Range"},
         // {"field": "Direction", "label": "Range Direction"},
-        {"field": "LocNote", "label": "Location note"},
-        {"field": "NotebookNum", "label": "Field notebook number"},
+        {"field": locationNoteField, "label": "Location note"},
+        {"field": notebookNumberField, "label": "Field notebook number"},
        // {"field": "NotebookPage", "label": "Notebook page"},
         {"field": "WgnhsId", "label": "WGNHS ID"},
         {"field": "Notes", "label": "Notes"},
@@ -231,7 +231,7 @@ function initResize(){
 
   var barHeight = $(".orangeBar").height()
   var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55); //16 due to attribution on leaflet map
-  console.log($("#leftPanel").offset().top);
+  console.log("left panel offset: ", $("#leftPanel").offset().top);
 
   $('#resultsPanel').resizable({
       
