@@ -239,7 +239,7 @@
            //this should happen once upon page load. 
            
            var thinImagesQuery = L.esri.query({url: thinSectionsTableURL});
-           thinImagesQuery.where(thinSectionsPhotosField+"= 1");
+           thinImagesQuery.where(thinSectionPhotosField+"= 1");
            thinImagesQuery.fields(["*"]); 
            
            thinImagesQuery.run(function(err, featureCollection, response){

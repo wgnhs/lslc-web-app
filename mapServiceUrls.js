@@ -15,3 +15,4 @@ var handSampleNumberField = 'HandSampleNumber';
 var locationNoteField = 'LocationNote'; 
 var notebookNumberField = 'NotebookNumber'; 
 var thinSectionNumberField = 'ThinSectionNumber'; 
+var thinSectionPhotosField = 'Photos';
