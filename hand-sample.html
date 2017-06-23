@@ -286,14 +286,14 @@
             console.log("1. query for sample #", number); 
             return new Promise (function(resolve, reject){
                 recordDataManager.clear();
-                sampleRecordData.catalogNumber = number;
+                sampleRecordData.handSampleNumber = number;
             
             
-                var sampleCatalogNumberQuery = L.esri.query({url: samplesTableURL}); 
-                sampleCatalogNumberQuery.fields(["*"]);
-                sampleCatalogNumberQuery.where("Upper("+handSampleNumberField+") LIKE UPPER('"+number+"')");
+                var handSampleNumberQuery = L.esri.query({url: samplesTableURL}); 
+                handSampleNumberQuery.fields(["*"]);
+                handSampleNumberQuery.where("Upper("+handSampleNumberField+") LIKE UPPER('"+number+"')");
 
-                sampleCatalogNumberQuery.run(function(error, sampleTableResult, sampleTableResponse){
+                handSampleNumberQuery.run(function(error, sampleTableResult, sampleTableResponse){
                    // console.log("sample table response:", sampleTableResponse.features[0].attributes);
                   //  console.log("sample table result:", sampleTableResult.features[0].properties);
 
@@ -304,7 +304,7 @@
                             //console.log("sample table info:", sampleTableResult.features[0].attributes);
                             //set the attributes that can be found in the samples table. 
 
-                            sampleRecordData.catalogNumber = sampleTableResponse.features[0].attributes[handSampleNumberField]; //this resets to the correct code if the user entered a lowercase letter
+                            sampleRecordData.handSampleNumber = sampleTableResponse.features[0].attributes[handSampleNumberField]; //this resets to the correct code if the user entered a lowercase letter
                             sampleRecordData.sampleId = sampleTableResponse.features[0].attributes.SampleId;
                             sampleRecordData.fieldDesc = sampleTableResponse.features[0].attributes.RockType;
                             sampleRecordData.thinSectionCount = sampleTableResponse.features[0].attributes.ThinSectionCount;
@@ -325,7 +325,7 @@
 
                     } else {
                         //if the sample id is not successfully found, return an error message. 
-                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.catalogNumber+". Try a different number.");
+                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.handSampleNumber+". Try a different number.");
                         reject("reject: sample not found.");
                     }
                 });//end .run
@@ -493,8 +493,8 @@
         } //end buildReport 
         
         function addSampleNumber(){
-            if(sampleRecordData.catalogNumber){
-                var sampleIDh2 = $('<h2></h2>').html("Hand Sample #"+sampleRecordData.catalogNumber); 
+            if(sampleRecordData.handSampleNumber){
+                var sampleIDh2 = $('<h2></h2>').html("Hand Sample #"+sampleRecordData.handSampleNumber); 
                 $("#sampleRecord").append(sampleIDh2);
                
                 

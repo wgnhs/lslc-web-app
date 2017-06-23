@@ -39,7 +39,7 @@ var leafletMap = (function(){
             accessToken: 'pk.eyJ1Ijoic3dhbDk0IiwiYSI6ImNpZnk5aWdzcDR5dDl0ZWx5dDhwZW13ejAifQ.y18LYK4VbBo8evRHtqiEiw'
         }).addTo(map);
         
-        var macrostratTiles = L.tileLayer('https://macrostrat.org/api/v2/maps/burwell/emphasized/{z}/{x}/{y}/tile.png').addTo(map);
+        var macrostratTiles = L.tileLayer('https://macrostrat.org/api/v2/maps/burwell/emphasized/{z}/{x}/{y}/tile.png');
         macrostratTiles.setOpacity(0.25);
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
@@ -225,12 +225,12 @@ var leafletMap = (function(){
         //loops through samples in the section adding a line for each of them
         for (i in sectionResults) {
 
-            var listedCatalogNumber = sectionResults[i].attributes[handSampleNumberField];
+            var listedHandSampleNumber = sectionResults[i].attributes[handSampleNumberField];
             var listedSampleId = sectionResults[i].attributes.SampleId;
             var listedRockType = sectionResults[i].attributes.RockType;
             if (listedRockType == null){ listedRockType = "";} //checks for null value
 
-            content = content + "<li><a href='hand-sample.html#" + listedCatalogNumber + "' target='_blank' >Sample " + listedCatalogNumber + " " + listedRockType + "</a></li>";
+            content = content + "<li><a href='hand-sample.html#" + listedHandSampleNumber + "' target='_blank' >Sample " + listedHandSampleNumber + " " + listedRockType + "</a></li>";
 
         }
 

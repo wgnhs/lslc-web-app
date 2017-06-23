@@ -182,9 +182,9 @@
         var thinSectionsManager = (function(){
             
             var add = function(array){
-                //construct the image URL properties from the catalog number. 
-                array.PPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array.CatalogNumber+'ppl_thumb.jpg'; 
-                array.XPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array.CatalogNumber+'xpl_thumb.jpg'; 
+                //construct the image URL properties from the thin section number. 
+                array.PPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array[thinSectionNumberField]+'ppl_thumb.jpg'; 
+                array.XPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array[thinSectionNumberField]+'xpl_thumb.jpg'; 
                 globalThinSectionGalleryArray = globalThinSectionGalleryArray.concat(array);
                 
             }
@@ -313,14 +313,14 @@
             for (i in dataForDisplay){
                 var item = dataForDisplay[i];
                 var galleryItem  = $('<div class="galleryItemDiv"></div>');
-                var thinSec = $('<div class="thinSection"></div>').html("<p>Thin Section #"+item.CatalogNumber+"</p>");
+                var thinSec = $('<div class="thinSection"></div>').html("<p>Thin Section #"+item[thinSectionNumberField]+"</p>");
                 
                 thinSec.append("<img class='galleryThumb' src='"+item.PPLthumbURL+"'>");
                 thinSec.append("<img class='galleryThumb' src='"+item.XPLthumbURL+"'>");
                
                 thinSec.attr('title','click to view');
 
-                thinSec.data({"thinID": item.CatalogNumber/*, "handSampleNumber": 1*/});
+                thinSec.data({"thinID": item[thinSectionNumberField], "handSampleNumber": item[handSampleNumberField]});
                 
                 galleryItem.append(thinSec);
                 
@@ -339,7 +339,7 @@
         }
         
         function callSort(callback){
-            thinSectionsManager.sortByNumber("CatalogNumber", "ascending"); 
+            thinSectionsManager.sortByNumber(thinSectionNumberField, "ascending"); 
             callback();
         }
         
