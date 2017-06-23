@@ -14,7 +14,10 @@ var leafletMap = (function(){
          map = L.map('map', {
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
             scrollWheelPan: determineScroll(), 
-            zoomControl: false //will add zoom control in the top right corner next
+            zoomControl: false, //will add zoom control in the top right corner next
+            minZoom: 6,
+            maxZoom: 11,
+            maxBounds: [[43.0,-100.0],[50.0,-84.0]]
         }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
 
         L.tileLayer('https://api.mapbox.com/styles/v1/swal94/cj48piva31ytj2ro9h2kgv0lx/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
@@ -37,7 +40,7 @@ var leafletMap = (function(){
         //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
             url: PLSSSectionsLayerURL, 
-            style: {color: "rgba(0,0,0,0)", weight: 0.1, fillColor: "rgba(0,0,0,0)"}
+            style: {color: "rgba(0,0,0,0)", weight: 3, fillColor: "rgba(0,0,0,0)"}
 //            , 
 //            pane: 'B-PLSSSections'
         }).addTo(map);
@@ -405,18 +408,19 @@ var leafletMap = (function(){
         leafletFeatureLayer.setStyle(function (feature){
             var fillColor; //blank variable for fill color
             var strokeColor = "rgba(0,0,0,0)"; //this applies to all except where it's re-set below
-            var fillOpacity = 0.8; //this applies to all except where it's re-set below
+            var fillOpacity = 0.6; //this applies to all except where it's re-set below
             var sectionID = feature.properties[sectionsLayerPlssField]; //pulls out section id from feature
+            var strokeOpacity = 1;
             
             if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04", strokeColor = "#8c2d04"}
             else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02", strokeColor = "#cc4c02"}
             else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014", strokeColor = "#ec7014"}
             else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929", strokeColor = "#fe9929"}
             //if not found in any class array, given no-value color
-            else {fillOpacity = 0, strokeWeight = 0};  // opposite hue, low saturation, slightly diverging to show seperation
+            else {fillOpacity = 0, strokeWeight = 0, strokeOpacity = 0};  // opposite hue, low saturation, slightly diverging to show seperation
            
             //actual style declaration for each feature using assignment from above
-            return {color: strokeColor, fillColor: fillColor, fillOpacity: fillOpacity };
+            return {color: strokeColor, fillColor: fillColor, fillOpacity: fillOpacity, opacity: strokeOpacity};
             
            
         });//end setStyle
@@ -505,10 +509,16 @@ function changeMapDesign(map, layer){
     var zoomLevel = map.getZoom()
     console.log(zoomLevel)
 
-    if (zoomLevel > 7){
-        var strokeWeight = (zoomLevel - 7) * 0.3
-    } else {
-        var strokeWeight = 0.5
+    if (zoomLevel == 6 || zoomLevel == 7){
+        var strokeWeight = 3
+    } else if (zoomLevel == 8){
+        var strokeWeight = 1
+    }  else {
+        var strokeWeight = 0.4
+    }
+
+    if (zoomLevel > 8){
+        // layer.setStyle({color: "#757575"})
     }
 
     layer.setStyle({weight: strokeWeight})
