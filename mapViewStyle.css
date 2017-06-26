@@ -20,7 +20,6 @@
 #mapWrapper {
     width: 100%;
     height: calc(100vh); 
-/*    border: 1px dashed black;*/
     
     position: absolute;
     top: 0; /* move above the top of the header... causes problems with the zoom control going behind the header */
@@ -227,8 +226,6 @@ section {
     /* POSITION */
     display: inline-block;
     float: right;
-    
-/*    margin-right: 20px;*/
     margin-top: 2px;
     
     /* APPEARANCE */
@@ -424,11 +421,6 @@ p.legendText{
     
 }
 
-/*
-.leaflet-control{
-  top: 40px;
-}
-*/
 
 span#greyButtonText {
     /* I think this needs more contrast, so changed it to black text instead of grey. */
