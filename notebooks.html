@@ -148,7 +148,7 @@
 
        <div class="reportDivision">
        
-       	<h3>List of Field Notebooks</h3> 
+       	<h3 class="orangeBar">List of Field Notebooks</h3> 
        
        
        <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
@@ -245,25 +245,25 @@
     $("#AuthorSearch").on('input', function(){
     	authorSearchOn = true;
     	delay(function(){
-    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    		async.series([callfilter, buildNotebooksList]);
     	}, 1000);
     })
 	$("#NumberSearch").on('input', function(e){
 		numberSearchOn = true;
     	window.setTimeout(function(){
-    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    		async.series([callfilter, buildNotebooksList]);
     	}, 1000);
     })
     $("#YearSearch").on('input', function(e){
     	yearSearchOn = true;
     	window.setTimeout(function(){
-    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    		async.series([callfilter, buildNotebooksList]);
     	}, 1000);
     })
     $("#TitleSearch").on('input', function(e){
     	titleSearchOn = true;
     	window.setTimeout(function(){
-    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    		async.series([callfilter, buildNotebooksList]);
     	}, 1000);
     })
  
@@ -373,7 +373,7 @@
     var notebooksManager = (function(){
 
     	var add = function(object){
-    		object.coverURL = "images/notebooks/notebook-icon.jpg";
+    		object.coverURL = "images/notebook-icon.jpg";
     		object.show = true
     		globalNotebookContentArray = globalNotebookContentArray.concat(object);
 
