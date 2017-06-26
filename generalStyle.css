@@ -6,12 +6,9 @@
 p { padding: 0; margin: 0;}
 */
 body {
-/*    background-color: grey;*/
-/*    background-image: url("images/historic-rock-texture2.png"); */
 
   margin: 0;
 
-    
 }
 
 body, input {
@@ -114,6 +111,10 @@ h3 {
 }
 #homeLogo:hover {
     background-color: #e6e6e6;
+}
+
+#expand-menu-icon, #expand-menu-checkbox {
+    display: none;
 }
 
 #header nav {
@@ -334,25 +335,48 @@ h3 {
         margin-top: 0px; /* should match the amount the logo is being pushed up */
     }
     #logoContainer {
-        display: flex;
-        justify-content: center;
+        display: table-cell;
+        width: calc(80vw); /* split the width 80/20 with the menu icon. */
+        
+       
     }
-    #homeLogo {
-        top: 0px;
-    }
+
     #header nav, .navMainLink {
         width: 100%;
         margin: 0;
     }
     .dropdown-content {
         position: static; 
-/*        display: block;*/ /* if you want the dropdowns automatically open */
+        display: block; /* if you want the dropdowns automatically open */
        
     }
     #homeLogo {
         width: 100%;
         margin-left: auto;
         margin-right: auto;
+        top: 0px;
+    }
+   
+    #expand-menu-icon {
+        display: table-cell;
+        width: calc(20vw); /* split the width 80/20 with the main logo. */
+        text-align: center; 
+        vertical-align: middle;
+        
+    }
+    #expand-menu-icon:hover{
+        cursor: pointer;
+        background-color: #842d1a;
+    }
+    
+    /* don't display the menu when the screen is narrow */
+     #header nav {
+        display: none;
+    }
+    
+    /* when the checkbox is active, display the entire expanded menu */
+    #expand-menu-checkbox:checked ~ nav{
+        display: block;
     }
     
     /* end Header */
