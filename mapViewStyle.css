@@ -217,9 +217,6 @@ section {
     overflow: auto; /* prevent floated elements from going beyond the borders of this parent */
     padding-bottom: 2px;
     
-    /* APPEARANCE */
-    background-color: #b74226;
-    
 }
 
 #zoomToSelectionButton {

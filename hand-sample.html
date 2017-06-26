@@ -475,7 +475,7 @@
                 //create a new div element.
                 var reportDiv = $('<div class="reportDivision"></div>');
                 var rd = reportDivisions[r];
-                if (rd.divisionTitle){reportDiv.append($('<h3></h3>').html(rd.divisionTitle))};
+                if (rd.divisionTitle){reportDiv.append($('<h3 class="orangeBar"></h3>').html(rd.divisionTitle))};
                 var newdiv = $('<div class="divisionContent"></div>');
                 //give it an id property and add a title h3 to it. 
                 newdiv.attr("id", rd.divisionId);
