@@ -510,7 +510,7 @@ function changeMapDesign(map, layer){
     console.log(zoomLevel)
 
     if (zoomLevel == 6 || zoomLevel == 7){
-        var strokeWeight = 2
+        var strokeWeight = 1.5
     } else if (zoomLevel == 8){
         var strokeWeight = 1
     }  else {

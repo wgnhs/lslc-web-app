@@ -424,6 +424,12 @@ p.legendText{
 
 /*********** popup *******/
 
+.leaflet-popup-content-wrapper{
+  border-radius: 0px;
+  background-color: #e6e6e6;
+  border: solid 2px white; 
+}
+
 .leaflet-popup-content{
   max-width: 200px;
   max-height: 200px;
