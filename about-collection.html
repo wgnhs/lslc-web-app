@@ -46,6 +46,46 @@
           ga('send', 'pageview');
 
        </script>
+       <style>
+           .aboutBlock {
+/*               border: 1px dashed red;*/
+               display: inline-table;
+               width: 48%; 
+               max-width: 650px;
+               min-width: 200px;
+               margin: 10px 0;
+               
+           }
+           .aboutBlock img {
+               display: table-cell;
+               height: auto;
+               max-height: 200px;
+              
+              
+           }
+           .sideCaption{
+/*               border: 1px dashed black;*/
+               display: table-cell;
+
+               vertical-align: top;
+               padding: 5px 10px 5px 5px;
+           }
+           
+           @media only screen and (max-width: 1000px){
+               .aboutBlock{
+                   width: 100%;
+               }
+               .sideCaption {
+                    width: 50%;
+              
+                }
+               .aboutBlock img {
+                   max-width: 100%;
+                   
+               }
+           }
+       
+       </style>
  
        
 </HEAD>
@@ -59,6 +99,7 @@
            
        <div class='reportDivision'><h3 class='orangeBar'>Elements of the Collection</h3>
            <div class='divisionContent'>
+<!--
                 <p>The basic elements of the collection are</p>
 
 				<ul>
@@ -74,7 +115,39 @@
 				<p>The hand samples were brought back to Madison, where some were cut to create one or more thin sections--slices of rock thin enough to allow light to pass through them. These thin sections were viewed under a microscope in both plane-polarized and cross-polarized light.</p>
 				<p>Geologists then recorded their observations of the thin sections in ledger books of lithological descriptions.</p>
 				<p>Parts of the Upper Peninsula of Michigan were mapped on large-scale, hand drawn and colored maps that show the topography, geology, and locations from which hand samples were taken. 67 of these maps are part of the current collection. We are not sure how many there were originally.</p>
+-->
            
+               <div class="aboutBlock">
+                   <img src="images/hand-samples-thumb.jpg"/>
+                   <div class='sideCaption'>
+                       <strong>Hand samples</strong><br><span>Geologists in the field collected pieces of rock that could be held in the palm of the hand. </span>
+                   </div>
+               </div>
+               <div class="aboutBlock">
+                   <img src="images/notebook-pages.jpg"/>
+                   <div class='sideCaption'>
+                       <strong>Field Notebooks</strong><br><span>Geologists in the field recorded observations of the sites they visited, including descriptions of the hand samples. </span>
+                   </div>
+               </div>
+               <div class="aboutBlock">
+                   <img src="images/thin-section-406-slide.jpg"/>
+                   <div class='sideCaption'>
+                       <strong>Thin Sections</strong><br><span>The hand samples were brought back to Madison, where some were cut to create one or more thin sections--slices of rock thin enough to allow light to pass through them. These thin sections were viewed under a microscope in both plane-polarized and cross-polarized light. </span>
+                   </div>
+               </div>
+               <div class="aboutBlock">
+                   <img src="images/lith-desc-thumb.png"/>
+                   <div class='sideCaption'>
+                       <strong>Lithological Descriptions</strong><br><span>Looking at the thin sections under a microscope,, geologists recorded their observations of the thin sections in ledger books of lithological descriptions. </span>
+                   </div>
+               </div>
+               <div class="aboutBlock">
+                   <img src="images/map-crystal-falls-mi.png"/>
+                   <div class='sideCaption'>
+                       <strong>Maps</strong><br><span>Parts of the Upper Peninsula of Michigan were mapped on large-scale, hand drawn and colored maps that show the topography, geology, and locations from which hand samples were taken. 67 of these maps are part of the current collection. We are not sure how many there were originally.<br><a></a> </span>
+                   </div>
+               </div>
+               
            </div>
        </div>
            
