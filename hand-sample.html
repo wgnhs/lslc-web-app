@@ -475,7 +475,7 @@
                 //create a new div element.
                 var reportDiv = $('<div class="reportDivision"></div>');
                 var rd = reportDivisions[r];
-                if (rd.divisionTitle){reportDiv.append($('<h3></h3>').html(rd.divisionTitle))};
+                if (rd.divisionTitle){reportDiv.append($('<h3 class="orangeBar"></h3>').html(rd.divisionTitle))};
                 var newdiv = $('<div class="divisionContent"></div>');
                 //give it an id property and add a title h3 to it. 
                 newdiv.attr("id", rd.divisionId);
@@ -525,6 +525,7 @@
                         thinSec.append(
                             "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
                         thinSec.addClass('thinSection');
+                        thinSec.addClass('detailsDiv');
                         thinSec.attr('title','click to view');
                         thinSec.data({'thinSectionNumber':sampleRecordData.thinSections[i].thinSectionId, 'handSampleNumber':sampleRecordData.handSampleNumber});
                     } else {
