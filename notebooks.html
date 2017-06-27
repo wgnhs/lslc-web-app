@@ -33,32 +33,6 @@
            <LINK href="modalStyle.css" rel='stylesheet'/>
 
            <style>
-/*
-           #menus{
-           	height: 30px;
-           	width: 20%;
-           	background-color: #e6e6e6;
-           	text-align: center;
-
-           }
-           #menus:hover{
-			    cursor: pointer;
-			    background-color: dimgrey;
-			}
-
-			.menuItem{
-				height: 30px;
-				width: 100%;
-				position: relative;
-				top: 20px;
-				background-color: #fff;
-				text-align: center;
-			}
-
-			.menuItem:hover{
-				background-color: #e6e6e6;
-			}
-*/
                
           #notebookFilters {
               background-color: #e6e6e6;
@@ -129,7 +103,7 @@
                <label for="NumberSearch"><span>Notebook number:</span></label>
                <input type="text" id="NumberSearch" name="NumberSearch">
            </div>
-<!--           <div id="menus">Sort By</div>-->
+
            <div class="filter">
                <label for="sortBy"><span>Sort by:</span></label>
                <select name="sortBy" id="sortBy">
@@ -148,7 +122,7 @@
 
        <div class="reportDivision">
        
-       	<h3>List of Field Notebooks</h3> 
+       	<h3 class="orangeBar">List of Field Notebooks</h3> 
        
        
        <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
@@ -160,11 +134,7 @@
    
    <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
    <script src="header.js"></script>
-   <script>
-           //indicate the current page in the nav bar. 
-          // $("#navHome").css("background-color", "#848484");
-   </script>
-    
+     
     <!-- javascript links -->
     <script src="mapServiceUrls.js"></script>
     
@@ -179,7 +149,13 @@
     var titleSearchOn = false;
     var numberSearchOn = false;
     var yearSearchOn = false;
-    var x;
+//    var x;
+       
+    //reset the filters on page load/reload:     
+     $("#AuthorSearch").val(""); 
+     $("#NumberSearch").val(""); 
+     $("#YearSearch").val("");   
+     $("#TitleSearch").val(""); 
         
 
     var delay = (function(){
@@ -205,39 +181,6 @@
         }
         
     });    
-    
-    //Listener for the sort by input: 
-    
-//    $("#menus").click(function(){
-//    	if (!menuOn){
-//    		menuOn = true;
-//    		$(this).append($("<div id='menu_year' class='menuItem'>Year</div><div id='menu_number' class='menuItem'>Notebook Number</div><div id='menu_author' class='menuItem'>Author</div><div id='menu_title' class='menuItem'>Title</div>"));
-//
-//	    		$("#menu_year").click(function(){
-//			    	sortMethod = "Year";
-//			    	async.series([callSort, buildNotebooksList, replaceImages]);
-//			    })
-//
-//			    $("#menu_number").click(function(){
-//			    	sortMethod = "Number";
-//			    	async.series([callSort, buildNotebooksList, replaceImages]);
-//			    })
-//
-//			    $("#menu_author").click(function(){
-//			    	sortMethod = "Author";
-//			    	async.series([callSort, buildNotebooksList, replaceImages]);
-//			    })
-//
-//			    $("#menu_title").click(function(){
-//			    	sortMethod = "Title";
-//			    	async.series([callSort, buildNotebooksList, replaceImages]);
-//			    })
-//
-//    	} else {
-//    		menuOn = false;
-//    		$(".menuItem").remove();
-//    	};
-//    });
 
         
     //Listeners for filtering the notebooks list: 
@@ -245,25 +188,25 @@
     $("#AuthorSearch").on('input', function(){
     	authorSearchOn = true;
     	delay(function(){
-    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    		async.series([callfilter, buildNotebooksList]);
     	}, 1000);
     })
 	$("#NumberSearch").on('input', function(e){
 		numberSearchOn = true;
     	window.setTimeout(function(){
-    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    		async.series([callfilter, buildNotebooksList]);
     	}, 1000);
     })
     $("#YearSearch").on('input', function(e){
     	yearSearchOn = true;
     	window.setTimeout(function(){
-    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    		async.series([callfilter, buildNotebooksList]);
     	}, 1000);
     })
     $("#TitleSearch").on('input', function(e){
     	titleSearchOn = true;
     	window.setTimeout(function(){
-    		async.series([callfilter, buildNotebooksList, replaceImages]);
+    		async.series([callfilter, buildNotebooksList]);
     	}, 1000);
     })
  
@@ -373,7 +316,7 @@
     var notebooksManager = (function(){
 
     	var add = function(object){
-    		object.coverURL = "images/notebooks/notebook-icon.jpg";
+    		object.coverURL = "images/notebook-icon.jpg";
     		object.show = true
     		globalNotebookContentArray = globalNotebookContentArray.concat(object);
 

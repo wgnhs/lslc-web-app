@@ -3,14 +3,15 @@
 
 var header = "<div id='navWrapper'>"
 
-header += "<div id='logoContainer'> <a href='index.html'><img id='homeLogo' src='images/lslc-logo_v4_light-lake_smaller.png' alt='The Lake Superior Legacy Collection Logo'/></a></div><!--<span>geologic samples from the Lake Superior Division of the USGS, 1882-1922</span>-->";
+header += "<div id='logoContainer'> <a href='index.html'><img id='homeLogo' src='images/lslc-logo_v4_light-lake_smaller.png' alt='The Lake Superior Legacy Collection Logo'/></a></div>";
 
+header+= "<label for='expand-menu-checkbox' id='expand-menu-icon'><img src='images/menu-white.png' alt='menu icon'></label>    <input type='checkbox' id='expand-menu-checkbox' role='button'>";
 
 header += "<nav>";
 
 //header+="<a id='navHome' href='index.html' class='navMainLink'>Home</a>";
 
-header+="<div id='navCollection' href='#' class='navMainLink dropdownContainer'><h3>Collection</h3><div class='dropdown-content'><a id='navFilter'href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html#1'>Hand Sample </a><a href='notebooks.html'>Notebooks</a><a href='thin-gallery.html'>Thin Sections Gallery</a><a href='downloads.html'>Data Downloads</a></div></div>";
+header+="<div id='navCollection' class='navMainLink dropdownContainer'><h3>Collection</h3><div class='dropdown-content'><a id='navFilter' href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html#1'>Hand Sample </a><a href='notebooks.html'>Notebooks</a><a href='thin-gallery.html'>Thin Sections Gallery</a><a href='downloads.html'>Data Downloads</a></div></div>";
 
 
 header+="<div id='navAbout' href='#' class='navMainLink dropdownContainer'><h3>About</h3><div class='dropdown-content'><a href='about-history.html'>Lake Superior Division, 1882–1922</a><a href='about-wgnhs.html'>Digitizing the collection</a><a href='about-collection.html'>Items in the collection</a></div></div>";
