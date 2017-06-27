@@ -57,7 +57,7 @@ var modal = (function(){
         modalContent += "<p>Drag the slider to shift from plane-polarized light to cross-polarized light. Zoom to view in detail. </p>"
        // modalContent += "<div id='topSection'>"
         modalContent += "<div id='sampleLink'></div>";
-        modalContent += "<div id='sliderContainer'><label class='align-right'>PPL</label><div id='slider'><div class='ui-slider-handle'></div></div><label>XPL</label></div>";
+        modalContent += "<div id='sliderContainer'><label>PPL</label><div id='slider'><div class='ui-slider-handle'></div></div><label>XPL</label></div>";
       //  modalContent += "</div>"
         modalContent += "<div id='photo'></div>";
 
@@ -65,7 +65,7 @@ var modal = (function(){
         
         
         $('#modalHeader').text('Thin Section #' + thinSectionNumber);
-        $('#sampleLink').append("<a href='hand-sample.html#"+handSampleNumber+"'><div>part of Sample #"+ handSampleNumber +"<br/>(click here to view details)</div><img class='sampleChevron' src='images/chevron_right_g.png' alt=''></a>");
+        $('#sampleLink').append("<a href='hand-sample.html#"+handSampleNumber+"' target='_blank'><div>part of Sample #"+ handSampleNumber +"<br/>(click here to view details)</div><img class='sampleChevron' src='images/chevron_right_g.png' alt=''></a>");
         
         //populate the parts of the thin section viewer: 
         zoomifyThinSection(thinSectionNumber);
