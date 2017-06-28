@@ -1,4 +1,15 @@
 var globalLayer;
+var firstLoad = true;
+var possibleRockTypes = [];
+var possibleRockTypes1 = ["stuff", "more stuff"]
+    
+    $(function(){
+        console.log("ran")
+        $("#fieldDescriptionSearch").autocomplete({
+            source: possibleRockTypes,
+            minLength: 5
+        });
+    })
 
 
 var leafletMap = (function(){
@@ -10,6 +21,8 @@ var leafletMap = (function(){
     var polygon;
     
     var initialize = function(){
+
+
         
          map = L.map('map', {
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
@@ -414,12 +427,10 @@ var leafletMap = (function(){
 
     globalLayer = leafletFeatureLayer;
 
-    leafletFeatureLayer.eachFeature(function(lyr){
-       // console.log("individual layer fill color: ", lyr.options.style.fillColor);
-        //var layerBounds = lyr.getBounds();
-
-    })   
-
+        if (firstLoad){
+            initSmartSearch();
+            firstLoad = false;
+        }
 
         $("#loading").remove(); //stops loading feedback
         
@@ -490,4 +501,17 @@ function zoomToSelection(map){
     })
 
     map.fitBounds(bounds)
+}
+
+function initSmartSearch(){
+    
+    for (i in globalResultsArray){
+        var thisType = globalResultsArray[i].attributes.RockType;
+        if (possibleRockTypes.indexOf(thisType) == -1 && thisType != null){
+            possibleRockTypes.push(thisType);
+        }
+    } 
+
+    console.log(possibleRockTypes) 
+
 }
