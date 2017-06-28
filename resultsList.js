@@ -62,11 +62,15 @@ function initializeResultsTable(){
 
 //accepts data from the dojo query 
 function listResults (dataObjects){
+    
    // console.log("dataObjects is: ", dataObjects);
     //dataObjects is an array of objects. 
    
+    
+    
     //Clear the results list before re-populating. 
     resultsTableBody.innerHTML = '';
+    $("#load-more-link").remove();
     
 
     var tb = '';
@@ -106,6 +110,17 @@ function listResults (dataObjects){
 
    //this seems to be WAY faster than appending html elements within the for loop! 
      resultsTableBody.innerHTML += tb;
+    
+    if(dataObjects.length !== globalResultsArray.length){
+        console.log("add link for loading more results"); 
+       
+        
+        $("#resultsTable").after('<a id="load-more-link">Load the remaining results</a>'); 
+        
+        $("#load-more-link").on("click", function(){
+            listResults(globalResultsArray);
+        })
+    }
     
 
 }; //end getResults function
