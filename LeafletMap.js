@@ -29,7 +29,7 @@ var leafletMap = (function(){
             zoomControl: false, //will add zoom control in the top right corner next
             minZoom: 6,
             maxZoom: 11,
-            maxBounds: [[43.0,-100.0],[50.0,-84.0]]
+            maxBounds: [[39.0,-110.0],[50.0,-80.0]]
         }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
 
         
