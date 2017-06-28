@@ -248,7 +248,7 @@ function initResize(){
         $("#leftPanel").css("height", leftPanelHeight + "px");
           
           
-        $(".leaflet-top").css("top", $("#homeLogo").height()+2);
+        $(".leaflet-top").css("top", $("#homeLogo").height()+5);
       },
       resize: function(){
         resizeAll();
@@ -275,7 +275,7 @@ function initResize(){
         
       
         
-        $(".leaflet-top").css("top", $("#homeLogo").height()+2);
+        $(".leaflet-top").css("top", $("#homeLogo").height()+5);
     }
     
     /* Listener for window resize */
