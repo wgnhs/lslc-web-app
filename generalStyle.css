@@ -35,9 +35,7 @@ label, span {
 .inline-block{
     display: inline-block;
 }
-.align-right{
-    text-align: right;
-}
+
 .float-right {
     float: right;
 }
@@ -60,6 +58,7 @@ h3 {
 }
 .orangeBar {
     background-color: #b74226;
+    background-color: #6e6e6e;
     color: white;
     padding-left: 3px;
 }
@@ -107,6 +106,9 @@ h3 {
 
 #expand-menu-icon, #expand-menu-checkbox {
     display: none;
+}
+#expand-menu-icon img {
+    width: 30px;
 }
 
 #header nav {
@@ -347,6 +349,7 @@ h3 {
         top: 0px;
     }
    
+    /* MENU EXPANDING */
     #expand-menu-icon {
         display: table-cell;
         width: calc(20vw); /* split the width 80/20 with the main logo. */
@@ -368,6 +371,7 @@ h3 {
     #expand-menu-checkbox:checked ~ nav{
         display: block;
     }
+    
     
     /* end Header */
 }

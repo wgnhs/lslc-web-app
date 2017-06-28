@@ -46,8 +46,7 @@
 
 
 
-/*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
-
+/* Left Panel (filters area) */
 #leftPanel{
     width:30%;
     max-width: 350px;
@@ -69,6 +68,10 @@
 
 .orangeBar{
   position: relative;
+    
+    /* override styles from generalStyles.css  */
+    background-color: #b74226; 
+    color: white;
 }
 
 .mapViewButton {
