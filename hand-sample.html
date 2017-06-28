@@ -25,6 +25,10 @@
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
        
+        <!-- Promises polyfill -->
+           <!-- source: https://www.npmjs.com/package/promise-polyfill -->
+            <script src="lib/promise-6.0.2.min.js"></script>
+       
        
        <!-- local stylesheets -->
            <LINK href="generalStyle.css" rel='stylesheet'/>
@@ -74,6 +78,11 @@
                height: 200px;
                position: relative;
            }
+           
+           /* if we are already on a sample page, don't show the sample link. */
+            #sampleLink {
+                display: none;
+            }
 
        </style>
        
@@ -162,10 +171,10 @@
             },
             
             "fieldDesc":"unknown",
-            "fieldNotebookNum":"none",
+            "fieldNotebookNumber":"none",
             "fieldPage": "N/A",
             "fieldNotebookTitle": "N/A",
-            "fieldNotebookThumb":"images/notebooks/fieldNotebook31_thumb.jpg",
+            "fieldNotebookThumb":"images/notebook-icon.jpg",
             "fieldNotebookUrl":"http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=article&did=EcoNatRes.VHBook035.i0001&id=EcoNatRes.VHBook035&isize=M", 
             "fieldAuthor":null,
             "fieldDate": null,
@@ -178,7 +187,7 @@
                 "lithDate": null, 
                 "lithAuthor":null,
                 "lithLedgerUrl": "http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=header&id=EcoNatRes.LithDescV&isize=M",
-                "lithLedgerThumb":"images/notebooks/lithBookV_thumb.jpg"
+                "lithLedgerThumb":"images/notebook-icon.jpg"
                 }],
             "WGNHSId": null,
             "sampleNotes":""
@@ -234,8 +243,7 @@
             } //end else
         } //end function resetSampleNumber
         
-        //var sampleNumberSQL = "Upper(HandSampleCatalogNumber) LIKE UPPER('"+number+"')";
-   
+
         function searchSample(number){
  
            queryForSample(number)
@@ -244,18 +252,14 @@
                
                //three tables can all be queried using the initial information...
                var threeTableResults = Promise.all([retrieveNotebookData(), retrieveThinSections(), retrieveLithology()]);
-               
-               
-//               retrieveNotebookData()
-//                   .then(function(resolved){
-//                       console.log("5. resolved notebook query. ", resolved);
-//                       retrieveThinSections()
-//                           .then(function(resolved){
-//                                console.log("7. thin section query done.", resolved);
-//                                retrieveLithology()
+ 
                
                //finding the ledgers must happen after finding the lithologies. 
                threeTableResults.then(function(){
+                   console.log("queries are done. all sample data: ", sampleRecordData);
+                   buildReport();
+                   
+   /*                
                                         console.log("9. lithologies:", sampleRecordData.lithologies);
 
                                         var ledgerQueryQueue = [];
@@ -273,30 +277,28 @@
                                             buildReport();
                                         });
 
-                                });
-//                            });
-//
-//                    });
+                                
+    */
+               });
+
             }).catch(function(error){
                console.log("error. ", error);
            })
        } //end testSample
         
         
-        
-        //needs to be called! 
         function queryForSample(number){
             console.log("1. query for sample #", number); 
             return new Promise (function(resolve, reject){
                 recordDataManager.clear();
-                sampleRecordData.catalogNumber = number;
+                sampleRecordData.handSampleNumber = number;
             
             
-                var sampleCatalogNumberQuery = L.esri.query({url: samplesTableURL}); 
-                sampleCatalogNumberQuery.fields(["*"]);
-                sampleCatalogNumberQuery.where("Upper(HandSampleCatalogNumber) LIKE UPPER('"+number+"')");
+                var handSampleNumberQuery = L.esri.query({url: samplesTableURL}); 
+                handSampleNumberQuery.fields(["*"]);
+                handSampleNumberQuery.where("Upper("+handSampleNumberField+") LIKE UPPER('"+number+"')");
 
-                sampleCatalogNumberQuery.run(function(error, sampleTableResult, sampleTableResponse){
+                handSampleNumberQuery.run(function(error, sampleTableResult, sampleTableResponse){
                    // console.log("sample table response:", sampleTableResponse.features[0].attributes);
                   //  console.log("sample table result:", sampleTableResult.features[0].properties);
 
@@ -307,7 +309,7 @@
                             //console.log("sample table info:", sampleTableResult.features[0].attributes);
                             //set the attributes that can be found in the samples table. 
 
-                            sampleRecordData.catalogNumber = sampleTableResponse.features[0].attributes.HandSampleCatalogNumber; //this resets to the correct code if the user entered a lowercase letter
+                            sampleRecordData.handSampleNumber = sampleTableResponse.features[0].attributes[handSampleNumberField]; //this resets to the correct code if the user entered a lowercase letter
                             sampleRecordData.sampleId = sampleTableResponse.features[0].attributes.SampleId;
                             sampleRecordData.fieldDesc = sampleTableResponse.features[0].attributes.RockType;
                             sampleRecordData.thinSectionCount = sampleTableResponse.features[0].attributes.ThinSectionCount;
@@ -318,8 +320,8 @@
                             sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section;
                             sampleRecordData.location.quarterSection = sampleTableResponse.features[0].attributes.Quarter;
                             sampleRecordData.location.quarterQuarterSection = sampleTableResponse.features[0].attributes.QuarterQuarter;
-                            sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes.LocNote;
-                            sampleRecordData.fieldNotebookNum = sampleTableResponse.features[0].attributes.NotebookNum;
+                            sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes[locationNoteField];
+                            sampleRecordData.fieldNotebookNumber = sampleTableResponse.features[0].attributes[notebookNumberField];
                             sampleRecordData.fieldPage = sampleTableResponse.features[0].attributes.NotebookPage;
                             sampleRecordData.WGNHSId = sampleTableResponse.features[0].attributes.WgnhsId;
                             sampleRecordData.sampleNotes = sampleTableResponse.features[0].attributes.Notes;
@@ -328,7 +330,7 @@
 
                     } else {
                         //if the sample id is not successfully found, return an error message. 
-                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.catalogNumber+". Try a different number.");
+                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.handSampleNumber+". Try a different number.");
                         reject("reject: sample not found.");
                     }
                 });//end .run
@@ -340,13 +342,13 @@
         function retrieveNotebookData(){
            console.log("4.")
             return new Promise (function(resolve, reject){
-                if(sampleRecordData.fieldNotebookNum){
+                if(sampleRecordData.fieldNotebookNumber){
                     
-                    retrieveFieldNotebookThumbnail(sampleRecordData.fieldNotebookNum);
+                    retrieveFieldNotebookThumbnail(sampleRecordData.fieldNotebookNumber);
                     
                     var notebookQuery = L.esri.query({url: notebooksTableURL}); 
                     notebookQuery.fields(["*"]); 
-                    notebookQuery.where("Number LIKE '"+sampleRecordData.fieldNotebookNum+"'"); 
+                    notebookQuery.where("Number LIKE '"+sampleRecordData.fieldNotebookNumber+"'"); 
 
                     notebookQuery.run(function(error, featureCollection, notebooksResponse){
                         
@@ -381,12 +383,12 @@
                         var thinDetails = {};
                       //  console.log("thin section info", thinSectionsResponse.features[i].attributes);
                         //add attributes to the thin sections array. 
-                        thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes.CatalogNumber;
+                        thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes[thinSectionNumberField];
                         thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
-                        thinDetails.thinImgppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'ppl.jpg';
-                        thinDetails.thinImgxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'xpl.jpg';
-                        thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'ppl_thumb.jpg';
-                        thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes.CatalogNumber+'xpl_thumb.jpg';
+                        thinDetails.thinImgppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl.jpg';
+                        thinDetails.thinImgxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl.jpg';
+                        thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl_thumb.jpg';
+                        thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl_thumb.jpg';
 
                         sampleRecordData.thinSections.push(thinDetails);
                         
@@ -416,8 +418,12 @@
                         lithDetails.lithPage = lithResponse.features[i].attributes.Page;
                         lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
                         lithDetails.lithNotes = lithResponse.features[i].attributes.Notes;
-                                                                    
-                       sampleRecordData.lithologies.push(lithDetails);
+                        lithDetails.lithLedgerTitle  =   lithResponse.features[i].attributes.Title;  
+                        lithDetails.lithLedgerUrl = lithResponse.features[i].attributes.UwdcUrl;
+                        lithDetails.lithDate = lithResponse.features[i].attributes.Year;
+                        lithDetails.lithAuthor = lithResponse.features[i].attributes.Author;
+                        lithDetails.lithLedgerThumb = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/lithBook"+lithResponse.features[i].attributes.BookId+"_cover_thumb.jpg";
+                        sampleRecordData.lithologies.push(lithDetails);
   
                    } //end for
                    
@@ -430,43 +436,7 @@
        
        } //end retrieveLithology
         
-        function retrieveLedger(lithologyindex){
-            return new Promise(function(resolve, reject){
-
-//                if (lithDescriptions){
-//                    for(i in sampleRecordData.lithologies){
-                        
-                        var ledgerQuery = L.esri.query({url:ledgerTableURL});
-                        ledgerQuery.where("BookId = "+ sampleRecordData.lithologies[lithologyindex].lithLedgerId); 
-                        ledgerQuery.fields(["*"]);
-                        
-                       // var ledgerDetails = [];
-                        console.log("search for ledger book #", sampleRecordData.lithologies[lithologyindex].lithLedgerId); 
-
-                        ledgerQuery.run(function(err, result, ledgerResponse){
-                           console.log("ledger info: ", ledgerResponse.features[0].attributes);
-                            
-                            
-                           sampleRecordData.lithologies[lithologyindex].lithLedgerTitle =  ledgerResponse.features[0].attributes.Title; 
-                           sampleRecordData.lithologies[lithologyindex].lithLedgerUrl =  ledgerResponse.features[0].attributes.UwdcUrl;
-                           sampleRecordData.lithologies[lithologyindex].lithDate =  ledgerResponse.features[0].attributes.Year;
-                           sampleRecordData.lithologies[lithologyindex].lithAuthor =  ledgerResponse.features[0].attributes.Author;
-                           resolve(ledgerResponse.features[0]);
-                           
-                           
-
-                        }); //end .run
-//                        
-                        
-//                    } //end for
-//                    
-//                    
-//                } //end if
-    
-            }); //end return Promise
-            
-        } //end function retrieveLedgers
-       
+     
        function retrieveFieldNotebookThumbnail(notebookNumber){
            return new Promise(function(resolve, reject){
                 var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookNumber+"_cover_thumb.jpg"; 
@@ -482,8 +452,8 @@
             }
             img.onerror = function(){
                 console.log("notebook "+notebookNumber+" thumb not found.");
-                sampleRecordData.fieldNotebookThumbnail = 'images/notebooks/notebookIcon.jpg';
-                resolve('images/notebooks/notebookIcon.jpg');
+                sampleRecordData.fieldNotebookThumbnail = 'images/notebook-icon.jpg';
+                resolve('images/notebook-icon.jpg');
                
             }
             img.src = thumbURL; 
@@ -505,7 +475,7 @@
                 //create a new div element.
                 var reportDiv = $('<div class="reportDivision"></div>');
                 var rd = reportDivisions[r];
-                if (rd.divisionTitle){reportDiv.append($('<h3></h3>').html(rd.divisionTitle))};
+                if (rd.divisionTitle){reportDiv.append($('<h3 class="orangeBar"></h3>').html(rd.divisionTitle))};
                 var newdiv = $('<div class="divisionContent"></div>');
                 //give it an id property and add a title h3 to it. 
                 newdiv.attr("id", rd.divisionId);
@@ -516,7 +486,7 @@
             };
             
             //populate the various fields in the report, using the values in the sampleRecordData object (global variable)
-           // addHandSamples();
+          
             addThinSections();
             addLocation();
             addFieldNotes();
@@ -528,20 +498,15 @@
         } //end buildReport 
         
         function addSampleNumber(){
-            if(sampleRecordData.catalogNumber){
-                var sampleIDh2 = $('<h2></h2>').html("Hand Sample #"+sampleRecordData.catalogNumber); 
+            if(sampleRecordData.handSampleNumber){
+                var sampleIDh2 = $('<h2></h2>').html("Hand Sample #"+sampleRecordData.handSampleNumber); 
                 $("#sampleRecord").append(sampleIDh2);
                
                 
             } else {console.log("samID is false.");}
         }
         
-        function addHandSamples(){
-            if (sampleRecordData.handSampleId){
-                $("#handSamples").append("Hand Sample # "+sampleRecordData.handSampleId);
-            } else {$("#handSamples").append('<p>none</p>');}
-        }
-        
+   
        function addThinSections(){
         //    console.log("sampleRecordData", sampleRecordData);
             //populate the thin section results:
@@ -560,8 +525,9 @@
                         thinSec.append(
                             "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
                         thinSec.addClass('thinSection');
+                        thinSec.addClass('detailsDiv');
                         thinSec.attr('title','click to view');
-                        thinSec.data({'thinID':sampleRecordData.thinSections[i].thinSectionId});
+                        thinSec.data({'thinSectionNumber':sampleRecordData.thinSections[i].thinSectionId, 'handSampleNumber':sampleRecordData.handSampleNumber});
                     } else {
                     
                         thinSec.append("<span>(no image available.)</span>");
@@ -585,9 +551,9 @@
 //            $('#thinSections').append(thinSectionsContainer);
             
             $(".thinSection").on('click', function(){
-                console.log("view thin section #", $(this).data('thinID'));
+                console.log("view thin section #", $(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
                 
-                modal.thinSectionViewer($(this).data('thinID'));
+                modal.thinSectionViewer($(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
             })
             
             
@@ -664,12 +630,12 @@
    
         function addFieldNotes(){
             var fieldNotebookreport = ''; 
-            if (sampleRecordData.fieldNotebookNum){
+            if (sampleRecordData.fieldNotebookNumber){
                 if(sampleRecordData.fieldNotebookTitle === null){sampleRecordData.fieldNotebookTitle = "untitled"}; 
 
                 fieldNotebookreport +="<div class='divisionEntry'>";
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.fieldNotebookThumbnail+"' alt='notebook cover'/></a>";
-                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNum+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p>Page "+sampleRecordData.fieldPage+"</p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNumber+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
                 fieldNotebookreport +="</div>";
      
             } else if (sampleRecordData.fieldDesc){
@@ -691,22 +657,23 @@
             if(sampleRecordData.lithologies.length > 0){
                 for (i in sampleRecordData.lithologies){
                     //console.log("lith data", sampleRecordData.lithologies[i]);
+                    //there is always a URL for a lith book. 
                     
                     lith+="<div class='divisionEntry'>";      
                     //thumbnail in link
-                    if (sampleRecordData.lithologies[i].lithLedgerUrl){lith += "<a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"}; 
-                    lith += "<img src='images/notebooks/lithBookV_thumb.jpg' alt='notebook cover'/></a>";
+                    lith += "<a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank><img src='"+sampleRecordData.lithologies[i].lithLedgerThumb+"' alt='notebook cover'/></a>"; 
+                 
                     //details
                     lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p>Page "+sampleRecordData.lithologies[i].lithPage+"</p>"; 
-                    //lith += "<p>Ledger "+sampleRecordData.lithologies[i].lithLedgerId+"</p>"
-                    if (sampleRecordData.lithologies[i].lithLedgerUrl){
-                        lith+=   "<p><a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithLedgerTitle+"</a> (ledger #"+sampleRecordData.lithologies[i].lithLedgerId+")</p><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>"
-                    };
+               
+                    
+                    lith+= "<p><a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithLedgerTitle+"</a> (ledger #"+sampleRecordData.lithologies[i].lithLedgerId+")</p><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>";
+                    
                     
                     if (sampleRecordData.lithologies[i].lithNotes){
                         lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p>"
                     };
-                    lith+='</div></div>';
+                    lith+='</div></div>'; //close divisionEntry and detailsDiv
                 }
             } else {
                 lith = "<p>none</p>";

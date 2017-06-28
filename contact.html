@@ -63,6 +63,7 @@
    <div id="wrapper">
        
        <h2>Contact us</h2>
+       <p>This collection was assembled by a team at the <a href="http://wgnhs.uwex.edu" target="_blank">Wisconsin Geological and Natural History Survey</a>.</p>
        
        <div id="contacts"></div>
        
@@ -92,7 +93,7 @@
             }, 
             {"divisionTitle": "Data Preservation Projects", 
             "name": "M. Carol McCartney",  
-            "title": "Principal Investigator", 
+            "title": "Outreach Manager and Principal Investigator for this project", 
             "affiliation" : "Wisconsin Geological & Natural History Survey", 
              "email": "carol.mccartney@wgnhs.uwex.edu" 
             },   
@@ -107,7 +108,7 @@
                 //create a new div element.
                 var contactDiv = $('<div class="reportDivision"></div>');
                 
-                if (rd.divisionTitle){contactDiv.append($('<h3></h3>').html(rd.divisionTitle))};
+                if (rd.divisionTitle){contactDiv.append($('<h3 class="orangeBar"></h3>').html(rd.divisionTitle))};
                 
                 contactDiv.append('<div class="divisionContent"><p>'+rd.name+'<br>'+rd.title+', <br>'+rd.affiliation+'<br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p></div>');
                 //append it to the html page. 

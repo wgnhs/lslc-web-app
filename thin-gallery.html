@@ -4,7 +4,7 @@
    <HEAD>
       <TITLE>LSLC Thin Sections</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
        <meta charset="UTF-8">
-
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
         <!--Google font-->
             <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
@@ -39,38 +39,32 @@
       <![endif]-->
        
        <style>
+           /* title at the top of the page. inline with the span that states the number of thin sections. */
            h2 {
                display: inline;
                padding-right: 5px;
            }
-           .galleryPageLinks{
+           
+           /* galleryItemDiv is a container, and each row of them occupies 100% of the parent width. */
+            .galleryItemDiv {
+               display: inline-block;
+            }
+            .galleryItemDiv:hover{
                background-color: #e6e6e6;
-           }
-           .galleryPageLink {
-               background-color: orange;
-               display: inline-block;
-           }
-           .galleryPageLink:hover {
-               background-color: darkgoldenrod;
                cursor: pointer;
-           }
-           .galleryItemDiv {
-               display: inline-block;
-               margin: 5px;
-               padding: 3px;
+            }
+           /* thinSection is the inner container within each galleryItemDiv -- contains the thin section pictures and text. */
+           .thinSection {
+               margin: 3px;
            }
            .galleryItemDiv p{
                margin: 0;
            }
-           .galleryThumb{ 
-                height: 150px;
-               width: 225px;
+           .galleryThumb { 
+               width: 50%; /* half the width of the .thinSection container */
            }
-           #thinGallery .thinSection:hover{
-               background-color: #e6e6e6;
-               cursor: pointer;
-           }
-           /*PAGINATION*/
+          
+           /* PAGINATION / NAV */
            #navContainer {
                text-align: center;
                background-color: #e6e6e6; /* bar all the way across the page */
@@ -85,7 +79,7 @@
            .galleryNav input{
                display: inline-block;
                text-align: center;
-               width: 3em;
+               width: 4em;
            }
            .galleryNav .button{
                background-color:  #b74226;
@@ -96,6 +90,33 @@
            .galleryNav .button:hover{
                background-color:  #842d1a;
                cursor: pointer;
+           }
+           
+           /* Responsiveness */
+           @media only screen and (max-width : 550px) {
+               .galleryItemDiv {
+                   width: 100%;
+               }
+           }
+           @media only screen and (min-width : 551px) and (max-width : 1100px) {
+               .galleryItemDiv {
+                   width: 50%;
+               }
+           }
+            @media only screen and (min-width : 1101px) and (max-width : 1900px) {
+               .galleryItemDiv {
+                   width: 33%;
+               }
+           }
+           @media only screen and (min-width : 1901px) and (max-width : 2900px) {
+               .galleryItemDiv {
+                   width: 25%;
+               }
+           }
+           @media only screen and (min-width : 2901px) {
+               .galleryItemDiv {
+                   width: 20%;
+               }
            }
            
        </style>
@@ -110,13 +131,13 @@
        </div> 
 
        <h2 id="galleryTitle">Thin Sections Gallery</h2> 
-       <p>Thin sections are pieces of rock, sliced thin and mounted on microscope slides. Each thin section in our collection was photographed in plane polarized and cross polarized light, as geologists in 1900 would have viewed these under a microscope. <br>Click on a thin section photo pair below to view it in detail. </p>
+       <p>Thin sections are pieces of rock, sliced thin and mounted on microscope slides. Each thin section in our collection was photographed in plane polarized light  (background appears white) and cross polarized light (background appears dark blue or black), as geologists in 1900 would have viewed these under a microscope. <br>Click on a thin section photo pair below to view it in detail. </p>
        <div id="navContainer">
            <div class="galleryNav">
-               <div id="galleryPrev" class='button'>&laquo;</div>
-               <label>page </label>
+               <div id="galleryPrev" class='button' role="button">&laquo;</div>
+               <label for="galleryPage">page </label>
                <input id="galleryPage" name="galleryPage" type="search" value="1">
-               <div id="galleryNext" class='button'>&raquo;</div>
+               <div id="galleryNext" class='button' role="button">&raquo;</div>
            </div>
        </div>
 
@@ -152,17 +173,18 @@
             $("#thinGallery").on('click','.thinSection', function(){
                 console.log("view modal for thin section #", $(this).data('thinID'));
                 
-                modal.thinSectionViewer($(this).data('thinID'));
+                modal.thinSectionViewer($(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
             });
               
         }
         
+        /* Module for thin sections data */
         var thinSectionsManager = (function(){
             
             var add = function(array){
-                //construct the image URL properties from the catalog number. 
-                array.PPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array.CatalogNumber+'ppl_thumb.jpg'; 
-                array.XPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array.CatalogNumber+'xpl_thumb.jpg'; 
+                //construct the image URL properties from the thin section number. 
+                array.PPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array[thinSectionNumberField]+'ppl_thumb.jpg'; 
+                array.XPLthumbURL = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+array[thinSectionNumberField]+'xpl_thumb.jpg'; 
                 globalThinSectionGalleryArray = globalThinSectionGalleryArray.concat(array);
                 
             }
@@ -217,6 +239,7 @@
            //this should happen once upon page load. 
            
            var thinImagesQuery = L.esri.query({url: thinSectionsTableURL});
+           thinImagesQuery.where(thinSectionPhotosField+"= 1");
            thinImagesQuery.fields(["*"]); 
            
            thinImagesQuery.run(function(err, featureCollection, response){
@@ -286,20 +309,22 @@
             var dataForDisplay = thinSectionsManager.page(pageNumber, pageSize); // .page accepts two arguments: page number then page size
             
             
-            //for every thin section...
+            //for every thin section, create the html element
             for (i in dataForDisplay){
                 var item = dataForDisplay[i];
-                
-                var thinSec = $('<div class="thinSection"></div>').html("<p>Thin Section #"+item.CatalogNumber+"</p>");
+                var galleryItem  = $('<div class="galleryItemDiv"></div>');
+                var thinSec = $('<div class="thinSection"></div>').html("<p>Thin Section #"+item[thinSectionNumberField]+"</p>");
                 
                 thinSec.append("<img class='galleryThumb' src='"+item.PPLthumbURL+"'>");
                 thinSec.append("<img class='galleryThumb' src='"+item.XPLthumbURL+"'>");
-                thinSec.addClass("galleryItemDiv");
+               
                 thinSec.attr('title','click to view');
 
-                thinSec.data({"thinID": item.CatalogNumber/*, "handSampleCatalogNumber": 1*/});
+                thinSec.data({"thinSectionNumber": item[thinSectionNumberField], "handSampleNumber": item[handSampleNumberField]});
                 
-                galleryContent.append(thinSec);  
+                galleryItem.append(thinSec);
+                
+                galleryContent.append(galleryItem);  
                 
             }
             
@@ -314,7 +339,7 @@
         }
         
         function callSort(callback){
-            thinSectionsManager.sortByNumber("CatalogNumber", "ascending"); 
+            thinSectionsManager.sortByNumber(thinSectionNumberField, "ascending"); 
             callback();
         }
         

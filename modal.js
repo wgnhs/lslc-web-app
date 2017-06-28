@@ -46,8 +46,8 @@ var modal = (function(){
 
     };
     
-    var thinSectionViewer = function (id) {
-        console.log("show thin section viewer for ID", id);
+    var thinSectionViewer = function (thinSectionNumber, handSampleNumber) {
+        console.log("show thin section viewer for ID", thinSectionNumber);
         modalContent = "<span id='closemodal' class='close'>x</span>"; 
         
        
@@ -64,11 +64,11 @@ var modal = (function(){
         $("#modal-content").append(modalContent);
         
         
-        $('#modalHeader').text('Thin Section #' + id);
-        $('#sampleLink').append("<div>part of Sample #"+ id +"<br/>(click here to view record)</div><img class='sampleChevron' src='images/chevron_right_gw.png' alt=''>");
+        $('#modalHeader').text('Thin Section #' + thinSectionNumber);
+        $('#sampleLink').append("<a href='hand-sample.html#"+handSampleNumber+"'><div>part of Sample #"+ handSampleNumber +"<br/>(click here to view details)</div><img class='sampleChevron' src='images/chevron_right_g.png' alt=''></a>");
         
         //populate the parts of the thin section viewer: 
-        zoomifyThinSection(id);
+        zoomifyThinSection(thinSectionNumber);
             
         
         //make the modal visible. 
