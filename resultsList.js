@@ -230,8 +230,10 @@ function initResize(){
     //called once from the initializeResultsTable function. 
 
   var barHeight = $(".orangeBar").height()
-  var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55); //16 due to attribution on leaflet map
-  console.log("left panel offset: ", $("#leftPanel").offset().top);
+
+  var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 90); //16 due to attribution on leaflet map 90 due to zoom control
+  console.log($("#leftPanel").offset().top);
+
 
   $('#resultsPanel').resizable({
       
