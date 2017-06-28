@@ -1,6 +1,16 @@
 var globalLayer;
 var firstLoad = true;
 
+$("#fieldDescriptionSearch").keypress(function(e){
+    if(e.which == 13){
+        $("#fieldDescriptionSearch").autocomplete("close");
+    }
+})
+
+$("#leftPanel").scroll(function(){
+    $("#fieldDescriptionSearch").autocomplete("close");
+})
+
 var leafletMap = (function(){
     var map;
     var leafletFeatureLayer;
@@ -453,6 +463,9 @@ var leafletMap = (function(){
         }
 
         $("#loading").remove(); //stops loading feedback
+
+
+        
         
         //reset the map size; this prevents it from skipping the bottom row of tiles. 
         map.invalidateSize();
@@ -514,7 +527,8 @@ function zoomToSelection(map){
 
     globalLayer.eachFeature(function(lyr){
         var layerBounds = lyr.getBounds();
-        if (lyr.options.fillColor != "#ece7f2"){
+        console.log(lyr.options)
+        if (lyr.options.fillOpacity != 0){
             bounds.extend(layerBounds)
         }
 
