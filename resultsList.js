@@ -119,7 +119,7 @@ function listResults (dataObjects){
         
         $("#load-more-link").on("click", function(){
             listResults(globalResultsArray);
-        })
+        });
     }
     
 
