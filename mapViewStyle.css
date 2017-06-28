@@ -425,9 +425,7 @@ p.legendText{
 /*********** popup *******/
 
 .leaflet-popup-content-wrapper{
-  border-radius: 0px;
-  background-color: #e6e6e6;
-  border: solid 2px white; 
+  border-radius: 0px; 
 }
 
 .leaflet-popup-content{
