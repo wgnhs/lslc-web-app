@@ -5,20 +5,20 @@ var resultsTableBody;
 
 var tableAttributes = [
            //add manually before the view link.
-        //{"field": "HandSampleCatalogNumber", "label": "Hand sample number"}, 
+        //{"field": handSampleNumberField, "label": "Hand sample number"}, 
        
     
    //     {"field": "SampleId", "label": "SampleID"}, 
         {"field": "RockType", "label": "Rock type"},  
         {"field": "HandSampleCount", "label": "Hand sample available"}, 
-        {"field": "ThinSectionCount", "label": "Thin sections"}, 
+        {"field": "ThinSectionPhotoCount", "label": "Thin section photos"}, 
         {"field": "State", "label": "State / province"},
         // {"field": "County", "label": "County"},
         //  {"field": "Township", "label": "Township"},
         // {"field": "Range", "label": "Range"},
         // {"field": "Direction", "label": "Range Direction"},
-        {"field": "LocNote", "label": "Location note"},
-        {"field": "NotebookNum", "label": "Field notebook number"},
+        {"field": locationNoteField, "label": "Location note"},
+        {"field": notebookNumberField, "label": "Field notebook number"},
        // {"field": "NotebookPage", "label": "Notebook page"},
         {"field": "WgnhsId", "label": "WGNHS ID"},
         {"field": "Notes", "label": "Notes"},
@@ -73,7 +73,7 @@ function listResults (dataObjects){
     for (obj in dataObjects){
        // console.log("dataObjects[obj].attributes.SampleId: ", dataObjects[obj].attributes.SampleId);
         
-        var samCat = dataObjects[obj].attributes.HandSampleCatalogNumber;
+        var samCat = dataObjects[obj].attributes[handSampleNumberField];
         
         var tr = "";
         tr+= "<tr data-ID="+samCat+">"; 
@@ -230,8 +230,10 @@ function initResize(){
     //called once from the initializeResultsTable function. 
 
   var barHeight = $(".orangeBar").height()
-  var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55); //16 due to attribution on leaflet map
+
+  var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 90); //16 due to attribution on leaflet map 90 due to zoom control
   console.log($("#leftPanel").offset().top);
+
 
   $('#resultsPanel').resizable({
       
@@ -247,7 +249,8 @@ function initResize(){
         var leftPanelHeight = mapHeight - 100;
         $("#leftPanel").css("height", leftPanelHeight + "px");
           
-        $(".leaflet-top").css("top", $("#leftPanel").offset().top);
+          
+        $(".leaflet-top").css("top", $("#homeLogo").height()+5);
       },
       resize: function(){
         resizeAll();
@@ -272,7 +275,9 @@ function initResize(){
         //reposition the results panel to match the height of the map. 
         $("#resultsPanel").css("top", mapHeight+"px");
         
-        $(".leaflet-top").css("top", $("#leftPanel").offset().top);
+      
+        
+        $(".leaflet-top").css("top", $("#homeLogo").height()+5);
     }
     
     /* Listener for window resize */

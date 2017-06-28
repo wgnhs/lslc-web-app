@@ -16,25 +16,57 @@ var leafletMap = (function(){
          map = L.map('map', {
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
             scrollWheelPan: determineScroll(), 
-            zoomControl: false //will add zoom control in the top right corner next
+            zoomControl: false, //will add zoom control in the top right corner next
+            minZoom: 6,
+            maxZoom: 11,
+            maxBounds: [[43.0,-100.0],[50.0,-84.0]]
         }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
-        
 
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
-        L.esri.basemapLayer('Gray').addTo(map); 
-        L.esri.basemapLayer('GrayLabels').addTo(map);
+
+        var esriGray =  L.esri.basemapLayer('Gray'); 
+        var esriGrayLabels =   L.esri.basemapLayer('GrayLabels');
+        
+            //mapbox light basemap: 
+       var mapboxLight = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
+            {
+            attribution: 'Basemap © <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
+            id: 'mapbox.light',
+            accessToken: 'pk.eyJ1IjoiY2Fyb2xpbmVyb3NlIiwiYSI6Ik55TUFmMVEifQ.ybZm7IghE2N0ezsMfaDNFQ' 
+            });
+        
+        //Soren basemap: 
+        var sorenBasemap = L.tileLayer('https://api.mapbox.com/styles/v1/swal94/{id}/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>',
+            id: 'cj48piva31ytj2ro9h2kgv0lx',
+            accessToken: 'pk.eyJ1Ijoic3dhbDk0IiwiYSI6ImNpZnk5aWdzcDR5dDl0ZWx5dDhwZW13ejAifQ.y18LYK4VbBo8evRHtqiEiw'
+        }).addTo(map);
+        
+        var macrostratTiles = L.tileLayer('https://macrostrat.org/api/v2/maps/burwell/emphasized/{z}/{x}/{y}/tile.png');
+        macrostratTiles.setOpacity(0.25);
+
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
 //        map.createPane('B-PLSSSections');
 //        map.createPane('A-drawnSelection');
         
+        var basemapOptions = {
+            
+            "Labels": mapboxLight, 
+            "Terrain": sorenBasemap, 
+            
+            
+        }
+        var overlayOptions={"Bedrock Geology from Macrostrat<br><a href='http://macrostrat.org' target='_blank'>macrostrat.org</a>": macrostratTiles}
+        
+        L.control.layers(null, overlayOptions).addTo(map);
        
         //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
             url: PLSSSectionsLayerURL, 
-            style: {color: "#000", weight: 0.35, fillColor: "#ece7f2"}
+            style: {color: "rgba(0,0,0,0)", weight: 2, fillColor: "rgba(0,0,0,0)"}
 //            , 
 //            pane: 'B-PLSSSections'
         }).addTo(map);
@@ -60,6 +92,10 @@ var leafletMap = (function(){
         $("#zoomToSelectionButton").click(function(){
             zoomToSelection(map);
         });
+
+        map.on('zoom', function(e){
+            changeMapDesign(map, leafletFeatureLayer)
+        })
         
        
        
@@ -72,7 +108,7 @@ var leafletMap = (function(){
         
         var width = $(this).width() //defines width
 
-        console.log("width:", width)
+        //console.log("width:", width)
 
         //return boolean based on width
         if (width < 926) {
@@ -94,7 +130,7 @@ var leafletMap = (function(){
             });
         
          polygon = new L.Draw.Polygon(map, {
-                shapeOptions: {color:'#529952'}, 
+                shapeOptions: {color:'#103762'}, 
                 repeatMode: false, 
                 allowIntersection: false
             });
@@ -142,7 +178,7 @@ var leafletMap = (function(){
              
              //clear all Leaflet Draw indicators and handlers.
              disableLeafletDraw();
-             
+              
          });
         
         //listener for draw created event: 
@@ -158,26 +194,21 @@ var leafletMap = (function(){
             }
 
             var type = e.layerType; //type is either rectangle or polygon
-           
+            console.log("type: ", type);
             
             //add new layer to the featureGroup
             var layer = e.layer;
             drawnItems.addLayer(layer);
             drawnItems.setStyle({fillOpacity: 0, color: "#000"});
             
-            //style the delete button to enable it: 
-            //document.getElementById('customDeleteButton').style.backgroundPosition = "-182px -2px";
-            
             //zoom to the selection
-            map.fitBounds(layer.getBounds().pad(0.1));
+            map.fitBounds(layer.getBounds().pad(0.2));
             
-            //bring sections to front? TEMPORARY, PARTIAL FIX for seeing the popups. 
-            leafletFeatureLayer.bringToFront();
-            
-            //pass on the layer to the function which will query it for section IDs
+             //pass on the layer to the function which will query it for section IDs
             queryGeom(layer);
             
             
+
         });
         
         
@@ -204,12 +235,12 @@ var leafletMap = (function(){
         //loops through samples in the section adding a line for each of them
         for (i in sectionResults) {
 
-            var listedCatalogNumber = sectionResults[i].attributes.HandSampleCatalogNumber
+            var listedHandSampleNumber = sectionResults[i].attributes[handSampleNumberField];
             var listedSampleId = sectionResults[i].attributes.SampleId;
             var listedRockType = sectionResults[i].attributes.RockType;
             if (listedRockType == null){ listedRockType = "";} //checks for null value
 
-            content = content + "<li><a href='hand-sample.html#" + listedCatalogNumber + "' target='_blank' >Sample " + listedCatalogNumber + " " + listedRockType + "</a></li>";
+            content = content + "<li><a href='hand-sample.html#" + listedHandSampleNumber + "' target='_blank' >Sample " + listedHandSampleNumber + " " + listedRockType + "</a></li>";
 
         }
 
@@ -236,20 +267,15 @@ var leafletMap = (function(){
             
             //remove the item in filter feedback
 
-            //re-style the map tool as disabled. 
-            //document.getElementById('customDeleteButton').style.backgroundPosition = "-242px -2px"; //tool disabled style
-
-            //customDeleteButton.disable();
         } else {console.log("no selection to clear.");}
 
     }
     
     
     function queryGeom(inputGeom){
-        //takes in a rectangle from a draw event 
-        
-        
-       // console.log ("input", inputGeom);
+        //takes in a rectangle or polygon from a draw event 
+
+        console.log ("query input geometry", inputGeom);
         
         var query = L.esri.query({url:PLSSSectionsLayerURL}); 
         query.intersects(inputGeom);
@@ -266,6 +292,10 @@ var leafletMap = (function(){
             }
            // console.log("filter based on these sections:", selectedSections);
             filterForSections(selectedSections);
+            
+            //bring sections to front? TEMPORARY, PARTIAL FIX for seeing the popups.
+            leafletFeatureLayer.bringToFront();
+            console.log("brought sections to front.");
         });
     }
     
@@ -376,10 +406,10 @@ var leafletMap = (function(){
 
         //tests out how the choropleth system is working
        // console.log("filtered values array -->", filteredValuesArray)
-        console.log("class breaks -->", break0,break1,break2,break3,breakTop)
+       // console.log("class breaks -->", break0,break1,break2,break3,breakTop)
 
         createLegend(breaks);
-        console.log("create legend breaks.");
+        //console.log("create legend breaks.");
 
        return {"class1Array": classesArray[1], "class2Array": classesArray[2], "class3Array": classesArray[3], "class4Array": classesArray[4]};
 
@@ -390,26 +420,27 @@ var leafletMap = (function(){
       //  console.log("highlight via Leaflet");
         var classes = calculateClasses(array); 
         
-       console.log("class 1 array:", classes.class1Array);
-       console.log("class 2 array:", classes.class2Array);
-       console.log("class 3 array:", classes.class3Array);
-       console.log("class 4 array:", classes.class4Array);
+//       console.log("class 1 array:", classes.class1Array);
+//       console.log("class 2 array:", classes.class2Array);
+//       console.log("class 3 array:", classes.class3Array);
+//       console.log("class 4 array:", classes.class4Array);
         
         leafletFeatureLayer.setStyle(function (feature){
             var fillColor; //blank variable for fill color
-            var strokeColor = "#8c2d04"; //this applies to all except where it's re-set below
-            var fillOpacity = 0.8; //this applies to all except where it's re-set below
+            var strokeColor = "rgba(0,0,0,0)"; //this applies to all except where it's re-set below
+            var fillOpacity = 0.6; //this applies to all except where it's re-set below
             var sectionID = feature.properties[sectionsLayerPlssField]; //pulls out section id from feature
+            var strokeOpacity = 0.9;
             
-            if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04"}
-            else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02"}
-            else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014"}
-            else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929"}
+            if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04", strokeColor = "#8c2d04"}
+            else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02", strokeColor = "#cc4c02"}
+            else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014", strokeColor = "#ec7014"}
+            else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929", strokeColor = "#fe9929"}
             //if not found in any class array, given no-value color
-            else {fillColor = "#ece7f2", strokeColor = "#444", fillOpacity = 0.2};  // opposite hue, low saturation, slightly diverging to show seperation
+            else {fillOpacity = 0, strokeWeight = 0, strokeOpacity = 0};  // opposite hue, low saturation, slightly diverging to show seperation
            
             //actual style declaration for each feature using assignment from above
-            return { color: strokeColor, weight: 0.35, fillColor: fillColor, fillOpacity: fillOpacity };
+            return {color: strokeColor, fillColor: fillColor, fillOpacity: fillOpacity, opacity: strokeOpacity};
             
            
         });//end setStyle
@@ -438,11 +469,11 @@ var leafletMap = (function(){
         
     }
     
-})();
+})(); //end leafletMap module 
 
 function createLegend(breaksArray){
 
-    console.log(breaksArray)
+    //console.log(breaksArray)
 
         $("#legend").remove();
         $("#map").append($("<div id='legend'><div>"));
@@ -492,6 +523,7 @@ function zoomToSelection(map){
     map.fitBounds(bounds)
 }
 
+
 //called once on page load after highlight map
 function initSmartSearch(){
 
@@ -517,3 +549,25 @@ function initSmartSearch(){
 
 
 }
+
+function changeMapDesign(map, layer){
+    var zoomLevel = map.getZoom()
+    console.log(zoomLevel)
+
+    if (zoomLevel == 6 || zoomLevel == 7){
+        var strokeWeight = 1.5
+    } else if (zoomLevel == 8){
+        var strokeWeight = 1
+    }  else {
+        var strokeWeight = 0.4
+    }
+
+    if (zoomLevel > 8){
+        // layer.setStyle({color: "#757575"})
+    }
+
+    layer.setStyle({weight: strokeWeight})
+    //color: "#c1c1c1", 
+}
+
+

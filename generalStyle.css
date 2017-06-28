@@ -1,17 +1,9 @@
 /* main orange: #b74226 */
 /* dark orange: #842d1a */
 
-/*
-
-p { padding: 0; margin: 0;}
-*/
 body {
-/*    background-color: grey;*/
-/*    background-image: url("images/historic-rock-texture2.png"); */
-
   margin: 0;
 
-    
 }
 
 body, input {
@@ -43,9 +35,7 @@ label, span {
 .inline-block{
     display: inline-block;
 }
-.align-right{
-    text-align: right;
-}
+
 .float-right {
     float: right;
 }
@@ -68,11 +58,9 @@ h3 {
 }
 .orangeBar {
     background-color: #b74226;
+    background-color: #6e6e6e;
     color: white;
-    padding: 3px;
-}
-.orangeBar a {
-    color: white;
+    padding-left: 3px;
 }
 
 .button:hover{ 
@@ -116,8 +104,15 @@ h3 {
     background-color: #e6e6e6;
 }
 
+#expand-menu-icon, #expand-menu-checkbox {
+    display: none;
+}
+#expand-menu-icon img {
+    width: 30px;
+}
+
 #header nav {
-    margin-right: 5%;
+   /* margin-right: 5%;*/
 
     margin-left: 1%; /* a tiny bit of space to separate the dropdown from the LSLC logo */
     width: 66%; /* three quarters of the 90% width of the page content. correlates with the #homeLogo rule above */
@@ -147,21 +142,6 @@ h3 {
 .navMainLink:hover{
     cursor: pointer;
     background-color: #842d1a;
-}
-/* message across the top of the screen, above nav */
-.messageBar{
-    
-    TEXT-ALIGN: center;
-}
-.messageBar span{
-    padding: 2px 5px;
-    background-color: white;
-}
-
-.striped-1{
- 
-  background: -webkit-repeating-linear-gradient(45deg, #e6e6e6, #e6e6e6 10px, #FFF 10px, #FFF 20px);
-  background: repeating-linear-gradient(45deg, #e6e6e6, #e6e6e6 10px, #FFF 10px, #FFF 20px);
 }
 
 
@@ -205,10 +185,8 @@ h3 {
     padding-top: 20px;
 }
 .reportDivision h3 {
-    background-color: #b74226;
+    /* these also have the orangeBar class, which adds the background color, color, and left padding*/
     width: 100%;
-    padding-left: 5px;
-    color: white;
    
 }
 
@@ -228,12 +206,13 @@ h3 {
 }
 
 .detailsDiv {
-    display: inline-block; 
-    vertical-align: top;
+/*    display: inline-block; */
+    
     display: table-cell;
+    vertical-align: top;
     padding-left: 10px;
 }
-.reportDivision p {
+.detailsDiv p {
      margin: 3px 0;
 }
 
@@ -348,26 +327,51 @@ h3 {
         margin-top: 0px; /* should match the amount the logo is being pushed up */
     }
     #logoContainer {
-        display: flex;
-        justify-content: center;
+        display: table-cell;
+        width: calc(80vw); /* split the width 80/20 with the menu icon. */
+        
+       
     }
-    #homeLogo {
-        top: 0px;
-    }
+
     #header nav, .navMainLink {
         width: 100%;
         margin: 0;
     }
     .dropdown-content {
         position: static; 
-/*        display: block;*/ /* if you want the dropdowns automatically open */
+        display: block; /* if you want the dropdowns automatically open */
        
     }
     #homeLogo {
         width: 100%;
         margin-left: auto;
         margin-right: auto;
+        top: 0px;
     }
+   
+    /* MENU EXPANDING */
+    #expand-menu-icon {
+        display: table-cell;
+        width: calc(20vw); /* split the width 80/20 with the main logo. */
+        text-align: center; 
+        vertical-align: middle;
+        
+    }
+    #expand-menu-icon:hover{
+        cursor: pointer;
+        background-color: #842d1a;
+    }
+    
+    /* don't display the menu when the screen is narrow */
+     #header nav {
+        display: none;
+    }
+    
+    /* when the checkbox is active, display the entire expanded menu */
+    #expand-menu-checkbox:checked ~ nav{
+        display: block;
+    }
+    
     
     /* end Header */
 }

@@ -31,6 +31,10 @@
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
        
+      <!-- Promises polyfill -->
+            <!-- source: https://www.npmjs.com/package/promise-polyfill -->
+            <script src="lib/promise-6.0.2.min.js"></script>
+       
         <!-- TABLESORTER -->
              <script type="text/javascript" src="lib/jquery.tablesorter.js"></script>
        
@@ -73,7 +77,7 @@
 
                    <div class='orangeBar' id='mapFiltersOB'>
                    <h3>Filter by map area</h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext"> This map only shows samples that we were able to locate to a one-square-mile section of the Public Land Survey System. There may be more location information in the scanned field notebooks. </span></div>
-                   <div class='filtersHideButton' id='mapAreaFiltersButton'><img src="images/downChevron-01.png" class='chevron' id='mapFilterChevron'/></div>
+                   <div class='filtersHideButton' id='mapAreaFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='mapFilterChevron'/></div>
                    </div>
                    
                    
@@ -100,7 +104,7 @@
                            <img src="images/question_wg.png" class="helpIcon"/>
                            <span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span>
                        </div>
-                       <div class='filtersHideButton' id='contentFiltersButton'><img src="images/downChevron-01.png" class='chevron' id='contentFilterChevron'/></div>
+                       <div class='filtersHideButton' id='contentFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='contentFilterChevron'/></div>
                    </div>
 
                    
@@ -110,8 +114,8 @@
                         <input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />
                    </div>
                     <div class="filter">
-                        <label for="thinSectionCheckbox"><span>Thin section available </span></label>
-                        <input type="checkbox" name="thinSectionAvailability" id="thinSectionCheckbox" />
+                        <label for="thinSectionPhotoCheckbox"><span>Thin section photo available </span></label>
+                        <input type="checkbox" name="thinSectionPhotoAvailability" id="thinSectionPhotoCheckbox" />
                    </div>
                  <!--  <div class="filter">
                         <label for="thinSectionNumberSearch"><span>Min # of thin sections </span></label>
@@ -121,8 +125,9 @@
                     <div class="filter">
                       <!-- <div class="ui-widget"> -->
                         <label for="fieldDescriptionSearch"><span>Rock type </span></label>
-                        <input type="search" class="searchBox" name="fieldDescriptionSearch" id="fieldDescriptionSearch" placeholder="try 'chert' or 'granite'" />
+                        <input type="search" class="searchBox" name="fieldDescriptionSearch" id="fieldDescriptionSearch" placeholder="try 'granite' or 'slate'" />
                       <!-- </div> -->
+
                    </div>
                    <div class="filter">
                         <label for="noteSearch"><span>Sample notes </span></label>
@@ -158,8 +163,8 @@
                         <input class="searchBox" type="search" name="WGNHSSearch" id="WGNHSSearch"  />
                    </div>
                    <div class="filter">
-                        <label for="catalogNumberSearch"><span>Hand sample number </span></label>
-                        <input class="searchBox" type="search" name="catalogNumberSearch" id="catalogNumberSearch"  />
+                        <label for="handSampleNumberSearch"><span>Hand sample number </span></label>
+                        <input class="searchBox" type="search" name="handSampleNumberSearch" id="handSampleNumberSearch"  />
                    </div>
                   </div>
                    
@@ -167,9 +172,6 @@
            
                </div><!--end filters div-->
 
-               
-
-                
            </div><!--end left Panel div-->
      
                
@@ -178,18 +180,17 @@
            
            <div id="resultsPanel">
             
-               <div id="resultsHeader">
-                 <div class='orangeBar'> 
+               <div id="resultsHeader" class='orangeBar'>
+
                      <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span> 
                      
-                     <span id="downloadButtonContainer" class="float-right"><a href="#" class="export"><img src="images/download_gw.png"> <span id='greyButtonText'>Download as CSV</span></a></span>
+                     <span id="downloadButtonContainer"><a href="#" class="export"><img src="images/download_gw.png"> <span id='greyButtonText'>Download as CSV</span></a></span>
 
-                     <div id="zoomToSelectionButton" class="mapViewButton"><img src="images/zoomTo-01.png" id='zoomToPNG'><span id='greyButtonText'>Zoom to Results</span></div>
+                     <div id="zoomToSelectionButton" class="mapViewButton" role='button'><img src="images/zoomTo-01.png" id='zoomToPNG'><span id='greyButtonText'>Zoom to Results</span></div>
                  </div> 
-                   
-                   <p>Showing the first 1000 results.</p>
-                               
-               </div>
+
+               
+                <p>Showing the first 1000 results.</p>
                
                 <!-- 
                        <input id='tab1' type="radio" name="resultsTabs" checked><label for="tab1">Table</label>
@@ -233,14 +234,14 @@
               $("#mapAreaFilters").css("display","none")
               $("#mapFiltersOB").css("margin-bottom","5px")
               $("#mapFilterChevron").remove()
-              $(this).append($("<img src='images/upChevron-01.png' class='chevron' id='mapFilterChevron'/>"))
+              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='mapFilterChevron'/>"))
               resizeFilters(true);
             } else {
               mapFiltersShowing = true
               $("#mapAreaFilters").css("display","block")
               $("#mapFiltersOB").css("margin-bottom","0px")
               $("#mapFilterChevron").remove()
-              $(this).append($("<img src='images/downChevron-01.png' class='chevron' id='mapFilterChevron'/>"))
+              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='mapFilterChevron'/>"))
               resizeFilters(false);
             }
           })
@@ -252,14 +253,14 @@
               $("#contentAreaFilters").css("display","none")
               $("#contentFiltersOB").css("margin-bottom","5px")
               $("#contentFilterChevron").remove()
-              $(this).append($("<img src='images/upChevron-01.png' class='chevron' id='contentFilterChevron'/>"))
+              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='contentFilterChevron'/>"))
               resizeFilters(true);
             } else {
               contentFiltersShowing = true
               $("#contentAreaFilters").css("display","block")
               $("#contentFiltersOB").css("margin-bottom","0px")
               $("#contentFilterChevron").remove()
-              $(this).append($("<img src='images/downChevron-01.png' class='chevron' id='contentFilterChevron'/>"))
+              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='contentFilterChevron'/>"))
               resizeFilters(false);
             }
             

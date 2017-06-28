@@ -20,7 +20,6 @@
 #mapWrapper {
     width: 100%;
     height: calc(100vh); 
-/*    border: 1px dashed black;*/
     
     position: absolute;
     top: 0; /* move above the top of the header... causes problems with the zoom control going behind the header */
@@ -47,8 +46,7 @@
 
 
 
-/*+++++++++++++++++++ Left and Right Panels ++++++++++++++++++++++*/
-
+/* Left Panel (filters area) */
 #leftPanel{
     width:30%;
     max-width: 350px;
@@ -66,70 +64,27 @@
     margin-left: 5px;
     box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.3);
 }
-/*
-#rightPanel{
-    width:69.5%;
-    float: right;
-    display: inline-block;
-    
-}
-*/
+
 
 .orangeBar{
   position: relative;
+    
+    /* override styles from generalStyles.css  */
+    background-color: #b74226; 
+    color: white;
 }
 
 .mapViewButton {
     color: black;
-    /*border: 1px solid #777;*/
+  
 }
 .mapViewButton:hover {
     cursor: pointer;
 }
 
-/* ++++++++++++ MEDIA QUERIES +++++++++++ */
-
-@media only screen and (max-width: 830px) {
-  /* Tablet view and smaller: one column layout*/
-    
-    
-/*
-    #rightPanel{
-        display: block; 
-        float: left;
-        width: 100%;
-        overflow: scroll;
-       margin-top: 10px;
-    }
-    #leftPanel{
-        width: 100%;
-    }
-*/
-    
-    
-} 
-
-@media only screen and (min-width: 1333px) {
-
-  
-    /*would prefer instead to allow the map to continue to expand...*/
-}
-/*end media query*/
-
 
 /*=============== Filters ===============*/
 
-/*
-
-#filters {
-    padding-bottom: 10px;
-    position: relative;
-    
-}
-*/
-#filters h2{
-    display: inline;
-}
 
 .filterHolder{
     margin-bottom: 5px;
@@ -163,6 +118,9 @@
     margin: 1px 3px;
     display: inline-block;
 }
+#filterFeedback span:hover{
+    background-color: #aaa19d;
+}
 
 #filterFeedback img { /* close button (x) */
     height: 21px; 
@@ -171,21 +129,18 @@
 }
 
 .filtersHideButton{
-  background-color: #adadad;
+/*  background-color: #adadad;*/ /*grey background*/
   position: absolute;
   height: 17px;
   width: 17px;
   top: 25%;
   right: 2.5%;
 }
-
-/*
-#zoomToSelectionButton{
-  height: 30px;
-  width: 30px;
-  background-color: #000;
+.filtersHideButton:hover{
+    cursor: pointer;
 }
-*/
+
+
 /*------------------------ Results List ----------------------*/
 #resultsPanel{
     position: absolute;
@@ -205,24 +160,6 @@
     padding-left: 5px;
 }
 
-/*
-
-.switchView{
-    display: inline-block;
-    padding: 0 5px 0 0;
-}
-
-.switchView img {
-    margin-right: 3px;
-}
-.switchView p{
-    vertical-align: top;
-}
-.switchView a {
-    text-decoration: none;
-}
-
-*/
 
 /*============ results TABS ==========*/
 /* adapted from https://codepen.io/oknoblich/pen/tfjFl */
@@ -273,25 +210,30 @@ section {
 
 #tableHolder{
   overflow: scroll;
-  min-height: 20000px
+ 
 }
 
 /*++++++++++++++++++ RESULTS +++++++++++++++++++++*/
 #resultsHeader{
-    padding-bottom: 10px;
-}
-#resultsHeader p {
-    margin: 0;
-}
-#zoomToSelectionButton {
     display: inline-block;
-    text-decoration: none;
-    padding: 1px 6px 1px 1px;
-    margin-right: 20px;
+    width: 100%; 
+    overflow: auto; /* prevent floated elements from going beyond the borders of this parent */
+    padding-bottom: 2px;
+    
+}
+
+#zoomToSelectionButton {
+    /* POSITION */
+    display: inline-block;
+    float: right;
     margin-top: 2px;
+    
+    /* APPEARANCE */
+    padding: 1px 6px 1px 1px;
+    text-decoration: none;
     background-color: #c1c1c1; 
     box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.4);
-    float: right;
+    
 }
 #zoomToSelectionButton:hover {
     cursor: pointer;
@@ -300,18 +242,20 @@ section {
 }
 
 /*download button*/
-
-a.export{
-  display: inline-block;
-  text-decoration: none;
-  margin-top: 2px;
-  margin-right: 5px;
-  padding: 1px 6px 1px 1px;
-  background-color: #c1c1c1; 
-  box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.4);
- 
+#downloadButtonContainer a.export{
+    /* POSITION */
+    display: inline-block;
+    float: right;
+    margin: 2px 5px 0 5px;
+    
+    /* APPEARANCE */
+    padding: 1px 6px 1px 1px;
+    text-decoration: none;
+    background-color: #c1c1c1; 
+    box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.4);
+    
 }
-a.export:hover{
+#downloadButtonContainer a.export:hover{
     cursor: pointer;
     background-color: #aaa19d;
     box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.6);
@@ -424,6 +368,10 @@ p.legendText{
 
 /*********** popup *******/
 
+.leaflet-popup-content-wrapper{
+  border-radius: 0px; 
+}
+
 .leaflet-popup-content{
   max-width: 200px;
   max-height: 200px;
@@ -477,11 +425,6 @@ p.legendText{
     
 }
 
-/*
-.leaflet-control{
-  top: 40px;
-}
-*/
 
 span#greyButtonText {
     /* I think this needs more contrast, so changed it to black text instead of grey. */
