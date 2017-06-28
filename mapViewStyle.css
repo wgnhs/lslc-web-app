@@ -515,4 +515,7 @@ span#greyButtonText {
 .ui-menu{
   z-index: 5000;
   display: block;
+  max-width: 270px;
+  max-height: 170px;
+  overflow: scroll;
 }
