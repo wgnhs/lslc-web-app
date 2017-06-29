@@ -285,10 +285,10 @@ section {
   bottom: 20px;
   right: 10px;
   width: 17%;
-  height: 34%;
+  height: 20%;
   background-color: #e6e6e6;
   box-shadow: 0px 0px 6px 3px rgba(0,0,0,0.35);
-  min-height: calc(25vh);
+  min-height: calc(20vh);
   max-width: 100px;
   min-width: 90px;
   border: solid 2px white;
@@ -299,7 +299,7 @@ section {
   z-index: 1500;
   left: 6%;
   width: 24%;
-  height: 12%;
+  height: 15%;
   border-color: #000;
   border-width: 1px; 
 }
@@ -315,23 +315,22 @@ section {
 
 
 #legendBox1{
-  top: 25%;
-  background-color: #ece7f2;
+  display: none;
 }
 #legendBox2{
-  top: 40%;
+  top: 25%;
   background-color: #fe9929;
 }
 #legendBox3{
-  top: 55%;
+  top: 43.75%;
   background-color: #ec7014;
 }
 #legendBox4{
-  top: 70%;
+  top: 62.5%;
   background-color: #cc4c02;
 }
 #legendBox5{
-  top: 85%;
+  top: 81.25%;
   background-color: #8c2d04;
 }
 
@@ -347,19 +346,19 @@ section {
 }
 
 #legendLabel1{
-  top: 25%;
+  display: none;
 }
 #legendLabel2{
-  top: 40%;
+  top: 25%;
 }
 #legendLabel3{
-  top: 55%;
+  top: 43.75%;
 }
 #legendLabel4{
-  top: 70%;
+  top: 62.5%;
 }
 #legendLabel5{
-  top: 85%;
+  top: 81.25%;
 }
 
 p.legendTitle{

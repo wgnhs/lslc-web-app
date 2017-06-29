@@ -76,7 +76,7 @@ var leafletMap = (function(){
         //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
             url: PLSSSectionsLayerURL, 
-            style: {color: "rgba(0,0,0,0)", weight: 2, fillColor: "rgba(0,0,0,0)"}
+            style: {color: "rgba(0,0,0,0)", weight: 1.5, fillColor: "rgba(0,0,0,0)"}
 //            , 
 //            pane: 'B-PLSSSections'
         }).addTo(map);
