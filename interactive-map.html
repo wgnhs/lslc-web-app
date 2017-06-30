@@ -123,8 +123,11 @@
                    </div>
                     -->
                     <div class="filter">
+                      <div id="autocomplete">
                         <label for="fieldDescriptionSearch"><span>Rock type </span></label>
                         <input type="search" class="searchBox" name="fieldDescriptionSearch" id="fieldDescriptionSearch" placeholder="try 'granite' or 'slate'" />
+                      </div>
+
                    </div>
                    <div class="filter">
                         <label for="noteSearch"><span>Sample notes </span></label>
@@ -169,9 +172,6 @@
            
                </div><!--end filters div-->
 
-               
-
-                
            </div><!--end left Panel div-->
      
                
@@ -180,20 +180,17 @@
            
            <div id="resultsPanel">
             
-               <div id="resultsHeader">
-                 <div class='orangeBar'> 
+               <div id="resultsHeader" class='orangeBar'>
+
                      <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span> 
                      
                      <span id="downloadButtonContainer"><a href="#" class="export"><img src="images/download_gw.png"> <span id='greyButtonText'>Download as CSV</span></a></span>
 
                      <div id="zoomToSelectionButton" class="mapViewButton" role='button'><img src="images/zoomTo-01.png" id='zoomToPNG'><span id='greyButtonText'>Zoom to Results</span></div>
                  </div> 
-                   
-                  
-                               
-               </div>
+
                
-                <p>Showing the first 1000 results.</p>
+<!--                <p>Showing the first 1000 results.</p>-->
                
                 <!-- 
                        <input id='tab1' type="radio" name="resultsTabs" checked><label for="tab1">Table</label>

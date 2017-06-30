@@ -62,11 +62,15 @@ function initializeResultsTable(){
 
 //accepts data from the dojo query 
 function listResults (dataObjects){
+    
    // console.log("dataObjects is: ", dataObjects);
     //dataObjects is an array of objects. 
    
+    
+    
     //Clear the results list before re-populating. 
     resultsTableBody.innerHTML = '';
+    $("#load-more-link").remove();
     
 
     var tb = '';
@@ -106,6 +110,17 @@ function listResults (dataObjects){
 
    //this seems to be WAY faster than appending html elements within the for loop! 
      resultsTableBody.innerHTML += tb;
+    
+    if(dataObjects.length !== globalResultsArray.length){
+        console.log("add link for loading more results"); 
+       
+        
+        $("#resultsTable").after('<a id="load-more-link">Load the remaining results</a>'); 
+        
+        $("#load-more-link").on("click", function(){
+            listResults(globalResultsArray);
+        });
+    }
     
 
 }; //end getResults function
@@ -230,8 +245,10 @@ function initResize(){
     //called once from the initializeResultsTable function. 
 
   var barHeight = $(".orangeBar").height()
-  var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55); //16 due to attribution on leaflet map
-  console.log("left panel offset: ", $("#leftPanel").offset().top);
+
+  var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 90); //16 due to attribution on leaflet map 90 due to zoom control
+  console.log($("#leftPanel").offset().top);
+
 
   $('#resultsPanel').resizable({
       
@@ -247,7 +264,8 @@ function initResize(){
         var leftPanelHeight = mapHeight - 100;
         $("#leftPanel").css("height", leftPanelHeight + "px");
           
-        $(".leaflet-top").css("top", $("#leftPanel").offset().top);
+          
+        $(".leaflet-top").css("top", $("#homeLogo").height()+5);
       },
       resize: function(){
         resizeAll();
@@ -272,7 +290,9 @@ function initResize(){
         //reposition the results panel to match the height of the map. 
         $("#resultsPanel").css("top", mapHeight+"px");
         
-        $(".leaflet-top").css("top", $("#leftPanel").offset().top);
+      
+        
+        $(".leaflet-top").css("top", $("#homeLogo").height()+5);
     }
     
     /* Listener for window resize */

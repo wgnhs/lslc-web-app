@@ -11,7 +11,7 @@ header += "<nav>";
 
 //header+="<a id='navHome' href='index.html' class='navMainLink'>Home</a>";
 
-header+="<div id='navCollection' class='navMainLink dropdownContainer'><h3>Collection</h3><div class='dropdown-content'><a id='navFilter' href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html#1'>Hand Sample </a><a href='notebooks.html'>Notebooks</a><a href='thin-gallery.html'>Thin Sections Gallery</a><a href='downloads.html'>Data Downloads</a></div></div>";
+header+="<div id='navCollection' class='navMainLink dropdownContainer'><h3>Collection</h3><div class='dropdown-content'><a id='navFilter' href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html'>Hand Sample </a><a href='notebooks.html'>Notebooks</a><a href='thin-sections.html'>Thin Section Gallery</a><a href='downloads.html'>Data Downloads</a></div></div>";
 
 
 header+="<div id='navAbout' href='#' class='navMainLink dropdownContainer'><h3>About</h3><div class='dropdown-content'><a href='about-history.html'>Lake Superior Division, 1882–1922</a><a href='about-wgnhs.html'>Digitizing the collection</a><a href='about-collection.html'>Items in the collection</a></div></div>";

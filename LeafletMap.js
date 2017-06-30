@@ -1,5 +1,15 @@
 var globalLayer;
+var firstLoad = true;
 
+$("#fieldDescriptionSearch").keypress(function(e){
+    if(e.which == 13){
+        $("#fieldDescriptionSearch").autocomplete("close");
+    }
+});
+
+//$("#leftPanel").scroll(function(){
+//    $("#fieldDescriptionSearch").autocomplete("close");
+//})
 
 var leafletMap = (function(){
     var map;
@@ -10,17 +20,22 @@ var leafletMap = (function(){
     var polygon;
     
     var initialize = function(){
+
+
         
          map = L.map('map', {
             scrollWheelZoom: determineScroll(), //calls determineScroll() to return true or false
             scrollWheelPan: determineScroll(), 
-            zoomControl: false //will add zoom control in the top right corner next
-        }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
-        
+            zoomControl: false, //will add zoom control in the top right corner next
+            minZoom: 6,
+            maxZoom: 11,
+            maxBounds: [[39.0,-110.0],[50.0,-80.0]]
+        }).setView([ 48, -92], 6); //setview actually triggers the on load event. 
 
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
         //basemap -- default
+
         var esriGray =  L.esri.basemapLayer('Gray'); 
         var esriGrayLabels =   L.esri.basemapLayer('GrayLabels');
         
@@ -41,6 +56,7 @@ var leafletMap = (function(){
         
         var macrostratTiles = L.tileLayer('https://macrostrat.org/api/v2/maps/burwell/emphasized/{z}/{x}/{y}/tile.png');
         macrostratTiles.setOpacity(0.25);
+
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
 //        map.createPane('B-PLSSSections');
@@ -60,7 +76,7 @@ var leafletMap = (function(){
         //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
             url: PLSSSectionsLayerURL, 
-            style: {color: "#000", weight: 0.35, fillColor: "#ece7f2"}
+            style: {color: "rgba(0,0,0,0)", weight: 1.5, fillColor: "rgba(0,0,0,0)"}
 //            , 
 //            pane: 'B-PLSSSections'
         }).addTo(map);
@@ -86,6 +102,10 @@ var leafletMap = (function(){
         $("#zoomToSelectionButton").click(function(){
             zoomToSelection(map);
         });
+
+        map.on('zoom', function(e){
+            changeMapDesign(map, leafletFeatureLayer)
+        })
         
        
        
@@ -417,33 +437,35 @@ var leafletMap = (function(){
         
         leafletFeatureLayer.setStyle(function (feature){
             var fillColor; //blank variable for fill color
-            var strokeColor = "#8c2d04"; //this applies to all except where it's re-set below
-            var fillOpacity = 0.8; //this applies to all except where it's re-set below
+            var strokeColor = "rgba(0,0,0,0)"; //this applies to all except where it's re-set below
+            var fillOpacity = 0.6; //this applies to all except where it's re-set below
             var sectionID = feature.properties[sectionsLayerPlssField]; //pulls out section id from feature
+            var strokeOpacity = 0.9;
             
-            if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04"}
-            else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02"}
-            else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014"}
-            else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929"}
+            if ( classes.class4Array.indexOf(sectionID) != -1 ){ fillColor = "#8c2d04", strokeColor = "#8c2d04"}
+            else if ( classes.class3Array.indexOf(sectionID) != -1){ fillColor = "#cc4c02", strokeColor = "#cc4c02"}
+            else if ( classes.class2Array.indexOf(sectionID) != -1) {fillColor = "#ec7014", strokeColor = "#ec7014"}
+            else if ( classes.class1Array.indexOf(sectionID) != -1 ) {fillColor = "#fe9929", strokeColor = "#fe9929"}
             //if not found in any class array, given no-value color
-            else {fillColor = "#ece7f2", strokeColor = "#444", fillOpacity = 0.2};  // opposite hue, low saturation, slightly diverging to show seperation
+            else {fillOpacity = 0, strokeWeight = 0, strokeOpacity = 0};  // opposite hue, low saturation, slightly diverging to show seperation
            
             //actual style declaration for each feature using assignment from above
-            return { color: strokeColor, weight: 0.35, fillColor: fillColor, fillOpacity: fillOpacity };
+            return {color: strokeColor, fillColor: fillColor, fillOpacity: fillOpacity, opacity: strokeOpacity};
             
            
         });//end setStyle
 
     globalLayer = leafletFeatureLayer;
 
-    leafletFeatureLayer.eachFeature(function(lyr){
-       // console.log("individual layer fill color: ", lyr.options.style.fillColor);
-        //var layerBounds = lyr.getBounds();
-
-    })   
-
+        if (firstLoad){
+            initSmartSearch();
+            firstLoad = false;
+        }
 
         $("#loading").remove(); //stops loading feedback
+
+
+        
         
         //reset the map size; this prevents it from skipping the bottom row of tiles. 
         map.invalidateSize();
@@ -505,7 +527,8 @@ function zoomToSelection(map){
 
     globalLayer.eachFeature(function(lyr){
         var layerBounds = lyr.getBounds();
-        if (lyr.options.fillColor != "#ece7f2"){
+        console.log(lyr.options)
+        if (lyr.options.fillOpacity != 0){
             bounds.extend(layerBounds)
         }
 
@@ -513,3 +536,52 @@ function zoomToSelection(map){
 
     map.fitBounds(bounds)
 }
+
+
+//called once on page load after highlight map
+function initSmartSearch(){
+
+    var possibleRockTypes = [];
+    
+    for (i in globalResultsArray){
+        var thisType = globalResultsArray[i].attributes.RockType;
+        if (possibleRockTypes.indexOf(thisType) == -1 && thisType != null){
+            possibleRockTypes.push(thisType);
+        }
+    }
+
+    $("#fieldDescriptionSearch").autocomplete({
+            source: possibleRockTypes,
+            minLength: 4,
+            select: function(event, ui){
+                delay(function(){
+                    resetFilters();
+                }, 1000);
+            }, 
+            appendTo: "#autocomplete"
+        }); 
+
+
+}
+
+function changeMapDesign(map, layer){
+    var zoomLevel = map.getZoom()
+    console.log(zoomLevel)
+
+    if (zoomLevel == 6 || zoomLevel == 7){
+        var strokeWeight = 1.5
+    } else if (zoomLevel == 8){
+        var strokeWeight = 1
+    }  else {
+        var strokeWeight = 0.4
+    }
+
+    if (zoomLevel > 8){
+        // layer.setStyle({color: "#757575"})
+    }
+
+    layer.setStyle({weight: strokeWeight})
+    //color: "#c1c1c1", 
+}
+
+
