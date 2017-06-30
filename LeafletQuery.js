@@ -154,12 +154,9 @@ function setFiltersFromHash(){
 function queryTableForFilters(){
     queryCount += 1; 
     
-  //  if (loadingPageOn == false){
-        $("#map").append($("<div id='loading'></div>")); //will be removed in leafletMap.js highlight function after setStyle. 
-    
-  //  };
-  //  loadingPageOn = true;
-    
+        console.log("append loading animation.");
+        $("#map").append($("<div id='loading' class='loading'></div>")); //will be removed in leafletMap.js highlight function after setStyle. 
+
    
    
     var whereString = buildSqlAndAddIndicators(); //call the function to build a SQL where clause. It will return the where clause as a string. 
