@@ -59,7 +59,7 @@
     height: calc(50vh);
     z-index: 1500;
    
-    border: solid 4px white;
+    border: solid 1px white;
     background-color: #fff;
     margin-left: 5px;
     box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.3);
@@ -459,14 +459,25 @@ span#greyButtonText {
 }
 
 
-
+/* AUTOCOMPLETE on rock type search */
 
 
 .ui-menu{
-  z-index: 5000;
-  display: block;
   max-width: 270px;
   max-height: 170px;
   overflow: scroll;
   box-shadow: 0px 5px 5px 3px rgba(0,0,0,0.2)
+}
+
+.ui-widget {
+    font-size: inherit; 
+    font-family: inherit;
+}
+
+.ui-autocomplete{
+    position: relative;
+}
+
+#autocomplete{
+    position: relative;
 }

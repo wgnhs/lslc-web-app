@@ -5,11 +5,11 @@ $("#fieldDescriptionSearch").keypress(function(e){
     if(e.which == 13){
         $("#fieldDescriptionSearch").autocomplete("close");
     }
-})
+});
 
-$("#leftPanel").scroll(function(){
-    $("#fieldDescriptionSearch").autocomplete("close");
-})
+//$("#leftPanel").scroll(function(){
+//    $("#fieldDescriptionSearch").autocomplete("close");
+//})
 
 var leafletMap = (function(){
     var map;
@@ -30,7 +30,7 @@ var leafletMap = (function(){
             minZoom: 6,
             maxZoom: 11,
             maxBounds: [[39.0,-110.0],[50.0,-80.0]]
-        }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
+        }).setView([ 47, -92], 6); //setview actually triggers the on load event. 
 
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
@@ -555,10 +555,10 @@ function initSmartSearch(){
             minLength: 4,
             select: function(event, ui){
                 delay(function(){
-            //       console.log('time elapsed');
                     resetFilters();
                 }, 1000);
-            }
+            }, 
+            appendTo: "#autocomplete"
         }); 
 
 
