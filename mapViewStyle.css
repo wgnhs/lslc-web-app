@@ -31,7 +31,7 @@
     width: 100%;
 }
 
-#loading{
+.loading{
   width:100%;
   height:100%;
   position: absolute;
@@ -59,7 +59,7 @@
     height: calc(50vh);
     z-index: 1500;
    
-    border: solid 4px white;
+    border: solid 1px white;
     background-color: #fff;
     margin-left: 5px;
     box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.3);
@@ -212,6 +212,14 @@ section {
   overflow: scroll;
  
 }
+#resultsPanel thead{
+    line-height: 90%;
+}
+#load-more-link{
+    text-decoration: underline; 
+    cursor: pointer;
+    padding: 5px;
+}
 
 /*++++++++++++++++++ RESULTS +++++++++++++++++++++*/
 #resultsHeader{
@@ -277,10 +285,10 @@ section {
   bottom: 20px;
   right: 10px;
   width: 17%;
-  height: 34%;
+  height: 20%;
   background-color: #e6e6e6;
   box-shadow: 0px 0px 6px 3px rgba(0,0,0,0.35);
-  min-height: calc(25vh);
+  min-height: calc(20vh);
   max-width: 100px;
   min-width: 90px;
   border: solid 2px white;
@@ -291,7 +299,7 @@ section {
   z-index: 1500;
   left: 6%;
   width: 24%;
-  height: 12%;
+  height: 15%;
   border-color: #000;
   border-width: 1px; 
 }
@@ -307,23 +315,22 @@ section {
 
 
 #legendBox1{
-  top: 25%;
-  background-color: #ece7f2;
+  display: none;
 }
 #legendBox2{
-  top: 40%;
+  top: 25%;
   background-color: #fe9929;
 }
 #legendBox3{
-  top: 55%;
+  top: 43.75%;
   background-color: #ec7014;
 }
 #legendBox4{
-  top: 70%;
+  top: 62.5%;
   background-color: #cc4c02;
 }
 #legendBox5{
-  top: 85%;
+  top: 81.25%;
   background-color: #8c2d04;
 }
 
@@ -339,19 +346,19 @@ section {
 }
 
 #legendLabel1{
-  top: 25%;
+  display: none;
 }
 #legendLabel2{
-  top: 40%;
+  top: 25%;
 }
 #legendLabel3{
-  top: 55%;
+  top: 43.75%;
 }
 #legendLabel4{
-  top: 70%;
+  top: 62.5%;
 }
 #legendLabel5{
-  top: 85%;
+  top: 81.25%;
 }
 
 p.legendTitle{
@@ -452,13 +459,25 @@ span#greyButtonText {
 }
 
 
-
+/* AUTOCOMPLETE on rock type search */
 
 
 .ui-menu{
-  z-index: 5000;
-  display: block;
   max-width: 270px;
   max-height: 170px;
   overflow: scroll;
+  box-shadow: 0px 5px 5px 3px rgba(0,0,0,0.2)
+}
+
+.ui-widget {
+    font-size: inherit; 
+    font-family: inherit;
+}
+
+.ui-autocomplete{
+    position: relative;
+}
+
+#autocomplete{
+    position: relative;
 }

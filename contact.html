@@ -76,25 +76,25 @@
             {"divisionTitle": "Web Design", 
             "name":"Caroline Rose", 
             "title": "GIS Specialist and Cartographer",
-            "affiliation" : "Wisconsin Geological & Natural History Survey",
+            
              "email": "caroline.rose@wgnhs.uwex.edu"
             }, 
              {"divisionTitle": "Samples",
             "name":"Val Stanley", 
             "title": "Samples Manager",
-            "affiliation" : "Wisconsin Geological & Natural History Survey",
+           
              "email": "val.stanley@wgnhs.uwex.edu"
             },
             {"divisionTitle": "Collection", 
             "name": "Brad Gottschalk",  
             "title": "Archivist", 
-            "affiliation" : "Wisconsin Geological & Natural History Survey", 
+            
              "email": "brad.gottschalk@wgnhs.uwex.edu" 
             }, 
             {"divisionTitle": "Data Preservation Projects", 
             "name": "M. Carol McCartney",  
             "title": "Outreach Manager and Principal Investigator for this project", 
-            "affiliation" : "Wisconsin Geological & Natural History Survey", 
+            
              "email": "carol.mccartney@wgnhs.uwex.edu" 
             },   
             
@@ -110,7 +110,7 @@
                 
                 if (rd.divisionTitle){contactDiv.append($('<h3 class="orangeBar"></h3>').html(rd.divisionTitle))};
                 
-                contactDiv.append('<div class="divisionContent"><p>'+rd.name+'<br>'+rd.title+', <br>'+rd.affiliation+'<br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p></div>');
+                contactDiv.append('<div class="divisionContent"><p>'+rd.name+'<br>'+rd.title+', <br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p></div>');
                 //append it to the html page. 
                 $('#contacts').append(contactDiv);           
                 

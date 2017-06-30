@@ -1,6 +1,16 @@
 var globalLayer;
 var firstLoad = true;
 
+$("#fieldDescriptionSearch").keypress(function(e){
+    if(e.which == 13){
+        $("#fieldDescriptionSearch").autocomplete("close");
+    }
+});
+
+//$("#leftPanel").scroll(function(){
+//    $("#fieldDescriptionSearch").autocomplete("close");
+//})
+
 var leafletMap = (function(){
     var map;
     var leafletFeatureLayer;
@@ -19,8 +29,8 @@ var leafletMap = (function(){
             zoomControl: false, //will add zoom control in the top right corner next
             minZoom: 6,
             maxZoom: 11,
-            maxBounds: [[43.0,-100.0],[50.0,-84.0]]
-        }).setView([ 47, -92], 7); //setview actually triggers the on load event. 
+            maxBounds: [[39.0,-110.0],[50.0,-80.0]]
+        }).setView([ 48, -92], 6); //setview actually triggers the on load event. 
 
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
@@ -66,7 +76,7 @@ var leafletMap = (function(){
         //connects to our map service. Shows the PLSS Sections
         leafletFeatureLayer = L.esri.featureLayer({
             url: PLSSSectionsLayerURL, 
-            style: {color: "rgba(0,0,0,0)", weight: 2, fillColor: "rgba(0,0,0,0)"}
+            style: {color: "rgba(0,0,0,0)", weight: 1.5, fillColor: "rgba(0,0,0,0)"}
 //            , 
 //            pane: 'B-PLSSSections'
         }).addTo(map);
@@ -453,6 +463,9 @@ var leafletMap = (function(){
         }
 
         $("#loading").remove(); //stops loading feedback
+
+
+        
         
         //reset the map size; this prevents it from skipping the bottom row of tiles. 
         map.invalidateSize();
@@ -514,7 +527,8 @@ function zoomToSelection(map){
 
     globalLayer.eachFeature(function(lyr){
         var layerBounds = lyr.getBounds();
-        if (lyr.options.fillColor != "#ece7f2"){
+        console.log(lyr.options)
+        if (lyr.options.fillOpacity != 0){
             bounds.extend(layerBounds)
         }
 
@@ -541,10 +555,10 @@ function initSmartSearch(){
             minLength: 4,
             select: function(event, ui){
                 delay(function(){
-            //       console.log('time elapsed');
                     resetFilters();
                 }, 1000);
-            }
+            }, 
+            appendTo: "#autocomplete"
         }); 
 
 

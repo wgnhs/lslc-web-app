@@ -66,6 +66,8 @@ function initFiltersListeners(){
 
     }); //close #filters.on input function
     
+    
+    
     $('#filters input:checkbox').on('change', function(){
        // console.log("checkbox change event.");
        // delay(function(){
@@ -152,12 +154,9 @@ function setFiltersFromHash(){
 function queryTableForFilters(){
     queryCount += 1; 
     
-  //  if (loadingPageOn == false){
-        $("#map").append($("<div id='loading'></div>")); //will be removed in leafletMap.js highlight function after setStyle. 
-    
-  //  };
-  //  loadingPageOn = true;
-    
+        console.log("append loading animation.");
+        $("#map").append($("<div id='loading' class='loading'></div>")); //will be removed in leafletMap.js highlight function after setStyle. 
+
    
    
     var whereString = buildSqlAndAddIndicators(); //call the function to build a SQL where clause. It will return the where clause as a string. 
@@ -346,7 +345,9 @@ function sliceResult(allResultOBJECTIDs, queryNum){
         
         //console.log("5. global results: ", globalResultsArray); 
         
+        //listResults(globalResultsArray);
         listResults(resultsManager.resultsPage(1));
+        
         
         highlightAll();
     });
@@ -402,19 +403,7 @@ function queryForSliceData(resultSliceOBJECTIDs, drawList){
         
         //response.features is an array of objects.     
         //listResults(globalResultsArray);
-         if (drawList === true){ 
-            console.log("please draw the list and highlight map.");
-            //console.log("global results", globalResultsArray);
-             
-            
-             var firstThousand = globalResultsArray.slice(0,1000); 
-             //console.log("first thousand", firstThousand);
-           
-            listResults(firstThousand);
-            highlightAll();  
-             
-            
-        }
+        
        
     });
 
