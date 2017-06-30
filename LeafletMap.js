@@ -30,7 +30,7 @@ var leafletMap = (function(){
             minZoom: 6,
             maxZoom: 11,
             maxBounds: [[39.0,-110.0],[50.0,-80.0]]
-        }).setView([ 47, -92], 6); //setview actually triggers the on load event. 
+        }).setView([ 48, -92], 6); //setview actually triggers the on load event. 
 
         
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
