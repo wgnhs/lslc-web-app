@@ -148,6 +148,19 @@
           //  {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}, 
             {"divisionTitle":"All Sample Data", "divisionId":"allData"}
         ]; 
+       
+       var aliases = {
+           "locationNote": "Location Note", 
+           "state": "State", 
+           "township": "Township", 
+           "range": "Range", 
+           "PLSSSectionNum": "PLSS section number", 
+           "quarterSection": "Quarter section", 
+           "quarterQuarterSection": "Quarter-quarter section", 
+           
+           
+           
+       }
         
         //this object will hold all of the data for the record.
         //this data must be drawn from several different tables. 
@@ -572,11 +585,10 @@
             //set up an empty var for the location info.
             var loc = ''
             
-            //  loc+="<img src='images/mapMockup.jpg' alt='sample of map'/>";
             loc+="<div class='detailsDiv'><table>";
             for (prop in sampleRecordData.location){
                 
-                loc+="<tr><td><span class='green'>"+prop+":</span> </td><td>"+sampleRecordData.location[prop]+"</td></tr>";
+                loc+="<tr><td><span class='green'>"+aliases[prop]+":</span> </td><td>"+sampleRecordData.location[prop]+"</td></tr>";
             }
             loc+="</table></div>"; //end details div
 
@@ -693,10 +705,7 @@
             }
         }
         
-//        function addAvailableSamples(){
-//            $('#availableSamples').append('<p>Information about where to find the physical samples, if available...</p>');
-//        }
-//        
+       
         function addDataTable(){
             
             $("#allData").append('<table id="dataTable" class="lslcTable">'); 
@@ -718,12 +727,7 @@
 
 
                         }
-                 //   } else {
-                 //       for (subProp in sampleRecordData[prop][0]){
-                 //           $("#dataTable").append("<tr><td>"+subProp+"</td><td>"+sampleRecordData[prop][0][subProp]+"</td></tr>");
-                 //       }
-                //    }
-                    
+              
                 } else if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Object){
                   //  console.log("object", prop);
                     //location is an object. iterate through its properties and add them to the list. 
