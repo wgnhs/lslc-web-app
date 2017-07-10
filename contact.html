@@ -108,9 +108,9 @@
                 //create a new div element.
                 var contactDiv = $('<div class="reportDivision"></div>');
                 
-                if (rd.divisionTitle){contactDiv.append($('<h3 class="orangeBar"></h3>').html(rd.divisionTitle))};
+                //if (rd.divisionTitle){contactDiv.append($('<strong></strong>').html(rd.divisionTitle))};
                 
-                contactDiv.append('<div class="divisionContent"><p>'+rd.name+'<br>'+rd.title+', <br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p></div>');
+                contactDiv.append('<div class="divisionContent"><p><strong>'+rd.divisionTitle+'</strong><br>'+rd.name+'<br>'+rd.title+', <br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p></div>');
                 //append it to the html page. 
                 $('#contacts').append(contactDiv);           
                 
