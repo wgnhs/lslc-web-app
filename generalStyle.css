@@ -56,7 +56,7 @@ h1{
 }
 h3 {
     display: inline-block;
-    margin: 0px 10px 0 0;
+    margin: 0;
 }
 #wrapper{
     width: 90%;
@@ -67,12 +67,7 @@ h3 {
     
     clear: both;
 }
-.colorBar {
-    background-color: #bcbcbc;
-    color: black;
-    padding-left: 5px;
 
-}
 
 .button:hover{ 
     background-color: #e6e6e6;
@@ -200,6 +195,12 @@ h3 {
     width: 100%;
    
 }
+.colorBar {
+    background-color: #bcbcbc;
+    color: black;
+    padding-left: 5px;
+
+}
 
 .reportDivision img{
    
@@ -231,7 +232,7 @@ h3 {
 .captionedPhoto {
     
     display: inline-table;
-    margin: 10px;
+    margin: 0 15px;
   
    
 }
@@ -239,7 +240,8 @@ h3 {
     display: table-row;
 }
  .bottomCaption {
-    display: table-row;
+    display: table-caption;
+     caption-side: bottom;
 
 }
 
@@ -248,7 +250,7 @@ h3 {
 
 .helpIcon {
     width:15px; 
-   
+   margin-left: 10px;
 }
 .helpIcon:hover{
     
@@ -339,8 +341,8 @@ h3 {
 }
 
 #extensionLogo {
-    height: 2.5em; 
-    margin-top: 5px;
+    height: 47px; 
+    margin-top: 10px;
 }
 
 /*============= Media Queries ===============*/
