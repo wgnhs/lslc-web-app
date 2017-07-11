@@ -25,6 +25,6 @@ $("#header").append(header);
 
 //may need to work on this header's responsiveness in narrow windows... figure out how to collapse to a simple list or a menu button. 
 
-var footer = "<p> Lake Superior Legacy Collection <br/> <a href='http://wgnhs.uwex.edu' target='_blank'>Wisconsin Geological and Natural History Survey</a> <br/><a href='http://uwex.edu' target='_blank'>University of Wisconsin-Extension</a></p>";
+var footer = "<p> Lake Superior Legacy Collection <br/> <a href='http://wgnhs.uwex.edu' target='_blank'>Wisconsin Geological and Natural History Survey</a> <br/><a href='http://uwex.edu' target='_blank'>University of Wisconsin-Extension<br><img id='extensionLogo' src='images/uwex-logo-black.png' alt='University of Wisconsin- Extension logo'></a></p>";
 
 $("#footer").append(footer);
