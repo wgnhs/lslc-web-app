@@ -67,7 +67,7 @@ h3 {
     
     clear: both;
 }
-.orangeBar {
+.colorBar {
     background-color: #bcbcbc;
     color: black;
     padding-left: 5px;
@@ -196,7 +196,7 @@ h3 {
     padding-top: 20px;
 }
 .reportDivision h3 {
-    /* these also have the orangeBar class, which adds the background color, color, and left padding*/
+    /* these also have the colorBar class, which adds the background color, color, and left padding*/
     width: 100%;
    
 }
