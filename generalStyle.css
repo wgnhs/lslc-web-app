@@ -241,7 +241,7 @@ h3 {
 }
  .bottomCaption {
     display: table-caption;
-     caption-side: bottom;
+    caption-side: bottom;
 
 }
 
