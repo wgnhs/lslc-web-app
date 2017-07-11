@@ -244,7 +244,7 @@ function exportResultsToCSV() {
 function initResize(){
     //called once from the initializeResultsTable function. 
 
-  var barHeight = $(".orangeBar").height()
+  var barHeight = $(".colorBar").height()
 
   var legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 90); //16 due to attribution on leaflet map 90 due to zoom control
   console.log($("#leftPanel").offset().top);
@@ -298,7 +298,7 @@ function initResize(){
     /* Listener for window resize */
     $(window).on("resize", function(){
         //reset the allowable min and max height for the results panel. 
-        $("#resultsPanel").css("minHeight", $(".orangeBar").height());
+        $("#resultsPanel").css("minHeight", $(".colorBar").height());
         legendVisibility = $(window).height() - $("#leftPanel").offset().top - ($(window).height()/4) - (16 + 55); //16 due to attribution on leaflet map
         $("#resultsPanel").css("maxHeight", legendVisibility);
         
