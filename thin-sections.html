@@ -131,17 +131,27 @@
        </div> 
 
        <h2 id="galleryTitle">Thin Section Gallery</h2> 
-       <p>Thin sections are pieces of rock, sliced thin and mounted on microscope slides. Each thin section in our collection was photographed in plane polarized light  (background appears white) and cross polarized light (background appears dark blue or black), as geologists in 1900 would have viewed these under a microscope. <br>Click on a thin section photo pair below to view it in detail. </p>
+       <p>Thin sections are pieces of rock, sliced and ground thin and mounted on microscope slides. Each thin section in our collection was photographed in plane-polarized light  (background appears white) and cross-polarized light (background appears dark blue or black), as geologists in 1900 would have viewed these under a microscope. <br>Click on a thin section photo pair below to view it in detail. </p>
        <div id="navContainer">
            <div class="galleryNav">
-               <div id="galleryPrev" class='button' role="button">&laquo;</div>
-               <label for="galleryPage">page </label>
-               <input id="galleryPage" name="galleryPage" type="search" value="1">
-               <div id="galleryNext" class='button' role="button">&raquo;</div>
+               <div id="galleryPrevTop" class='button' role="button">&laquo;</div>
+               <label for="galleryPageTop">page </label>
+               <input id="galleryPageTop" name="galleryPageTop" type="search" value="1">
+               <div id="galleryNextTop" class='button' role="button">&raquo;</div>
            </div>
        </div>
 
        <div id="thinGallery" class="divisionContent"></div>
+       
+       <div id="navContainer">
+           <div class="galleryNav">
+               <div id="galleryPrevBottom" class='button' role="button">&laquo;</div>
+               <label for="galleryPageBottom">page </label>
+               <input id="galleryPageBottom" name="galleryPageBottom" type="search" value="1">
+               <div id="galleryNextBottom" class='button' role="button">&raquo;</div>
+           </div>
+       </div>
+
    
        <div id="footer"></div>
    </div><!--end wrapper div-->
@@ -263,36 +273,50 @@
              var numberOfPages = Math.ceil(resultsTotal/pageSize); 
             
             $("#galleryTitle").after("<span>("+resultsTotal+" found)</span>");
-            $("#galleryPage").after("<span> of "+numberOfPages+"</span>");
+            $("#galleryPageTop").after("<span> of "+numberOfPages+"</span>");
+            $("#galleryPageBottom").after("<span> of "+numberOfPages+"</span>");
 
             console.log("build a page nav for ", resultsTotal, "results.", numberOfPages, "pages."); 
             
             
             //input listener for page number input: 
-            $("#galleryPage").on("input", function(){
-                var newPage = $("#galleryPage").val();
+            $("#galleryPageTop").on("input", function(){
+                var newPage = $("#galleryPageTop").val();
                 
                 console.log("change to page", newPage);
                 buildThinGallery(newPage, pageSize);
                 
             });
+            $("#galleryPageBottom").on("input", function(){
+                var newPage = $("#galleryPageBottom").val();
+                
+                console.log("change to page", newPage);
+                buildThinGallery(newPage, pageSize);
+                
+            });
+            
+            
             //input listener for next and previous buttons: 
-            $("#galleryNext").click(function(){
+            $("#galleryNextTop").click(function(){
                 var newPage = parseInt(currentPage)+1;
-                
                 buildThinGallery(newPage, pageSize);
-     
             });
-            $("#galleryPrev").click(function(){
+            
+            $("#galleryNextBottom").click(function(){
+                var newPage = parseInt(currentPage)+1;
+                 buildThinGallery(newPage, pageSize);
+            });
+            
+            $("#galleryPrevTop").click(function(){
                 var newPage = parseInt(currentPage)-1;
-                
                 buildThinGallery(newPage, pageSize);
-     
             });
             
-            
+            $("#galleryPrevBottom").click(function(){
+                var newPage = parseInt(currentPage)-1;
+                buildThinGallery(newPage, pageSize);
+            });
 
-            
         }
         
         function buildThinGallery(pageNumber, pageSize) {
@@ -301,9 +325,10 @@
             //reset the global var representing the current page: 
             currentPage = pageNumber;
             //change the page input value: 
-            $("#galleryPage").val(currentPage);
+            $("#galleryPageTop").val(currentPage);
+            $("#galleryPageBottom").val(currentPage);
             
-            //reset the varible representing the contents of the gallery. 
+            //reset the variable representing the contents of the gallery. 
             var galleryContent= $("<div></div>");
             
             var dataForDisplay = thinSectionsManager.page(pageNumber, pageSize); // .page accepts two arguments: page number then page size
