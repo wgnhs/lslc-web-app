@@ -65,7 +65,7 @@ var modal = (function(){
         
         
         $('#modalHeader').text('Thin Section #' + thinSectionNumber);
-        $('#sampleLink').append("<a href='hand-sample.html#"+handSampleNumber+"' target='_blank'><div>part of Sample #"+ handSampleNumber +"<br/>(click here to view details)</div><img class='sampleChevron' src='images/chevron_right_g.png' alt=''></a>");
+        $('#sampleLink').append("<a href='hand-sample.html#"+handSampleNumber+"' target='_blank'><div>part of Sample #"+ handSampleNumber +"<br/>(click here to view details)</div><img class='sampleChevron' src='images/chevron_right_g.png' alt='view sample details'></a>");
         
         //populate the parts of the thin section viewer: 
         zoomifyThinSection(thinSectionNumber);

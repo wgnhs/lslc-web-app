@@ -76,8 +76,8 @@
                 <div id="filterFeedback"></div>
 
                    <div class='colorBar' id='mapFiltersOB'>
-                   <h3>Filter by map area</h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon"/><span class="tooltiptext"> This map only shows samples that we were able to locate to a one-square-mile section of the Public Land Survey System. There may be more location information in the scanned field notebooks. </span></div>
-                   <div class='filtersHideButton' id='mapAreaFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='mapFilterChevron'/></div>
+                   <h3>Filter by map area</h3><div class="tooltip"><img src="images/question_wg.png" class="helpIcon" alt="question mark"/><span class="tooltiptext"> This map only shows samples that we were able to locate to a one-square-mile section of the Public Land Survey System. There may be more location information in the scanned field notebooks. </span></div>
+                   <div class='filtersHideButton' id='mapAreaFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='mapFilterChevron' alt="hide this section"/></div>
                    </div>
                    
                    
@@ -89,9 +89,9 @@
                        </div>
                         
                        <div  id="mapSelectionButtonsContainer">
-                            <div class="mapSelectionButton mapViewButton" id="selectRectangleButton"><img src="images/mapSelection-01.png"/><span id='greyButtonText'>Select by rectangle</span></div>
-                            <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/mapSelection_poly-01.png"/><span id='greyButtonText'>Select by polygon</span></div>
-                            <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clear-map-melection.png"><span id='greyButtonText'>Clear map selection</span></div>
+                            <div class="mapSelectionButton mapViewButton" id="selectRectangleButton"><img src="images/map-selection-rectangle.png" alt="rectangle selection"/><span id='greyButtonText'>Select by rectangle</span></div>
+                            <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/map-selection-polygon.png" alt="polygon selection"/><span id='greyButtonText'>Select by polygon</span></div>
+                            <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clear-map-selection.png" alt="clear selection"><span id='greyButtonText'>Clear map selection</span></div>
                        </div>
                    </div>
                    
@@ -101,10 +101,10 @@
                    <div class='colorBar' id='contentFiltersOB'>
                        <h3>Filter by content </h3>
                        <div class="tooltip">
-                           <img src="images/question_wg.png" class="helpIcon"/>
+                           <img src="images/question_wg.png" class="helpIcon" alt="question mark"/>
                            <span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span>
                        </div>
-                       <div class='filtersHideButton' id='contentFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='contentFilterChevron'/></div>
+                       <div class='filtersHideButton' id='contentFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='contentFilterChevron' alt="collapse this section"/></div>
                    </div>
 
                    
@@ -184,9 +184,9 @@
 
                      <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span> 
                      
-                     <span id="downloadButtonContainer"><a href="#" class="export"><img src="images/download_gw.png"> <span id='greyButtonText'>Download as CSV</span></a></span>
+                     <span id="downloadButtonContainer"><a href="#" class="export"><img src="images/download_gw.png" alt="download"> <span id='greyButtonText'>Download as CSV</span></a></span>
 
-                     <div id="zoomToSelectionButton" class="mapViewButton" role='button'><img src="images/zoomTo-01.png" id='zoomToPNG'><span id='greyButtonText'>Zoom to Results</span></div>
+                     <div id="zoomToSelectionButton" class="mapViewButton" role='button'><img src="images/zoomTo-01.png" id='zoomToPNG' alt="zoom to selection"><span id='greyButtonText'>Zoom to Results</span></div>
                  </div> 
 
                
@@ -234,14 +234,14 @@
               $("#mapAreaFilters").css("display","none")
               $("#mapFiltersOB").css("margin-bottom","5px")
               $("#mapFilterChevron").remove()
-              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='mapFilterChevron'/>"))
+              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='mapFilterChevron' alt='expand this section'/>"))
               resizeFilters(true);
             } else {
               mapFiltersShowing = true
               $("#mapAreaFilters").css("display","block")
               $("#mapFiltersOB").css("margin-bottom","0px")
               $("#mapFilterChevron").remove()
-              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='mapFilterChevron'/>"))
+              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='mapFilterChevron' alt='collapse this section'/>"))
               resizeFilters(false);
             }
           })
@@ -253,14 +253,14 @@
               $("#contentAreaFilters").css("display","none")
               $("#contentFiltersOB").css("margin-bottom","5px")
               $("#contentFilterChevron").remove()
-              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='contentFilterChevron'/>"))
+              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='contentFilterChevron' alt='expand this section'/>"))
               resizeFilters(true);
             } else {
               contentFiltersShowing = true
               $("#contentAreaFilters").css("display","block")
               $("#contentFiltersOB").css("margin-bottom","0px")
               $("#contentFilterChevron").remove()
-              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='contentFilterChevron'/>"))
+              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='contentFilterChevron' alt='collapse this section'/>"))
               resizeFilters(false);
             }
             

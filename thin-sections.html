@@ -340,8 +340,8 @@
                 var galleryItem  = $('<div class="galleryItemDiv"></div>');
                 var thinSec = $('<div class="thinSection"></div>').html("<p>Thin Section #"+item[thinSectionNumberField]+"</p>");
                 
-                thinSec.append("<img class='galleryThumb' src='"+item.PPLthumbURL+"'>");
-                thinSec.append("<img class='galleryThumb' src='"+item.XPLthumbURL+"'>");
+                thinSec.append("<img class='galleryThumb' src='"+item.PPLthumbURL+"' alt='thin section photo in plane-polarized light'>");
+                thinSec.append("<img class='galleryThumb' src='"+item.XPLthumbURL+"' alt='thin section photo in cross-polarized light'>");
                
                 thinSec.attr('title','click to view');
 

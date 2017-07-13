@@ -99,6 +99,10 @@
 }
 
 
+.helpIcon {
+   margin-left: 10px;
+}
+
 /*=============== Filters ===============*/
 
 
@@ -224,10 +228,7 @@ section {
   display: block;
 }
 
-#tableHolder{
-  overflow: scroll;
- 
-}
+
 #resultsPanel thead{
     line-height: 90%;
 }
