@@ -57,6 +57,9 @@
                /* aligns better with other pages if not centered. */
                 padding: 20px 0px 5px 0;
             }
+           input {
+               text-align: center;
+           }
 
             #sampleRecord .thinSectionContainer{
                 display: inline-block;
@@ -64,7 +67,7 @@
                 padding: 5px;
             }
 
-            #sampleRecord .thinSectionContainer:hover {
+            #sampleRecord .thinSectionPhotoPair:hover {
                 cursor: pointer;
                 background-color: #e6e6e6;
             }
@@ -98,7 +101,14 @@
         <!--<h2>Hand Sample Details</h2>-->
         <div id="searchArea">
           <!--  <h1>Sample Search</h1>-->
-            <label>Search by hand sample number: </label><input type="search" id="sampleSearch"/><button id="searchGo">Go</button> <span>or visit our </span><a href="interactive-map.html" target="_blank">interactive map</a> <span>page.</span>
+            <label>Search by hand sample number <div class="tooltip">
+               <img src="images/question_wg.png" class="helpIcon"/>
+               <span class="tooltiptext">You can search for hand samples with numbers between 1 and 82538, although there are gaps in the numbering.</span>
+            </div> : </label>
+            
+            <input type="search" id="sampleSearch"/><button id="searchGo">Go</button>
+             
+            <span>or visit our </span><a href="interactive-map.html" target="_blank">interactive map</a> <span>page to view and filter the complete list of hand samples.</span>
             
        </div>
         
@@ -394,14 +404,17 @@
                    // console.log("thinsectionsResponse", thinSectionsResponse);
                     for (i in thinSectionsResponse.features){
                         var thinDetails = {};
-                      //  console.log("thin section info", thinSectionsResponse.features[i].attributes);
+                        console.log("thin section info", thinSectionsResponse.features[i].attributes);
                         //add attributes to the thin sections array. 
                         thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes[thinSectionNumberField];
                         thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
-                        thinDetails.thinImgppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl.jpg';
-                        thinDetails.thinImgxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl.jpg';
-                        thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl_thumb.jpg';
-                        thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl_thumb.jpg';
+                        thinDetails.photoAvailability = thinSectionsResponse.features[i].attributes.Photos;
+                        if(thinSectionsResponse.features[i].attributes.Photos > 0){
+                            thinDetails.thinImgppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl.jpg';
+                            thinDetails.thinImgxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl.jpg';
+                            thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl_thumb.jpg';
+                            thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl_thumb.jpg';
+                        }
 
                         sampleRecordData.thinSections.push(thinDetails);
                         
@@ -533,12 +546,13 @@
                     
                     var thinSec = $('<div class="thinSectionContainer"></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
                     thinSec.append('<p>condition: '+sampleRecordData.thinSections[i].condition+'</p>');
-                    if(sampleRecordData.thinSections[i].thinThumbppl){  
+                    
+                    thinSec.addClass('detailsDiv');
+                    if(sampleRecordData.thinSections[i].photoAvailability > 0){  
                       //  thinSec.append('<p>(click to view in detail)</p>');
                         thinSec.append(
                             "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
-                        thinSec.addClass('thinSection');
-                        thinSec.addClass('detailsDiv');
+                        thinSec.addClass('thinSectionPhotoPair');
                         thinSec.attr('title','click to view');
                         thinSec.data({'thinSectionNumber':sampleRecordData.thinSections[i].thinSectionId, 'handSampleNumber':sampleRecordData.handSampleNumber});
                     } else {
@@ -563,7 +577,7 @@
             //add the block-level container into the overall div of all thin sections. this is later appended to the record. 
 //            $('#thinSections').append(thinSectionsContainer);
             
-            $(".thinSection").on('click', function(){
+            $(".thinSectionPhotoPair").on('click', function(){
                 console.log("view thin section #", $(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
                 
                 modal.thinSectionViewer($(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
