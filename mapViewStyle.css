@@ -228,10 +228,7 @@ section {
   display: block;
 }
 
-#tableHolder{
-  overflow: scroll;
- 
-}
+
 #resultsPanel thead{
     line-height: 90%;
 }
