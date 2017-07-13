@@ -230,54 +230,54 @@ function buildSqlAndAddIndicators() {
     //for each truthy value in filters, build the SQL text and append a filter indicator span  
      if (filters.mappedInput) {
         newsqlArray.push(PlssField+" IS NOT NULL");
-    	$("#filterFeedback").append($("<span id='mappedOn' class='feedbackBar' data='mappedInput'>Must&nbspbe&nbspmapped:&nbsp" + filters.mappedInput + "<img src='images/close.png' /></span>"));
+    	$("#filterFeedback").append($("<span id='mappedOn' class='feedbackBar' data='mappedInput'>Must&nbspbe&nbspmapped:&nbsp" + filters.mappedInput + "<img src='images/close.png' alt='close'/></span>"));
         };
     if (filters.rockTypeInput) {
         newsqlArray.push("Upper(RockType) LIKE Upper('%"+filters.rockTypeInput+"%')");
         //adds feedback indicator
-    	$("#filterFeedback").append($("<span id='rockSearchOn' class='feedbackBar' data='rockTypeInput'>Description:&nbsp" + filters.rockTypeInput + "<img src='images/close.png'/></span>"));
+    	$("#filterFeedback").append($("<span id='rockSearchOn' class='feedbackBar' data='rockTypeInput'>Description:&nbsp" + filters.rockTypeInput + "<img src='images/close.png' alt='close'/></span>"));
         }; 
     if (filters.countyInput) {
         newsqlArray.push("Upper(County) LIKE Upper('%"+filters.countyInput+"%')");
-    	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar' data = 'countyInput'>County:&nbsp" + filters.countyInput +"<img src='images/close.png' /></span>"));
+    	$("#filterFeedback").append($("<span id='countySearchOn' class='feedbackBar' data = 'countyInput'>County:&nbsp" + filters.countyInput +"<img src='images/close.png' alt='close' /></span>"));
         }; 
     if (filters.notesInput) {
         newsqlArray.push("Upper(Notes) LIKE Upper('%"+filters.notesInput+"%')");
-        $("#filterFeedback").append($("<span id='notesSearchOn' class='feedbackBar' data = 'notesInput'>Notes:&nbsp" + filters.notesInput +"<img src='images/close.png' /></span>"));
+        $("#filterFeedback").append($("<span id='notesSearchOn' class='feedbackBar' data = 'notesInput'>Notes:&nbsp" + filters.notesInput +"<img src='images/close.png' alt='close'/></span>"));
         }; 
     if (filters.notebookInput) {
         newsqlArray.push(notebookNumberField+" LIKE '"+filters.notebookInput+"'");
-    	$("#filterFeedback").append($("<span id='notebookSearchOn' class='feedbackBar' data = 'notebookInput'>Notebook:&nbsp" + filters.notebookInput +"<img src='images/close.png' /></span>"));
+    	$("#filterFeedback").append($("<span id='notebookSearchOn' class='feedbackBar' data = 'notebookInput'>Notebook:&nbsp" + filters.notebookInput +"<img src='images/close.png' alt='close' /></span>"));
         };
     if (filters.notebookPageInput) {
         newsqlArray.push("NotebookPage LIKE '"+filters.notebookPageInput+"'");
-    	$("#filterFeedback").append($("<span id='notebookPageSearchOn' class='feedbackBar' data = 'notebookPageInput'>Notebook page:&nbsp" + filters.notebookPageInput +"<img src='images/close.png' /></span>"));
+    	$("#filterFeedback").append($("<span id='notebookPageSearchOn' class='feedbackBar' data = 'notebookPageInput'>Notebook page:&nbsp" + filters.notebookPageInput +"<img src='images/close.png' alt='close'/></span>"));
         };
     if (filters.handSampleAvailabilityInput) {
         newsqlArray.push("HandSampleCount > 0");
-    	$("#filterFeedback").append($("<span id='handSampleOn' class='feedbackBar' data='handSampleAvailabilityInput'>Hand&nbspsample:&nbsp" + filters.handSampleAvailabilityInput + "<img src='images/close.png' /></span>"));
+    	$("#filterFeedback").append($("<span id='handSampleOn' class='feedbackBar' data='handSampleAvailabilityInput'>Hand&nbspsample:&nbsp" + filters.handSampleAvailabilityInput + "<img src='images/close.png' alt='close' /></span>"));
         }; 
     if (filters.thinSectionPhotoAvailabilityInput) {
         newsqlArray.push("ThinSectionPhotoCount > 0");
-        $("#filterFeedback").append($("<span id='thinSectionPhotoAvailabilityOn' class='feedbackBar' data='thinSectionPhotoAvailabilityInput'>Thin&nbspsection photo:&nbsp" + filters.thinSectionPhotoAvailabilityInput + " <img src='images/close.png'/></span>"));
+        $("#filterFeedback").append($("<span id='thinSectionPhotoAvailabilityOn' class='feedbackBar' data='thinSectionPhotoAvailabilityInput'>Thin&nbspsection photo:&nbsp" + filters.thinSectionPhotoAvailabilityInput + " <img src='images/close.png' alt='close'/></span>"));
         }; 
     if (filters.mapSectionsInput) {
         newsqlArray.push(PlssField+" IN ("+filters.mapSectionsInput+")"); 
-        $("#filterFeedback").append($("<span id='mapOn' class='feedbackBar' data='mapSectionsInput'>Intersects&nbspmap&nbsppolygon <img src='images/close.png' /></span>"));
+        $("#filterFeedback").append($("<span id='mapOn' class='feedbackBar' data='mapSectionsInput'>Intersects&nbspmap&nbsppolygon <img src='images/close.png' alt='close' /></span>"));
         }; 
     if (filters.stateInput){
         newsqlArray.push("Upper(State) LIKE Upper('%"+filters.stateInput+"%')");
-        $("#filterFeedback").append($("<span id='stateOn' class='feedbackBar' data='stateInput'>State:&nbsp" + filters.stateInput + "<img src='images/close.png'/></span>"));
+        $("#filterFeedback").append($("<span id='stateOn' class='feedbackBar' data='stateInput'>State:&nbsp" + filters.stateInput + "<img src='images/close.png' alt='close'/></span>"));
         };
     if (filters.WGNHSInput){
         //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
         newsqlArray.push("cast(WgnhsId as char(1))  LIKE '"+filters.WGNHSInput+"'");
-        $("#filterFeedback").append($("<span id='WGNHSOn' class='feedbackBar' data='WGNHSInput'>WGNHS ID:&nbsp" + filters.WGNHSInput + "<img src='images/close.png'/></span>"));
+        $("#filterFeedback").append($("<span id='WGNHSOn' class='feedbackBar' data='WGNHSInput'>WGNHS ID:&nbsp" + filters.WGNHSInput + "<img src='images/close.png' alt='close'/></span>"));
         };
     if (filters.handSampleNumberInput){
         //cast the integer field WgnhsId as a character string to allow the user to use % and _ as wildcards for searching for partial values. 
         newsqlArray.push("Upper("+handSampleNumberField+")  LIKE Upper('"+filters.handSampleNumberInput+"')");
-        $("#filterFeedback").append($("<span id='handSampleNumberOn' class='feedbackBar' data='handSampleNumberInput'>Hand sample number:&nbsp" + filters.handSampleNumberInput + "<img src='images/close.png'/></span>"));
+        $("#filterFeedback").append($("<span id='handSampleNumberOn' class='feedbackBar' data='handSampleNumberInput'>Hand sample number:&nbsp" + filters.handSampleNumberInput + "<img src='images/close.png' alt='close'/></span>"));
         };
     
    
