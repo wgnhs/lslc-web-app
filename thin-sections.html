@@ -44,6 +44,9 @@
                display: inline;
                padding-right: 5px;
            }
+           .colortext{
+               color:  #b74226;
+           }
            
            /* galleryItemDiv is a container, and each row of them occupies 100% of the parent width. */
             .galleryItemDiv {
@@ -131,7 +134,7 @@
        </div> 
 
        <h2 id="galleryTitle">Thin Section Gallery</h2> 
-       <p>Thin sections are pieces of rock, sliced and ground thin and mounted on microscope slides. Each thin section in our collection was photographed in plane-polarized light (background appears white) and cross-polarized light (background appears dark blue or black), as geologists in 1900 would have viewed these under a microscope. In cross-polarized light, some minerals appear in bright hues called interference colors due to their property of <a href="https://en.wikipedia.org/wiki/Refractive_index#Birefringence" target="_blank">birefringence</a>.<br>Click on a thin section photo pair below to view it in detail. </p>
+       <p>Thin sections are pieces of rock, sliced and ground thin and mounted on microscope slides. Each thin section in our collection was photographed in plane-polarized light (background appears white) and cross-polarized light (background appears dark blue or black), as geologists in 1900 would have viewed these under a microscope. In cross-polarized light, some minerals appear in bright hues called interference colors due to their property of <a href="https://en.wikipedia.org/wiki/Refractive_index#Birefringence" target="_blank">birefringence</a>.<br><br>Click on a thin section photo pair below to view it in detail. </p>
        <div id="navContainer">
            <div class="galleryNav">
                <div id="galleryPrevTop" class='button' role="button">&laquo;</div>
@@ -255,9 +258,11 @@
            //easter egg: using #color at the end of the URL will select only the subset of the thin section images listed below.
            if(window.location.hash.replace("#", "") == 'color'){
                console.log("colorful images only.");
+               //add a note in the title of the page
+               $("#galleryTitle").append("<strong class='colortext'> #color</strong>");
                
                //array of thin section numbers with colorful images. The gallery will always appear in number order, regardless of the order of numbers in this list. I am keeping this list in numerical order to prevent entering duplicates.
-               var colorfulImages = ["'23'", "'76'", "'144'", "'148'", "'152'", "'170'", "'193'", "'197'",  "'199'", "'200'", "'267'", "'321'", "'406'", "'408'", "'462'", "'463'", "'724'", "'731'", "'750'", "'754'", "'831'", "'836'", "'840'", "'1126'", "'1408'", "'1452'", "'1453'", "'3387'", "'3398'",  "'4207'", "'4259'", "'4419'", "'4810'","'5332'", "'5446'", "'5682'", "'5705'", "'5706'", "'9401'", "'15482'", "'17152'"];
+               var colorfulImages = ["'23'", "'76'", "'144'", "'148'", "'170'", "'193'", "'197'",  "'199'", "'200'", "'267'", "'321'", "'406'", "'408'", "'462'", "'463'", "'724'", "'731'", "'750'", "'754'", "'755'", "'757'", "'758'", "'776'", "'809'", "'831'", "'835'", "'836'", "'840'", "'959'", "'967'", "'1009'", "'1019'", "'1020'", "'1021'", "'1023'", "'1025'", "'1030'", "'1111'", "'1126'", "'1127'", "'1183'", "'1184'", "'1188'", "'1197'", "'1204'", "'1237'", "'1239'", "'1240'", "'1242'", "'1244'", "'1299'", "'1382'", "'1408'", "'1409'", "'1439'", "'1443'", "'1446'", "'1452'", "'1453'", "'1457'", "'1583'", "'1598'", "'1606'", "'1619'", "'1798'", "'1839'", "'1954'", "'2068'", "'2075'", "'2089'", "'2107'", "'2148'", "'2149'", "'2494'", "'2647'", "'2655'", "'2719'", "'2840'", "'2879'", "'2905'", "'2980'", "'3353'", "'3387'", "'3398'", "'3528'", "'3533'", "'3745'", "'3843'", "'3845'", "'3850'", "'3856'", "'3903'", "'4063'", "'4088'", "'4105'", "'4207'", "'4242'", "'4259'", "'4350'", "'4366'", "'4369'", "'4373'", "'4419'", "'4538'", "'4559'", "'4560'", "'4561'", "'4565'", "'4596'", "'4599'", "'4600'", "'4601'", "'4602'", "'4608'", "'4692'", "'4783'", "'4790'", "'4810'", "'4815'", "'4820'", "'4823'", "'4861'", "'4862'", "'4863'", "'4875'", "'4880'", "'4906'", "'4907'", "'4940'", "'4949'", "'4952'", "'4953'", "'4959'", "'4564'", "'4965'", "'4966'", "'4972'", "'4973'", "'4975'", "'4976'", "'4986'", "'5039'", "'5068'", "'5069'", "'5071'", "'5332'", "'5446'", "'5682'", "'5705'", "'5706'", "'9401'", "'15482'", "'17152'"];
                
                //reset the where query to only select thin sections in the list above. 
                thinImagesQuery.where(thinSectionNumberField+" IN ("+colorfulImages+")");
