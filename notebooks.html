@@ -249,7 +249,10 @@
     function replaceImages(indicator){
 
     	for (i in globalNotebookContentArray){
-    		replaceURL(globalNotebookContentArray[i].Number)
+            //if there is a link to UWDC, look for a thumbnail image to replace the default placeholder
+            if(globalNotebookContentArray[i].UwdcUrl){
+    		  replaceURL(globalNotebookContentArray[i].Number);
+            }
     	}
 
     	indicator();
