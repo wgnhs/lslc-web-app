@@ -249,7 +249,8 @@ h3 {
 /*++++++++++++ help icons ++++++++++++*/
 
 .helpIcon {
-    width:15px; 
+    width:15px;
+    height: 15px !important;
 }
 .helpIcon:hover{
     
