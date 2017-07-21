@@ -252,6 +252,17 @@
            thinImagesQuery.where(thinSectionPhotosField+"= 1");
            thinImagesQuery.fields(["*"]); 
            
+           //easter egg: using #color at the end of the URL will select only the subset of the thin section images listed below.
+           if(window.location.hash.replace("#", "") == 'color'){
+               console.log("colorful images only.");
+               
+               //array of thin section numbers with colorful images. The gallery will always appear in number order, regardless of the order of numbers in this list. I am keeping this list in numerical order to prevent entering duplicates.
+               var colorfulImages = ["'23'", "'76'", "'144'", "'148'", "'152'", "'170'", "'193'", "'197'",  "'199'", "'200'", "'267'", "'321'", "'406'", "'408'", "'462'", "'463'", "'724'", "'731'", "'750'", "'754'", "'831'", "'836'", "'840'", "'1126'", "'1408'", "'1452'", "'1453'", "'3387'", "'3398'",  "'4207'", "'4259'", "'4419'", "'4810'","'5332'", "'5446'", "'5682'", "'5705'", "'5706'", "'9401'", "'15482'", "'17152'"];
+               
+               //reset the where query to only select thin sections in the list above. 
+               thinImagesQuery.where(thinSectionNumberField+" IN ("+colorfulImages+")");
+           }
+           
            thinImagesQuery.run(function(err, featureCollection, response){
                
                //I think Pete changed the map server so we can get over 15000 results in one query. 
