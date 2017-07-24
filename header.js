@@ -11,10 +11,10 @@ header += "<nav>";
 
 //header+="<a id='navHome' href='index.html' class='navMainLink'>Home</a>";
 
-header+="<div id='navCollection' class='navMainLink dropdownContainer'><h3>Collection</h3><div class='dropdown-content'><a id='navFilter' href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html'>Hand Sample Details</a><a href='notebooks.html'>Field Notebooks</a><a href='thin-sections.html'>Thin Section Gallery</a><a href='downloads.html'>Data Downloads</a></div></div>";
+header+="<div id='navCollection' class='navMainLink dropdownContainer' aria-haspopup='true' tabindex='0'><h3>Collection</h3><div class='dropdown-content'><a id='navFilter' href='interactive-map.html'>Interactive Map</a><a id='navSample' href='hand-sample.html'>Hand Sample Details</a><a href='notebooks.html'>Field Notebooks</a><a href='thin-sections.html'>Thin Section Gallery</a><a href='downloads.html'>Data Downloads</a></div></div>";
 
 
-header+="<div id='navAbout' href='#' class='navMainLink dropdownContainer'><h3>About</h3><div class='dropdown-content'><a href='about-history.html'>Lake Superior Division, 1882–1922</a><a href='about-wgnhs.html'>Digitizing the collection</a><a href='about-collection.html'>Items in the collection</a></div></div>";
+header+="<div id='navAbout' href='#' class='navMainLink dropdownContainer' aria-haspopup='true' tabindex='0'><h3>About</h3><div class='dropdown-content'><a href='about-history.html' tabindex='0'>Lake Superior Division, 1882–1922</a><a href='about-wgnhs.html' tabindex='0'>Digitizing the collection</a><a href='about-collection.html' tabindex='0'>Items in the collection</a></div></div>";
 
 
 header += "<a id='navContact' href='contact.html' class='navMainLink'><h3>Contact</h3></a>";
