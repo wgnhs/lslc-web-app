@@ -3,13 +3,13 @@ var modal = (function(){
     /* Functions for closing the modal */
     window.onclick = function(event) {
         if (event.target == modalBackground) {
-            console.log("clicked modalBackground.");
+
             modal.close();
         }
     }
     /*for the closemodal button*/
      $('#modalBackground').on('click', '#closemodal', function() {
-            console.log("close modal via background.");
+
             modal.close();   
     });
     
@@ -48,7 +48,7 @@ var modal = (function(){
     
     var thinSectionViewer = function (thinSectionNumber, handSampleNumber) {
         console.log("show thin section viewer for ID", thinSectionNumber);
-        modalContent = "<span id='closemodal' class='close'>x</span>"; 
+        modalContent = "<span id='closemodal' class='close' aria-label='close'>x</span>"; 
         
        
         

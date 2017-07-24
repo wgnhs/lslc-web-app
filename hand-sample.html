@@ -101,7 +101,7 @@
         <!--<h2>Hand Sample Details</h2>-->
         <div id="searchArea">
           <!--  <h1>Sample Search</h1>-->
-            <label>Search by hand sample number <div class="tooltip">
+            <label>Search by hand sample number <div class="tooltip" tabindex='0'>
                <img src="images/question_wg.png" class="helpIcon" alt="question mark"/>
                <span class="tooltiptext">You can search for hand samples with numbers between 1 and 82538, although there are gaps in the numbering.</span>
             </div> : </label>
@@ -661,7 +661,7 @@
 
                 fieldNotebookreport +="<div class='divisionEntry'>";
                 fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.fieldNotebookThumbnail+"' alt='notebook cover'/></a>";
-                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p class='inline'>Page "+sampleRecordData.fieldPage+" <div class='tooltip'><img src='images/question_wg.png' class='helpIcon' alt='question mark'/><span class='tooltiptext'>To view this specific page, please follow the link below to UW Digital Collections, then enter this page number in the 'Go to Page' input.</span></div></p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNumber+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p class='inline'>Page "+sampleRecordData.fieldPage+" <div class='tooltip' tabindex='0'><img src='images/question_wg.png' class='helpIcon' alt='question mark'/><span class='tooltiptext'>To view this specific page, please follow the link below to UW Digital Collections, then enter this page number in the 'Go to Page' input.</span></div></p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNumber+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
                 fieldNotebookreport +="</div>";
      
             } else if (sampleRecordData.fieldDesc){
@@ -690,7 +690,7 @@
                     lith += "<a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank><img src='"+sampleRecordData.lithologies[i].lithLedgerThumb+"' alt='lith notebook cover'/></a>"; 
                  
                     //details
-                    lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p class='inline'>Page "+sampleRecordData.lithologies[i].lithPage+"  <div class='tooltip'><img src='images/question_wg.png' class='helpIcon' alt='question mark'/><span class='tooltiptext'>To view this specific page, please follow the link below to UW Digital Collections, then enter this page number in the 'Go to Page' input.</span></div></p>"; 
+                    lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p class='inline'>Page "+sampleRecordData.lithologies[i].lithPage+"  <div class='tooltip' tabindex='0'><img src='images/question_wg.png' class='helpIcon' alt='question mark'/><span class='tooltiptext'>To view this specific page, please follow the link below to UW Digital Collections, then enter this page number in the 'Go to Page' input.</span></div></p>"; 
                
                     
                     lith+= "<p><a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithLedgerTitle+"</a> (ledger #"+sampleRecordData.lithologies[i].lithLedgerId+")</p><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>";
