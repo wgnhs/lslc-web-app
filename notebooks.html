@@ -262,7 +262,7 @@
 
     	$(".divisionEntry").remove();
 
-    	console.log(globalNotebookContentArray)
+    	
 
     	for (i in globalNotebookContentArray){
 
@@ -317,6 +317,7 @@
     }
 
     var notebooksManager = (function(){
+        // A MODULE FOR HANDLING THE NOTEBOOKS DATA 
 
     	var add = function(object){
     		object.coverURL = "images/notebook-icon.jpg";
@@ -372,17 +373,19 @@
     	};
 
     	var filterBySearch = function(searchTextObject){
+            console.log("search: ", searchTextObject);
 
     		for (i in globalNotebookContentArray){
 
     			var showTheNotebook = true;
+                
 
-    			if (!globalNotebookContentArray[i]["Author"].includes(searchTextObject.authorKey) && authorSearchOn){
+    			if (!globalNotebookContentArray[i]["Author"].toUpperCase().includes(searchTextObject.authorKey.toUpperCase()) && authorSearchOn){
     				showTheNotebook = false;
     			};
 
       		if (globalNotebookContentArray[i]["Title"]){
-            if (!globalNotebookContentArray[i]["Title"].includes(searchTextObject.titleKey) && titleSearchOn) {
+            if (!globalNotebookContentArray[i]["Title"].toUpperCase().includes(searchTextObject.titleKey.toUpperCase()) && titleSearchOn) {
       				showTheNotebook = false;
       			};
           } else {
@@ -401,7 +404,8 @@
     		}; 
 
     	};
-
+        
+        //EXPOSED METHODS
     	return {"add":add,
     		"sortByNumber":sortByNumber,
     		"sortByLetter":sortByLetter,
@@ -410,6 +414,7 @@
 
     })();
 
+    //happens once upon page load. 
     async.series([retrieveNotebooks, callSort, buildNotebooksList, replaceImages]);
 
 
