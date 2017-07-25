@@ -69,7 +69,7 @@ h3 {
 }
 
 
-.button:hover{ 
+.button:hover, .button:focus { 
     background-color: #e6e6e6;
     cursor: pointer;
 }
@@ -145,7 +145,7 @@ h3 {
     padding: 2px 0px;
     text-align: center;
 }
-.navMainLink:hover{
+.navMainLink:hover, .navMainLink:focus {
     cursor: pointer;
     background-color: #842d1a;
 }
@@ -179,7 +179,7 @@ h3 {
     display: block;
 }
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #e6e6e6}
+.dropdown-content a:hover, .dropdown-content a:focus {background-color: #e6e6e6}
 
 /* =================== end dropdowns =================== */
 
@@ -252,7 +252,7 @@ h3 {
     width:15px;
     height: 15px !important;
 }
-.helpIcon:hover{
+.helpIcon:hover, .helpIcon:focus{
     
     opacity:0.7;
 }
@@ -315,9 +315,12 @@ h3 {
     margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */; 
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
+/* Show the tooltip text when you mouse over or focus the tooltip container */
 .tooltip:hover .tooltiptext {
     visibility: visible;
+}
+.tooltip:focus .tooltiptext {
+     visibility: visible;
 }
 .tooltip .tooltiptext::after {
     content: " ";
@@ -374,6 +377,7 @@ h3 {
     .dropdown-content {
         position: static; 
         display: block; /* if you want the dropdowns automatically open */
+        box-shadow: none;
        
     }
     #homeLogo {
@@ -391,7 +395,7 @@ h3 {
         vertical-align: middle;
         
     }
-    #expand-menu-icon:hover{
+    #expand-menu-icon:hover, #expand-menu-icon:focus{
         cursor: pointer;
         background-color: #842d1a;
     }
