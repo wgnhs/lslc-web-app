@@ -632,7 +632,15 @@
                 
                     var sectionInfo = individualSection.feature.properties;
                     //build the popup content: 
-                    var popupContent = "Section "+sectionInfo.Section_+" of "+sectionInfo.State+" Township "+sectionInfo.TownNum+sectionInfo.TownDir+", Range "+sectionInfo.RangeNum+sectionInfo.RangeDir; 
+                    var popupContent = "Section "+sectionInfo.Section_+" of "+sectionInfo.State+" Township "+sectionInfo.TownNum;
+                
+                    if (sectionInfo.TownDir){ 
+                        popupContent += sectionInfo.TownDir; 
+                        console.log("direction exists")
+                    };
+                                             
+                    popupContent += ", Range "+sectionInfo.RangeNum+sectionInfo.RangeDir; 
+                                             
                     return popupContent;
                 },                 
                 { //popup options
@@ -648,6 +656,25 @@
             sectionQuery.where(sectionsLayerPlssField+" = "+sampleRecordData.mapSectionId).run(function(error, sec){
                 var section = L.geoJson(sec).addTo(map); 
                 map.fitBounds(section.getBounds().pad(4));
+                section.bindPopup(function(individualSection){
+                   
+                    var sectionInfo = individualSection.feature.properties;
+                    //build the popup content: 
+                    var popupContent = "Section "+sectionInfo.Section_+" of "+sectionInfo.State+" Township "+sectionInfo.TownNum;
+                    
+                    //prevent it from printing "Township 65null"
+                    if (sectionInfo.TownDir){ 
+                        popupContent += sectionInfo.TownDir; 
+                    };
+                                             
+                    popupContent += ", Range "+sectionInfo.RangeNum+sectionInfo.RangeDir; 
+                                             
+                    return popupContent;
+                }, {
+                    //popup options
+                     maxWidth: 100, 
+                    className: 'sectionInfoPopup'
+                }).openPopup();
             }
             ); 
 
