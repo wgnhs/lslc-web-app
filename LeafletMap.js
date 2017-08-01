@@ -29,7 +29,7 @@ var leafletMap = (function(){
             zoomControl: false, //will add zoom control in the top right corner next
             minZoom: 6,
             maxZoom: 11,
-            maxBounds: [[39.0,-110.0],[50.0,-80.0]]
+            maxBounds: [[39.0,-110.0],[52.0,-80.0]]
         }).setView([ 48, -92], 6); //setview actually triggers the on load event. 
 
         
@@ -55,7 +55,7 @@ var leafletMap = (function(){
         }).addTo(map);
         
         var macrostratTiles = L.tileLayer('https://macrostrat.org/api/v2/maps/burwell/emphasized/{z}/{x}/{y}/tile.png');
-        macrostratTiles.setOpacity(0.25);
+        macrostratTiles.setOpacity(0.4);
 
         
         //panes are supposed to control drawing order... but this isn't working yet for me. 
@@ -69,7 +69,7 @@ var leafletMap = (function(){
             
             
         }
-        var overlayOptions={"Bedrock Geology from Macrostrat<br><a href='http://macrostrat.org' target='_blank'>macrostrat.org</a>": macrostratTiles}
+        var overlayOptions={"Bedrock Geology from Macrostrat<br><a href='https://macrostrat.org/map/#6/45.997/-90.505' target='_blank'>macrostrat.org</a>": macrostratTiles}
         
         L.control.layers(null, overlayOptions).addTo(map);
        
