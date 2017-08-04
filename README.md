@@ -15,10 +15,10 @@ The Wisconsin Geological and Natural History survey has received funding to digi
 
 | Item                         | How many? | Digitized representation                                  |   |
 |------------------------------|---|-----------------------------------------------------------|---|
-| field notebooks               | 491 | PDF scans                                                  | ![notebook image](images/tinyThumbnails/notebook02_spread_tiny.jpg)  |
-| hand samples                  | over 9,700 | metadata records                                                          |   |
-| thin sections (microscope slides)                | over 26,000 | high-resolution photos in plane-polarized and cross-polarized light|  ![thin section image](images/tinyThumbnails/thinSec23_tiny.jpg) |
-| books of lithological descriptions | 6 | PDF scans                                                 | ![lith book image](images/tinyThumbnails/lithbookVI_spread_tiny.jpg)  |  |
+| field notebooks               | 321 scanned | PDF scans                                                  | ![notebook image](images/tinyThumbnails/notebook02_spread_tiny.jpg)  |
+| hand samples                  | over 30,000 records digitized | metadata records                                                          |   |
+| thin sections (microscope slides)                | 15,608 photographed | high-resolution photos in plane-polarized and cross-polarized light|  ![thin section image](images/tinyThumbnails/thinSec23_tiny.jpg) |
+| books of lithological descriptions | 6 scanned | PDF scans                                                 | ![lith book image](images/tinyThumbnails/lithbookVI_spread_tiny.jpg)  |  |
 
 
 
