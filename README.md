@@ -2,7 +2,7 @@
 Web Application for viewing the WGNHS Lake Superior Legacy Collection
 This website is now live at http://data.wgnhs.uwex.edu/lake-superior-legacy/. The goal of the interface is to provide a way for users to search, view, and download our Lake Superior Legacy Collection data, including photos of rock samples and their associated field notes, microscope slides, and descriptions.  
 
-We occasionally make small improvements to the website. 
+The webpage has been publically available since August 2017, and we occasionally make small improvements to the website. 
 
 ### Origins of the collection 
 This collection of geologic samples originates with geologists studying the Lake Superior region from the 1880s through the first two decades of the 1900s. These geologists embarked on field expeditions, where they collected **hand samples**, or pieces of rock that could be held in the palm of a hand, and recorded their observations in **field notebooks**. The hand samples were brought back to Madison, where some were cut and ground to create one or more **thin sections**, or thin slices of rock which allow light to pass through. These thin sections were viewed under a microscope in both plane-polarized and cross-polarized light. Geologists then wrote **lithological descriptions** of some of the thin sections based on their observations using a microscope. 
