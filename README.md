@@ -23,4 +23,4 @@ The Wisconsin Geological and Natural History survey has received funding to digi
 
 
 ### Visualized
-This web interface is currently under construction. The goal of the interface is to provide a way for users to search, view, and download our Lake Superior Legacy Collection data, including photos of rock samples and their associated field notes, microscope slides, and descriptions. 
+This web interface is now live at http://data.wgnhs.uwex.edu/lake-superior-legacy/. The goal of the interface is to provide a way for users to search, view, and download our Lake Superior Legacy Collection data, including photos of rock samples and their associated field notes, microscope slides, and descriptions. 
