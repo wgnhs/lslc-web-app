@@ -266,11 +266,12 @@ h3 {
 }
 
 .lslcTable thead td{
-    background-color: #999;
-    color: white;
+    background-color: #c1c1c1;
+    color: black;
     border-left: solid 1px white;
     border-right: solid 1px white;
     vertical-align: bottom;
+    padding-bottom: 4px;
 }
 
 .lslcTable tr{
