@@ -219,20 +219,33 @@
             "sampleNotes":""
             
         */}; 
-        
-   
+       
+       
+       //take in the URL hash string and extract just the part after the # but before a ?
+       function extractIdFromHash(str){
+           console.log("extract the id from ", str);
+           
+           //first, strip the first # by replacing it with an empty string. 
+           var nohash = str.replace("#", "");  
+           
+           //then split the string into two parts at the first question mark and return the first part.
+           var identifier = nohash.split('?')[0]; 
+           
+           return identifier
+       }
+              
            
         //this only happens once, on window load. 
         //reset the input value to match the hash.
-        $("#sampleSearch").val(window.location.hash.replace("#", ""));
-        resetSampleNumber(window.location.hash.replace("#", ""));
+        $("#sampleSearch").val(extractIdFromHash(window.location.hash));
+        resetSampleNumber(extractIdFromHash(window.location.hash));
         
         
        //listener for hash changes 
         $(window).on('hashchange',function(){
             //reset the search input value to match the hash 
-            $("#sampleSearch").val(window.location.hash.replace("#", ""));
-            resetSampleNumber(window.location.hash.replace("#", ""));
+            $("#sampleSearch").val(extractIdFromHash(window.location.hash));
+            resetSampleNumber(extractIdFromHash(window.location.hash));
         });
         
       
