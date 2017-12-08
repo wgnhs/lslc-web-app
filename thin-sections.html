@@ -258,7 +258,18 @@
             }
         })(); //end thinSectionManager
         
-        
+        //take in the URL hash string and extract just the part after the # but before a ?
+       function extractIdFromHash(str){
+           console.log("extract the id from ", str);
+           
+           //first, strip the first # by replacing it with an empty string. 
+           var nohash = str.replace("#", "");  
+           
+           //then split the string into two parts at the first question mark and return the first part.
+           var identifier = nohash.split('?')[0]; 
+           
+           return identifier
+       }
     
        function retrieveThinSections(callback){
            //this should happen once upon page load. 
@@ -268,7 +279,7 @@
            thinImagesQuery.fields(["*"]); 
            
            //easter egg: using #color at the end of the URL will select only the subset of the thin section images listed below.
-           if(window.location.hash.replace("#", "") == 'color'){
+           if(extractIdFromHash(window.location.hash) == 'color'){
                console.log("colorful images only.");
                //add a note in the title of the page
                $("#galleryTitle").append("<strong class='colortext'> #color</strong>");
