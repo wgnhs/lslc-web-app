@@ -198,7 +198,8 @@ h3 {
 }
 .reportDivision h3 {
     /* these also have the colorBar class, which adds the background color, color, and left padding*/
-    width: 100%;
+
+    display: block; /* makes these 100% width, without allowing padding to push them wider than their division.*/
    
 }
 .colorBar {
