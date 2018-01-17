@@ -60,12 +60,18 @@ h3 {
 }
 #wrapper{
     width: 90%;
+    
     margin-left: auto; /* center */
     margin-right: auto; /* center */
  
     background-color: white;
     
     clear: both;
+}
+.limited-width {
+/* a class applied to #wrapper when I want it to have a limited width, like a blog layout */
+/*  add   class="limited-width" */
+    max-width: 950px;
 }
 
 
@@ -190,16 +196,12 @@ h3 {
 .reportDivision{
     padding-top: 20px;
 }
-.reportDivision h3 {
-    /* these also have the colorBar class, which adds the background color, color, and left padding*/
-    width: 100%;
-   
-}
+
 .colorBar {
     background-color: #bcbcbc;
     color: black;
     padding-left: 5px;
-
+    display: block;
 }
 
 .reportDivision img{
@@ -353,7 +355,7 @@ h3 {
 
 @media only screen and (max-width : 650px) {
     #wrapper{
-        width:100%;
+        width:96%;
     }
     .modal-content{
        /* width: 85%;*/
