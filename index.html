@@ -183,23 +183,28 @@
             }
            
     /* four square links to the collection pages */
-           .collectionLinksCont{
+           .collectionLinksContainer{
                display: flex;
-               flex-wrap: wrap;
                justify-content: space-between;
-/*               border: 1px dashed green;*/
+
            }
            .collectionLink {
-               width: calc(20vw);
                position: relative;
-               min-width: 150px; /* just wide enough for "Thin Section Gallery" to stay on one line */
-               max-width: 225px;
-               display: inline-block;
-/*               margin: calc(0.5vw);*/
-               border: 1px solid #e6e6e6;
+               width: calc(20vw);          
+               margin-right: 7px; /* never let them squish closer than 7px. Rule below removes this for the last link. */
                
+               /* just wide enough for "Thin Section Gallery" to stay on one line */
+               min-width: 150px; 
+               max-width: 224px; /* keeps the links from outgrowing the 950px wide wrapper */
+
+               border: 1px solid #e6e6e6;         
    
            }
+           .lastLink {
+                /* take away the margin-right for the last link */
+               margin-right: 0 !important;
+           }
+           
            /* makes the collection link divs stay square */
            .collectionLink:before {
                 content: "";
@@ -235,6 +240,17 @@
            }
            
            /* for narrow-width layout */
+            @media only screen and (max-width : 700px) { /* swap to two rows of two links */
+                .collectionLink {
+                    width: calc(45vw);
+                    margin: 10px 0 0 0; /* set a top margin and take away the margin-right */
+                }
+                .collectionLinksContainer{
+                    flex-wrap: wrap;
+                    justify-content: space-evenly;
+                }
+           }
+           
             @media only screen and (max-width : 650px) {
                /* when the header goes to one-column: */
                /* make the image appear below the header, not overlapping with it. */
@@ -342,27 +358,27 @@
                        <li>67 maps</li>
                    </ul>
                </div>
-               <div class="collectionLinksCont"> 
+               <div class="collectionLinksContainer"> 
                    <!--   four links to pages featuring the collection     -->
                    
                    <!-- inline block divs make the square links stack into 2 x 2 grid instead of flowing to rows of 3 and 1 as the page width shrinks. -->
 <!--                  <div class="inline-block" style="border: 1px dashed blue">  -->
-                       <a href="interactive-map.html"><div class="collectionLink inline-block hover-expand">
+                       <a href="interactive-map.html"><div class="collectionLink hover-expand">
                            <img src="images/map-thumb.png" alt="thumbnail of map" />
                            <div class="collectionLinkText colorBar">Interactive Map</div>
                        </div></a>
-                       <a href="hand-sample.html"><div class="collectionLink inline-block hover-expand">
+                       <a href="hand-sample.html"><div class="collectionLink hover-expand">
                            <img src="images/hand-samples-thumb.jpg" alt="hand samples" />
                            <div class="collectionLinkText colorBar">Hand Sample Details</div>
                        </div></a>
 <!--                   </div>-->
 <!--                   <div class="inline-block" style="border: 1px dashed blue">-->
-                       <a href="notebooks.html"><div class="collectionLink inline-block hover-expand">
+                       <a href="notebooks.html"><div class="collectionLink hover-expand">
                            <img src="images/notebook-square-thumb.jpg" alt="notebook cover" />
                            <div class="collectionLinkText colorBar">Field Notebooks</div>
                        </div></a>
                    
-                       <a href="thin-sections.html"><div class="collectionLink inline-block hover-expand">
+                       <a href="thin-sections.html"><div class="collectionLink hover-expand lastLink">
                            <img src="images/thin-section-4207-thumb.png" alt="thin section photo" />
                            <div class="collectionLinkText colorBar">Thin Section Gallery</div>
                        </div></a>
