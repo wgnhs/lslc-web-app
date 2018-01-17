@@ -178,17 +178,33 @@
                cursor: pointer;
            }
            
+            .hover-expand:hover {
+               transform: scale(1.03);
+            }
+           
     /* four square links to the collection pages */
+           .collectionLinksContainer{
+               display: flex;
+               justify-content: space-between;
+
+           }
            .collectionLink {
-               width: calc(20vw);
                position: relative;
-               min-width: 150px; /* just wide enough for "Thin Section Gallery" to stay on one line */
-               max-width: 300px;
-               display: inline-block;
-               margin: calc(0.5vw);
-               border: 1px solid #e6e6e6;
+               width: calc(20vw);          
+               margin-right: 7px; /* never let them squish closer than 7px. Rule below removes this for the last link. */
+               
+               /* just wide enough for "Thin Section Gallery" to stay on one line */
+               min-width: 150px; 
+               max-width: 224px; /* keeps the links from outgrowing the 950px wide wrapper */
+
+               border: 1px solid #e6e6e6;         
    
            }
+           .lastLink {
+                /* take away the margin-right for the last link */
+               margin-right: 0 !important;
+           }
+           
            /* makes the collection link divs stay square */
            .collectionLink:before {
                 content: "";
@@ -224,6 +240,17 @@
            }
            
            /* for narrow-width layout */
+            @media only screen and (max-width : 700px) { /* swap to two rows of two links */
+                .collectionLink {
+                    width: calc(45vw);
+                    margin: 10px 0 0 0; /* set a top margin and take away the margin-right */
+                }
+                .collectionLinksContainer{
+                    flex-wrap: wrap;
+                    justify-content: space-evenly;
+                }
+           }
+           
             @media only screen and (max-width : 650px) {
                /* when the header goes to one-column: */
                /* make the image appear below the header, not overlapping with it. */
@@ -250,7 +277,7 @@
                         <div class="captionContainer">
                            
                             <p class="caption">Digitizing geologic research from the Lake Superior Division of the USGS, 1882-1922 </p>
-                            <a class=sliderButton href="interactive-map.html">View the interactive map of geologic samples</a>
+                            <a class="sliderButton hover-expand" href="interactive-map.html">View the interactive map of geologic samples</a>
                            
                       </div>    
                   </div>
@@ -262,7 +289,7 @@
                         <div class="captionContainer">
 
                             <p class="caption"><span class="italic">The Mesabi Iron-Bearing District of Minnesota</span> and more than a dozen other treatises were published by the Lake Superior Division from 1883 to 1935. </p> 
-                            <a class="sliderButton" href="about-history.html">About the Lake Superior Division of the USGS</a>
+                            <a class="sliderButton hover-expand" href="about-history.html">About the Lake Superior Division of the USGS</a>
 
                       </div>
                   </div>
@@ -275,7 +302,7 @@
                         <div class="captionContainer">
 
                             <p class="caption"><span class="italic">"Going westward on Knife Lake probably means going with the strike of the quartzite and slate beds..."</span> -- W.M. Chauvenet, 1883 (field notebook #7)</p>
-                            <a class="sliderButton" href="notebooks.html">List of field notebooks</a>
+                            <a class="sliderButton hover-expand" href="notebooks.html">List of field notebooks</a>
 
                       </div>
                       
@@ -288,7 +315,7 @@
                         <div class="captionContainer">
 
                             <p class="caption">Pioneering work in microscopic petrography </p>
-                            <a class="sliderButton" href="thin-sections.html" >Thin Section Gallery</a>
+                            <a class="sliderButton hover-expand" href="thin-sections.html" >Thin Section Gallery</a>
 
                       </div>
                   </div>
@@ -301,7 +328,7 @@
                         <div class="captionContainer">
 
                             <p class="caption"><span class="italic" >"Never a moment out of sight of these massive ledges of coarse gabbro. The whole of these lakes are held and formed by this great formation, layer upon layer of great thickness. The whole country is burnt and the shoulders of bare rock rise on all sides."</span> -- W.M. Chauvenet, 1883 (in the vicinity of the Gunflint Trail, Minnesota) </p>
-                            <a class="sliderButton" href="notebooks.html">Field notebooks</a>
+                            <a class="sliderButton hover-expand" href="notebooks.html">Field notebooks</a>
                             
 
                       </div>
@@ -312,7 +339,7 @@
        </div>
        
        
-   <div id="wrapper">
+   <div id="wrapper" class="limited-width">
        
       <!-- <p>The Lake Superior Legacy Collection documents geological research on the Lake Superior area performed by USGS between 1882 and 1922.</p> -->
 
@@ -331,26 +358,27 @@
                        <li>67 maps</li>
                    </ul>
                </div>
-               <div> 
+               <div class="collectionLinksContainer"> 
                    <!--   four links to pages featuring the collection     -->
                    
-                   <div class="inline-block"> <!-- inline block divs make the square links stack into 2 x 2 grid instead of flowing to rows of 3 and 1 as the page width shrinks. -->
-                       <a href="interactive-map.html"><div class="collectionLink inline-block">
+                   <!-- inline block divs make the square links stack into 2 x 2 grid instead of flowing to rows of 3 and 1 as the page width shrinks. -->
+<!--                  <div class="inline-block" style="border: 1px dashed blue">  -->
+                       <a href="interactive-map.html"><div class="collectionLink hover-expand">
                            <img src="images/map-thumb.png" alt="thumbnail of map" />
                            <div class="collectionLinkText colorBar">Interactive Map</div>
                        </div></a>
-                       <a href="hand-sample.html"><div class="collectionLink inline-block">
+                       <a href="hand-sample.html"><div class="collectionLink hover-expand">
                            <img src="images/hand-samples-thumb.jpg" alt="hand samples" />
                            <div class="collectionLinkText colorBar">Hand Sample Details</div>
                        </div></a>
-                   </div>
-                   <div class="inline-block">
-                       <a href="notebooks.html"><div class="collectionLink inline-block">
+<!--                   </div>-->
+<!--                   <div class="inline-block" style="border: 1px dashed blue">-->
+                       <a href="notebooks.html"><div class="collectionLink hover-expand">
                            <img src="images/notebook-square-thumb.jpg" alt="notebook cover" />
                            <div class="collectionLinkText colorBar">Field Notebooks</div>
                        </div></a>
                    
-                       <a href="thin-sections.html"><div class="collectionLink inline-block">
+                       <a href="thin-sections.html"><div class="collectionLink hover-expand lastLink">
                            <img src="images/thin-section-4207-thumb.png" alt="thin section photo" />
                            <div class="collectionLinkText colorBar">Thin Section Gallery</div>
                        </div></a>
@@ -358,7 +386,7 @@
                            <img src="images/er-diagram.png" alt="diagram of the database tables" />
                            <div class="collectionLinkText colorBar">Data Downloads</div>
                        </div></a>-->
-                   </div>
+<!--                   </div>-->
                
                
                </div>
