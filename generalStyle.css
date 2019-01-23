@@ -298,7 +298,7 @@ h3 {
     border-left: solid 1px white;
     border-right: solid 1px white;
     vertical-align: bottom;
-    padding-bottom: 4px;
+   
 }
 
 .lslcTable tr{
@@ -307,11 +307,7 @@ h3 {
     background-color: #e6e6e6;
 }
 .lslcTable td {
-    padding: 3px; 
-}
-
-.lslcTable td{
-    padding: 3px 10px 1px 3px;
+    padding: 10px; 
 }
 
 
