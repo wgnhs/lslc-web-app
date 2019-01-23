@@ -85,6 +85,13 @@ h3 {
 /* a class applied to #wrapper when I want it to have a limited width, like a blog layout */
 /*  add   class="limited-width" */
     max-width: 950px;
+    
+}
+
+.wrapper-shadow{
+     /* styles for wrapper drop shadow */
+    box-shadow: 0px 4px 4px 0px #888; 
+}
 }
 
 
