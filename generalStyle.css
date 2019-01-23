@@ -91,6 +91,17 @@ h3 {
 .wrapper-shadow{
      /* styles for wrapper drop shadow */
     box-shadow: 0px 4px 4px 0px #888; 
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.wrapper-shadow .colorBar, #navContainer, #notebookFilters {
+    /* any h3 colorbar title and as well as the nav container on the thin section gallery and the notebook filters on the notebooks page */ 
+    /* margin will un-do the padding on the wrapper. internal padding will align the text within these elements with the other padded elements. */
+    margin-right: -15px;
+    margin-left: -15px;
+    padding-left: 15px; 
+    padding-right: 15px;
 }
 
 
