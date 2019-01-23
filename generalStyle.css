@@ -58,6 +58,16 @@ h3 {
     display: inline-block;
     margin: 0;
 }
+
+.colorBar {
+    background-color: #bcbcbc;
+    /*border-bottom: 1px solid #bcbcbc;*/
+    color: black;
+    padding-left: 5px;
+    display: block;
+    margin-bottom: 5px;
+}
+
 #wrapper{
     width: 90%;
     
@@ -68,6 +78,9 @@ h3 {
     
     clear: both;
 }
+
+
+
 .limited-width {
 /* a class applied to #wrapper when I want it to have a limited width, like a blog layout */
 /*  add   class="limited-width" */
@@ -198,14 +211,6 @@ h3 {
     padding-bottom: 30px;
 }
 
-.colorBar {
-    background-color: #bcbcbc;
-    /*border-bottom: 1px solid #bcbcbc;*/
-    color: black;
-    padding-left: 5px;
-    display: block;
-    margin-bottom: 5px;
-}
 
 .reportDivision img{
    
