@@ -28,9 +28,9 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
     
        <!-- Unslider -->
-            <script src="https://unpkg.com/unslider@2.0.3"></script>
-            <link rel="stylesheet" href="https://unpkg.com/unslider@2.0.3/dist/css/unslider.css">
-            <link rel="stylesheet" href="https://unpkg.com/unslider@2.0.3/dist/css/unslider-dots.css">
+            <script src="https://unpkg.com/unslider@2.0.3/src/js/unslider.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/unslider/2.0.3/css/unslider.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/unslider/2.0.3/css/unslider-dots.css">
        
        <!-- local stylesheets -->
            <LINK href="generalStyle.css" rel='stylesheet'/>
@@ -78,7 +78,7 @@
            
             /* Style the dots*/
             .unslider-nav { 
-               /* position the navigation dots over the slides */
+               /* position the navigation dots */
                position: absolute;
                left: 0;
                right: 0;
@@ -219,12 +219,14 @@
                width: 100%;
                height: auto; /*overrides the .reportDivision img rule for 200px height */
                opacity: 0.8;
+               box-shadow: 3px 3px 11px 0 #888;
            }
            .collectionLink img:hover {
                opacity: 1;
            }
             .collectionLinkText {
-                /* these also have the colorBar class, which gives them background color and padding-left. */
+                background-color: #bcbcbc;
+                color: #000;
                 position: absolute;
                 top: 0; right: 0; left: 0;
                 padding: 3px;  /* these need padding top, bottom, and left. */
@@ -340,7 +342,7 @@
        </div>
        
        
-   <div id="wrapper" class="limited-width">
+   <div id="wrapper" class="limited-width wrapper-shadow">
        
       <!-- <p>The Lake Superior Legacy Collection documents geological research on the Lake Superior area performed by USGS between 1882 and 1922.</p> -->
 
@@ -368,26 +370,26 @@
 <!--                  <div class="inline-block" style="border: 1px dashed blue">  -->
                        <a href="interactive-map.html"><div class="collectionLink hover-expand">
                            <img src="images/map-thumb.png" alt="thumbnail of map" />
-                           <div class="collectionLinkText colorBar">Interactive Map</div>
+                           <div class="collectionLinkText">Interactive Map</div>
                        </div></a>
                        <a href="hand-sample.html"><div class="collectionLink hover-expand">
                            <img src="images/hand-samples-thumb.jpg" alt="hand samples" />
-                           <div class="collectionLinkText colorBar">Hand Sample Details</div>
+                           <div class="collectionLinkText">Hand Sample Details</div>
                        </div></a>
 <!--                   </div>-->
 <!--                   <div class="inline-block" style="border: 1px dashed blue">-->
                        <a href="notebooks.html"><div class="collectionLink hover-expand">
                            <img src="images/notebook-square-thumb.jpg" alt="notebook cover" />
-                           <div class="collectionLinkText colorBar">Field Notebooks</div>
+                           <div class="collectionLinkText">Field Notebooks</div>
                        </div></a>
                    
                        <a href="thin-sections.html"><div class="collectionLink hover-expand lastLink">
                            <img src="images/thin-section-4207-thumb.png" alt="thin section photo" />
-                           <div class="collectionLinkText colorBar">Thin Section Gallery</div>
+                           <div class="collectionLinkText">Thin Section Gallery</div>
                        </div></a>
                        <!--<a href="downloads.html"><div class="collectionLink inline-block">
                            <img src="images/er-diagram.png" alt="diagram of the database tables" />
-                           <div class="collectionLinkText colorBar">Data Downloads</div>
+                           <div class="collectionLinkText">Data Downloads</div>
                        </div></a>-->
 <!--                   </div>-->
                
