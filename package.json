@@ -10,7 +10,8 @@
     "build:prepare": "mkdirp dist",
     "build:copy-resources": "cpy favicon.ico *.html *.css *.js images/ lib/ downloads/ dist/ --parents",
     "develop": "run-s develop:serve",
-    "develop:serve": "live-server --wait=500"
+    "develop:serve": "live-server --wait=500",
+    "start": "run-s develop"
   },
   "author": "",
   "devDependencies": {
