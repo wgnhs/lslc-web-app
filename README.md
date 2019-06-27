@@ -1,6 +1,6 @@
 # LSLC-Web-App
 Web Application for viewing the WGNHS Lake Superior Legacy Collection
-This website is now live at http://data.wgnhs.uwex.edu/lake-superior-legacy/. The goal of the interface is to provide a way for users to search, view, and download our Lake Superior Legacy Collection data, including photos of rock samples and their associated field notes, microscope slides, and descriptions.  
+This website is now live at http://data.wgnhs.wisc.edu/lake-superior-legacy/. The goal of the interface is to provide a way for users to search, view, and download our Lake Superior Legacy Collection data, including photos of rock samples and their associated field notes, microscope slides, and descriptions.  
 
 The website has been publically available since August 2017, and we occasionally make small improvements. 
 
