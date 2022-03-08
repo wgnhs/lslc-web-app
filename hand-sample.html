@@ -426,10 +426,10 @@
                         thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
                         thinDetails.photoAvailability = thinSectionsResponse.features[i].attributes.Photos;
                         if(thinSectionsResponse.features[i].attributes.Photos > 0){
-                            thinDetails.thinImgppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl.jpg';
-                            thinDetails.thinImgxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl.jpg';
-                            thinDetails.thinThumbppl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl_thumb.jpg';
-                            thinDetails.thinThumbxpl = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl_thumb.jpg';
+                            thinDetails.thinImgppl = 'https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl.jpg';
+                            thinDetails.thinImgxpl = 'https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl.jpg';
+                            thinDetails.thinThumbppl = 'https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl_thumb.jpg';
+                            thinDetails.thinThumbxpl = 'https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl_thumb.jpg';
                         }
 
                         sampleRecordData.thinSections.push(thinDetails);
@@ -464,7 +464,7 @@
                         lithDetails.lithLedgerUrl = lithResponse.features[i].attributes.UwdcUrl;
                         lithDetails.lithDate = lithResponse.features[i].attributes.Year;
                         lithDetails.lithAuthor = lithResponse.features[i].attributes.Author;
-                        lithDetails.lithLedgerThumb = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/lithBook"+lithResponse.features[i].attributes.BookId+"_cover_thumb.jpg";
+                        lithDetails.lithLedgerThumb = "https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/notebook-thumbs/lithBook"+lithResponse.features[i].attributes.BookId+"_cover_thumb.jpg";
                         sampleRecordData.lithologies.push(lithDetails);
   
                    } //end for
@@ -481,7 +481,7 @@
      
        function retrieveFieldNotebookThumbnail(notebookNumber){
            return new Promise(function(resolve, reject){
-                var thumbURL = "https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookNumber+"_cover_thumb.jpg"; 
+                var thumbURL = "https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookNumber+"_cover_thumb.jpg"; 
             
             
                
