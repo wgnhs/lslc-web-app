@@ -24,6 +24,6 @@ header+="</nav></div>"; //close nav and navWrapper
 $("#header").append(header);
 
 
-var footer = "<p> Lake Superior Legacy Collection <br/> <a href='http://wgnhs.uwex.edu' target='_blank'>Wisconsin Geological and Natural History Survey</a> <br/><a href='http://uwex.edu' target='_blank'>University of Wisconsin-Extension<br><img id='extensionLogo' src='images/uwex-logo-black.png' alt='University of Wisconsin- Extension logo'></a></p>";
+var footer = "<p> Lake Superior Legacy Collection <br/> <a href='http://wgnhs.wisc.edu' target='_blank'>Wisconsin Geological and Natural History Survey</a> <br/><a href='http://uwex.edu' target='_blank'>University of Wisconsin-Extension<br><img id='extensionLogo' src='images/uwex-logo-black.png' alt='University of Wisconsin- Extension logo'></a></p>";
 
 $("#footer").append(footer);
