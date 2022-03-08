@@ -26,7 +26,7 @@ var modal = (function(){
                 //.setView(new L.LatLng(0,0), 0);
             var sectionNum = id;
          
-            var urlRoot = 'https://geodata.wgnhs.uwex.edu/lake-superior-legacy/assets/thin-section-images/';
+            var urlRoot = 'https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/thin-section-images/';
             var photoWidth = 2700;
             var photoHeight = 1800;
             var bounds = [[0,0], [4000,6000]];
