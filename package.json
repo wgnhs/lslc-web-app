@@ -13,7 +13,7 @@
     "develop:serve": "live-server --wait=500",
     "start": "run-s develop",
     "pages": "run-s build pages:ghpages",
-    "pages:ghpages": "deploy-prod -d dist"
+    "pages:ghpages": "gh-pages -b deploy-prod -d dist"
   },
   "author": "",
   "devDependencies": {
