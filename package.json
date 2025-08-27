@@ -11,7 +11,9 @@
     "build:copy-resources": "cpy favicon.ico *.html *.css *.js images/ lib/ downloads/ dist/ --parents",
     "develop": "run-s develop:serve",
     "develop:serve": "live-server --wait=500",
-    "start": "run-s develop"
+    "start": "run-s develop",
+    "pages": "run-s build pages:ghpages",
+    "pages:ghpages": "deploy-prod -d dist"
   },
   "author": "",
   "devDependencies": {
