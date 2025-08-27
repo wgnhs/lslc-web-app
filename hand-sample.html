@@ -1,0 +1,804 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML lang="en">
+   <HEAD>
+      <TITLE>LSLC Hand Sample</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+
+       
+       <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+       
+       <!-- Load Esri Leaflet from CDN -->
+            <script type="text/javascript" src="lib/esri-leaflet.js"></script>
+       
+              
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+       
+        <!-- Promises polyfill -->
+           <!-- source: https://www.npmjs.com/package/promise-polyfill -->
+            <script src="lib/promise-6.0.2.min.js"></script>
+       
+       
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="modalStyle.css" rel='stylesheet'/>
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+       <!-- Google analytics: place in the head tag after other script links -->
+       <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-50757423-2', 'auto');
+          ga('send', 'pageview');
+
+       </script>
+       
+       <style>
+           
+            #searchArea{
+               /* aligns better with other pages if not centered. */
+                padding: 20px 0px 5px 0;
+            }
+           input {
+               text-align: center;
+           }
+
+            #sampleRecord .thinSectionContainer{
+                display: inline-block;
+                margin-right: 10px;
+                padding: 5px;
+            }
+
+            #sampleRecord .thinSectionPhotoPair:hover {
+                cursor: pointer;
+                background-color: #e6e6e6;
+            }
+
+            .thinSectionContainer img {
+                padding-right: 3px;
+                height: 140px;
+            }
+           #location #map{
+               width: 300px; 
+               height: 200px;
+               position: relative;
+           }
+           
+           /* if we are already on a sample page, don't show the sample link. */
+            #sampleLink {
+                display: none;
+            }
+
+       </style>
+       
+   </HEAD>
+   <BODY>
+       <div id="modalBackground" class="modalBackground">
+           <div id="modal-content"></div>
+       </div>   
+       
+    <div id="header"></div>
+    <div id="wrapper" class="limited-width wrapper-shadow">
+        
+        <!--<h2>Hand Sample Details</h2>-->
+        <div id="searchArea">
+          <!--  <h1>Sample Search</h1>-->
+            <label>
+                Search by hand sample number <div class="tooltip" tabindex='0'>
+               <img src="images/question_wg.png" class="helpIcon" alt="question mark"/>
+               <span class="tooltiptext">You can search for hand samples with numbers between 1 and 82538, although there are gaps in the numbering.</span>
+                </div> : 
+            
+                <input type="search" id="sampleSearch"/>
+            </label>
+            <button id="searchGo">Go</button>
+             
+            <span>or visit our </span><a href="interactive-map.html" target="_blank">interactive map</a> <span>page to view and filter the complete list of hand samples.</span>
+            
+       </div>
+        
+        
+        <div id="sampleRecord"></div>
+        
+        <!-- add a project footer... -->
+        <div id='footer'></div>
+
+   
+    </div><!--end wrapper div-->    
+     
+   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
+   <script src="header.js"></script>
+   
+       
+   <!-- javascript links -->
+   <script src="mapServiceUrls.js"></script>
+   <script src="recordDataManager.js"></script>
+   <script src="modal.js"></script>
+       
+   <!-- INLINE JS -->   
+   <script type="text/javascript">
+        
+        
+        var delay = (function(){
+          var timer = 0;
+          return function(callback, ms){
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+          };
+        })();
+    
+        
+        //The parts of the record webpage are referred to as 'divisions' in this code. 
+        //The buildReport function will iterate through this array.
+        //this creates the skeleton of the webpage.
+        //unclear whether an attributes list for each division here would be useful for anything, They are not in use right now. 
+        var reportDivisions = [
+          /*   {"divisionTitle":"", "divisionId":"sampleNumber"},*/
+           // {"divisionTitle":"Hand Samples", "divisionId":"handSamples"}, 
+            {"divisionTitle":"Thin Sections", "divisionId":"thinSections"}, 
+            {"divisionTitle":"Location", "divisionId":"location"}, 
+            {"divisionTitle":"Field Notes", "divisionId":"fieldNotes"}, 
+            {"divisionTitle":"Lithological Descriptions","divisionId":"lithDesc"}, 
+            {"divisionTitle":"Sample Notes","divisionId":"sampleNotes"},
+          //  {"divisionTitle":"Available Samples", "divisionId":"availableSamples"}, 
+            {"divisionTitle":"All Sample Data", "divisionId":"allData"}
+        ]; 
+       
+       var aliases = {
+           "locationNote": "Location Note", 
+           "state": "State", 
+           "township": "Township", 
+           "range": "Range", 
+           "PLSSSectionNum": "PLSS section number", 
+           "quarterSection": "Quarter section", 
+           "quarterQuarterSection": "Quarter-quarter section", 
+           
+           
+           
+       }
+        
+        //this object will hold all of the data for the record.
+        //this data must be drawn from several different tables. 
+        var sampleRecordData = 
+            //an empty object. comments here show the parts that may be added after queries. 
+            {/*
+            "sampleId":"00",
+            
+            "thinSectionCount":1, 
+            "thinSections": [], 
+            
+            "mapSectionId": null,
+            "location" : {
+                "state": null,
+                "township":null,
+                "range":null,
+                "PLSSSectionNum": null,
+                "quarterSection": null,
+                "quarterQuarterSection": null,
+                "locationNote": null 
+            },
+            
+            "fieldDesc":"unknown",
+            "fieldNotebookNumber":"none",
+            "fieldPage": "N/A",
+            "fieldNotebookTitle": "N/A",
+            "fieldNotebookThumb":"images/notebook-icon.jpg",
+            "fieldNotebookUrl":"http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=article&did=EcoNatRes.VHBook035.i0001&id=EcoNatRes.VHBook035&isize=M", 
+            "fieldAuthor":null,
+            "fieldDate": null,
+            
+            lithologies:[{
+                "lithLedgerId": "none",
+                "lithPage": null,
+                
+                "lithLedgerTitle": null,
+                "lithDate": null, 
+                "lithAuthor":null,
+                "lithLedgerUrl": "http://digicoll.library.wisc.edu/cgi-bin/EcoNatRes/EcoNatRes-idx?type=header&id=EcoNatRes.LithDescV&isize=M",
+                "lithLedgerThumb":"images/notebook-icon.jpg"
+                }],
+            "WGNHSId": null,
+            "sampleNotes":""
+            
+        */}; 
+       
+       
+       //take in the URL hash string and extract just the part after the # but before a ?
+       function extractIdFromHash(str){
+          // console.log("extract the id from ", str);
+           
+           //first, strip the first # by replacing it with an empty string. 
+           var nohash = str.replace("#", "");  
+           
+           //then split the string into two parts at the first question mark and return the first part.
+           var identifier = nohash.split('?')[0]; 
+           
+           return identifier
+       }
+              
+           
+        //this only happens once, on window load. 
+        //reset the input value to match the hash.
+        $("#sampleSearch").val(extractIdFromHash(window.location.hash));
+        resetSampleNumber(extractIdFromHash(window.location.hash));
+        
+        
+       //listener for hash changes 
+        $(window).on('hashchange',function(){
+            //reset the search input value to match the hash 
+            $("#sampleSearch").val(extractIdFromHash(window.location.hash));
+            resetSampleNumber(extractIdFromHash(window.location.hash));
+        });
+        
+      
+        //listener for go button; resets the hash, which triggers a hash change. 
+        $("#searchGo").on('click', function(){
+            
+            //reset the url hash
+            window.location.hash = "#"+$("#sampleSearch").val();
+        });
+        //listener for the 'enter' key (key 13) in the search input: 
+        $("#sampleSearch").on('keyup', function(e){if(e.keyCode ===13){window.location.hash = "#"+$("#sampleSearch").val();}});
+        
+        function resetSampleNumber(number){
+           
+            // regex for numbers only --> /^\+?\d+$/
+            // regex for letters or numbers --> /[a-zA-Z0-9]+/
+            if (/[a-zA-Z0-9]+/.test(number)){
+                //accept numbers 0-9 and letters in both caps and lowercase
+                console.log("valid number ", number);
+
+                  searchSample(number);
+                
+            } else {
+                console.log("the number "+number+" is false."); 
+                    
+                /*only display the search section of the page.*/ 
+                $("#sampleRecord").html(''); 
+                
+                if (number){
+                  
+                    $("#sampleRecord").append("'"+number+"' is not a valid sample number.");
+                }
+
+            } //end else
+        } //end function resetSampleNumber
+        
+
+        function searchSample(number){
+ 
+           queryForSample(number)
+             .then(function(resolved){  
+               console.log("3. resolved initial query.", resolved); 
+               
+               //three tables can all be queried using the initial information...
+               var threeTableResults = Promise.all([retrieveNotebookData(), retrieveThinSections(), retrieveLithology()]);
+ 
+               
+               //finding the ledgers must happen after finding the lithologies. 
+               threeTableResults.then(function(){
+                   console.log("queries are done. all sample data: ", sampleRecordData);
+                   buildReport();
+                   
+   /*                
+                                        console.log("9. lithologies:", sampleRecordData.lithologies);
+
+                                        var ledgerQueryQueue = [];
+                                        for(i in sampleRecordData.lithologies){
+                                            ledgerQueryQueue.push(i);
+                                        }
+                                        
+                                        //run the promise for each item in the queue. 
+                                        var actions = ledgerQueryQueue.map(retrieveLedger); 
+
+                                        //only after the final query has returned, we can build the report. 
+                                        var ledgerResults = Promise.all(actions);
+                                        ledgerResults.then(function(data){
+                                            console.log("queries are done. all sample data: ", sampleRecordData);
+                                            buildReport();
+                                        });
+
+                                
+    */
+               });
+
+            }).catch(function(error){
+               console.log("error. ", error);
+           })
+       } //end testSample
+        
+        
+        function queryForSample(number){
+            console.log("1. query for sample #", number); 
+            return new Promise (function(resolve, reject){
+                recordDataManager.clear();
+                sampleRecordData.handSampleNumber = number;
+            
+            
+                var handSampleNumberQuery = L.esri.query({url: samplesTableURL}); 
+                handSampleNumberQuery.fields(["*"]);
+                handSampleNumberQuery.where("Upper("+handSampleNumberField+") LIKE UPPER('"+number+"')");
+
+                handSampleNumberQuery.run(function(error, sampleTableResult, sampleTableResponse){
+                   // console.log("sample table response:", sampleTableResponse.features[0].attributes);
+                  //  console.log("sample table result:", sampleTableResult.features[0].properties);
+
+                    //set the attributes that can be found in the samples table. 
+
+                    if(sampleTableResponse.features[0]){
+                            console.log("2. sample found.");
+                            //console.log("sample table info:", sampleTableResult.features[0].attributes);
+                            //set the attributes that can be found in the samples table. 
+
+                            sampleRecordData.handSampleNumber = sampleTableResponse.features[0].attributes[handSampleNumberField]; //this resets to the correct code if the user entered a lowercase letter
+                            sampleRecordData.sampleId = sampleTableResponse.features[0].attributes.SampleId;
+                            sampleRecordData.fieldDesc = sampleTableResponse.features[0].attributes.RockType;
+                            sampleRecordData.thinSectionCount = sampleTableResponse.features[0].attributes.ThinSectionCount;
+                            sampleRecordData.mapSectionId = sampleTableResponse.features[0].attributes[PlssField];
+                            sampleRecordData.location.state = sampleTableResponse.features[0].attributes.State;
+                            sampleRecordData.location.township = sampleTableResponse.features[0].attributes.Township;
+                            sampleRecordData.location.range = sampleTableResponse.features[0].attributes.Range + sampleTableResponse.features[0].attributes.Direction;
+                            sampleRecordData.location.PLSSSectionNum = sampleTableResponse.features[0].attributes.Section;
+                            sampleRecordData.location.quarterSection = sampleTableResponse.features[0].attributes.Quarter;
+                            sampleRecordData.location.quarterQuarterSection = sampleTableResponse.features[0].attributes.QuarterQuarter;
+                            sampleRecordData.location.locationNote = sampleTableResponse.features[0].attributes[locationNoteField];
+                            sampleRecordData.fieldNotebookNumber = sampleTableResponse.features[0].attributes[notebookNumberField];
+                            sampleRecordData.fieldPage = sampleTableResponse.features[0].attributes.NotebookPage;
+                            sampleRecordData.WGNHSId = sampleTableResponse.features[0].attributes.WgnhsId;
+                            sampleRecordData.sampleNotes = sampleTableResponse.features[0].attributes.Notes;
+                           // console.log("resolve with", sampleTableResponse.features[0])
+                            resolve(sampleTableResponse.features[0]);
+
+                    } else {
+                        //if the sample id is not successfully found, return an error message. 
+                        $("#sampleRecord").html("No results for sample #"+sampleRecordData.handSampleNumber+". Try a different number.");
+                        reject("reject: sample not found.");
+                    }
+                });//end .run
+            
+            
+            }); //end return new Promise
+        } //end query for sample
+                                
+        function retrieveNotebookData(){
+           console.log("4.")
+            return new Promise (function(resolve, reject){
+                if(sampleRecordData.fieldNotebookNumber){
+                    
+                    retrieveFieldNotebookThumbnail(sampleRecordData.fieldNotebookNumber);
+                    
+                    var notebookQuery = L.esri.query({url: notebooksTableURL}); 
+                    notebookQuery.fields(["*"]); 
+                    notebookQuery.where("Number LIKE '"+sampleRecordData.fieldNotebookNumber+"'"); 
+
+                    notebookQuery.run(function(error, featureCollection, notebooksResponse){
+                        
+                        sampleRecordData.fieldNotebookTitle = notebooksResponse.features[0].attributes.Title;
+                        sampleRecordData.fieldAuthor= notebooksResponse.features[0].attributes.Author;
+                        sampleRecordData.fieldDate = notebooksResponse.features[0].attributes.Year;
+                        sampleRecordData.fieldNotebookUrl = notebooksResponse.features[0].attributes.UwdcUrl;
+                      //  console.log("notebook response", notebooksResponse);
+                        resolve(notebooksResponse);
+
+
+                    }); //end run 
+                } //end if 
+                else {resolve("no field notebook number.");}
+                
+            }); //end return  
+        } //end retrieveNotebookData 
+        
+        function retrieveThinSections(){
+            console.log("6.")
+            return new Promise(function(resolve, reject){
+                var thinSectionQuery = L.esri.query({url: thinSectionsTableURL}); 
+                thinSectionQuery.where("SampleId = "+sampleRecordData.sampleId); 
+                thinSectionQuery.fields(["*"]); 
+                
+                thinSectionQuery.run(function(err, fc, thinSectionsResponse){
+                    
+                    //console.log("err", err);
+                   // console.log("fc", fc);
+                   // console.log("thinsectionsResponse", thinSectionsResponse);
+                    for (i in thinSectionsResponse.features){
+                        var thinDetails = {};
+                        console.log("thin section info", thinSectionsResponse.features[i].attributes);
+                        //add attributes to the thin sections array. 
+                        thinDetails.thinSectionId = thinSectionsResponse.features[i].attributes[thinSectionNumberField];
+                        thinDetails.condition = thinSectionsResponse.features[i].attributes.Condition;
+                        thinDetails.photoAvailability = thinSectionsResponse.features[i].attributes.Photos;
+                        if(thinSectionsResponse.features[i].attributes.Photos > 0){
+                            thinDetails.thinImgppl = 'https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl.jpg';
+                            thinDetails.thinImgxpl = 'https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/thin-section-images/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl.jpg';
+                            thinDetails.thinThumbppl = 'https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'ppl_thumb.jpg';
+                            thinDetails.thinThumbxpl = 'https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/thin-section-thumbs/'+thinSectionsResponse.features[i].attributes[thinSectionNumberField]+'xpl_thumb.jpg';
+                        }
+
+                        sampleRecordData.thinSections.push(thinDetails);
+                        
+                    } //end for loop
+                    
+                    resolve(thinSectionsResponse.features);
+                    
+                }); //end .run
+                
+               
+            }); //end promise
+  
+        } //end retrieveThinSections 
+       
+       function retrieveLithology(){
+           return new Promise(function(resolve, reject){
+               console.log("8. query for lithology.")
+               var lithQuery = L.esri.query({url: lithologyTableURL});
+               lithQuery.where("SampleId = "+sampleRecordData.sampleId); 
+               lithQuery.fields(["*"]);
+               
+               lithQuery.run(function(err, fc, lithResponse){
+                   for (i in lithResponse.features){
+                        var lithDetails = {};
+                      // console.log("lith info", lithResponse.features[i].attributes);
+                        lithDetails.lithLedgerId = lithResponse.features[i].attributes.BookId;
+                        lithDetails.lithPage = lithResponse.features[i].attributes.Page;
+                        lithDetails.lithDesc = lithResponse.features[i].attributes.RockType;
+                        lithDetails.lithNotes = lithResponse.features[i].attributes.Notes;
+                        lithDetails.lithLedgerTitle  =   lithResponse.features[i].attributes.Title;  
+                        lithDetails.lithLedgerUrl = lithResponse.features[i].attributes.UwdcUrl;
+                        lithDetails.lithDate = lithResponse.features[i].attributes.Year;
+                        lithDetails.lithAuthor = lithResponse.features[i].attributes.Author;
+                        lithDetails.lithLedgerThumb = "https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/notebook-thumbs/lithBook"+lithResponse.features[i].attributes.BookId+"_cover_thumb.jpg";
+                        sampleRecordData.lithologies.push(lithDetails);
+  
+                   } //end for
+                   
+                   resolve(lithResponse.features);
+      
+               }); //end .run
+               
+           });//end promise
+
+       
+       } //end retrieveLithology
+        
+     
+       function retrieveFieldNotebookThumbnail(notebookNumber){
+           return new Promise(function(resolve, reject){
+                var thumbURL = "https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook"+notebookNumber+"_cover_thumb.jpg"; 
+            
+            
+               
+            var img = new Image();
+            img.onload = function(resp){
+               console.log("notebook "+notebookNumber+" thumb found", resp); 
+                sampleRecordData.fieldNotebookThumbnail = thumbURL;
+                resolve(thumbURL); 
+               
+            }
+            img.onerror = function(){
+                console.log("notebook "+notebookNumber+" thumb not found.");
+                sampleRecordData.fieldNotebookThumbnail = 'images/notebook-icon.jpg';
+                resolve('images/notebook-icon.jpg');
+               
+            }
+            img.src = thumbURL; 
+               
+           })
+           
+       }
+
+           
+        function buildReport(){
+           console.log("11. build report");
+            //clear the sample record div. 
+            $("#sampleRecord").html('');
+             addSampleNumber();
+            
+            //iterate through the reportDivisions array above, 
+            //creating a div for each with an id property and h3 title 
+            for (r in reportDivisions){
+                //create a new div element.
+                var reportDiv = $('<div class="reportDivision"></div>');
+                var rd = reportDivisions[r];
+                if (rd.divisionTitle){reportDiv.append($('<h3 class="colorBar"></h3>').html(rd.divisionTitle))};
+                var newdiv = $('<div class="divisionContent"></div>');
+                //give it an id property and add a title h3 to it. 
+                newdiv.attr("id", rd.divisionId);
+                reportDiv.append(newdiv);
+                //append it to the html page. 
+                $('#sampleRecord').append(reportDiv);           
+                
+            };
+            
+            //populate the various fields in the report, using the values in the sampleRecordData object (global variable)
+          
+            addThinSections();
+            addLocation();
+            addFieldNotes();
+            addLithDesc();
+            addNotes();
+           // addAvailableSamples();
+            addDataTable();
+            
+        } //end buildReport 
+        
+        function addSampleNumber(){
+            if(sampleRecordData.handSampleNumber){
+                var sampleIDh2 = $('<h2></h2>').html("Hand Sample #"+sampleRecordData.handSampleNumber); 
+                $("#sampleRecord").append(sampleIDh2);
+               
+                
+            } else {console.log("samID is false.");}
+        }
+        
+   
+       function addThinSections(){
+        //    console.log("sampleRecordData", sampleRecordData);
+            //populate the thin section results:
+           
+            if (sampleRecordData.thinSections.length > 0){
+                
+                $("#thinSections").append('<span class="block"> ('+sampleRecordData.thinSections.length+' found) Click to view in detail.</span>');
+                
+                
+                for (i in sampleRecordData.thinSections){
+                    
+                    var thinSec = $('<div class="thinSectionContainer"></div>').html("<p>Thin section #"+sampleRecordData.thinSections[i].thinSectionId+"</p>");
+                    thinSec.append('<p>condition: '+sampleRecordData.thinSections[i].condition+'</p>');
+                    
+                    thinSec.addClass('detailsDiv');
+                    if(sampleRecordData.thinSections[i].photoAvailability > 0){  
+                      //  thinSec.append('<p>(click to view in detail)</p>');
+                        thinSec.append(
+                            "<img src='"+sampleRecordData.thinSections[i].thinThumbppl+"' alt='plane-polar thumbnail'/><img src='"+sampleRecordData.thinSections[i].thinThumbxpl+"' alt='cross-polar thumbnail'/>");
+                        thinSec.addClass('thinSectionPhotoPair');
+                        thinSec.attr('title','click to view');
+                        thinSec.data({'thinSectionNumber':sampleRecordData.thinSections[i].thinSectionId, 'handSampleNumber':sampleRecordData.handSampleNumber});
+                    } else {
+                    
+                        thinSec.append("<span>(no image available.)</span>");
+                    }
+                    
+                    
+                    //add the thin section area into its block-level container
+                    $("#thinSections").append(thinSec);
+                    
+                    
+                } //end for loop. 
+                
+                
+                
+                } else {
+                   // console.log("thin section count is zero");
+                    $('#thinSections').append('<p>none</p>');
+                
+                }
+            //add the block-level container into the overall div of all thin sections. this is later appended to the record. 
+//            $('#thinSections').append(thinSectionsContainer);
+            
+            $(".thinSectionPhotoPair").on('click', function(){
+                console.log("view thin section #", $(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
+                
+                modal.thinSectionViewer($(this).data('thinSectionNumber'), $(this).data('handSampleNumber'));
+            })
+            
+            
+        } //end addThinSections function         
+             
+        function addLocation(){
+            
+             //add a note explaining that there might be more specific location info in the field notebook. 
+            $('#location').append('<div><span>Some of the location information has been digitized, but some has not. The scanned field notes, if there are any, can often provide more specific location information. </span></div>');
+            
+            $('#location').append("<div class='divisionEntry'></div>");
+            if (sampleRecordData.location.PLSSSectionNum){
+                addMap();
+            }   
+
+            //set up an empty var for the location info.
+            var loc = ''
+            
+            loc+="<div class='detailsDiv'><table>";
+            for (prop in sampleRecordData.location){
+                
+                loc+="<tr><td><span class='green'>"+aliases[prop]+":</span> </td><td>"+sampleRecordData.location[prop]+"</td></tr>";
+            }
+            loc+="</table></div>"; //end details div
+
+            $('#location .divisionEntry').append(loc);
+        }
+       
+       function addMap(){
+           
+           var mapDiv = $("<div id='map'>");
+            $('#location .divisionEntry').append(mapDiv);
+            var map = L.map('map').setView([48, -89.5], 4);
+            
+            var CartoDB_PositronNoLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+               subdomains: 'abcd',
+	           maxZoom: 19
+                }).addTo(map);
+            
+            var mapSectionsLayer = L.esri.featureLayer({
+                 url: PLSSSectionsLayerURL,
+                style: {color: "#000", weight: 0.35, fillColor: "#111"}, 
+               // where: sectionsLayerPlssField+' ='+sampleRecordData.mapSectionId
+                
+            }).addTo(map);
+            
+            mapSectionsLayer.bindPopup(function(individualSection){
+                
+                    var sectionInfo = individualSection.feature.properties;
+                    //build the popup content: 
+                    var popupContent = "Section "+sectionInfo.Section_+" of "+sectionInfo.State+" Township "+sectionInfo.TownNum;
+                
+                    if (sectionInfo.TownDir){ 
+                        popupContent += sectionInfo.TownDir; 
+                        console.log("direction exists")
+                    };
+                                             
+                    popupContent += ", Range "+sectionInfo.RangeNum+sectionInfo.RangeDir; 
+                                             
+                    return popupContent;
+                },                 
+                { //popup options
+                
+                maxWidth: 100, 
+                className: 'sectionInfoPopup'
+                
+            });
+            
+            //zoom the map to the correct section: 
+           var sectionQuery = L.esri.query({url:PLSSSectionsLayerURL});
+
+            sectionQuery.where(sectionsLayerPlssField+" = "+sampleRecordData.mapSectionId).run(function(error, sec){
+                var section = L.geoJson(sec).addTo(map); 
+                map.fitBounds(section.getBounds().pad(4));
+                section.bindPopup(function(individualSection){
+                   
+                    var sectionInfo = individualSection.feature.properties;
+                    //build the popup content: 
+                    var popupContent = "Section "+sectionInfo.Section_+" of "+sectionInfo.State+" Township "+sectionInfo.TownNum;
+                    
+                    //prevent it from printing "Township 65null"
+                    if (sectionInfo.TownDir){ 
+                        popupContent += sectionInfo.TownDir; 
+                    };
+                                             
+                    popupContent += ", Range "+sectionInfo.RangeNum+sectionInfo.RangeDir; 
+                                             
+                    return popupContent;
+                }, {
+                    //popup options
+                     maxWidth: 100, 
+                    className: 'sectionInfoPopup'
+                }).openPopup();
+            }
+            ); 
+
+       
+       } //end addMap
+   
+        function addFieldNotes(){
+            var fieldNotebookreport = ''; 
+            if (sampleRecordData.fieldNotebookNumber){
+                if(sampleRecordData.fieldNotebookTitle === null){sampleRecordData.fieldNotebookTitle = "untitled"}; 
+
+                fieldNotebookreport +="<div class='divisionEntry'>";
+                fieldNotebookreport += "<a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank> <img src='"+sampleRecordData.fieldNotebookThumbnail+"' alt='notebook cover'/></a>";
+                fieldNotebookreport+="<div class='detailsDiv'><p>Field description: "+sampleRecordData.fieldDesc+"</p><p class='inline'>Page "+sampleRecordData.fieldPage+" <div class='tooltip' tabindex='0'><img src='images/question_wg.png' class='helpIcon' alt='question mark'/><span class='tooltiptext'>To view this specific page, please follow the link below to UW Digital Collections, then enter this page number in the 'Go to Page' input.</span></div></p><p><a href='"+sampleRecordData.fieldNotebookUrl+"' target=_blank>"+sampleRecordData.fieldNotebookTitle+"</a> (notebook #"+sampleRecordData.fieldNotebookNumber+")</p><p>"+sampleRecordData.fieldAuthor+"</p><p>"+sampleRecordData.fieldDate+"</p></div>";
+                fieldNotebookreport +="</div>";
+     
+            } else if (sampleRecordData.fieldDesc){
+                
+                fieldNotebookreport+= "<p>Field description: "+sampleRecordData.fieldDesc+"</p>";
+                    
+            } else {
+                fieldNotebookreport+="<p>none</p>";
+            }
+            
+            //append to the appropriate div
+            $('#fieldNotes').append(fieldNotebookreport);
+        }
+        
+        function addLithDesc(){
+            //console.log("addLithDesc. sampleRecordData", sampleRecordData.lithologies);
+            
+            var lith = '';
+            if(sampleRecordData.lithologies.length > 0){
+                for (i in sampleRecordData.lithologies){
+                    //console.log("lith data", sampleRecordData.lithologies[i]);
+                    //there is always a URL for a lith book. 
+                    
+                    lith+="<div class='divisionEntry'>";      
+                    //thumbnail in link
+                    lith += "<a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank><img src='"+sampleRecordData.lithologies[i].lithLedgerThumb+"' alt='lith notebook cover'/></a>"; 
+                 
+                    //details
+                    lith+="<div class='detailsDiv'><p>Description: "+sampleRecordData.lithologies[i].lithDesc+"</p><p class='inline'>Page "+sampleRecordData.lithologies[i].lithPage+"  <div class='tooltip' tabindex='0'><img src='images/question_wg.png' class='helpIcon' alt='question mark'/><span class='tooltiptext'>To view this specific page, please follow the link below to UW Digital Collections, then enter this page number in the 'Go to Page' input.</span></div></p>"; 
+               
+                    
+                    lith+= "<p><a href='"+sampleRecordData.lithologies[i].lithLedgerUrl+"' target=_blank>"+sampleRecordData.lithologies[i].lithLedgerTitle+"</a> (ledger #"+sampleRecordData.lithologies[i].lithLedgerId+")</p><p>"+sampleRecordData.lithologies[i].lithAuthor+"</p><p>"+sampleRecordData.lithologies[i].lithDate+"</p>";
+                    
+                    
+                    if (sampleRecordData.lithologies[i].lithNotes){
+                        lith+= "<p>Notes: "+sampleRecordData.lithologies[i].lithNotes+"</p>"
+                    };
+                    lith+='</div></div>'; //close divisionEntry and detailsDiv
+                }
+            } else {
+                lith = "<p>none</p>";
+            }
+            
+            //append to the appropriate div
+            $('#lithDesc').append(lith);
+            
+        }
+        
+        function addNotes(){
+            if (sampleRecordData.sampleNotes){
+                
+                $('#sampleNotes').append('<p>'+sampleRecordData.sampleNotes+'</p>');
+            } else {
+                $('#sampleNotes').append('<p>none</p>');
+            }
+        }
+        
+       
+        function addDataTable(){
+            
+            $("#allData").append('<table id="dataTable" class="lslcTable">'); 
+            
+            for (prop in sampleRecordData){
+                if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Array){
+                    //all arrays are arrays of objects in this structure. 
+                   // console.log("array", prop);
+                    //if (sampleRecordData[prop].length > 1){
+                        for(o in sampleRecordData[prop]){
+                            //sampleRecordData[prop][o] is an object. 
+                            // o is the index number. 
+                            var num = parseInt(o)+1;
+
+                           // console.log(prop, " ", num, " of ", sampleRecordData[prop].length);
+                            for (subProp in sampleRecordData[prop][o]){
+                                $("#dataTable").append("<tr><td>"+subProp+"_"+num+"of"+sampleRecordData[prop].length+"</td><td>"+sampleRecordData[prop][o][subProp]+"</td></tr>");
+                            }
+
+
+                        }
+              
+                } else if (sampleRecordData[prop] && sampleRecordData[prop].constructor === Object){
+                  //  console.log("object", prop);
+                    //location is an object. iterate through its properties and add them to the list. 
+                    for (subProp in sampleRecordData[prop]){
+                        $("#dataTable").append("<tr><td>"+subProp+"</td><td>"+sampleRecordData[prop][subProp]+"</td></tr>");
+                    }
+                } else {
+                    $("#dataTable").append("<tr><td>"+prop+"</td><td>"+sampleRecordData[prop]+"</td></tr>");
+                }
+            }
+        }
+        
+   </script>   <!-- END INLINE JS -->
+        
+       
+   </BODY>
+</HTML>

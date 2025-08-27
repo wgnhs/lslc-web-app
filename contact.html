@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML lang="en">
+   <HEAD>
+      <TITLE>LSLC Contact</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+
+         <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+       
+       <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+
+       
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="modalStyle.css" rel='stylesheet'/>
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+       <!-- Google analytics: place in the head tag after other script links -->
+       <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-50757423-2', 'auto');
+          ga('send', 'pageview');
+
+       </script>
+
+       <style>
+        .note {
+            width: 50%; 
+            margin: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            padding: 10px;
+        }
+
+       </style>
+       
+       
+</HEAD>
+<BODY>
+   
+    <div id="header"></div>
+   <div id="wrapper" class="limited-width wrapper-shadow">
+       
+       <h2>Contact us</h2>
+       <p>This collection was assembled by a team at the <a href="https://wgnhs.wisc.edu" target="_blank">Wisconsin Geological and Natural History Survey</a>.</p>
+       
+       <div id="contacts"></div>
+       
+       <div id="footer"></div>
+   
+   </div><!--end wrapper div-->
+    <script >
+        var contactDivisions = [
+           
+            {"divisionTitle": "Web Design", 
+            "name":"Caroline Rose", 
+            "title": "GIS Specialist and Cartographer",
+            
+             "email": "caroline.rose@wgnhs.wisc.edu"
+            },
+            {"divisionTitle": "Collection", 
+            "name": "Brad Gottschalk",  
+            "title": "Archivist", 
+            
+             "email": "brad.gottschalk@wgnhs.wisc.edu" 
+            }, 
+            {"divisionTitle": "Data Preservation Projects", 
+            "name": "M. Carol McCartney",  
+            "title": "Outreach Manager and Principal Investigator for this project", 
+            
+             "email": "carol.mccartney@wgnhs.wisc.edu" 
+            },   
+            
+        ];
+            
+            
+        for (r in contactDivisions){
+            
+                var rd = contactDivisions[r];
+            
+                //create a new div element.
+                var contactDiv = $('<div></div>');
+                
+                //if (rd.divisionTitle){contactDiv.append($('<strong></strong>').html(rd.divisionTitle))};
+                
+                contactDiv.append('<p><strong>'+rd.divisionTitle+'</strong><br>'+rd.name+'<br>'+rd.title+' <br><a href="mailto:'+rd.email+'?Subject=LSLC%20Interface">'+rd.email+'</a></p>');
+                //append it to the html page. 
+                $('#contacts').append(contactDiv);           
+                
+            };
+        
+    </script>
+   
+    <!-- header js: must go after the wrapper div and header div -->
+    <script src="header.js"></script>
+
+   
+</BODY> 
+</HTML>

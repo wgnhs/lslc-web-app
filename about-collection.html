@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML lang="en">
+   <HEAD>
+      <TITLE>LSLC About: The Collection</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+           
+ 
+       <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+       
+       <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+       
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    
+       
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="modalStyle.css" rel='stylesheet'/>
+
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+              
+       <!-- Google analytics: place in the head tag after other script links -->
+       <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-50757423-2', 'auto');
+          ga('send', 'pageview');
+
+       </script>
+       <style>
+           .aboutBlock {
+/*               border: 1px dashed red;*/
+               display: inline-table;
+               width: 48%; 
+               max-width: 650px;
+               min-width: 200px;
+               margin: 10px 0;
+               vertical-align: top;
+           }
+           .aboutBlock img {
+               display: table-cell;
+               height: auto;
+
+              max-width: 150px;
+              
+           }
+           .sideCaption{
+
+               display: table-cell;
+
+               vertical-align: top;
+               padding: 5px 10px 5px 5px;
+           }
+           
+           @media only screen and (max-width: 1000px){
+               .aboutBlock{
+                   width: 100%;
+               }
+              
+           }
+       
+       </style>
+ 
+       
+</HEAD>
+<BODY>
+  
+   <div id="header"></div>
+   <div id="wrapper" class="limited-width wrapper-shadow">
+        
+       <h2>Items in the Collection</h2>
+           
+       <div class="blogStyle"> <!-- pads the paragraphs -->
+           
+       <div class='reportDivision'><a id="elements"><h3 class='colorBar'>Primary Elements</h3></a>
+           <div class='divisionContent'>
+           
+               <div class="aboutBlock">
+                   <img src="images/hand-samples-thumb.jpg" alt="hand samples"/>
+                   <div class='sideCaption'>
+                       <strong>Hand Samples</strong><br><span>Geologists collected pieces of rock from areas they were surveying for later study. Search for a hand sample by number on our <a href="hand-sample.html">hand sample details page</a> or filter the full list of samples using our <a href="interactive-map.html">interactive map</a>. </span>
+                   </div>
+               </div>
+               <div class="aboutBlock">
+                   <img src="images/notebook-pages.jpg" alt="notebook scan"/>
+                   <div class='sideCaption'>
+                       <strong>Field Notebooks</strong><br><span>Geologists in the field recorded observations of the sites they visited, including descriptions of the hand samples. <a href="notebooks.html">Browse our list of field notebooks</a></span>
+                   </div>
+               </div>
+               <div class="aboutBlock">
+                   <img src="images/thin-section-406-slide.jpg" alt="thin section"/>
+                   <div class='sideCaption'>
+                       <strong>Thin Sections</strong><br><span>The hand samples were brought back to Madison, where some were cut and ground to create one or more thin sections--slices of rock thin enough to allow light to pass through them. These thin sections were viewed under a microscope in both plane-polarized and cross-polarized light. <a href="thin-sections.html">Browse thin section photos in our gallery</a></span>
+                   </div>
+               </div>
+               <div class="aboutBlock">
+                   <img src="images/lith-desc-thumb.png" alt="book of lithologic descriptions"/>
+                   <div class='sideCaption'>
+                       <strong>Lithological Descriptions</strong><br><span>Geologists recorded their observations of the thin sections in ledger books of lithological descriptions. </span>
+                   </div>
+               </div>
+               <div class="aboutBlock">
+                   <img src="images/map-crystal-falls-mi.png" alt="scanned map"/>
+                   <div class='sideCaption'>
+                       <strong>Maps</strong><br><span>Parts of the Upper Peninsula of Michigan were mapped on large-scale, hand-drawn and colored maps that show the topography, geology, and locations from which hand samples were taken. Sixty-seven of these maps are part of the current collection. We are not sure how many there were originally.<br>Scans of the maps are posted on our <a href='https://uwdc.library.wisc.edu/collections/econatres/wgnhs/' target="_blank">UW Digital Collections Page</a>, under the 'Maps' link.</span>
+                   </div>
+               </div>
+               
+           </div>
+       </div>
+           
+       <div class='reportDivision'><a id="inventory"><h3 class='colorBar'>Inventory of the Collection</h3></a>
+           <div class='divisionContent'>
+               <table id="inventoryTable" class="lslcTable">
+                <thead><tr><td>Collection element</td><td>Original quantity</td><td>Owned by WGNHS today</td><td>Brief description</td></tr></thead>
+                <tbody>
+                    <tr><td>Hand samples</td><td>~80,600</td><td>9,794</td><td>Rock samples taken from the field </td></tr>
+                    <tr><td>Thin sections</td><td>~17,600</td><td>15,608</td><td>Microscope slides made from hand samples</td></tr>
+                    <tr><td>Field notebooks*</td><td>491</td><td>464 (321 scanned)</td><td>Geologic and topographic notebooks, including drill hole logs</td></tr>
+                    <tr><td>Thin section catalogs</td><td>3</td><td>3</td><td>Catalog correlating hand sample numbers with thin section numbers; ledger book </td></tr>
+                    <tr><td>Chemical analyses</td><td>unknown</td><td>2</td><td>Chemical analyses of samples—not all are Lake Superior Division samples; ledger book</td></tr>
+                    <tr><td>Photograph negative catalogs</td><td>unknown</td><td>1</td><td>List of photograph negatives including location taken and corresponding notebook and page number; ledger book</td></tr>
+                    <tr><td>Specimen catalogs</td><td>24</td><td>24</td><td>Listing of specimens from 1 to 80,816, some with location information, thin section number, notebook number and page; ledger book </td></tr>
+                    <tr><td>Lithological descriptions</td><td>9</td><td>6</td><td>Microscopic and macroscopic descriptions of samples written by Irving and Van Hise, organized by rock type; ledger book </td></tr>
+                    <tr><td>Maps</td><td>unknown</td><td>67</td><td>Hand-drawn maps showing sample numbers and rock types, mostly of parts of Michigan’s Upper Peninsula </td></tr>
+                </tbody>
+               </table>
+               <p>*Some specimen catalog entries refer to notebook numbers preceded by a “C.” C1, C2, etc. We do not have these, and do not know what information they contain apart from sample descriptions.</p>
+			   
+			   <p>The field notebooks and maps of the Lake Superior Divison use the Public Land Survey System (PLSS) to locate geological samples. This system can be confusing, especially when moving across states, as the system is not consistent throughout the U.S.A. For more information on the PLSS, please visit the <a href="https://nationalmap.gov/small_scale/a_plss.html" target="_blank"> USGS National Map</a>.
+           
+        </div></div>
+       
+       
+        </div><!-- end blogStyle div -->
+       
+       <div id="footer"></div>
+       
+   </div><!--end wrapper div-->
+   
+   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
+   <script src="header.js"></script>
+   
+   
+</BODY> 
+</HTML>

@@ -1,0 +1,444 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML lang="en">
+   <HEAD>
+      <TITLE>Lake Superior Legacy Collection</TITLE>
+
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <link rel='icon' type='image/x-icon' href='favicon.ico'/>
+
+       
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+           
+ 
+       <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+       
+       <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+       
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    
+       <!-- Unslider -->
+            <script src="lib/unslider-2.0.3/unslider-min.js"></script>
+            <link rel="stylesheet" href="lib/unslider-2.0.3/unslider.css">
+            <link rel="stylesheet" href="lib/unslider-2.0.3/unslider-dots.css">
+       
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="modalStyle.css" rel='stylesheet'/>
+
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+              
+       <!-- Google analytics: place in the head tag after other script links -->
+       <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-50757423-2', 'auto');
+          ga('send', 'pageview');
+
+       </script>
+ 
+       
+       <style>
+            
+           #header {
+               /* styles for pushing the slider to the top above the header... */
+               position: absolute;  /* toggle this on to put the slider behind the header. */
+               z-index: 1;  
+           }
+          
+           
+           /* slider area (banner is the container) */
+/*
+           #banner {
+               width: 100%;
+           }
+*/
+            .unslider {
+               position: relative; /* set the positioning context for the dots */
+               overflow: hidden; /* no scroll bars */
+                clear: both;
+            }
+           
+            /* Style the dots*/
+            .unslider-nav { 
+               /* position the navigation dots */
+               position: absolute;
+               left: 0;
+               right: 0;
+               bottom: 0;
+
+               z-index: 1000; /* Make sure the dots show over the images */
+                background-color: white;
+            }
+           .unslider-nav ol li {
+               border: 2px solid #b74226; 
+           }
+           .unslider-nav ol li.unslider-active {
+               background-color: #b74226;
+           }
+           
+           
+           /* ARROWS  - using images instead of the default slider links 'next' and 'prev' */
+           .unslider-arrow{
+               background-color: white;
+               opacity: 0.6;
+               padding: 0 5px;
+              
+               top: 0; bottom: 0; 
+               z-index: 0;
+               
+           }
+           .unslider-arrow.next {
+               right: 0;
+           }
+           .unslider-arrow.prev {
+               left: 0;
+           }
+           .position-helper { /* helps to get the next and prev arrow images vertically centered */
+               display: inline-block;
+               height: 100%;
+                vertical-align: middle;
+           }
+           .unslider-arrow img{
+               vertical-align: middle;
+           }
+           .unslider-arrow:hover{
+               opacity: 0.9;
+               
+           }
+           
+           /* ++++ individual slides ++++ */
+            .banner-slide {
+               position: relative; /* to contain the h3 and p elements within*/
+               display: flex; 
+               justify-content: center; /* center the images */
+               overflow: hidden; /* no scroll bar */
+
+            }
+
+            .banner-slide img {
+                height: calc(60vh); /* over half the view height is image, except where it hits the limits */
+                max-height: 500px; 
+                min-height: 200px;
+                /*margin-bottom: 67px;*/ /* space for the text below. When the text exceeds this height, it goes over the image. */
+            }
+           
+           .banner-slide .captionContainer {
+               /* sets up a container near the bottom of the picture, approx. 90% width */
+                position: absolute; /* position within the banner-slide. */
+                bottom: 26px; /* height of the slider nav dots (21), plus a bit of space */
+                left: calc(5vw);
+                right: calc(5vw);
+                width: calc(90vw); 
+/*                border: 2px dashed red;*/
+                text-align: center;
+           }
+
+           .caption {
+                display: inline-block;
+                padding: 3px 8px;
+                margin-right: 5px;
+                background-color: white;
+                opacity: 0.9;
+
+               text-align: left;
+           }
+           .captionContainer .sliderButton {
+               /* orange buttons. a tags that link to other slides */
+               display: inline-block;
+               color: white; 
+               text-decoration: none; /* no underline */
+               background-color: #b74226;
+               padding: 5px;
+               border-radius: 3px;
+               border: solid 1px white;
+               max-width: 25%;
+               text-align: center;
+               box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7); /* fairly strong box shadow */
+           }
+           .captionContainer .sliderButton:hover{
+               background-color: #842d1a; 
+               cursor: pointer;
+           }
+           
+            .hover-expand:hover {
+               transform: scale(1.03);
+            }
+           
+    /* four square links to the collection pages */
+           .collectionLinksContainer{
+               margin-top: 20px;
+               display: flex;
+               justify-content: space-between;
+
+           }
+           .collectionLink {
+               position: relative;
+               width: calc(20vw);          
+               margin-right: 7px; /* never let them squish closer than 7px. Rule below removes this for the last link. */
+               
+               /* just wide enough for "Thin Section Gallery" to stay on one line */
+               min-width: 150px; 
+               max-width: 224px; /* keeps the links from outgrowing the 950px wide wrapper */
+
+               border: 1px solid #e6e6e6;         
+   
+           }
+           .lastLink {
+                /* take away the margin-right for the last link */
+               margin-right: 0 !important;
+           }
+           
+           /* makes the collection link divs stay square */
+           .collectionLink:before {
+                content: "";
+                display: block;
+                padding-bottom: 100%;
+            }
+           
+           .collectionLink img {
+               position: absolute; 
+               top: 0; 
+               width: 100%;
+               height: auto; /*overrides the .reportDivision img rule for 200px height */
+               opacity: 0.8;
+               box-shadow: 3px 3px 11px 0 #888;
+           }
+           .collectionLink img:hover {
+               opacity: 1;
+           }
+            .collectionLinkText {
+                background-color: #bcbcbc;
+                color: #000;
+                position: absolute;
+                top: 0; right: 0; left: 0;
+                padding: 3px;  /* these need padding top, bottom, and left. */
+
+           }
+           .collectionLink:hover {
+               box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+                cursor: pointer;
+                
+           }
+           .collectionLink:hover > .collectionLinkText {
+               /* matches the nav colors */
+               background-color: #8c8c8c;
+           }
+           
+           /* for narrow-width layout */
+            @media only screen and (max-width : 700px) { /* swap to two rows of two links */
+                .collectionLink {
+                    width: calc(45vw);
+                    margin: 10px 0 0 0; /* set a top margin and take away the margin-right */
+                }
+                .collectionLinksContainer{
+                    flex-wrap: wrap;
+                    justify-content: space-evenly;
+                }
+           }
+           
+            @media only screen and (max-width : 650px) {
+               /* when the header goes to one-column: */
+               /* make the image appear below the header, not overlapping with it. */
+               #header {
+                   position: static;
+               }
+               .captionContainer .sliderButton {
+                max-width: 95%;
+               }
+           }
+        
+       </style>
+       
+</HEAD>
+<BODY>
+  
+   <div id="header"></div>
+    <div id="banner" class="my-slider">
+          <ul>
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="images/pigeon-point-map-wide.png" alt="Map of geology of Pigeon Point, MN"/>
+                        <div class="captionContainer">
+                           
+                            <p class="caption">Digitizing geologic research from the Lake Superior Division of the USGS, 1882-1922 </p>
+                            <a class="sliderButton hover-expand" href="interactive-map.html">View the interactive map of geologic samples</a>
+                           
+                      </div>    
+                  </div>
+              </li>
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="images/ore-docks-two-harbors-usgs-monograph52.png" alt="Ore docks at Two Harbors, MN"/>
+                        <div class="captionContainer">
+
+                            <p class="caption"><span class="italic">The Mesabi Iron-Bearing District of Minnesota</span> and more than a dozen other treatises were published by the Lake Superior Division from 1883 to 1935. </p> 
+                            <a class="sliderButton hover-expand" href="about-history.html">About the Lake Superior Division of the USGS</a>
+
+                      </div>
+                  </div>
+              </li>
+
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="images/knife-lake.jpg" alt="Knife Lake, MN"/>
+                        <div class="captionContainer">
+
+                            <p class="caption"><span class="italic">"Going westward on Knife Lake probably means going with the strike of the quartzite and slate beds..."</span> -- W.M. Chauvenet, 1883 (field notebook #7)</p>
+                            <a class="sliderButton hover-expand" href="notebooks.html">List of field notebooks</a>
+
+                      </div>
+                      
+                  </div>
+              </li>
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="images/thin-section13.png" alt="thin section 13"/>
+                        <div class="captionContainer">
+
+                            <p class="caption">Pioneering work in microscopic petrography </p>
+                            <a class="sliderButton hover-expand" href="thin-sections.html" >Thin Section Gallery</a>
+
+                      </div>
+                  </div>
+              </li>
+
+              <li>
+                  <div class="banner-slide">
+                      
+                        <img src="images/notebook7-page19-rock-sketch.png" alt="thin sections sample 14766"/>
+                        <div class="captionContainer">
+
+                            <p class="caption"><span class="italic" >"Never a moment out of sight of these massive ledges of coarse gabbro. The whole of these lakes are held and formed by this great formation, layer upon layer of great thickness. The whole country is burnt and the shoulders of bare rock rise on all sides."</span> -- W.M. Chauvenet, 1883 (in the vicinity of the Gunflint Trail, Minnesota) </p>
+                            <a class="sliderButton hover-expand" href="notebooks.html">Field notebooks</a>
+                            
+
+                      </div>
+                  </div>
+              </li>
+          
+          </ul>
+       </div>
+       
+       
+   <div id="wrapper" class="limited-width wrapper-shadow">
+       
+      <!-- <p>The Lake Superior Legacy Collection documents geological research on the Lake Superior area performed by USGS between 1882 and 1922.</p> -->
+
+       
+<!--        <h3 id="mainBlock">Geologic research from the Lake Superior Division of the USGS, 1882-1922</h3>-->
+       
+      
+       <div class='reportDivision'><h3 class='colorBar'>Browse the Collection</h3>
+           <div class='divisionContent'>
+               <div>
+                   This website is designed to provide online access to the geologic research of the Lake Superior Division of the USGS, 1882–1922. The collection contains: 
+                   <ul>
+                       <li>more than 30,000 hand samples (metadata records)</li>
+                       <li>over 13,000 thin sections (photographed in plane- and cross-polarized light)</li>
+                       <li>467 field notebooks (321 of which have been scanned)</li>
+                       <li>67 maps</li>
+                       
+                   </ul>
+               </div>
+               <a href='about-collection.html'>Click here to read more about items in the collection</a>. Browse, filter, and search using these pages: 
+               <div class="collectionLinksContainer"> 
+                   <!--   four links to pages featuring the collection     -->
+                   
+                   <!-- inline block divs make the square links stack into 2 x 2 grid instead of flowing to rows of 3 and 1 as the page width shrinks. -->
+<!--                  <div class="inline-block" style="border: 1px dashed blue">  -->
+                       <a href="interactive-map.html"><div class="collectionLink hover-expand">
+                           <img src="images/map-thumb.png" alt="thumbnail of map" />
+                           <div class="collectionLinkText">Interactive Map</div>
+                       </div></a>
+                       <a href="hand-sample.html"><div class="collectionLink hover-expand">
+                           <img src="images/hand-samples-thumb.jpg" alt="hand samples" />
+                           <div class="collectionLinkText">Hand Sample Details</div>
+                       </div></a>
+<!--                   </div>-->
+<!--                   <div class="inline-block" style="border: 1px dashed blue">-->
+                       <a href="notebooks.html"><div class="collectionLink hover-expand">
+                           <img src="images/notebook-square-thumb.jpg" alt="notebook cover" />
+                           <div class="collectionLinkText">Field Notebooks</div>
+                       </div></a>
+                   
+                       <a href="thin-sections.html"><div class="collectionLink hover-expand lastLink">
+                           <img src="images/thin-section-4207-thumb.png" alt="thin section photo" />
+                           <div class="collectionLinkText">Thin Section Gallery</div>
+                       </div></a>
+                       <!--<a href="downloads.html"><div class="collectionLink inline-block">
+                           <img src="images/er-diagram.png" alt="diagram of the database tables" />
+                           <div class="collectionLinkText">Data Downloads</div>
+                       </div></a>-->
+<!--                   </div>-->
+               
+               
+               </div>
+           
+           </div> <!-- end .divisionContent div-->
+       </div>
+       
+        <div class='reportDivision'><h3 class='colorBar'>History</h3>
+           <div class='divisionContent'>
+            For 40 years, beginning in 1882, the Lake Superior Division of the USGS in Madison, Wisconsin documented the geology of the Lake Superior area. The division primarily worked in Wisconsin, Minnesota, Michigan’s Upper Peninsula, and Ontario. Over the course of its work, the division produced a number of publications on the region’s Precambrian geology. R.D. Irving, the first director, did pioneering work in the field of microscopic <a href="https://en.wikipedia.org/wiki/Petrography" target="_blank">petrography</a> and was the first to use thin sections in a large-scale survey. <a href='about-history.html'>Read more about the history...</a>
+
+        </div></div>
+       
+       <div class='reportDivision'><h3 class='colorBar'>Credits</h3>
+           <div class='divisionContent'>
+           This work has been supported by the Wisconsin Geological and Natural History Survey with grants from the <a href='https://datapreservation.usgs.gov/' target="_blank">USGS National Geological and Geophysical Data Preservation Program (NGGDPP)</a>. Field notebooks and maps were scanned by the <a href='https://uwdc.library.wisc.edu/collections/EcoNatRes/WGNHS/' target="_blank">University of Wisconsin-Madison Digital Collections</a>.<br>Please see our <a href="about-wgnhs.html#acknowledgments">list of full acknowledgments</a>
+ 
+
+        </div></div>
+       
+   
+       <div id="footer"></div>
+       
+   </div><!--end wrapper div-->
+   
+   <!-- header js and css to highlight the corresponding unslider nav button: must go after the wrapper div and header div -->
+   <script src="header.js"></script>
+    
+   <script>
+            //UNSLIDER 
+            jQuery(document).ready(function($){
+                $('.my-slider').unslider({
+                   
+                    autoplay: false, 
+                    delay: 10000, 
+//                    animation: 'fade', //doesn't work - the whole slideshow just doesn't show up at all. 
+                    infinite: true, //cycles straight from end to beginning 
+                    arrows: {
+                        next:'<div class="unslider-arrow next"><span class="position-helper"></span><img src="images/chevron_right_gw.png" alt="next arrow"></div>',
+                        prev: '<div class="unslider-arrow prev"><span class="position-helper"></span><img src="images/chevron_left_gw.png" alt="previous arrow"></div>'
+                    }
+                });
+            });     
+       
+ 
+   </script>
+   
+   
+</BODY> 
+</HTML>

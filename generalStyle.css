@@ -1,0 +1,440 @@
+/* main orange: #b74226 */
+/* dark orange: #842d1a */
+
+body {
+  margin: 0;
+
+}
+
+body, input {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+a {
+    color: #b74226;
+}
+
+label, span {
+    /*color: grey;*/
+    font-weight: 300;
+    display: inline;
+}
+.bold{
+    font-weight: 600;
+    color: black;
+}
+.italic {
+    font-style: italic;
+}
+
+.block{
+    display: block;
+}
+.clear-both {
+    clear:both;
+}
+.center{
+    margin: auto;
+    text-align: center;
+}
+
+.float-left {
+    float:left;
+}
+.inline{
+    display: inline;
+}
+.inline-block{
+    display: inline-block;
+}
+
+.float-right {
+    float: right;
+}
+h1{
+    display: inline-block;
+    margin: 5px 10px 5px 0px;
+}
+h3 {
+    display: inline-block;
+    margin: 0;
+}
+
+.colorBar {
+    background-color: #bcbcbc;
+    /*border-bottom: 1px solid #bcbcbc;*/
+    color: black;
+    padding-left: 5px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#wrapper{
+    width: 90%;
+    
+    margin-left: auto; /* center */
+    margin-right: auto; /* center */
+ 
+    background-color: white;
+    
+    clear: both;
+}
+
+
+
+.limited-width {
+/* a class applied to #wrapper when I want it to have a limited width, like a blog layout */
+/*  add   class="limited-width" */
+    max-width: 950px;
+    
+}
+
+.wrapper-shadow{
+     /* styles for wrapper drop shadow */
+    box-shadow: 0px 4px 4px 0px #888; 
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.wrapper-shadow .colorBar, #navContainer, #notebookFilters {
+    /* any h3 colorbar title and as well as the nav container on the thin section gallery and the notebook filters on the notebooks page */ 
+    /* margin will un-do the padding on the wrapper. internal padding will align the text within these elements with the other padded elements. */
+    margin-right: -15px;
+    margin-left: -15px;
+    padding-left: 15px; 
+    padding-right: 15px;
+}
+
+
+.button:hover, .button:focus { 
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+
+/*----- HEADER -----*/
+#header {
+    width: 100%;
+    margin-bottom: 10px;
+     
+}
+#navWrapper {
+
+    background-color: #b74226;
+    margin-top: 12px; /* should match the amount the logo is being pushed up */
+
+}
+
+#homeLogo {
+    /* POSITION */
+    float: left;
+    margin-left: 5%; /* from the edge of the window */
+    width: 22%; /* one quarter of the 90% width of the page content. correlates with the #header nav rule below */
+    max-width: 280px;
+    min-width: 160px;
+    position: relative; /* so we can move it up */
+
+    /* replace this with a vertical centering rule? */
+    top: -12px; /* move it up. should match the amount the #navWrapper is pushed down by margin-top */
+    
+    /* APPEARANCE */
+    border-bottom: solid 3px #b74226; /* orange stripe across the bottom */
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+    padding: 4px;
+ 
+}
+#homeLogo:hover {
+    background-color: #e6e6e6;
+}
+
+#expand-menu-icon, #expand-menu-checkbox {
+    display: none;
+}
+#expand-menu-icon img {
+    width: 30px;
+}
+
+#header nav {
+   /* margin-right: 5%;*/
+
+    margin-left: 1%; /* a tiny bit of space to separate the dropdown from the LSLC logo */
+    width: 66%; /* three quarters of the 90% width of the page content. correlates with the #homeLogo rule above */
+
+    display: inline-block; 
+
+}
+
+#header nav h3{
+    margin: 0;
+    color: white;
+}
+
+.navMainLink {
+    /* POSITION */
+    width: 33%; /* this must change when the number of links in the nav bar changes. */
+    display: inline-block;
+    position: relative; /* parent container for .dropdown-content divs, which are absolute */
+    
+    
+    /* APPEARANCE */
+    color: black;
+    text-decoration: none;
+    padding: 2px 0px;
+    text-align: center;
+}
+.navMainLink:hover, .navMainLink:focus {
+    cursor: pointer;
+    background-color: #842d1a;
+}
+
+
+/*----- end HEADER -----*/
+
+
+/* =================== dropdowns =================== */
+
+.dropdown-content {
+    display: none;
+    position: absolute; /* within its parent container, which is relative */
+    width: 100%;
+    min-width: 160px;
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 2000;
+    text-align: left;
+    margin-top: 2px; /* prevents the dropdown from overlapping the nav */
+}
+.dropdown-content a{
+    padding: 4px 4px;
+    text-decoration: none;
+    display: block;
+    color: black;
+    
+}
+/* Show the dropdown menu on hover */
+.dropdownContainer:hover .dropdown-content, .dropdownContainer:focus .dropdown-content {
+    display: block;
+}
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover, .dropdown-content a:focus {background-color: #e6e6e6}
+
+/* =================== end dropdowns =================== */
+
+.blogStyle p {
+    padding-bottom: 10px;
+    margin-top: 5px;
+}
+
+.reportDivision{
+    padding-bottom: 30px;
+}
+
+
+.reportDivision img{
+   
+    height: 200px;
+}
+
+.divisionContent{
+    /*border-top: 1px solid #e6e6e6;*/
+/*    padding-top: 4px;*/
+   
+}
+.divisionEntry{
+    display: table; 
+    padding-bottom: 4px;
+}
+
+.detailsDiv {
+/*    display: inline-block; */
+    
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 10px;
+}
+.detailsDiv p {
+     margin: 3px 0;
+}
+
+/* captioned photos */
+.captionedPhoto {
+    
+    display: inline-table;
+    margin: 0 15px;
+  
+   
+}
+.captionedPhoto img{
+    display: table-row;
+}
+ .bottomCaption {
+    display: table-caption;
+    caption-side: bottom;
+
+}
+
+
+/*++++++++++++ help icons ++++++++++++*/
+
+.helpIcon {
+    width:15px;
+    height: 15px !important;
+}
+.helpIcon:hover, .helpIcon:focus{
+    
+    opacity:0.7;
+}
+
+/* ^^^^^^^^^^^^^^ TABLES ^^^^^^^^^^^^^^^^^^^^^ */
+
+.lslcTable {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x:auto;
+}
+
+.lslcTable thead td{
+    background-color: #c1c1c1;
+    color: black;
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+    vertical-align: bottom;
+   
+}
+
+.lslcTable tr{
+    
+    border-bottom: 2px solid white;
+    background-color: #e6e6e6;
+}
+.lslcTable td {
+    padding: 10px; 
+}
+
+
+/*============== tooltips ==============*/
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+   
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 100;
+    
+    width: 120px;
+    top: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */; 
+}
+
+/* Show the tooltip text when you mouse over or focus the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+.tooltip:focus .tooltiptext {
+     visibility: visible;
+}
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+#footer{
+    clear: both;
+    margin-top: 30px;
+    border-top: solid 2px #b74226; /* orange stripe */
+    text-align: center;
+    font-size: 10pt;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    
+}
+
+#extensionLogo {
+    height: 47px; 
+    margin-top: 10px;
+}
+
+/*============= Media Queries ===============*/
+
+@media only screen and (max-width : 650px) {
+    #wrapper{
+        width:96%;
+    }
+    .modal-content{
+       /* width: 85%;*/
+        padding: 1%;
+    }
+    
+    /* Header */
+    #navWrapper {
+        margin-top: 0px; /* should match the amount the logo is being pushed up */
+    }
+    #logoContainer {
+        display: table-cell;
+        width: calc(80vw); /* split the width 80/20 with the menu icon. */
+        
+       
+    }
+
+    #header nav, .navMainLink {
+        width: 100%;
+        margin: 0;
+    }
+    .dropdown-content {
+        position: static; 
+        display: block; /* if you want the dropdowns automatically open */
+        box-shadow: none;
+       
+    }
+    #homeLogo {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        top: 0px;
+    }
+   
+    /* MENU EXPANDING */
+    #expand-menu-icon {
+        display: table-cell;
+        width: calc(20vw); /* split the width 80/20 with the main logo. */
+        text-align: center; 
+        vertical-align: middle;
+        
+    }
+    #expand-menu-icon:hover, #expand-menu-icon:focus{
+        cursor: pointer;
+        background-color: #842d1a;
+    }
+    
+    /* don't display the menu when the screen is narrow */
+     #header nav {
+        display: none;
+    }
+    
+    /* when the checkbox is active, display the entire expanded menu */
+    #expand-menu-checkbox:checked ~ nav{
+        display: block;
+    }
+    
+    
+    /* end Header */
+}

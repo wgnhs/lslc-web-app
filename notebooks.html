@@ -1,0 +1,424 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML lang="en">
+   <HEAD>
+      <TITLE>LSLC Notebooks</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+       <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+
+       <!-- Async -->
+            <script src="https://unpkg.com/async@2.4.0/dist/async.min.js"></script>
+       <!-- docs  caolan.github.io/async/docs.html -->
+
+       <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+       
+       <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+ 
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    
+       
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="modalStyle.css" rel='stylesheet'/>
+
+           <style>
+               
+          #notebookFilters {
+              background-color: #e6e6e6;
+              position: relative;
+              padding-bottom: 10px;
+
+           }
+           
+           #notebookFilters .filter {
+               display: inline-block;
+               margin: 5px 8px 5px 5px;   
+
+           }
+           #notebookFilters label {
+               margin-right: 5px;
+           }
+
+
+           </style>
+
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+       <!-- Google analytics: place in the head tag after other script links -->
+       <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-50757423-2', 'auto');
+          ga('send', 'pageview');
+
+       </script>
+       
+</HEAD>
+<BODY>
+  
+   <div id="header"></div>
+    
+   <div id="wrapper" class="limited-width wrapper-shadow">
+        
+
+       <div id="header"></div>
+       <h2>Field Notebooks</h2>
+           <p>This is a list of all field notebooks in the Lake Superior Legacy Collection. Most of these notebooks are available as digital scans on the UW Digital Collections website. Some were not prioritized for scanning, and some no longer exist.</p>
+       <div id="notebookFilters">
+           <h3 class="colorBar">Filters</h3>
+           <div class="filter">
+               <label for="AuthorSearch"><span>Author:</span></label>
+               <input type="text" id="AuthorSearch" name="AuthorSearch">
+           </div>
+           <div class="filter">
+               <label for="TitleSearch"><span>Title:</span></label>
+               <input type="text" id="TitleSearch" name="TitleSearch">
+           </div>
+           <div class="filter">
+               <label for="YearSearch"><span>Year:</span></label>
+               <input type="text" id="YearSearch" name="YearSearch">
+           </div>
+           <div class="filter">
+               <label for="NumberSearch"><span>Notebook number:</span></label>
+               <input type="text" id="NumberSearch" name="NumberSearch">
+           </div>
+
+           <div class="filter">
+               <label for="sortBy"><span>Sort by:</span></label>
+               <select name="sortBy" id="sortBy">
+                   <option selected="selected" value="Number">Notebook number</option>
+                   <option value="Author">Author</option>
+                   <option value="Year">Year</option>
+                   <option value="Title">Title</option>
+                   
+               </select>
+               <select name="sortDirection" id="sortDirection" aria-label='sort direction'>
+                    <option value="ascending">ascending</option>
+                   <option value="descending">descending</option>
+               </select>
+           </div>
+       </div>
+
+       <div class="reportDivision">
+       
+       	<h3 class="colorBar">List of Field Notebooks</h3> 
+       
+       
+       <!-- <div class='reportDivision'><div id="fieldNotebooksList"></div></div> -->
+       <div class='divisionContent' id='notebooksContent'></div>
+   
+       </div>
+       <div id="footer"></div>
+   </div><!--end wrapper div-->
+   
+   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
+   <script src="header.js"></script>
+     
+    <!-- javascript links -->
+    <script src="mapServiceUrls.js"></script>
+    
+    <!-- javascript for building the notebook list -->
+    <script>
+    //globals
+    var globalNotebookContentArray = [];
+    var menuOn = false;
+    var sortMethod = $("#sortBy").val();
+    var sortOrder = $("#sortDirection").val();
+    var authorSearchOn = false;
+    var titleSearchOn = false;
+    var numberSearchOn = false;
+    var yearSearchOn = false;
+//    var x;
+       
+    //reset the filters on page load/reload:     
+     $("#AuthorSearch").val(""); 
+     $("#NumberSearch").val(""); 
+     $("#YearSearch").val("");   
+     $("#TitleSearch").val(""); 
+        
+
+    var delay = (function(){
+      var timer = 0;
+      return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
+        
+    //set up an event listener for changes to the dropdowns for sort-by and for order: 
+    $("#notebookFilters select").on('change', function(){
+        //reset the global vars 
+        sortMethod = $("#sortBy").val();
+        sortOrder = $("#sortDirection").val();
+        
+        console.log("change to sort by ", sortMethod," in ", sortOrder, "order.");
+        
+        //call the function if both arguments have values. 
+        if (sortMethod && sortOrder){
+            async.series([callSort, buildNotebooksList]);
+            
+        }
+        
+    });    
+
+        
+    //Listeners for filtering the notebooks list: 
+        
+    $("#AuthorSearch").on('input', function(){
+    	authorSearchOn = true;
+    	delay(function(){
+    		async.series([callfilter, buildNotebooksList]);
+    	}, 1000);
+    })
+	$("#NumberSearch").on('input', function(e){
+		numberSearchOn = true;
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList]);
+    	}, 1000);
+    })
+    $("#YearSearch").on('input', function(e){
+    	yearSearchOn = true;
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList]);
+    	}, 1000);
+    })
+    $("#TitleSearch").on('input', function(e){
+    	titleSearchOn = true;
+    	window.setTimeout(function(){
+    		async.series([callfilter, buildNotebooksList]);
+    	}, 1000);
+    })
+ 
+        
+    function retrieveNotebooks(indicator){
+    	var notebooksQuery = L.esri.query({url: notebooksTableURL});
+    	notebooksQuery.fields(["*"]);
+    	notebooksQuery.run(function(err, featureCollection, response){
+
+    		for (i in response.features){
+    			notebooksManager.add(response.features[i].attributes)
+    		}
+
+    		indicator();
+    	});
+
+    } 
+
+    function replaceURL(notebookNumber){
+
+    	var thumbURL = "https://data.wgnhs.wisc.edu/lake-superior-legacy/assets/notebook-thumbs/fieldNotebook" + notebookNumber + "_cover_thumb.jpg";
+
+    	var img = new Image();
+
+    	img.onload = function(resp){
+    			$("#coverImage_" + notebookNumber).attr("src", thumbURL)
+
+    			for (i in globalNotebookContentArray){
+    				if (globalNotebookContentArray[i].Number === notebookNumber){
+    					globalNotebookContentArray[i].coverURL = thumbURL;
+    				}
+    			}
+
+    		}
+
+    	img.src = thumbURL
+
+    }
+
+    function replaceImages(indicator){
+
+    	for (i in globalNotebookContentArray){
+            //if there is a link to UWDC, look for a thumbnail image to replace the default placeholder
+            if(globalNotebookContentArray[i].UwdcUrl){
+    		  replaceURL(globalNotebookContentArray[i].Number);
+            }
+    	}
+
+    	indicator();
+    }
+
+    function buildNotebooksList(indicator){
+
+    	$(".divisionEntry").remove();
+
+    	
+
+    	for (i in globalNotebookContentArray){
+
+    		if (globalNotebookContentArray[i].show){
+
+	    		var divisionEntry = "<div class='divisionEntry'>";
+	    		divisionEntry += "<img src='" + globalNotebookContentArray[i].coverURL + "' alt='Notebook Cover Photo' id='coverImage_" + globalNotebookContentArray[i].Number + "'>"
+	    		divisionEntry += "<div class='detailsDiv'>"
+	    		divisionEntry += "<p>Field Notebook #" + globalNotebookContentArray[i].Number + "</p>";
+	    		if (globalNotebookContentArray[i].Title){
+	    			divisionEntry += "<p>" + globalNotebookContentArray[i].Title + "</p>";
+	    		} else {
+	    			divisionEntry += "<p>[Untitled]</p>";
+	    		}
+	    		divisionEntry += "<p>by " + globalNotebookContentArray[i].Author + "</p>";
+	    		divisionEntry += "<p>" + globalNotebookContentArray[i].Year + "</p>";
+	    		if (globalNotebookContentArray[i].Notes){
+	    			divisionEntry += "<p>Notes: " + globalNotebookContentArray[i].Notes + "</p>";
+	    		}
+	    		if (globalNotebookContentArray[i].UwdcUrl){
+	    			divisionEntry += "<p>Scan at UW digital Collections: <a href='" + globalNotebookContentArray[i].UwdcUrl + "' target=_blank>" + globalNotebookContentArray[i].UwdcUrl + "</a></p>";
+	    		}
+	    		divisionEntry += "</div>";
+	    		divisionEntry += "</div>";
+
+	    		$("#notebooksContent").append($(divisionEntry))
+	    	};
+    	};
+
+
+    	indicator();
+    }
+
+    function callSort(indicator){
+    	if (sortMethod == "Author" || sortMethod == "Title"){
+    		notebooksManager.sortByLetter(sortMethod,sortOrder)
+    	} else {
+    		notebooksManager.sortByNumber(sortMethod,sortOrder)
+    	}
+
+    	indicator();
+    }
+
+    function callfilter(indicator){
+    	var searchText = {};
+    	searchText.authorKey = document.getElementById("AuthorSearch").value;
+    	searchText.titleKey = document.getElementById("TitleSearch").value;
+    	searchText.numberKey = document.getElementById("NumberSearch").value;
+    	searchText.yearKey = document.getElementById("YearSearch").value;
+    	notebooksManager.filterBySearch(searchText)
+    	indicator();
+    }
+
+    var notebooksManager = (function(){
+        // A MODULE FOR HANDLING THE NOTEBOOKS DATA 
+
+    	var add = function(object){
+    		object.coverURL = "images/notebook-icon.jpg";
+    		object.show = true
+    		globalNotebookContentArray = globalNotebookContentArray.concat(object);
+
+    	};
+
+    	var sortByNumber = function(attr, direction){
+
+    		console.log("sort by " + attr + " in " + direction + " order");
+
+    		if (direction == "ascending"){
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(parseInt(a[attr]) < parseInt(b[attr])) return -1;
+	    			if(parseInt(a[attr]) > parseInt(b[attr])) return 1;
+	    			return 0;
+	    		});
+
+	    	} else if (direction == "descending") {
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(parseInt(a[attr]) > parseInt(b[attr])) return -1;
+	    			if(parseInt(a[attr]) < parseInt(b[attr])) return 1;
+	    			return 0;
+	    		});
+	    		
+	    	}
+    	};
+
+    	var sortByLetter = function(attr, direction){
+
+    		console.log("sort by " + attr + "in " + direction + " order")
+
+    		if (direction == "ascending"){
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(a[attr] < b[attr]) return -1;
+	    			if(a[attr] > b[attr]) return 1;
+	    			return 0;
+	    		});
+
+	    	} else if (direction == "descending") {
+
+	    		globalNotebookContentArray.sort(function(a,b){
+	    			if(a[attr] > b[attr]) return -1;
+	    			if(a[attr] < b[attr]) return 1;
+	    			return 0;
+	    		});
+	    		
+	    	}
+    	};
+
+    	var filterBySearch = function(searchTextObject){
+            console.log("search: ", searchTextObject);
+
+    		for (i in globalNotebookContentArray){
+
+    			var showTheNotebook = true;
+                
+
+    			if (!globalNotebookContentArray[i]["Author"].toUpperCase().includes(searchTextObject.authorKey.toUpperCase()) && authorSearchOn){
+    				showTheNotebook = false;
+    			};
+
+      		if (globalNotebookContentArray[i]["Title"]){
+            if (!globalNotebookContentArray[i]["Title"].toUpperCase().includes(searchTextObject.titleKey.toUpperCase()) && titleSearchOn) {
+      				showTheNotebook = false;
+      			};
+          } else {
+              showTheNotebook = false;
+          }
+
+    			if (!globalNotebookContentArray[i]["Number"].includes(searchTextObject.numberKey) && numberSearchOn) {
+    				showTheNotebook = false;
+    			};
+
+    			if (!globalNotebookContentArray[i]["Year"].includes(searchTextObject.yearKey) && yearSearchOn){
+    				showTheNotebook = false;
+    			};
+
+    			globalNotebookContentArray[i].show = showTheNotebook;
+    		}; 
+
+    	};
+        
+        //EXPOSED METHODS
+    	return {"add":add,
+    		"sortByNumber":sortByNumber,
+    		"sortByLetter":sortByLetter,
+    		"filterBySearch":filterBySearch
+    	}
+
+    })();
+
+    //happens once upon page load. 
+    async.series([retrieveNotebooks, callSort, buildNotebooksList, replaceImages]);
+
+
+
+
+    </script><!-- end javascript for building the notebook list -->
+   
+   
+</BODY> 
+</HTML>

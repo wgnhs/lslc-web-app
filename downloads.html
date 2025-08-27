@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML lang="en">
+   <HEAD>
+      <TITLE>LSLC Downloads</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+       
+       <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+       
+       <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+ 
+       <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+       <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    
+       
+       <!-- local stylesheets -->
+           <LINK href="generalStyle.css" rel='stylesheet'/>
+           <LINK href="modalStyle.css" rel='stylesheet'/>
+
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+       <!-- Google analytics: place in the head tag after other script links -->
+       <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-50757423-2', 'auto');
+          ga('send', 'pageview');
+
+       </script>
+       
+       
+       <style>
+           .downloadlayerimg{
+              /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+              /* outline: 3px solid #e6e6e6; */
+           }
+           .downloadLink{
+               margin-left: 5px;
+           }
+           .downloadButton {
+               /* styles match the buttons on the map page */
+               background-color: #c1c1c1;
+               box-shadow: 0px 0px 2px 2px rgba(0,0,0,0.4);
+               padding: 2px;
+               text-decoration: none;
+               color: black; 
+               font-weight: 300;
+               margin: 15px;
+               display: inline-block;
+               
+           }
+           .downloadButton:hover{
+               background-color: #aaa19d;
+               box-shadow: 0px 0px 2px 2px rgba(0,0,0,0.6);
+           }
+           
+       </style>
+       
+       
+</HEAD>
+<BODY>
+  
+   <div id="header"></div>
+   <div id="wrapper" class="limited-width wrapper-shadow">
+        
+        <h2>Data Downloads</h2> 
+
+       
+       <div class='reportDivision'>
+           <h3 class="colorBar">Geographic data</h3>
+           <div class='divisionContent'>
+               <div class='divisionEntry'>
+                   <img class='downloadlayerimg' src='images/sectionsLayer.jpg' alt='sections layer'/> 
+                   <div class='detailsDiv'><p>Sections: a map layer containing a polygon for each section of the Public Land Survey System in Wisconsin, Minnesota, and Michigan in which we have a sample. PLSS Sections are approximately square, six miles on a side. </p><a class="downloadButton" href="https://data.wgnhs.wisc.edu/lake-superior-legacy/data/Lake_Superior_Legacy_Sections.zip">Download sections layer (zipped shapefile) </a>
+                   </div>
+               </div>
+
+           </div>
+       </div>
+       <div class='reportDivision'>
+           <h3 class="colorBar">Tables</h3>
+           <div class='divisionContent'>
+               <div class='divisionEntry'>
+                    <img class='downloadlayerimg' src='images/er-diagram.png' alt='diagram of table relationships'/> 
+                   <div class='detailsDiv'><p>Tables: five tables containing all sample data (Hand Samples, Thin Sections, Notebooks, Lithological Descriptions, and Ledgers) </p> 
+                       <a class="downloadButton" href="downloads/LSLC_download_all_tables_ver2_06-22-17.zip">Download tables (zipped folder of CSVs) </a>
+                   </div>
+               </div>
+
+           </div>
+       </div>
+       
+       <div id="footer"></div>
+   </div><!--end wrapper div-->
+   
+   <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
+   <script src="header.js"></script>
+  
+    
+    <!-- javascript links -->
+    <script src="mapServiceUrls.js"></script>
+    
+   
+</BODY> 
+</HTML>

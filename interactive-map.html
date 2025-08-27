@@ -1,0 +1,338 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML lang="en">
+   <HEAD>
+      <TITLE>LSLC Interactive Map</TITLE> <link rel='icon' type='image/x-icon' href='favicon.ico'/>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <!--Google font-->
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+
+        <!-- Async from CDN -->    
+            <script src="https://unpkg.com/async@2.4.0/dist/async.min.js"></script>
+        <!-- docs: http://caolan.github.io/async/docs.html -->
+       
+        <!-- Load Leaflet from CDN-->
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+           <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"></script>
+
+        <!-- Load Esri Leaflet from CDN -->
+            <script src="https://unpkg.com/esri-leaflet@2.0.7"></script>
+       
+        <!-- Leaflet Draw -->
+            <script src="https://unpkg.com/leaflet-draw@0.4.9/dist/leaflet.draw-src.js"></script>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.9/dist/leaflet.draw-src.css">
+       
+        <!-- JQuery  -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+        <!-- JQuery UI  -->
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+       
+      <!-- Promises polyfill -->
+            <!-- source: https://www.npmjs.com/package/promise-polyfill -->
+            <script src="lib/promise-6.0.2.min.js"></script>
+       
+        <!-- TABLESORTER -->
+             <script type="text/javascript" src="lib/jquery.tablesorter.js"></script>
+       
+        <!-- local stylesheets -->
+            <LINK href="generalStyle.css" rel='stylesheet'/>
+            <LINK href="mapViewStyle.css" rel='stylesheet'/>
+       
+      <!-- Enable media queries for old IE -->
+      <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+      <![endif]-->
+       
+       <!-- Google analytics: place in the head tag after other script links -->
+       <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-50757423-2', 'auto');
+          ga('send', 'pageview');
+
+       </script>
+       
+   </HEAD>
+   <BODY>
+
+    <div id='wrapAll'>
+       
+       <div id="header"></div>
+       <div id="wrapper">
+           
+
+            
+            
+           <div id="leftPanel">
+               <div id="filters">
+
+                <div id="filterFeedback"></div>
+
+                   <div class='colorBar' id='mapFiltersOB'>
+                   <h3>Filter by map area</h3><div class="tooltip" tabindex='0'><img src="images/question_wg.png" class="helpIcon" alt="question mark"/><span class="tooltiptext"> This map only shows samples that we were able to locate to a one-square-mile section of the Public Land Survey System within Minnesota, Michigan, or Wisconsin. Samples from Ontario appear in the table below, but not on the map. There may be additional location information in the scanned field notebooks. </span></div>
+                   <div class='filtersHideButton' id='mapAreaFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='mapFilterChevron' alt="hide this section"/></div>
+                   </div>
+                   
+                   
+                   <div class="filterHolder" id='mapAreaFilters'>
+                       
+                       <div class="filter">
+                            <label for="mappedCheckbox"><span>Must have map location </span></label>
+                            <input type="checkbox" name="mappedCheckbox" id="mappedCheckbox" />
+                       </div>
+                        
+                       <div  id="mapSelectionButtonsContainer">
+                            <div class="mapSelectionButton mapViewButton" id="selectRectangleButton"><img src="images/map-selection-rectangle.png" alt="rectangle selection"/><span id='greyButtonText'>Select by rectangle</span></div>
+                            <div class="mapSelectionButton" id="selectPolygonButton"><img src="images/map-selection-polygon.png" alt="polygon selection"/><span id='greyButtonText'>Select by polygon</span></div>
+                            <div class="mapSelectionButton" onclick="leafletMap.clearMapSelection();"><img src="images/clear-map-selection.png" alt="clear selection"><span id='greyButtonText'>Clear map selection</span></div>
+                       </div>
+                   </div>
+                   
+                   
+
+               
+                   <div class='colorBar' id='contentFiltersOB'>
+                       <h3>Filter by content </h3>
+                       <div class="tooltip" tabindex='0'>
+                           <img src="images/question_wg.png" class="helpIcon" alt="question mark"/>
+                           <span class="tooltiptext">Use an underscore (_) as a wildcard for exactly one character or a percent sign (%) to indicate any number of characters</span>
+                       </div>
+                       <div class='filtersHideButton' id='contentFiltersButton'><img src="images/downChevron-white.png" class='chevron' id='contentFilterChevron' alt="collapse this section"/></div>
+                   </div>
+
+                   
+                  <div class='filterHolder' id='contentAreaFilters'>
+                   <div class="filter">
+                        <label for="handSampleCheckbox"><span>Hand sample available </span></label>
+                        <input type="checkbox" name="handSampleAvailability" id="handSampleCheckbox" />
+                   </div>
+                    <div class="filter">
+                        <label for="thinSectionPhotoCheckbox"><span>Thin section photo available </span></label>
+                        <input type="checkbox" name="thinSectionPhotoAvailability" id="thinSectionPhotoCheckbox" />
+                   </div>
+                 <!--  <div class="filter">
+                        <label for="thinSectionNumberSearch"><span>Min # of thin sections </span></label>
+                        <input type="number" name="thinSectionCount" id="thinSectionNumberSearch" min="1" />
+                   </div>
+                    -->
+                    <div class="filter">
+                      <div id="autocomplete">
+                        <label for="fieldDescriptionSearch"><span>Rock type </span></label>
+                        <input type="search" class="searchBox" name="fieldDescriptionSearch" id="fieldDescriptionSearch" placeholder="try 'granite' or 'slate'" />
+                      </div>
+
+                   </div>
+                   <div class="filter">
+                        <label for="notesSearch"><span>Sample notes </span></label>
+                        <input class="searchBox" type="search" name="notesSearch" id="notesSearch"  />
+                   </div>
+                 <!--  <div class="filter">
+                        <label for="countySearch"><span>County </span></label>
+                        <input class="searchBox" type="search" name="countySearch" id="countySearch"  />
+                   </div>
+                    -->
+                   <div class="filter">
+                        <label for="stateSearch"><span>State / province</span></label>
+<!--                        <input class="searchBox" type="search" name="stateSearch" id="stateSearch"  />-->
+                       <select class="searchBox" name="stateSearch" id="stateSearch">
+                          <option value=''></option>
+                          <option value="Michigan">Michigan</option>
+                          <option value="Minnesota">Minnesota</option>
+                          <option value="Ontario">Ontario</option>
+                          <option value="Wisconsin">Wisconsin</option>
+                        </select>
+                   </div>
+                   <div class="filter">
+                        <label for="notebookSearch"><span>Field notebook number </span></label>
+                        <input class="searchBox" type="search" name="notebookSearch" id="notebookSearch"  />
+                   </div>
+                  <!-- <div class="filter">
+                        <label for="notebookPageSearch"><span>Notebook page </span></label>
+                        <input class="searchBox" type="search" name="notebookPageSearch" id="notebookPageSearch"  />
+                   </div>
+                    -->
+                   <div class="filter">
+                        <label for="WGNHSSearch"><span>WGNHS ID </span></label>
+                        <input class="searchBox" type="search" name="WGNHSSearch" id="WGNHSSearch"  />
+                   </div>
+                   <div class="filter">
+                        <label for="handSampleNumberSearch"><span>Hand sample number </span></label>
+                        <input class="searchBox" type="search" name="handSampleNumberSearch" id="handSampleNumberSearch"  />
+                   </div>
+                  </div>
+                   
+                   
+           
+               </div><!--end filters div-->
+
+           </div><!--end left Panel div-->
+     
+               
+           <div id="mapWrapper"><div id="map"><a href="http://mapbox.com/about/maps" class='mapbox-wordmark' target="_blank">Mapbox</a></div></div>
+     
+           
+           <div id="resultsPanel">
+            
+               <div id="resultsHeader" class='colorBar'>
+
+                     <h2 class="inline">Results</h2><span id="resultCountStatement"><span id="resultCount">0</span> samples found.</span> 
+                     
+                     <span id="downloadButtonContainer"><a href="#" class="export"><img src="images/download_gw.png" alt="download"> <span id='greyButtonText'>Download as CSV</span></a></span>
+
+                     <div id="zoomToSelectionButton" class="mapViewButton" role='button'><img src="images/zoomTo-01.png" id='zoomToPNG' alt="zoom to selection"><span id='greyButtonText'>Zoom to Results</span></div>
+                 </div> 
+
+               
+<!--                <p>Showing the first 1000 results.</p>-->
+               
+                <!-- 
+                       <input id='tab1' type="radio" name="resultsTabs" checked><label for="tab1">Table</label>
+                       
+                       <input id='tab2' type="radio" name="resultsTabs"><label for="tab2">Media</label>
+                  
+                   
+                   <section id="tab1content">
+                        <div><table id="resultsTable" class="lslcTable"></table></div>
+                   </section>
+
+                   <section id="tab2content">
+                       <div id="gallery">thin sections gallery</div>
+                   </section>
+                -->
+               
+               <div id='tableHolder'><table id="resultsTable" class="lslcTable"></table></div>
+               
+           </div>
+          
+           <!-- add a project footer... -->
+            <div id='footer'></div> 
+           
+       </div><!-- end wrapper div-->
+
+      </div>
+
+      <script>
+      var filtersHideButtonHeight = $(".filtersHideButton").height();
+      $(".filtersHideButton").css("min-width",filtersHideButtonHeight + "px");  
+
+
+
+      var mapFiltersShowing = true;
+      var contentFiltersShowing = true;
+
+        $("#mapAreaFiltersButton").click(function(){
+
+            if(mapFiltersShowing){
+              mapFiltersShowing = false
+              $("#mapAreaFilters").css("display","none")
+              $("#mapFiltersOB").css("margin-bottom","5px")
+              $("#mapFilterChevron").remove()
+              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='mapFilterChevron' alt='expand this section'/>"))
+              resizeFilters(true);
+            } else {
+              mapFiltersShowing = true
+              $("#mapAreaFilters").css("display","block")
+              $("#mapFiltersOB").css("margin-bottom","0px")
+              $("#mapFilterChevron").remove()
+              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='mapFilterChevron' alt='collapse this section'/>"))
+              resizeFilters(false);
+            }
+          })
+
+        $("#contentFiltersButton").click(function(){
+
+            if(contentFiltersShowing){
+              contentFiltersShowing = false
+              $("#contentAreaFilters").css("display","none")
+              $("#contentFiltersOB").css("margin-bottom","5px")
+              $("#contentFilterChevron").remove()
+              $(this).append($("<img src='images/upChevron-white.png' class='chevron' id='contentFilterChevron' alt='expand this section'/>"))
+              resizeFilters(true);
+            } else {
+              contentFiltersShowing = true
+              $("#contentAreaFilters").css("display","block")
+              $("#contentFiltersOB").css("margin-bottom","0px")
+              $("#contentFilterChevron").remove()
+              $(this).append($("<img src='images/downChevron-white.png' class='chevron' id='contentFilterChevron' alt='collapse this section'/>"))
+              resizeFilters(false);
+            }
+            
+          })
+
+        function resizeFilters(switchUp){
+            console.log("resizeFilters: ", switchUp);
+            //swtichUp is true or false. 
+            
+          var OB1height = $("#contentFiltersOB").height();
+          var OB2height = $("#mapFiltersOB").height();
+          var filters1Height = $("#contentAreaFilters").height();
+          var filters2Height = $("#mapAreaFilters").height();
+          var extraHeight = $("#filterFeedback").height() + 20;
+
+          var newHeight;
+          if (mapFiltersShowing && contentFiltersButton){
+            newHeight = OB1height + OB2height + filters1Height + filters2Height + extraHeight;
+          } else if (mapFiltersShowing && !contentFiltersShowing) {
+            newHeight = OB2height + OB1height + filters2Height + extraHeight
+          } else if (!mapFiltersShowing && contentFiltersShowing) {
+            newHeight = OB1height + OB2height + filters1Height + extraHeight
+          } else if (!mapFiltersShowing && !contentFiltersShowing) {
+            newHeight = OB2height + OB1height + extraHeight
+          }
+
+          var gap = $("#resultsPanel").offset().top - $("#resultsPanel").offset().top - 5;
+
+          console.log(newHeight, $("#leftPanel").height())
+          if (switchUp && newHeight < $("#leftPanel").height()){
+              console.log("case 1");
+            $("#leftPanel").height(newHeight)
+          }
+          if (!switchUp){
+            if (newHeight < $("#leftPanel").height() && newHeight < gap){
+                console.log("case 2");
+              $("#leftPanel").height(newHeight)
+            } else {
+                console.log("case 3");
+              wrapperHeight = $('#wrapAll').height();
+              bodyHeight = $('body').height();
+              panelHeight = $('#resultsPanel').height();
+              var mapHeight = wrapperHeight - panelHeight;
+              console.log("HEIGHTS: map: ", mapHeight, "panel: ", panelHeight, "wrapper: ", wrapperHeight, "body: ", bodyHeight);
+              $("#map").css("height", mapHeight + "px");
+              var leftPanelHeight = mapHeight - 100;
+              $("#leftPanel").css("height", leftPanelHeight + "px");
+            }
+          }
+          
+
+
+
+          if (!switchUp && newHeight < $("#leftPanel").height()){
+              console.log("case 4");
+            $("#leftPanel").height(newHeight)
+          }
+
+        }
+      </script>
+       
+       <!-- header js and css to highlight the corresponding nav button: must go after the wrapper div and header div -->
+       <script src="header.js"></script>
+      
+       
+       <!-- javascript links -->
+       <script src="mapServiceUrls.js"></script>
+       <script type='text/javascript' src='resultsManager.js'></script>
+       <script type='text/javascript' src='LeafletQuery.js'></script>
+       <script type='text/javascript' src='LeafletMap.js'></script>
+       <script src="resultsList.js"></script>
+       <script>leafletMap.initialize(); </script>
+    
+   </BODY>
+</HTML>
