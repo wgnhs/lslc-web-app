@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Build and push to deploy-prod branch
 
 on:
   push:
